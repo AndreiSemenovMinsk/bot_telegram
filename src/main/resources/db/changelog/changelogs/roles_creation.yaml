@@ -1,0 +1,14 @@
+databaseChangeLog:
+  - changeSet:
+      preConditions:
+        - onFail: MARK_RAN
+        - sqlCheck:
+            expectedResult: 0
+            sql: select count(*) from pg_roles where rolname='mail_service'
+      id: 1-mail_service
+      author: a.semenov
+      changes:
+        - sql:
+            sql: create role mail_service with login nosuperuser noinherit nocreatedb nocreaterole noreplication password 'mail_service'
+        - sql:
+            sql: grant all privileges on database mail_service_db to mail_service

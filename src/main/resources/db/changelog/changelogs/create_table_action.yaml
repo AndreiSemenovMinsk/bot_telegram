@@ -1,0 +1,91 @@
+databaseChangeLog:
+  - changeSet:
+      id: 3-mail_service
+      author: a.semenov
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: action_pk
+                    nullable: false
+              - column:
+                  name: time
+                  type: datetime
+                  constraints:
+                    nullable: false
+              - column:
+                  name: accommodate_sum
+                  type: bit(1)
+              - column:
+                  name: active
+                  type: bit(1)
+              - column:
+                  name: description
+                  type: varchar(255)
+              - column:
+                  name: level_rate_previous_purchase_list
+                  type: varchar(255)
+              - column:
+                  name: level_sum_string
+                  type: varchar(255)
+              - column:
+                  name: name
+                  type: varchar(255)
+              - column:
+                  name: number_coupon
+                  type: int(11)
+              - column:
+                  name: rate_friend_future_purchase
+                  type: int(11)
+              - column:
+                  name: rate_future_purchase
+                  type: int(11)
+              - column:
+                  name: toward_friend
+                  type: bit(1)
+              - column:
+                  name: type
+                  type: varchar(255)
+              - column:
+                  name: product_source_id
+                  type: int(11)
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_product_source_id
+                    references: abstract_group_entity(id)
+              - column:
+                  name: product_target_id
+                  type: int(11)
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_product_target_id
+                    references: abstract_group_entity(id)
+              - column:
+                  name: shop_id
+                  type: int(11)
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_shop_id
+                    references: shop(id)
+            tableName: action
+
+        -  addForeignKeyConstraint:
+             baseColumnNames:  current_creating_action_id
+             #             baseTableCatalogName:  cat
+             baseTableName:  shop
+             baseTableSchemaName:  public
+             constraintName:  fk_current_creating_action_id
+             deferrable:  true
+             initiallyDeferred:  true
+             onDelete:  CASCADE
+             onUpdate:  RESTRICT
+             referencedColumnNames:  id
+             #             referencedTableCatalogName:  cat
+             referencedTableName:  action
+             referencedTableSchemaName:  public
+             validate:  true

@@ -1,0 +1,57 @@
+databaseChangeLog:
+  - changeSet:
+      id: 3-basket
+      author: a.semenov
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: bookmark_pk
+                    nullable: false
+              - column:
+                  name: time
+                  type: datetime
+                  constraints:
+                    nullable: false
+              - column:
+                  name: bid_price
+                  type: decimal(19,2)
+              - column:
+                  name: notification
+                  type: datetime
+              - column:
+                  name: price_updated
+                  type: bit(1)
+              - column:
+                  name: radius
+                  type: int(11)
+              - column:
+                  name: viber_notify
+                  type: bit(1)
+              - column:
+                  name: product_id
+                  type: int(11)
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_product_id
+                    references: abstract_group_entity(id)
+              - column:
+                  name: shop_id
+                  type: int(11)
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_shop_id
+                    references: shop(id)
+              - column:
+                  name: users_id
+                  type: int(11)
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_users_id
+                    references: users(id)
+            tableName: bookmark

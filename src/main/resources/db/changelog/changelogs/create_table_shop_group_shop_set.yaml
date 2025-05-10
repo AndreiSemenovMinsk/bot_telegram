@@ -1,0 +1,22 @@
+databaseChangeLog:
+  - changeSet:
+      id: 3-shop_group_shop_set
+      author: a.semenov
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  name: shop_id
+                  type: int(11)
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_shop_id
+                    references: shop(id)
+              - column:
+                  name: shop_group_id
+                  type: int(11)
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_shop_group_id
+                    references: shop_group(id)
+            tableName: shop_group_shop_set

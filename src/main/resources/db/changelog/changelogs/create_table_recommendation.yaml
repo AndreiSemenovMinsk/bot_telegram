@@ -1,0 +1,84 @@
+databaseChangeLog:
+  - changeSet:
+      id: 3-recommendation
+      author: a.semenov
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: recommendation_pk
+                    nullable: false
+              - column:
+                  name: time
+                  type: datetime
+                  constraints:
+                    nullable: false
+              - column:
+                  name: shop_id
+                  type: int(11)
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_shop_id
+                    references: shop(id)
+              - column:
+                  name: buyer_id
+                  type: int(11)
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_buyer_id
+                    references: users(id)
+              - column:
+                  name: friend_id
+                  type: int(11)
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_friend_id
+                    references: users(id)
+            tableName: recommendation
+        - createIndex:
+            #            clustered:  true
+            columns:
+              - column:
+                  descending:  true
+                  name:  buyer_id
+              - column:
+                  descending:  true
+                  name:  friend_id
+              - column:
+                  descending:  true
+                  name:  shop_id
+            indexName:  UC_RECOMMENDATION_COL_BUYER_FRIEND_SHOP
+            schemaName:  public
+            tableName:  recommendation
+            unique:  true
+        - createIndex:
+            #            clustered:  true
+            columns:
+              - column:
+                  descending:  true
+                  name:  friend_id
+              - column:
+                  descending:  true
+                  name:  shop_id
+            indexName:  IDX_RECOMMENDATION_COL_FRIEND_SHOP
+            schemaName:  public
+            tableName:  recommendation
+            unique:  true
+        - createIndex:
+            #            clustered:  true
+            columns:
+              - column:
+                  descending:  true
+                  name:  buyer_id
+              - column:
+                  descending:  true
+                  name:  shop_id
+            indexName:  IDX_RECOMMENDATION_COL_BUYER_SHOP
+            schemaName:  public
+            tableName:  recommendation
+            unique:  true

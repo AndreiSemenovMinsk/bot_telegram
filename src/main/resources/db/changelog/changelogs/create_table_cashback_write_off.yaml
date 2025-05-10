@@ -1,0 +1,44 @@
+databaseChangeLog:
+  - changeSet:
+      id: 3-cashback_write_off
+      author: a.semenov
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: cashback_write_off_pk
+                    nullable: false
+              - column:
+                  name: time
+                  type: datetime
+                  constraints:
+                    nullable: false
+              - column:
+                  name: approved
+                  type: bit(1)
+              - column:
+                  name: number_coupon
+                  type: int(11)
+              - column:
+                  name: sum
+                  type: decimal(19,2)
+              - column:
+                  name: shop_id
+                  type: int(11)
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_shop_id
+                    references: shop(id)
+              - column:
+                  name: users_id
+                  type: int(11)
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_users_id
+                    references: users(id)
+            tableName: cashback_write_off

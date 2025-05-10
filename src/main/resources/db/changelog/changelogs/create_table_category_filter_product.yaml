@@ -1,0 +1,54 @@
+databaseChangeLog:
+  - changeSet:
+      id: 3-category_filter_product
+      author: a.semenov
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: category_filter_product_pk
+                    nullable: false
+              - column:
+                  name: time
+                  type: datetime
+                  constraints:
+                    nullable: false
+              - column:
+                  name: value
+                  type: int(11)
+              - column:
+                  name: raw_value
+                  type: decimal(19,2)
+              - column:
+                  name: filter_point_id
+                  type: int(11)
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_filter_point_id
+                    references: filter_point(id)
+              - column:
+                  name: product_id
+                  type: int(11)
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_abstract_group_entity
+                    references: abstract_group_entity(id)
+            tableName: category_filter_product
+        - createIndex:
+            #            clustered:  true
+            columns:
+              - column:
+                  descending:  true
+                  name:  product_id
+              - column:
+                  descending:  true
+                  name:  filter_point_id
+            indexName:  UC_CATEGORY_FILTER_PRODUCT
+            schemaName:  public
+            tableName:  category_filter_product
+            unique:  true

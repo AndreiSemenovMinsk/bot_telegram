@@ -1,0 +1,65 @@
+databaseChangeLog:
+  - changeSet:
+      id: 3-button
+      author: a.semenov
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: button_pk
+                    nullable: false
+              - column:
+                  name: time
+                  type: datetime
+                  constraints:
+                    nullable: false
+              - column:
+                  name: callback
+                  type: varchar(60)
+              - column:
+                  name: display
+                  type: bit(1)
+              - column:
+                  name: namede
+                  type: varchar(50)
+              - column:
+                  name: nameen
+                  type: varchar(50)
+              - column:
+                  name: nameru
+                  type: varchar(50)
+              - column:
+                  name: web_app
+                  type: varchar(255)
+              - column:
+                  name: button_row_id
+                  type: int(11)
+            tableName: button
+        - createIndex:
+            #            clustered:  true
+            columns:
+              - column:
+                  descending:  true
+                  name:  button_row_id
+              - column:
+                  descending:  true
+                  name:  callback
+            indexName:  UC_BUTTON_COL_USER_CALLBACK
+            schemaName:  public
+            tableName:  button
+            unique:  true
+        - createIndex:
+            #            clustered:  true
+            columns:
+              - column:
+                  descending:  true
+                  name:  button_row_id
+            indexName:  IDX_BUTTON_COL_BUTTONROW
+            schemaName:  public
+            tableName:  button
+            unique:  true

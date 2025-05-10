@@ -1,0 +1,55 @@
+databaseChangeLog:
+  - changeSet:
+      id: 3-filter_point
+      author: a.semenov
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: filter_point_pk
+                    nullable: false
+              - column:
+                  name: time
+                  type: datetime
+                  constraints:
+                    nullable: false
+              - column:
+                  name: input_type
+                  type: int(11)
+              - column:
+                  name: max_value
+                  type: decimal(19,2)
+              - column:
+                  name: min_value
+                  type: decimal(19,2)
+              - column:
+                  name: namede
+                  type: varchar(50)
+              - column:
+                  name: nameen
+                  type: varchar(50)
+              - column:
+                  name: nameru
+                  type: varchar(50)
+              - column:
+                  name: unit_namede
+                  type: varchar(50)
+              - column:
+                  name: unit_nameen
+                  type: varchar(50)
+              - column:
+                  name: unit_nameru
+                  type: varchar(50)
+              - column:
+                  name: category_id
+                  type: int(11)
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_abstract_group_entity
+                    references: abstract_group_entity(id)
+            tableName: filter_point

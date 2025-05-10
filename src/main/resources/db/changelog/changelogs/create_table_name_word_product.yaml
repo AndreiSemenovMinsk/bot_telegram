@@ -1,0 +1,48 @@
+databaseChangeLog:
+  - changeSet:
+      id: 3-name_word_product
+      author: a.semenov
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: name_word_product_pk
+                    nullable: false
+              - column:
+                  name: time
+                  type: datetime
+                  constraints:
+                    nullable: false
+              - column:
+                  name: name_word_id
+                  type: int(11)
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_name_word_id
+                    references: name_word(id)
+              - column:
+                  name: product_id
+                  type: int(11)
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_abstract_group_entity_id
+                    references: abstract_group_entity(id)
+            tableName: name_word_product
+        - createIndex:
+            #            clustered:  true
+            columns:
+              - column:
+                  descending:  true
+                  name:  name_word_id
+              - column:
+                  descending:  true
+                  name:  product_id
+            indexName:  NAME_WORD_PRODUCT_IND
+            schemaName:  public
+            tableName:  name_word_product
+            unique:  true

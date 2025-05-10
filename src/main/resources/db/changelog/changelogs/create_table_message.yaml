@@ -1,0 +1,52 @@
+databaseChangeLog:
+  - changeSet:
+      id: 3-message
+      author: a.semenov
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: message_pk
+                    nullable: false
+              - column:
+                  name: time
+                  type: datetime
+                  constraints:
+                    nullable: false
+              - column:
+                  name: image
+                  type: longblob
+              - column:
+                  name: image_description
+                  type: varchar(255)
+              - column:
+                  name: latitude
+                  type: double
+              - column:
+                  name: longitude
+                  type: double
+              - column:
+                  name: levelid
+                  type: int(11)
+              - column:
+                  name: namede
+                  type: varchar(160)
+              - column:
+                  name: nameen
+                  type: varchar(160)
+              - column:
+                  name: nameru
+                  type: varchar(160)
+              - column:
+                  name: level_id
+                  type: int(11)
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_level_id
+                    references: level(id)
+            tableName: message

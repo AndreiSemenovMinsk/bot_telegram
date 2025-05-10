@@ -1,0 +1,26 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2-mail_service
+      author: a.semenov
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: parents_pk
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(20)
+                  remarks: имя
+                  constraints:
+                    nullable: false
+              - column:
+                  name: age
+                  type: int
+            tableName: parents
+            remarks: Родитель

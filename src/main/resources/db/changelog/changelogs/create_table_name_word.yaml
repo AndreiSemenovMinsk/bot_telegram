@@ -1,0 +1,36 @@
+databaseChangeLog:
+  - changeSet:
+      id: 3-name_word
+      author: a.semenov
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: name_word_pk
+                    nullable: false
+              - column:
+                  name: time
+                  type: datetime
+                  constraints:
+                    nullable: false
+              - column:
+                  name: text
+                  type: varchar(20)
+                  constraints:
+                    nullable: false
+            tableName: name_word
+        - createIndex:
+            #            clustered:  true
+            columns:
+              - column:
+                  descending:  true
+                  name:  text
+            indexName:  IDX_TEXT
+            schemaName:  public
+            tableName:  name_word
+            unique:  true

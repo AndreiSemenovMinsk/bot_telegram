@@ -1,0 +1,34 @@
+databaseChangeLog:
+  - changeSet:
+      id: 3-mail_service
+      author: a.semenov
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: persons_pk
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(20)
+                  remarks: имя
+                  constraints:
+                    nullable: false
+              - column:
+                  name: age
+                  type: int
+              - column:
+                  constraints:
+                    nullable: false
+                    foreignKeyName: parents_fk1
+                    references: parents(id)
+                  name: parents
+                  type: int
+                  remarks: ID родителя
+            tableName: persons
+            remarks: Персоны

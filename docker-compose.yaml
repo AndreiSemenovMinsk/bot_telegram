@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_USER: mail_service
+      POSTGRES_PASSWORD: mail_service
+      POSTGRES_DB: mail_service_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - microservices-network
+
+  microservice1:
+    deploy:
+      resources:
+        limits:
+          memory: 4096M  # Установите нужный лимит
+        reservations:
+          memory: 1024M  # Рекомендуемая память
+    build:
+      context: .
+    environment:
+      JAVA_OPTS: -Xmx4096m -Xms1024m
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/mail_service_db
+      SPRING_DATASOURCE_USERNAME: mail_service
+      SPRING_DATASOURCE_PASSWORD: mail_service
+      SPRING_JPA_HIBERNATE_DDL_AUTO: create-drop
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
+      SPRING_JPA_SHOW_SQL: true
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    networks:
+      - microservices-network
+
+networks:
+  microservices-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+    driver: local

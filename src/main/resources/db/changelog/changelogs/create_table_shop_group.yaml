@@ -1,0 +1,29 @@
+databaseChangeLog:
+  - changeSet:
+      id: 3-shop_group
+      author: a.semenov
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: shop_group_pk
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(30)
+            tableName: shop_group
+        - createIndex:
+            #            clustered:  true
+            columns:
+              - column:
+                  descending:  true
+                  name:  name
+            indexName:  UC_SHOP_GROUP_NAME
+            schemaName:  public
+            tableName:  shop_group
+            unique:  true

@@ -1,0 +1,65 @@
+databaseChangeLog:
+  - changeSet:
+      id: 3-basket
+      author: a.semenov
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: cashback_shop_group_pk
+                    nullable: false
+              - column:
+                  name: time
+                  type: datetime
+                  constraints:
+                    nullable: false
+              - column:
+                  name: manual
+                  type: bit(1)
+              - column:
+                  name: purchase_id
+                  type: int(11)
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_purchase_id
+                    references: purchase(id)
+              - column:
+                  name: shop_group_id
+                  type: int(11)
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_shop_group_id
+                    references: shop_group(id)
+              - column:
+                  name: shop_id
+                  type: int(11)
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_shop_id
+                    references: shop(id)
+              - column:
+                  name: users_id
+                  type: int(11)
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_users_id
+                    references: users(id)
+            tableName: cashback_shop_group
+        - createIndex:
+            #            clustered:  true
+            columns:
+              - column:
+                  descending:  true
+                  name:  users_id
+              - column:
+                  descending:  true
+                  name:  shop_group_id
+            indexName:  IDX_CASHBACK_SHOP_GROUP_COL_USER_SHOP
+            schemaName:  public
+            tableName:  cashback_shop_group
+            unique:  true

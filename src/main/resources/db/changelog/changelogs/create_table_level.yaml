@@ -1,0 +1,91 @@
+databaseChangeLog:
+  - changeSet:
+      id: 3-level
+      author: a.semenov
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: level_pk
+                    nullable: false
+              - column:
+                  name: time
+                  type: datetime
+                  constraints:
+                    nullable: false
+              - column:
+                  name: bot_level
+                  type: bit(1)
+              - column:
+                  name: call_name
+                  type: varchar(80)
+              - column:
+                  name: chat_id
+                  type: bigint(20)
+              - column:
+                  name: initial_level_bot
+                  type: int(11)
+              - column:
+                  name: parent_level_id
+                  type: int(11)
+              - column:
+                  name: source_is_message
+                  type: bit(1)
+              - column:
+                  name: terminate_bot_level
+                  type: bit(1)
+              - column:
+                  name: bot_id
+                  type: int(11)
+              - column:
+                  name: users_id
+                  type: int(11)
+            tableName: level
+        - createIndex:
+            #            clustered:  true
+            columns:
+              - column:
+                  descending:  true
+                  name:  call_name
+              - column:
+                  descending:  true
+                  name:  users_id
+            indexName:  UC_LEVEL_COL_USER_CALL_NAME
+            schemaName:  public
+            tableName:  level
+            unique:  true
+        - createIndex:
+            #            clustered:  true
+            columns:
+              - column:
+                  descending:  true
+                  name:  call_name
+            indexName:  IDX_LEVEL_COL_CALLNAME
+            schemaName:  public
+            tableName:  level
+            unique:  true
+        - createIndex:
+            #            clustered:  true
+            columns:
+              - column:
+                  descending:  true
+                  name:  users_id
+            indexName:  IDX_LEVEL_COL_USER
+            schemaName:  public
+            tableName:  level
+            unique:  true
+        - createIndex:
+            #            clustered:  true
+            columns:
+              - column:
+                  descending:  true
+                  name:  parent_level_id
+            indexName:  IDX_LEVEL_COL_PARENTLEVEL
+            schemaName:  public
+            tableName:  level
+            unique:  true

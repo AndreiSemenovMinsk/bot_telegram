@@ -1,0 +1,464 @@
+
+
+
+travel/orders/app/src/main/java/ru/yandex/travel/orders/workflows/orderitem/bronevik/handlers/ConfirmingStateHandler.java
+
+
+
+
+
+
+
+liquibase --driver=org.postgresql.Driver --changeLogFile=db.changelog.xml  --classpath=postgresql-9.4-1201-jdbc41.jar --url="jdbc:postgresql://localhost:5432/wms"  --username=<USER_NAME> --password=<PASSWD> --defaultSchemaName=<SCHEMA_NAME> generateChangeLog
+
+
+
+
+
+ya make -DAUTOCHECK=yes travel/proto/b2b_base
+
+
+
+
+
+ALTER TABLE order_metadata ADD COLUMN IF NOT EXISTS contract_type int;
+
+ya make -tt offercache/tests/test.py -j3
+ya ide vscode-clangd --prefetch -j3 --tests --project-output=/codenv/workspace
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+travel/hotels/lib/java/partner_parsers/src/main/java/ru/yandex/travel/hotels/common/orders/OrderDetails.java:22
+
+arc copy-info remove ~/arcadia/travel/orders/app/src/main/java/ru/yandex/travel/orders/services/orders/OrderItemsUpdateStateChangeEventListener.java
+
+arc copy-info remove ~/arcadia/travel/orders/app/src/main/java/ru/yandex/travel/orders/workflows/order/hotel/tasklib_handlers/HotelOrderTaskHandlers.kt
+
+
+
+  task-handlers:
+    order-completed:
+      enabled: false
+      task-delay: 30m
+      max-refund-tries: 5
+
+  task-handlers:
+    start-new-order-refund-for-cancelled-pre-book:
+      enabled: false
+      task-delay: 30m
+      max-refund-tries: 5
+
+
+
+<script type="text/javascript" charset="utf-8" async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3ANuW6JwjHd9QJhViDJJzHqXjPPe7_S-D0&amp;width=892&amp;height=720&amp;lang=ru_RU&amp;scroll=true"></script>
+
+
+
+package ru.yandex.travel.orders.services.orders;
+
+import java.time.Duration;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Arrays;
+import java.util.UUID;
+
+import lombok.extern.slf4j.Slf4j;
+import org.hibernate.event.spi.PostInsertEvent;
+import org.hibernate.event.spi.PostInsertEventListener;
+import org.hibernate.event.spi.PostUpdateEvent;
+import org.hibernate.event.spi.PostUpdateEventListener;
+import org.hibernate.persister.entity.EntityPersister;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Component;
+
+import ru.yandex.travel.commons.proto.ProtoUtils;
+import ru.yandex.travel.hotels.common.orders.HotelItinerary;
+import ru.yandex.travel.orders.entities.ExtranetOrderItem;
+import ru.yandex.travel.orders.entities.HotelOrderItem;
+import ru.yandex.travel.orders.entities.TravellineOrderItem;
+import ru.yandex.travel.orders.proto.order.TOrderCompleted;
+import ru.yandex.travel.tasks.Tasks;
+import ru.yandex.travel.tasks.common.Constants;
+
+@Slf4j
+@Component
+public class OrderItemsUpdateStateChangeEventListener implements PostUpdateEventListener, PostInsertEventListener {
+
+    public static final String ITINERARY = "itinerary";
+
+    @Lazy
+    @Autowired
+    private Tasks tasklib;
+
+    @Override
+    public void onPostUpdate(PostUpdateEvent event) {
+        try {
+            final Object entity = event.getEntity();
+            if (entity instanceof TravellineOrderItem hotelOrderItem) {
+                createTaskCheckoutChanged(event, hotelOrderItem, "Создали таск для Travelline {}");
+            }
+            if (entity instanceof ExtranetOrderItem hotelOrderItem) {
+                createTaskCheckoutChanged(event, hotelOrderItem, "Создали таск для Extranet {}");
+            } else if (entity instanceof HotelOrderItem hotelOrderItem) {
+                createTaskCheckoutChanged(event, hotelOrderItem, "Создали таск для HotelOrderItem {}");
+            }
+        } catch (Exception e) {
+            log.error("An exception has occurred while post update", e);
+        }
+    }
+
+    @Override
+    public void onPostInsert(PostInsertEvent event) {
+        try {
+            final Object entity = event.getEntity();
+            if (entity instanceof TravellineOrderItem hotelOrderItem) {
+                createTaskCheckoutCreated(event, hotelOrderItem, "Создали таск для Travelline {}");
+            }
+            if (entity instanceof ExtranetOrderItem hotelOrderItem) {
+                createTaskCheckoutCreated(event, hotelOrderItem, "Создали таск для Extranet {}");
+            } else if (entity instanceof HotelOrderItem hotelOrderItem) {
+                createTaskCheckoutCreated(event, hotelOrderItem, "Создали таск для HotelOrderItem {}");
+            }
+        } catch (Exception e) {
+            log.error("An exception has occurred while post update", e);
+        }
+    }
+
+    public void createTaskCheckoutChanged(PostUpdateEvent event, HotelOrderItem orderItem, String message) {
+        if (containsDetails(orderItem)) {
+            checkCheckoutChanged(event,
+                    orderItem.getOrder().getId(),
+                    orderItem.getOrder().getServicedAt());
+            log.debug(message, event);
+        }
+    }
+
+    public void createTaskCheckoutCreated(PostInsertEvent event, HotelOrderItem orderItem, String message) {
+        if (containsDetails(orderItem)) {
+            checkCheckoutCreated(orderItem.getOrder().getId(), orderItem.getOrder().getServicedAt());
+            log.debug(message, event);
+        }
+    }
+
+    public boolean containsDetails(HotelOrderItem orderItem) {
+        return orderItem.getHotelItinerary() != null &&
+                orderItem.getHotelItinerary().getOrderDetails() != null;
+    }
+
+    public void checkCheckoutChanged(PostUpdateEvent event, UUID orderId, LocalDateTime checkoutDate) {
+        if (isCheckoutChanged(event)) {
+            TOrderCompleted taskEvent = TOrderCompleted.newBuilder()
+                    .setServicedAt(ProtoUtils.fromLocalDateTime(checkoutDate))
+                    .setOrderId(orderId.toString()).build();
+            pushTask(taskEvent,
+                    checkoutDate.toLocalDate().atStartOfDay(ZoneId.systemDefault()).toInstant(),
+                    Duration.ofMinutes(10), null, Constants.DEFAULT_POOL, null);
+        }
+    }
+
+    public void checkCheckoutCreated(UUID orderId, LocalDateTime checkoutDate) {
+        TOrderCompleted taskEvent = TOrderCompleted.newBuilder()
+                .setServicedAt(ProtoUtils.fromLocalDateTime(checkoutDate))
+                .setOrderId(orderId.toString()).build();
+        pushTask(taskEvent,
+                checkoutDate.toLocalDate().atStartOfDay(ZoneId.systemDefault()).toInstant(),
+                Duration.ofMinutes(10), null, Constants.DEFAULT_POOL, null);
+    }
+
+    public boolean isCheckoutChanged(final PostUpdateEvent event) {
+        Object[] oldState = event.getOldState();
+        Object[] newState = event.getState();
+        EntityPersister persister = event.getPersister();
+        String[] propertyNames = persister.getPropertyNames();
+        int fieldPosition = Arrays.asList(propertyNames).indexOf(ITINERARY);
+
+        HotelItinerary itineraryOld = (HotelItinerary) oldState[fieldPosition];
+        LocalDate checkoutDateOld = itineraryOld.getOrderDetails().getCheckoutDate();
+        HotelItinerary itineraryNew = (HotelItinerary) newState[fieldPosition];
+        LocalDate checkoutDateNew = itineraryNew.getOrderDetails().getCheckoutDate();
+
+        return checkoutDateNew.equals(checkoutDateOld);
+    }
+
+    public void pushTask(Object task, Instant runAt, Duration delay, Duration ttl, String pool, String queue) {
+        tasklib.submit(task, runAt, delay, ttl, pool, queue);
+    }
+
+    @Override
+    public boolean requiresPostCommitHandling(EntityPersister persister) {
+        return false;
+    }
+}
+
+
+
+
+
+
+logging:
+  level:
+    org:
+      springframework:
+        jdbc:
+          core:
+            JdbcTemplate: DEBUG
+            StatementCreatorUtils: TRACE
+      hibernate:
+        SQL: DEBUG
+        type:
+          descriptor:
+            sql:
+              BasicBinder:
+                TRACE
+
+
+
+spring:
+  jpa:
+    show-sql: true
+    hibernate:
+      format_sql: true
+
+
+logging:
+  level:
+    org:
+      springframework:
+        jdbc:
+          core:
+            JdbcTemplate: DEBUG
+            StatementCreatorUtils: TRACE
+      hibernate:
+        SQL: DEBUG
+        type:
+          descriptor:
+            sql:
+              BasicBinder:
+                TRACE
+
+
+
+https://a.yandex-team.ru/review/8148473/details
+
+https://a.yandex-team.ru/review/8148473/files/2#file-travel/orders/app/src/test/java/ru/yandex/travel/orders/repository/OrderRepositoryTest.java
+
+https://st.yandex-team.ru/BUSINESSTRAVEL-297
+
+
+
+travel/library/java/spring-boot-skeleton/src/main/java/ru/yandex/travel/credentials/UserCredentials.java
+
+
+
+
+
+Bel2013819
+
+travel/orders/proto/services/orders/admin/orders_admin.proto
+
+
+
+
+71240169
+
+
+
+
+
+
+ya make -r .
+./order_creator -h
+
+
+
+
+
+@EqualsAndHashCode(callSuper = true)
+@Data
+public class PartnerPayoutsReport extends CommonPartnerReportDTO<PartnerPayoutsReport.TransactionRow> {
+    private String contractData;
+    private LocalDate reportPeriodFrom;
+    private LocalDate reportPeriodTo;
+
+    @EqualsAndHashCode(callSuper = true)
+    @Data
+    public static class TransactionRow extends CommonTransactionRow {
+        private String txType;
+        private LocalDate txDate;
+        private Double totalRefundAmount;
+        private LocalDate paymentDate;
+        private String paymentOrderNumber;
+        private double feeAmount;
+        private double feeAmountGross;
+        private double feeDiscount;
+        private double grossAmount;
+        private double nettedAmount;
+    }
+}
+
+
+
+public void generatePayoutReport(String sheetName, PartnerPayoutsReport data, OutputStream out) {
+        boolean useTemplateWitNetting =
+                data.getTransactions().stream().anyMatch(t -> Math.abs(t.getNettedAmount()) > 0);
+        generateReport(sheetName, data, out, PAYOUT_REPORT_TEMPLATE_PATH, "Error generating payout report");
+    }
+
+
+@TransactionMandatory
+    public boolean writePayoutReportToOutputStream(Long billingClientId,
+                                                   Long billingContractId,
+                                                   String externalContractId,
+                                                   LocalDate externalContractDate,
+                                                   String billingClientFullName,
+                                                   LocalDate from,
+                                                   LocalDate to,
+                                                   OutputStream out) {
+        PartnerPayoutsReport reportData = new PartnerPayoutsReport();
+        String datePart = ReportDateHelper.getMonthYearText(from);
+        String reportName = "Реестр бронирований по отчету агента за " + datePart;
+        if (!Strings.isNullOrEmpty(billingClientFullName)) {
+            reportName = reportName + " для " + billingClientFullName;
+        }
+        reportData.setReportName(reportName);
+        if (!Strings.isNullOrEmpty(externalContractId)) {
+            String contractData = "Договор №" + externalContractId;
+            if (externalContractDate != null) {
+                contractData = contractData + " от " + ReportDateHelper.getDayMonthYearStandard(externalContractDate);
+            }
+            reportData.setContractData(contractData);
+        }
+        reportData.setReportPeriodFrom(from);
+        reportData.setReportPeriodTo(to);
+
+        reportData.setTransactions(
+                partnerTransactionsFetcher.fetchPartnerPayoutTransactions(billingClientId, from, to)
+        );
+
+        String sheetDatePart = sheetNameFormatter.format(from);
+        partnerXlsReportGenerator.generatePayoutReport("Отчет Агента " + sheetDatePart, reportData, out);
+
+        return reportData.getTransactions().size() > 0;
+    }
+
+
+public <T extends CommonPartnerReportDTO.CommonTransactionRow> void generateReport(
+            String sheetName, CommonPartnerReportDTO<T> data, OutputStream out,
+            String templateFilePath, String errorMessage) {
+        try (InputStream is = Resources.getResource(templateFilePath).openStream()) {
+            Context context = new Context();
+            context.putVar("data", data);
+            JxlsHelper.getInstance().setDeleteTemplateSheet(true)
+                    .processTemplateAtCell(is, out, context, sheetName + "!A1");
+        } catch (IOException e) {
+            throw new RuntimeException(errorMessage, e);
+        }
+    }
+
+
+
+
+
+travel/api/src/main/java/ru/yandex/travel/api/models/cpa/HotelOrderSnapshotDto.java
+
+travel/analytics/dwh/dds/hotel/hotel_order_redirect/yql/query.sql
+
+https://s3.mds.yandex.net/yc-bastion/pssh/release/1.10.7/darwin/amd64/pssh
+
+
+
+Дедупликацией и партицированием топиков Kafka
+
+Я реализовывал в коде различные алгоритмы: оптимизации - симплекс-метод, МНК, МОБ, Дейкстры, 
+Разрабатывал алгоритмы кластеризация (метод желе, для прогнозирования рисков заемщиков), генетический алгоритм подбора параметров, цепей Маркова (матрица миграции рисков)
+кеширования с обновлением связей (аналогия JPA запросов с одним уровнем JOIN) для репозиториев реального времени
+
+Фреймворк многопоточной акторной системы очередей (аналог Kafka и Akka для одной ноды)
+Настраивал платформу Tarantool для шардированного и реплицируемого репозитория - разрабатывал приложение для шардирования со вторичными и третичными ключами, 
+писал функции полнотекстового поиска с ошибками и контрибьютил в проект.
+
+
+
+
+
+
+
+Инфраструктура рекомендательных систем
+
+Привет! Я увидел позицию Разработчика бэкенда - кажется, я отлично подхожу на эту позицию - я имею опыт применения и разработки собственных решений для многопоточности, высоконагруженных систем, алгоритмов оптимизации.
+
+Я разрабатывал защищенный мессенджер на Java/Lua с применением платформы Tarantool (100 kRps). Разработал Java-фреймворк многопоточной акторной системы очередей (аналог Kafka и Akka для одной ноды). Настраивал платформу Tarantool для шардированного и реплицируемого репозитория - разрабатывал приложение для шардирования со вторичными и третичными ключами, 
+писал функции полнотекстового поиска с ошибками и контрибьютил в проект.
+
+Также я реализовывал в коде различные алгоритмы: оптимизации - симплекс-метод, МНК, МОБ, Дейкстры, кластеризации.
+Разрабатывал алгоритмы кластеризация (метод желе, для прогнозирования рисков заемщиков), генетический алгоритм подбора параметров, цепей Маркова (матрица миграции рисков),
+кеширования с обновлением связей (аналогия JPA запросов с одним уровнем JOIN) для репозиториев реального времени.
+
+Залидил команду на хакатоне и мы реализовали проект.
+Надеюсь привнести много полезного в инфраструктуру Рекомендательных Систем.
+
+
+Рекламные кабинеты
+
+
+Привет! Я увидел позицию Разработчика баз данных - кажется, я отлично подхожу на эту позицию - я имею опыт применения и разработки собственных решений для многопоточности, высоконагруженных систем, алгоритмов оптимизации.
+
+Я разрабатывал защищенный мессенджер на Java/Lua с применением платформы Tarantool (100 kRps). Разработал Java-фреймворк многопоточной акторной системы очередей (аналог Kafka и Akka для одной ноды). Настраивал платформу Tarantool для шардированного и реплицируемого репозитория - разрабатывал приложение для шардирования со вторичными и третичными ключами, 
+писал функции полнотекстового поиска с ошибками и контрибьютил в проект.
+
+Также я реализовывал в коде различные алгоритмы: оптимизации - симплекс-метод, МНК, МОБ, Дейкстры, кластеризации. 
+Разрабатывал алгоритмы кластеризация (метод желе, для прогнозирования рисков заемщиков), генетический алгоритм подбора параметров, цепей Маркова (матрица миграции рисков),
+кеширования с обновлением связей (аналогия JPA запросов с одним уровнем JOIN) для репозиториев реального времени.
+
+Залидил команду на хакатоне и мы реализовали проект.
+Надеюсь привнести много полезного в Рекламные Кабинеты.
+
+
+
+Рекламная сеть
+
+
+
+
+
+Kotlin K50
+
+
+Стриминговая обработка
+
+Привет! Я увидел позицию Разработчика баз данных - кажется, я отлично подхожу на эту позицию - я имею опыт применения и разработки собственных решений для многопоточности, высоконагруженных систем, алгоритмов оптимизации.
+
+Я разрабатывал защищенный мессенджер на Java/Lua с применением платформы Tarantool (100 kRps). Разработал Java-фреймворк многопоточной акторной системы очередей (аналог Kafka и Akka для одной ноды). Настраивал платформу Tarantool для шардированного и реплицируемого репозитория - разрабатывал приложение для шардирования со вторичными и третичными ключами, 
+писал функции полнотекстового поиска с ошибками и контрибьютил в проект.
+
+Также я реализовывал в коде различные алгоритмы: оптимизации - симплекс-метод, МНК, МОБ, Дейкстры, кластеризации. 
+Разрабатывал алгоритмы кластеризация (метод желе, для прогнозирования рисков заемщиков), генетический алгоритм подбора параметров, цепей Маркова (матрица миграции рисков),
+кеширования с обновлением связей (аналогия JPA запросов с одним уровнем JOIN) для репозиториев реального времени.
+
+Залидил команду на хакатоне и мы реализовали проект.
+Надеюсь привнести много полезного в стриминговые системы в YDB.
+
+
+
+
+
+
+
+
+
+

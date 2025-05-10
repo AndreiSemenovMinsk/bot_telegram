@@ -1,0 +1,163 @@
+databaseChangeLog:
+  - changeSet:
+      id: 3-shop
+      author: a.semenov
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: shop_pk
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(30)
+              - column:
+                  name: time
+                  type: datetime
+                  constraints:
+                    nullable: false
+              - column:
+                  name: actual
+                  type: bit(1)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: cashback_balance
+                  type: decimal(19, 2)
+              - column:
+                  name: chat_id
+                  type: bigint(20)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: contracts
+                  type: varchar(255)
+              - column:
+                  name: contractpdf
+                  type: longblob
+              - column:
+                  name: current_charge_action
+                  type: int(11)
+              - column:
+                  name: current_construct_shop_user
+                  type: int(11)
+              - column:
+                  name: current_conversation_user_chat_id
+                  type: bigint(20)
+              - column:
+                  name: current_conversation_shop_id
+                  type: int(11)
+              - column:
+                  name: current_conversation_shop_group_id
+                  type: int(11)
+                  constraints:
+                    nullable: true
+                    foreignKeyName: fk_current_conversation_shop_group_id
+                    references: shop_group(id)
+              - column:
+                  name: current_creating_action_id
+                  type: int(11)
+              - column:
+                  name: current_creating_product_id
+                  type: int(11)
+              - column:
+                  name: email
+                  type: varchar(255)
+              - column:
+                  name: excel
+                  type: bytea
+              - column:
+                  name: geo
+                  type: varchar(255)
+              - column:
+                  name: lat
+                  type: double
+              - column:
+                  name: lng
+                  type: double
+              - column:
+                  name: login
+                  type: varchar(20)
+              - column:
+                  name: min_bill_share
+                  type: decimal(19,2)
+              - column:
+                  name: password
+                  type: varchar(255)
+              - column:
+                  name: payment_balance
+                  type: decimal(19,2)
+              - column:
+                  name: sarafan_share
+                  type: decimal(19,2)
+              - column:
+                  name: secret_id
+                  type: varchar(255)
+              - column:
+                  name: bot_id
+                  type: int(11)
+              - column:
+                  name: tel_sms
+                  type: varchar(255)
+              - column:
+                  name: admin_users_id
+                  type: int(11)
+            tableName: shop
+        - createIndex:
+            #            clustered:  true
+            columns:
+              - column:
+                  descending:  true
+                  name:  login
+            indexName:  UC_SHOP_COL_LOGIN
+            schemaName:  public
+            tableName:  shop
+            unique:  true
+        - createIndex:
+            #            clustered:  true
+            columns:
+              - column:
+                  descending:  true
+                  name:  admin_users_id
+              - column:
+                  descending:  true
+                  name:  name
+            indexName:  IDX_SHOP_NAME_USER
+            schemaName:  public
+            tableName:  shop
+            unique:  true
+        - createIndex:
+            #            clustered:  true
+            columns:
+              - column:
+                  descending:  true
+                  name:  name
+            indexName:  IDX_SHOP_NAME
+            schemaName:  public
+            tableName:  shop
+            unique:  true
+        - createIndex:
+            #            clustered:  true
+            columns:
+              - column:
+                  descending:  true
+                  name:  lat
+            indexName:  IDX_SHOP_LAT
+            schemaName:  public
+            tableName:  shop
+            unique:  true
+        - createIndex:
+            #            clustered:  true
+            columns:
+              - column:
+                  descending:  true
+                  name:  lng
+            indexName:  IDX_SHOP_LNG
+            schemaName:  public
+            tableName:  shop
+            unique:  true

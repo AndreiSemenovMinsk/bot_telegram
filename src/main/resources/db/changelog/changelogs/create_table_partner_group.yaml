@@ -1,0 +1,57 @@
+databaseChangeLog:
+  - changeSet:
+      id: 3-partner_group
+      author: a.semenov
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: partner_group_pk
+                    nullable: false
+              - column:
+                  name: time
+                  type: datetime
+                  constraints:
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+              - column:
+                  name: lim
+                  type: decimal(19,2)
+              - column:
+                  name: sum
+                  type: decimal(19,2)
+              - column:
+                  name: creditor_id
+                  type: int(11)
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_creditor_id
+                    references: shop(id)
+              - column:
+                  name: debtor_id
+                  type: int(11)
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_debtor_id
+                    references: shop(id)
+            tableName: partner_group
+        - createIndex:
+            #            clustered:  true
+            columns:
+              - column:
+                  descending:  true
+                  name:  creditor_id
+              - column:
+                  descending:  true
+                  name:  debtor_id
+            indexName:  partnerGroupConstraint
+            schemaName:  public
+            tableName:  partner_group
+            unique:  true

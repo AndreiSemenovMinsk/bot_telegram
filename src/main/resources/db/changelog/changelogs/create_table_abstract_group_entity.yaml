@@ -1,0 +1,103 @@
+databaseChangeLog:
+  - changeSet:
+      id: 3-abstract_group_entity
+      author: a.semenov
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: abstract_group_entity_pk
+                    nullable: false
+              - column:
+                  name: time
+                  type: datetime
+              - column:
+                  name: alias
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: namede
+                  type: varchar(50)
+              - column:
+                  name: nameen
+                  type: varchar(50)
+              - column:
+                  name: nameru
+                  type: varchar(50)
+              - column:
+                  name: actual
+                  type: bit(1)
+              - column:
+                  name: active
+                  type: bit(1)
+              - column:
+                  name: article
+                  type: varchar(255)
+              - column:
+                  name: big_text
+                  type: varchar(255)
+              - column:
+                  name: chat_id
+                  type: bigint(20)
+              - column:
+                  name: discount
+                  type: decimal(19, 2)
+              - column:
+                  name: duration
+                  type: bigint(20)
+              - column:
+                  name: image
+                  type: bytea
+              - column:
+                  name: popularity
+                  type: int(11)
+              - column:
+                  name: price
+                  type: decimal(19, 2)
+              - column:
+                  name: price_hash
+                  type: int(11)
+              - column:
+                  name: product_service
+                  type: bit(1)
+              - column:
+                  name: short_text
+                  type: varchar(255)
+              - column:
+                  name: category_super_group_id
+                  type: int(11)
+              - column:
+                  name: category_group_id
+                  type: int(11)
+              - column:
+                  name: category_id
+                  type: int(11)
+              - column:
+                  name: shop_id
+                  type: int(11)
+            tableName: abstract_group_entity
+            remarks: Родитель
+        -  addForeignKeyConstraint:
+             baseColumnNames:  current_creating_product_id
+             #             baseTableCatalogName:  cat
+             baseTableName:  shop
+             baseTableSchemaName:  public
+             constraintName:  fk_current_creating_product_id
+             deferrable:  true
+             initiallyDeferred:  true
+             onDelete:  CASCADE
+             onUpdate:  RESTRICT
+             referencedColumnNames:  id
+             #             referencedTableCatalogName:  cat
+             referencedTableName:  abstract_group_entity
+             referencedTableSchemaName:  public
+             validate:  true
+
+
+

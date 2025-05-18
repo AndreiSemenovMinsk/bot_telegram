@@ -139,7 +139,7 @@ public class SearchService {
         String search = data.getSearch();
         if (search != null && !search.equals("")) {
 
-            List<Integer> searchIndxList = TextParser.search(search);
+            List<Integer> searchIndxList = TextParser.search(search, GoodsSearchHandler.parts, GoodsSearchHandler.wordPhraseList);
 
             System.out.println("searchIndxList-------------" + searchIndxList);
 

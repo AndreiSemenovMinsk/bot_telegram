@@ -33,6 +33,7 @@ import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ru.skidoz.service.search.GoodsSearchHandler;
 import ru.skidoz.util.TextParser;
 
 /**
@@ -90,7 +91,8 @@ public class CacheSearchTasklet implements Tasklet {
 
         setNameWordProductSet();
 
-        TextParser.init(nameWordText);
+        GoodsSearchHandler.pairs = nameWordText;
+        GoodsSearchHandler.wordPhraseList = TextParser.init(GoodsSearchHandler.pairs, GoodsSearchHandler.parts);
 
         setPriceProductSet();
 

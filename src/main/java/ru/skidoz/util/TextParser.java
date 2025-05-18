@@ -19,34 +19,11 @@ public class TextParser {
     private static final int otstup = 2;
     private static final int max_size_part = 5;
     private static final int size_len = max_size_part - otstup;
-    private static List<String> pairs = new ArrayList<>();
-    private static List<Map<String, List<Integer>>> parts;
     private static int pairsSize;
-    private static List<List<Integer>> wordPhraseList = new ArrayList<>();
     private static int nameStringsLength;
 
     private static final List<String> excludeList = List.of("для", "от", "с", "к", "и", "без", "против", "вместе", "отдельно");
     private static final List<String> extn = List.of("ы", "и", "а", "у", "ю", "ая", "ый", "ой", "ым", "ого", "ому", "е", "ым", "ых", "ий", "им", "ом", "ими", "ыми", "ую", "юю", "ей", "л", "ли", "ли");
-
-
-    /*static List<List<String>> get_look(List<String> filter) {
-
-        List<List<String>> arrs = new ArrayList<>();
-        for (int j = 0; j < 4; j++) {
-            arrs.add(new ArrayList<>());
-        }
-        for (int i = 0; i < filter.size(); i++) {
-            for (int j = 0; j < 4; j++) {
-                for (int k = 0; k < filter.get(i).length() - j; k++) {
-                    String sub = filter.get(i).substring(k, k - (-j - 1));
-                    if (!arrs.get(j).contains(sub)) {
-                        arrs.get(j).add(sub);
-                    }
-                }
-            }
-        }
-        return arrs;
-    }*/
 
     static List<List<String>> get_look(String filter) {
 
@@ -67,26 +44,25 @@ public class TextParser {
         return arrs;
     }
 
-    static List<Map<String, List<Integer>>> get_parts(String[] names) {
+    static void get_parts(String[] names, List<Map<String, List<Integer>>> parts) {
 
-        List<Map<String, List<Integer>>> arrs = new ArrayList<>();
         for (int j = 0; j < size_len; j++) {
-            arrs.add(new HashMap<>());
+            parts.add(new HashMap<>());
         }
         for (int i = 0; i < names.length; i++) {
             for (int j = 0; j < size_len; j++) {
                 for (int k = 0; k < names[i].length() - j - otstup; k++) {
                     String sub = names[i].substring(k, k + j + 1 + otstup);
-                    List<Integer> indexes = arrs.get(j).get(sub);
+                    List<Integer> indexes = parts.get(j).get(sub);
                     if (indexes == null) {
-                        arrs.get(j).put(sub, new ArrayList<>(List.of(i)));
+                        parts.get(j).put(sub, new ArrayList<>(List.of(i)));
                     } else {
                         indexes.add(i);
                     }
                 }
             }
         }
-        return arrs;
+        //return parts;
     }
 
     private static List<Integer>[] getRes(
@@ -130,27 +106,6 @@ public class TextParser {
         return score;
     }
 
-    /*private static List<Integer>[] getRes(
-            List<List<String>> look,
-            List<Map<String, List<Integer>>> parts) {
-
-        List<Integer>[] score = new List[100];
-        for (int i = 0; i < 100; i++) {
-            score[i] = new ArrayList<>();
-        }
-        int[] counter = new int[nameStringsLength];
-//    List<Integer> indexes = new ArrayList<>();
-        for (int j = size_len - 1; j > -1; j--) {
-
-            counter = liner(look, parts.get(j), counter, j);
-        }
-//    indexes.forEach(ind -> score[counter[ind]].add(ind));
-        for (int ind = 0; ind < counter.length; ind++) {
-            score[counter[ind]].add(ind);
-        }
-        return score;
-    }*/
-
     public static List<Integer> sortWithIndexes(List<Integer>[] score, int max_result) {
 
         List<Integer> result = new ArrayList<>(max_result);
@@ -172,22 +127,22 @@ public class TextParser {
         return result;
     }
 
-    public static void init(List<String> args) {
-        pairs = args;
+    public static List<List<Integer>> init(List<String> pairs, List<Map<String, List<Integer>>> parts) {
 
         Map<String, List<Integer>> names = getNames(pairs.toArray(new String[0]));
         String[] nameStrings1 = names.keySet().toArray(new String[0]);
-        parts = get_parts(nameStrings1);
+        get_parts(nameStrings1, parts);
         pairsSize = pairs.size();
 
         String[] nameStrings = names.keySet().toArray(new String[0]);
 
         nameStringsLength = nameStrings.length;
-        wordPhraseList = new ArrayList<>(nameStringsLength);
+        List<List<Integer>> wordPhraseList = new ArrayList<>(nameStringsLength);
 
         for (String s : nameStrings) {
             wordPhraseList.add(names.get(s));
         }
+        return wordPhraseList;
     }
 
     private static Map<String, List<Integer>> getNames(String[] pairs) {
@@ -207,46 +162,9 @@ public class TextParser {
         return names;
     }
 
-    /*public static List<Integer> search(List<String> filter) {
-
-        int max_result = 3;
-
-        int[] counterPhrase = new int[pairsSize];
-        List<List<Integer>> selectedWordsPhraseList = new ArrayList<>();
-
-        for (int i = 0; i < filter.size(); i++) {
-            final List<List<String>> look = get_look(filter);
-
-            List<Integer>[] res = getRes(look, parts);
-            List<Integer> sortRes = sortWithIndexes(res, max_result);
-            sortRes.forEach(wordInd -> selectedWordsPhraseList.add(wordPhraseList.get(wordInd)));
-
-            counterPhrase = phaser(selectedWordsPhraseList, counterPhrase, 1);
-        }
-
-        List<Integer>[] score = new List[100];
-        for (int i = 0; i < 100; i++) {
-            score[i] = new ArrayList<>();
-        }
-        for (int ind = 0; ind < counterPhrase.length; ind++) {
-            score[counterPhrase[ind]].add(ind);
-        }
-
-        return sortWithIndexes(score, max_result);
-//        List<Integer> sortPhrase = sortWithIndexes(score, max_result);
-//        List<String> result = new ArrayList<>(sortPhrase.size());
-//        sortPhrase.forEach(i -> result.add(pairs.get(i)));
-//        return result;
-//
-//        return look_phrases.entrySet().stream()
-//                .sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
-//                .limit(3)
-//                .map(Map.Entry::getKey)
-//                .collect(Collectors.toList());
-    }*/
-
-
-    public static List<Integer> search(String filter) {
+    public static List<Integer> search(String filter,
+                                       List<Map<String, List<Integer>>> parts,
+                                       List<List<Integer>> wordPhraseList) {
 
         //String[] filterPart = filter.split(" ");
 
@@ -369,16 +287,9 @@ public class TextParser {
                 List<Integer> literal_word_ind = part.get(key);
 
                 if (literal_word_ind != null) {
-//          if (look.get(j).size() == 1) {
-//
-//            for (int m = 0; m < max_result; m++) {
-//              counter[nameStringsLength + m] = literal_word_ind.get(m);
-//            }
-//          } else {
+
                     for (Integer ind : literal_word_ind) {
-//            if (counter[ind] == 0){
-//              indexes.add(ind);
-//            }
+
                         counter[ind] += j;
                     }
 
@@ -387,7 +298,6 @@ public class TextParser {
                             look.get(k).set(i + l, null);
                         }
                     }
-//          }
                 }
             }
         }
@@ -404,9 +314,6 @@ public class TextParser {
 
             if (literal_word_ind != null) {
                 for (Integer ind : literal_word_ind) {
-//            if (counter[ind] == 0){
-//              indexes.add(ind);
-//            }
                     counter[ind] += j;
                 }
             }

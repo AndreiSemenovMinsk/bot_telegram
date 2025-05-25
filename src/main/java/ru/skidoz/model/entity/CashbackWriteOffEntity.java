@@ -54,7 +54,7 @@ public class CashbackWriteOffEntity extends AbstractEntity  implements Serializa
                 ", numberCoupon=" + numberCoupon +
                 ", approved=" + approved +
                 ", shop=" + shop.getId() +
-                ", users=" + user.getId() +
+                ", user=" + user.getId() +
 //                ", action=" + action.getId() +
                 '}';
     }

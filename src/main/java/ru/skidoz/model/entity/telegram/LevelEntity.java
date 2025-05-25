@@ -24,16 +24,16 @@ import org.springframework.stereotype.Component;
 @Setter
 @Table(name = "level",
         uniqueConstraints = {
-                @UniqueConstraint(name = "UC_LEVEL_COL_USER_CALL_NAME", columnNames = {"callName", "users_id"})},
+                @UniqueConstraint(name = "UC_LEVEL_COL_USER_CALL_NAME", columnNames = {"callName", "user_id"})},
         indexes = {
                 //@Index(name = "IDX_LEVEL_COL_ID", columnList = "id"),
                 @Index(name = "IDX_LEVEL_COL_CALLNAME", columnList = "callName"),
-                @Index(name = "IDX_LEVEL_COL_USER", columnList = "users_id"),
+                @Index(name = "IDX_LEVEL_COL_USER", columnList = "user_id"),
                 @Index(name = "IDX_LEVEL_COL_PARENTLEVEL", columnList = "parent_level_id")})
 public class LevelEntity extends AbstractEntity implements Cloneable {
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private UserEntity users;
+    private UserEntity user;
 
     @Size(max=80)
     private String callName;
@@ -87,8 +87,8 @@ public class LevelEntity extends AbstractEntity implements Cloneable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private List<Button> buttonList = new ArrayList<>();*/
 
-    public LevelEntity(UserEntity users, String callName, LevelEntity parentLevel, Boolean sourceIsMessage) {
-        this.users = users;
+    public LevelEntity(UserEntity user, String callName, LevelEntity parentLevel, Boolean sourceIsMessage) {
+        this.user = user;
         this.callName = callName;
         this.parentLevelId = parentLevel.getId();
         this.sourceIsMessage = sourceIsMessage;
@@ -104,7 +104,7 @@ public class LevelEntity extends AbstractEntity implements Cloneable {
     }
 
     public void updateLevel(UserEntity users, String callName, LevelEntity parentLevel, Boolean sourceIsMessage) {
-        this.users = users;
+        this.user = users;
         this.callName = callName;
         if (parentLevel != null) {
             this.parentLevelId = parentLevel.getId();
@@ -116,7 +116,7 @@ public class LevelEntity extends AbstractEntity implements Cloneable {
     }
 
     public void updateLevel(UserEntity users, String callName, LevelEntity parentLevel, Boolean sourceIsMessage, Boolean isTerminate, Boolean isBotLevel) {
-        this.users = users;
+        this.user = users;
         this.callName = callName;
         if (parentLevel != null) {
             this.parentLevelId = parentLevel.getId();
@@ -154,7 +154,7 @@ public class LevelEntity extends AbstractEntity implements Cloneable {
 
         LevelEntity level = (LevelEntity) super.clone();
 
-        level.users = this.users;
+        level.user = this.user;
         level.callName = this.callName;
         level.sourceIsMessage = this.sourceIsMessage;
         level.parentLevelId = this.parentLevelId;
@@ -167,7 +167,7 @@ public class LevelEntity extends AbstractEntity implements Cloneable {
 
         LevelEntity level = (LevelEntity) super.clone();
 
-        level.users = users;
+        level.user = user;
         level.callName = this.callName;
         level.sourceIsMessage = this.sourceIsMessage;
         level.parentLevelId = this.parentLevelId;
@@ -187,7 +187,7 @@ public class LevelEntity extends AbstractEntity implements Cloneable {
         return "Level{" +
                 "id=" + id +
                 ", callName='" + callName + '\'' +
-                ", users.id=" + (users != null ? users.getId() : "null") +
+                ", users.id=" + (user != null ? user.getId() : "null") +
                 ", sourceIsMessage=" + sourceIsMessage +
                 ", initialLevelBot=" + initialLevelBot +
                 ", parentLevelId=" + parentLevelId +

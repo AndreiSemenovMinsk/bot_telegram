@@ -20,13 +20,13 @@ import ru.skidoz.model.pojo.telegram.*;
 import ru.skidoz.aop.repo.*;
 import ru.skidoz.repository.CashbackShopGroupRepository;
 import ru.skidoz.service.InitialLevel;
-import  ru.skidoz.service.TelegramProcessor;
 import ru.skidoz.service.command.Command;
 import com.google.zxing.WriterException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import ru.skidoz.util.Calculator;
+import ru.skidoz.util.TelegramElementsUtil;
 
 import static ru.skidoz.util.Optimizator.getRate;
 
@@ -65,7 +65,7 @@ public class ConnectShop implements Command {
     @Autowired
     private InitialLevel initialLevel;
     @Autowired
-    private TelegramProcessor telegramProcessor;
+    private TelegramElementsUtil telegramElementsUtil;
 
     @Override
     public List<LevelChat> runCommand(Update update, Level level, User users) throws IOException, WriterException {
@@ -121,7 +121,7 @@ public class ConnectShop implements Command {
 
         Long shopChatId = shopUsers.getChatId();
 
-//levelCacheRepository.findFirstByUsers_ChatIdAndCallName(shopChatId, P2B.name()
+//levelCacheRepository.findFirstByUser_ChatIdAndCallName(shopChatId, P2B.name()
         LevelDTOWrapper shopLevel = initialLevel.convertToLevel(initialLevel.level_P2B,
                 false,
                 true);
@@ -382,7 +382,7 @@ public class ConnectShop implements Command {
             System.out.println("3 freeLimit********" + freeLimit);
 
 
-            BigDecimal sum = calculator.purchaseSumByUsersAndShopAndAction_Type(friend.getId(), partnerShop.getId(), ActionTypeEnum.BASIC_MANUAL);
+            BigDecimal sum = calculator.purchaseSumByUserAndShopAndAction_Type(friend.getId(), partnerShop.getId(), ActionTypeEnum.BASIC_MANUAL);
 
             System.out.println("4 proposedSum BASIC_MANUAL**********" + sum);
 
@@ -390,7 +390,7 @@ public class ConnectShop implements Command {
             Action actionPartnerBasicDefault = actionCacheRepository.findFirstByShopAndTypeAndActiveIsTrue(partnerShop.getId(), ActionTypeEnum.BASIC_DEFAULT);
 //            List<Cashback> cashbackPartnerList = cashbackRepository.findAllByUserAndAction(friend, actionPartnerBasicDefault);
 //            BigDecimal sum = cashbackPartnerList.stream().map(cashback -> cashback.getPurchase().getSum()).reduce(BigDecimal.ZERO, BigDecimal::add);
-            BigDecimal totalSum = calculator.purchaseSumByUsersAndShopAndAction_Type(friend.getId(), partnerShop.getId(), ActionTypeEnum.BASIC_DEFAULT);
+            BigDecimal totalSum = calculator.purchaseSumByUserAndShopAndAction_Type(friend.getId(), partnerShop.getId(), ActionTypeEnum.BASIC_DEFAULT);
 
             int ratePartnerDefault = getRate(
                     totalSum,
@@ -528,13 +528,13 @@ public class ConnectShop implements Command {
                     userSum = userSum.add(shopUserSum.get(shop));
                 } else {
 
-                    BigDecimal sum = calculator.purchaseSumByUsersAndShopAndAction_Type(friend.getId(), shop.getId(), ActionTypeEnum.BASIC_MANUAL);
+                    BigDecimal sum = calculator.purchaseSumByUserAndShopAndAction_Type(friend.getId(), shop.getId(), ActionTypeEnum.BASIC_MANUAL);
 
                     System.out.println("7 proposedSum BASIC_MANUAL**********" + sum);
 
                     Action actionPartnerBasicDefault = actionCacheRepository.findFirstByShopAndTypeAndActiveIsTrue(shop.getId(), ActionTypeEnum.BASIC_DEFAULT);
 
-                    BigDecimal totalSum = calculator.purchaseSumByUsersAndShopAndAction_Type(friend.getId(), shop.getId(), ActionTypeEnum.BASIC_DEFAULT);
+                    BigDecimal totalSum = calculator.purchaseSumByUserAndShopAndAction_Type(friend.getId(), shop.getId(), ActionTypeEnum.BASIC_DEFAULT);
 
 
                     System.out.println("8 totalSum **********" + totalSum);
@@ -650,7 +650,7 @@ public class ConnectShop implements Command {
         Long friendChatId = friend.getChatId();
 
         LevelDTOWrapper friendLevel = initialLevel.convertToLevel(initialLevel.level_P2B_RESP,
-//                levelCacheRepository.findFirstByUsers_ChatIdAndCallName(friendChatId, P2B_RESP.name()),
+//                levelCacheRepository.findFirstByUser_ChatIdAndCallName(friendChatId, P2B_RESP.name()),
                 false,
                 false);
 
@@ -677,7 +677,7 @@ public class ConnectShop implements Command {
             System.out.println("buttonDisabler Списать кэшбек");
             System.out.println();
 
-            telegramProcessor.buttonDisabler(shopLevel, "Списать кэшбек вручную", language);
+            telegramElementsUtil.buttonDisabler(shopLevel, "Списать кэшбек вручную", language);
 //            buttonDisabler(shopLevel, "Подтвердить кэшбек по корзине");
         }
         if (!actionActiveSet.contains(ActionTypeEnum.COUPON)
@@ -687,8 +687,8 @@ public class ConnectShop implements Command {
             System.out.println("buttonDisabler Списать купон");
             System.out.println();
 
-            telegramProcessor.buttonDisabler(shopLevel, "Списать купон вручную", language);
-            telegramProcessor.buttonDisabler(shopLevel, "Списать купон по корзине", language);
+            telegramElementsUtil.buttonDisabler(shopLevel, "Списать купон вручную", language);
+            telegramElementsUtil.buttonDisabler(shopLevel, "Списать купон по корзине", language);
         }
 
 
@@ -700,9 +700,9 @@ public class ConnectShop implements Command {
             System.out.println("buttonDisabler  по корзине");
             System.out.println();
 
-            telegramProcessor.buttonDisabler(shopLevel, "Начислить купон по корзине", language);
-            telegramProcessor.buttonDisabler(shopLevel, "Списать купон по корзине", language);
-            telegramProcessor.buttonDisabler(shopLevel, "Подтвердить кэшбек по корзине", language);
+            telegramElementsUtil.buttonDisabler(shopLevel, "Начислить купон по корзине", language);
+            telegramElementsUtil.buttonDisabler(shopLevel, "Списать купон по корзине", language);
+            telegramElementsUtil.buttonDisabler(shopLevel, "Подтвердить кэшбек по корзине", language);
         }
 
         Message friendMessage = new Message(null, Map.of(LanguageEnum.RU, new String(friendText)));

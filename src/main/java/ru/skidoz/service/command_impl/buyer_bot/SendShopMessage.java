@@ -9,15 +9,14 @@ import ru.skidoz.model.entity.category.LanguageEnum;
 import ru.skidoz.model.pojo.side.Shop;
 import ru.skidoz.model.pojo.telegram.*;
 import ru.skidoz.aop.repo.ShopCacheRepository;
-import ru.skidoz.aop.repo.UserCacheRepository;
 import ru.skidoz.service.InitialLevel;
-import  ru.skidoz.service.TelegramProcessor;
 import ru.skidoz.service.command.Command;
 import com.google.zxing.WriterException;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import ru.skidoz.util.TelegramElementsUtil;
 
 /**
  * @author andrey.semenov
@@ -27,11 +26,9 @@ public class SendShopMessage implements Command {
     @Autowired
     private ShopCacheRepository shopCacheRepository;
     @Autowired
-    private UserCacheRepository userRepository;
-    @Autowired
     private InitialLevel initialLevel;
     @Autowired
-    private TelegramProcessor telegramProcessor;
+    private TelegramElementsUtil telegramElementsUtil;
 
     @Override
     public List<LevelChat> runCommand(Update update, Level shopLevel, User users) throws IOException, WriterException, UnirestException {
@@ -54,7 +51,7 @@ public class SendShopMessage implements Command {
                 false,
                 false);
 
-        buyerLevel.addMessage(telegramProcessor.convertUpdateToMessage(update, users));
+        buyerLevel.addMessage(telegramElementsUtil.convertUpdateToMessage(update, users));
         ButtonRow row = new ButtonRow();
         Button button = new Button(row, Map.of(LanguageEnum.RU, "Ответить магазину 2@" + shop.getName()), initialLevel.level_RESPONSE_SHOP_MESSAGE.getIdString() + shop.getId());
         row.add(button);

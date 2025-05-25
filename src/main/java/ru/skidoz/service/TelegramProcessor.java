@@ -19,8 +19,21 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import org.telegram.telegrambots.meta.api.objects.PhotoSize;
+import ru.skidoz.aop.repo.CashbackCacheRepository;
 import ru.skidoz.aop.repo.LevelCacheRepository;
+import ru.skidoz.aop.repo.ScheduleBuyerCacheRepository;
+import ru.skidoz.aop.repo.CashbackWriteOffCacheRepository;
+import ru.skidoz.aop.repo.BasketCacheRepository;
+import ru.skidoz.aop.repo.BookmarkCacheRepository;
+import ru.skidoz.aop.repo.PurchaseCacheRepository;
+import ru.skidoz.aop.repo.ShopCacheRepository;
+import ru.skidoz.aop.repo.UserCacheRepository;
+import ru.skidoz.aop.repo.RecommendationCacheRepository;
 import ru.skidoz.model.entity.category.LanguageEnum;
+import ru.skidoz.model.pojo.side.Basket;
+import ru.skidoz.model.pojo.side.Bookmark;
+import ru.skidoz.model.pojo.side.Cashback;
+import ru.skidoz.model.pojo.side.Shop;
 import ru.skidoz.model.pojo.telegram.Level;
 import ru.skidoz.model.pojo.telegram.LevelChat;
 import ru.skidoz.model.pojo.telegram.LevelDTOWrapper;
@@ -37,6 +50,13 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Location;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import ru.skidoz.service.command.CommandProvider;
+import ru.skidoz.service.command_impl.starter.BasketLinkStarter;
+import ru.skidoz.service.command_impl.starter.BookmarkLinkStarter;
+import ru.skidoz.service.command_impl.starter.CashbackLinkStarter;
+import ru.skidoz.service.command_impl.starter.P2PExistBuyerLinkStarter;
+import ru.skidoz.service.command_impl.starter.P2PNewBuyerLinkStarter;
+import ru.skidoz.service.command_impl.starter.P2BLinkStarter;
+import ru.skidoz.service.command_impl.starter.B2BLinkStarter;
 import ru.skidoz.util.XMLGettingService;
 
 import static ru.skidoz.model.entity.category.LanguageEnum.RU;
@@ -53,24 +73,49 @@ public class TelegramProcessor {
 
     @Autowired
     private LevelCacheRepository levelCacheRepository;
+    @Autowired
+    private UserCacheRepository userCacheRepository;
+    @Autowired
+    private ShopCacheRepository shopCacheRepository;
+    @Autowired
+    private PurchaseCacheRepository purchaseCacheRepository;
 
     @Autowired
-    private InitialLevel initialLevel;
-
+    private BasketCacheRepository basketCacheRepository;
+    @Autowired
+    private BookmarkCacheRepository bookmarkCacheRepository;
+    @Autowired
+    private CashbackCacheRepository cashbackCacheRepository;
+    @Autowired
+    private CashbackWriteOffCacheRepository cashbackWriteOffCacheRepository;
+    @Autowired
+    private RecommendationCacheRepository recommendationCacheRepository;
+    @Autowired
+    private ScheduleBuyerCacheRepository scheduleBuyerCacheRepository;
     @Autowired
     private XMLGettingService xmlGettingService;
-
+    @Autowired
+    private InitialLevel initialLevel;
+    @Autowired
+    private P2PExistBuyerLinkStarter p2PExistBuyerLinkStarter;
+    @Autowired
+    private P2PNewBuyerLinkStarter p2PNewBuyerLinkStarter;
+    @Autowired
+    private P2BLinkStarter p2BLinkStarter;
+    @Autowired
+    private B2BLinkStarter b2BLinkStarter;
+    @Autowired
+    private CashbackLinkStarter cashbackLinkStarter;
+    @Autowired
+    private BookmarkLinkStarter bookmarkLinkStarter;
+    @Autowired
+    private BasketLinkStarter basketLinkStarter;
 
 
     public ConcurrentMap<String, String> mergeUsers = new ConcurrentHashMap<>();
 
 
-    private static final String MANAGEMENT_FILE = "config/management.xls";
-
-//    private final Logger log = LoggerFactory.getLogger(TelegramProcessor.class);
-
-
-    private List<LevelChat> startProcessor(User users, long chatId, Update update, boolean newUser) throws CloneNotSupportedException {
+    private List<LevelChat> startProcessor(User user, long chatId, Update update, boolean newUser) throws CloneNotSupportedException {
 
         String inputText = update.getMessage().getText();
         String bearingCommand = inputText.substring("/start=".length(), "/start=".length() + 2);
@@ -80,22 +125,143 @@ public class TelegramProcessor {
         System.out.println("bearingId***" + bearingId);
 
         //тот, от кого пришло сообщение - значит, тот, кто прочитал qr или перешел по ссылке
-        List<LevelChat> levelChatList = new ArrayList<>();
+        List<LevelChat> levelChatDTOList = new ArrayList<>();
 
         if (bearingCommand.equals("PP")) {
 
+            User yourSelf = userCacheRepository.findBySessionId(bearingId);
+
+            System.out.println();
+            System.out.println("bearingId++++++++++" + bearingId);
+            System.out.println(yourSelf);
+            System.out.println();
+            System.out.println();
+
+            mergeUser(user, yourSelf);
+        } else
+            //List<Shop> shopsBuyer = shopRepository.getByAdminUserAndActiveIsTrue(users);
+            // если отсканировали распечатанный qr-код на листовке или стенде магазина - туда пишем shopId
+            if (bearingCommand.equals("BI")) {
+                Shop shopPartner = shopCacheRepository.findById(Integer.valueOf(bearingId));
+
+                //shopsBuyer.isEmpty()
+                if (!user.isShopOwner()) {
+                    // если у меня нет магазинов
+                    levelChatDTOList.addAll(p2BLinkStarter.getLevel(null, user, null, shopPartner));
+                } else {
+                    // если есть магазины
+                    levelChatDTOList.addAll(b2BLinkStarter.getLevel(chatId, user, null, shopPartner));
+                }
+            } else {
+
                 User friend = null;
-                List<LevelChat> levelChatList2 = new ArrayList<>();
+                List<LevelChat> levelChatDTOList2 = new ArrayList<>();
 
-//                if (newUser) {
-//                    levelChatDTOList.addAll(p2PNewBuyerLinkStarter.getLevel(chatId, users, friend));
-//                }
-//
-//                levelChatDTOList.addAll(levelChatDTOList2);
+                System.out.println("bearingCommand++++++++++++++++++++++++++" + bearingCommand);
+                //тот, кто отправил ссылку или чей qr
+                //shopsBuyer.isEmpty()
+                if (!user.isShopOwner()) {
+                    // если я не магазин, а человек, и получил сообщение или прочел qr человека
+
+                    if (bearingCommand.equals("BK")) {//человек шлет человеку из корзины
+                        Basket basket = basketCacheRepository.findById(Integer.valueOf(bearingId));
+                        if (basket != null) {
+                            friend = userCacheRepository.findById(basket.getUser());
+                            levelChatDTOList2 = basketLinkStarter.getLevel(chatId, bearingId, user, friend);
+                        }
+                    } else if (bearingCommand.equals("BM")) {//человек шлет человеку из закладок
+                        Bookmark bookmark = bookmarkCacheRepository.findById(Integer.valueOf(bearingId));
+                        if (bookmark != null) {
+                            friend = userCacheRepository.findById(bookmark.getUser());
+                            levelChatDTOList2 = bookmarkLinkStarter.getLevel(chatId, bearingId, user, friend);
+                        }
+                    } else if (bearingCommand.equals("CB")) {//человек шлет человеку из кэшбеков
+                        Cashback cashback = cashbackCacheRepository.findById(Integer.valueOf(bearingId));
+                        if (cashback != null) {
+                            friend = userCacheRepository.findById(cashback.getUser());
+                            levelChatDTOList2 = cashbackLinkStarter.getLevel(chatId, bearingId, user, friend);
+                        }
+                    } else if (bearingCommand.equals("PI")) {
+                        System.out.println("bearingCommand +++++++++++++++++++++++++++++++++++++++++ PI***" + Long.valueOf(bearingId));
+                        friend = userCacheRepository.findBySessionId(bearingId);
+
+                        if (friend != null
+                                && !newUser) {
+                            levelChatDTOList2 = p2PExistBuyerLinkStarter.getLevel(chatId, user, friend);
+                        }
+                    }
+                    System.out.println("friend+++++++++++++++++" + friend);
+                } else {
+                    friend = userCacheRepository.findById(Integer.valueOf(bearingId));
+                    //List<Shop> shopsFriend = shopRepository.getByAdminUserAndActiveIsTrue(friend);
+                    // если я - магазин
+                    //shopsFriend.isEmpty()
+                    if (!friend.isShopOwner()) {
+                        levelChatDTOList2 = p2BLinkStarter.getLevel(null, user, friend, null);
+                    } else {
+                        List<Shop> shopsFriend = shopCacheRepository.findAllBySellerIdAndActiveIsTrue(friend.getId());
+                        levelChatDTOList2 = b2BLinkStarter.getLevel(chatId, user, null, shopsFriend.get(0));
+                    }
+                }
+
+                if (newUser) {
+                    levelChatDTOList.addAll(p2PNewBuyerLinkStarter.getLevel(chatId, user, friend));
+                }
+
+                levelChatDTOList.addAll(levelChatDTOList2);
             }
-        System.out.println("levelChatDTOList+++++++++++++++" + levelChatList);
+        System.out.println("levelChatDTOList+++++++++++++++" + levelChatDTOList);
 
-        return levelChatList;
+        return levelChatDTOList;
+    }
+
+    public void mergeUser(User targetUsersDTO, User duplicateUsersDTO) {
+
+
+//        Users targetUsers = new Users(targetUsersDTO.getId());
+
+//        authorizeUser(String.valueOf(targetUsersDTO.getSessionId()), String.valueOf(targetUsersDTO.getChatId()));
+
+        System.out.println("mergeUser++++++++++++++++++");
+        System.out.println("targetUsers***" + targetUsersDTO);
+        System.out.println("duplicateUsers***" + duplicateUsersDTO);
+
+        recommendationCacheRepository.findAllByBuyer_Id(duplicateUsersDTO.getId()).forEach(e -> {
+            e.setBuyer(targetUsersDTO.getId());
+            recommendationCacheRepository.save(e);
+        });
+        recommendationCacheRepository.findAllByFriend_Id(duplicateUsersDTO.getId()).forEach(e -> {
+            e.setFriend(targetUsersDTO.getId());
+            recommendationCacheRepository.save(e);
+        });
+        purchaseCacheRepository.findAllByBuyer_Id(duplicateUsersDTO.getId()).forEach(e -> {
+            e.setUser(targetUsersDTO.getId());
+            purchaseCacheRepository.save(e);
+        });
+        scheduleBuyerCacheRepository.findAllByUser(duplicateUsersDTO.getId()).forEach(e -> {
+            e.setUser(targetUsersDTO.getId());
+            scheduleBuyerCacheRepository.save(e);
+        });
+        basketCacheRepository.findAllByUserId(duplicateUsersDTO.getId()).forEach(e -> {
+            e.setUser(targetUsersDTO.getId());
+            basketCacheRepository.save(e);
+        });
+        bookmarkCacheRepository.findAllByUserId(duplicateUsersDTO.getId()).forEach(e -> {
+            e.setUser(targetUsersDTO.getId());
+            bookmarkCacheRepository.save(e);
+        });
+        cashbackCacheRepository.findAllByUserId(duplicateUsersDTO.getId()).forEach(e -> {
+            e.setUser(targetUsersDTO.getId());
+            System.out.println(216);
+            cashbackCacheRepository.save(e);
+        });
+        cashbackWriteOffCacheRepository.findAllByUser(duplicateUsersDTO.getId()).forEach(e -> {
+            e.setUser(targetUsersDTO.getId());
+            cashbackWriteOffCacheRepository.save(e);
+        });
+        userCacheRepository.save(targetUsersDTO);
+
+        mergeUsers.put(duplicateUsersDTO.getSessionId(), targetUsersDTO.getSessionId());
     }
 
 
@@ -203,87 +369,6 @@ public class TelegramProcessor {
             e.setUser(users);
             e.setLevel(levelDTOWrapper);
         })));
-    }
-
-    public static InputStream qrInputStream(String text) throws WriterException, IOException {
-        QRCodeWriter barcodeWriter = new QRCodeWriter();
-        BitMatrix bitMatrix =
-                barcodeWriter.encode(text, BarcodeFormat.QR_CODE, 200, 200);
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        MatrixToImageWriter.writeToStream(bitMatrix, "png", outputStream);
-
-        return new ByteArrayInputStream(outputStream.toByteArray());
-    }
-
-    public void buttonDisabler(LevelDTOWrapper buyerLevel, String name, LanguageEnum language) {
-        buyerLevel.getButtonRows().stream()
-                .flatMap(row -> row.getButtonList().stream())
-                .filter(button -> button.getName(language).equals(name))
-                .forEach(button -> button.setDisplay(false));
-    }
-
-
-    public Message convertUpdateToMessage(Update update, User users) throws IOException, UnirestException {
-
-        Message message = null;
-        if (update.hasMessage()) {
-            if (update.getMessage().hasPhoto()) {
-
-                List<PhotoSize> photos = update.getMessage().getPhoto();
-                /*String f_id = photos.stream()
-                        .sorted(Comparator.comparing(PhotoSize::getFileSize).reversed())
-                        .findFirst()
-                        .orElse(null).getFileId();
-                InputStream is = xmlGettingService.getXMLRatesStream("https://api.telegram.org/file/bot" + telegramBot.getBotToken() + "/" + f_id);
-
-                byte[] targetArray = new byte[is.available()];
-                is.read(targetArray);*/
-
-                System.out.println("max+++++" + photos.stream().max(Comparator.comparing(PhotoSize::getFileSize)));
-                System.out.println("min+++++" + photos.stream().min(Comparator.comparing(PhotoSize::getFileSize)));
-
-                photos.stream().forEach(e -> System.out.println("photos+++" + e));
-
-                String f_id = Objects.requireNonNull(photos.stream().max(Comparator.comparing(PhotoSize::getFileSize))
-                        .orElse(null)).getFileId();
-
-                System.out.println("f_id***" + f_id);
-
-                Unirest.setTimeouts(0, 0);
-                InputStream responseProjectArray = null;
-                responseProjectArray = Unirest.get("https://api.telegram.org/bot" + new String(users.getRunner()) + "/getFile?file_id=" + f_id)
-                        .asString().getRawBody();
-
-                ObjectMapper objectMapper = new ObjectMapper();
-
-                JsonNode generalNode = objectMapper.readTree(responseProjectArray);
-
-                if (generalNode != null) {
-                    String f_path = generalNode.findValue("file_path").textValue();
-
-                    System.out.println("file_path" + f_path);
-
-                    InputStream is = xmlGettingService.getXMLRatesStream("https://api.telegram.org/file/bot"
-                            + new String(users.getRunner()) + "/" + f_path);
-
-                    byte[] targetArray = new byte[is.available()];
-                    is.read(targetArray);
-
-                    message = new Message(null, 0, null, targetArray, null,
-                            update.getMessage().getLocation().getLongitude(), update.getMessage().getLocation().getLatitude());
-                }
-
-
-            } else if (update.getMessage().hasLocation()) {
-                message = new Message(null, 0, null, null, null,
-                        update.getMessage().getLocation().getLongitude(), update.getMessage().getLocation().getLatitude());
-            } else {
-                String inputText = update.getMessage().getText();
-                message = new Message(null, Map.of(RU, inputText));
-            }
-        }
-
-        return message;
     }
 
 }

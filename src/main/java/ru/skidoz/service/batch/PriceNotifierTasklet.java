@@ -1,9 +1,7 @@
 package ru.skidoz.service.batch;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
 
@@ -11,7 +9,6 @@ import ru.skidoz.aop.repo.BookmarkCacheRepository;
 import ru.skidoz.aop.repo.ProductCacheRepository;
 import ru.skidoz.aop.repo.UserCacheRepository;
 import ru.skidoz.model.entity.category.LanguageEnum;
-import ru.skidoz.model.pojo.side.Bookmark;
 import ru.skidoz.model.pojo.side.Product;
 import ru.skidoz.model.pojo.telegram.LevelChat;
 import ru.skidoz.model.pojo.telegram.Level;
@@ -19,10 +16,6 @@ import ru.skidoz.model.pojo.telegram.LevelDTOWrapper;
 import ru.skidoz.model.pojo.telegram.Message;
 import ru.skidoz.model.pojo.telegram.User;
 import ru.skidoz.service.TelegramBot;
-import org.springframework.batch.core.StepContribution;
-import org.springframework.batch.core.scope.context.ChunkContext;
-import org.springframework.batch.core.step.tasklet.Tasklet;
-import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -42,7 +35,7 @@ public class PriceNotifierTasklet implements Tasklet {
     public UserCacheRepository userRepository;
 
     @Override
-    public RepeatStatus execute(StepContribution stepContribution, ChunkContext chunkContext) throws IOException {
+    public void execute() {
 
         System.out.println("+++++++++++++++++++++++++++++++++++++++++++PriceNotifierTasklet+++++++++++++++++++++++++++++++++++");
 
@@ -69,7 +62,5 @@ public class PriceNotifierTasklet implements Tasklet {
 
 
         System.out.println("+++++++++++++++++++++++++++++++++++++++++++PriceNotifierTasklet finish+++++++++++++++++++++++++++++++++++");
-
-        return RepeatStatus.FINISHED;
     }
 }

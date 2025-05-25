@@ -16,7 +16,7 @@ public interface CashbackRepository extends JpaRepository<CashbackEntity, Intege
 
     List<CashbackEntity> findAllByUserId(Integer id);
 
-    CashbackEntity findFirstByActionAndUsers(ActionEntity action, UserEntity buyer);
+    CashbackEntity findFirstByActionAndUser(ActionEntity action, UserEntity buyer);
 
     @Query(value = "SELECT cbk FROM CashbackEntity cbk JOIN cbk.shop shp WHERE shp.adminUser = :shopBuyer AND cbk.user = :buyer")
     List<CashbackEntity> findAllByBuyerAndShopBuyer(@Param("buyer") UserEntity buyer, @Param("shopBuyer") UserEntity shopBuyer);
@@ -27,7 +27,7 @@ public interface CashbackRepository extends JpaRepository<CashbackEntity, Intege
             "inner join shop on (cashback.shop_id=shop.id) \n" +
             "inner join partner on (partner.debtor_id=shop.id) \n" +
             "where partner.creditor_id=:shopId " +
-            "and cashback.users_id=:buyerId " +
+            "and cashback.user_id=:buyerId " +
             "and action.type=:actionType",
             nativeQuery = true)
     List<CashbackEntity> findAllByBuyerAndShopPartners(@Param("buyerId") Integer buyerId, @Param("shopId") Integer shopId, @Param("actionType") String actionType);
@@ -37,10 +37,10 @@ public interface CashbackRepository extends JpaRepository<CashbackEntity, Intege
             "inner join cashback on (purhase.id=cashback.purсhase_id) \n" +
             "inner join action on (cashback.action_id=action.id) \n" +
             "WHERE  purhase.shop_id=:shopId AND " +
-            " purhase.users_id=:buyerId " +
+            " purhase.user_id=:buyerId " +
             "AND action.type=:actionType",
             nativeQuery = true)
-    BigDecimal purchaseSumByUsersAndShopAndAction_Type(@Param("buyerId") Integer buyerId, @Param("shopId") Integer shopId, @Param("actionType") String actionTypeEnum);
+    BigDecimal purchaseSumByUserAndShopAndAction_Type(@Param("buyerId") Integer buyerId, @Param("shopId") Integer shopId, @Param("actionType") String actionTypeEnum);
 
 
     List<CashbackEntity> findAllByUser_IdAndShop_Id(Integer buyerId, Integer shopId);
@@ -55,7 +55,7 @@ public interface CashbackRepository extends JpaRepository<CashbackEntity, Intege
 
     Optional<CashbackEntity> findById(Integer id);
 
-    List<CashbackEntity> findAllByUsers(UserEntity buyer);
+    List<CashbackEntity> findAllByUser(UserEntity buyer);
 
     List<CashbackEntity> findAllByPurchase_Id(Integer purchaseId);
 

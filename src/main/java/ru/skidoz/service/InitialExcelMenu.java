@@ -40,7 +40,7 @@ public class InitialExcelMenu {
     @Autowired
     private FilterOptionCacheRepository filterOptionCacheRepository;
 
-    private static final String MANAGEMENT_FILE = "static/fold/components/Book.xlsx";
+    private static final String MANAGEMENT_FILE = "Book.xlsx";
 
     //@Transactional
     public void execute() {
@@ -77,15 +77,19 @@ public class InitialExcelMenu {
 
                         int columns = sheet.getRow(i).getLastCellNum();
 
+
+                        System.out.println("****+_=-="+sheet.getRow(i).getCell(0));
+
+
                         if (sheet.getRow(i).getCell(0) != null
-                                && !sheet.getRow(i).getCell(0).toString().equals("")) {
+                                && !sheet.getRow(i).getCell(0).toString().isEmpty()) {
 
                             String categorySuperGroupAlias = sheet.getRow(i).getCell(0).toString();
                             String categorySuperGroupName = sheet.getRow(i).getCell(1).toString();
 
                             categorySuperGroup = categorySuperGroupCacheRepository.findByAlias(categorySuperGroupAlias);
 
-//                            System.out.println(categorySuperGroupAlias + " categorySuperGroupAlias+++++++++++ categorySuperGroup   " + categorySuperGroup);
+                            System.out.println(categorySuperGroupAlias + " categorySuperGroupAlias+++++++++++ categorySuperGroup   " + categorySuperGroup);
 
                             if (categorySuperGroup == null) {
                                 categorySuperGroup = new CategorySuperGroup(e -> {
@@ -98,14 +102,17 @@ public class InitialExcelMenu {
 
                         } else if (columns > 2
                                 && sheet.getRow(i).getCell(2) != null
-                                && !sheet.getRow(i).getCell(2).toString().equals("")) {
+                                && !sheet.getRow(i).getCell(2).toString().isEmpty()) {
 
                             String categoryGroupAlias = sheet.getRow(i).getCell(2).toString();
                             String categoryGroupName = sheet.getRow(i).getCell(3).toString();
 
+
+                            System.out.println(categoryGroupAlias + " @_@@__@ " + categorySuperGroup.getId());
+
                             categoryGroup = categoryGroupCacheRepository.findByAliasAndCategorySuperGroup(categoryGroupAlias, categorySuperGroup.getId());
 
-//                            System.out.println(categorySuperGroup.getId() + "---------" + categoryGroupAlias + " categoryGroupAlias+++++++++++ categoryGroup   " + categorySuperGroupDTO);
+                            System.out.println(categorySuperGroup.getId() + "---------" + categoryGroupAlias + " categoryGroupAlias+++++++++++ categoryGroup   " + categorySuperGroup);
 
                             if (categoryGroup == null) {
                                 categoryGroup = new CategoryGroup(e -> {
@@ -115,7 +122,8 @@ public class InitialExcelMenu {
                             categoryGroup.addName(categoryGroupName, language);
 
 
-                            //System.out.println("categorySuperGroupDTO+-+-+-+-+-+--+-++-+-+" + categorySuperGroup);
+                            System.out.println("categorySuperGroupDTO+-+-+-+-+-+--+-++-+-+" + categorySuperGroup);
+
 
                             categoryGroup.setCategorySuperGroup(categorySuperGroup.getId());
                             categoryGroupCacheRepository.save(categoryGroup);
@@ -205,7 +213,7 @@ public class InitialExcelMenu {
                                             System.exit(0);
                                         }*/
 
-                                        filterPoint = filterPointCacheRepository.findByCategoryAndNameRu(
+                                        filterPoint = filterPointCacheRepository.findByCategoryAndNameRU(
                                                 category.getId(),
                                                 //language,
                                                 sheet.getRow(i).getCell(j + 1).toString());
@@ -255,11 +263,7 @@ public class InitialExcelMenu {
 
                                             BigDecimal max = BigDecimal.valueOf(Double.parseDouble(sheet.getRow(i).getCell(j + 5).toString()));
                                             filterPoint.setMaxValue(max);
-
-//                                    System.out.println(filterPoint);
                                         }
-
-//                                        System.out.println("257----*-" + filterPoint);
 
                                         filterPointCacheRepository.save(filterPoint);
                                     }

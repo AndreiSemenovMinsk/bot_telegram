@@ -19,7 +19,7 @@ public interface LevelRepository extends JpaRepository<LevelEntity, Integer> {
 
     LevelEntity findFirstBySourceIsMessageIsTrueAndParentLevelId(Integer parentLevelId);
 
-    LevelEntity findFirstByUsers_ChatIdAndCallName(long chatId, String callName);
+    LevelEntity findFirstByUser_ChatIdAndCallName(long chatId, String callName);
 
 //    Level findByUser_IdAndCallName(Integer userId, String callName);
 
@@ -28,6 +28,8 @@ public interface LevelRepository extends JpaRepository<LevelEntity, Integer> {
             "AND level.callName = :callName ")
     LevelEntity getChildLevel(@Param("parentLevelId") Integer parentLevelId,
                               @Param("callName") String callName);
+
+    LevelEntity findByParentLevelIdAndCallName(Integer parentLevelId, String callName);
 
     @Query(value = "SELECT level FROM LevelEntity level \n" +
             "WHERE level.parentLevelId = :parentLevelId \n" +

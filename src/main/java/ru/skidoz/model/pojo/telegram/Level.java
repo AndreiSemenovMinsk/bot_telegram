@@ -51,8 +51,8 @@ public class Level extends AbstractDTO implements Cloneable {
         }*/
     }
 
-    public void updateLevel(User users, String callName, Level parentLevel, Boolean sourceIsMessage) {
-        this.userId = users.getId();
+    public void updateLevel(User user, String callName, Level parentLevel, Boolean sourceIsMessage) {
+        this.userId = user.getId();
         this.callName = callName;
         if (parentLevel != null) {
             this.parentLevelId = parentLevel.getId();
@@ -63,8 +63,8 @@ public class Level extends AbstractDTO implements Cloneable {
         }*/
     }
 
-    public void updateLevel(User users, String callName, Level parentLevel, Boolean sourceIsMessage, Boolean isTerminate, Boolean isBotLevel) {
-        this.userId = users.getId();
+    public void updateLevel(User user, String callName, Level parentLevel, Boolean sourceIsMessage, Boolean isTerminate, Boolean isBotLevel) {
+        this.userId = user.getId();
         this.callName = callName;
         if (parentLevel != null) {
             this.parentLevelId = parentLevel.getId();
@@ -135,7 +135,7 @@ public class Level extends AbstractDTO implements Cloneable {
         return "Level{" +
                 "id=" + getId() +
                 ", callName='" + callName + '\'' +
-                ", users_id=" + (userId != null ? userId : "null") +
+                ", user_id=" + (userId != null ? userId : "null") +
                 ", sourceIsMessage=" + sourceIsMessage +
                 ", initialLevelBot=" + initialLevelBot +
                 ", parentLevelId=" + parentLevelId +

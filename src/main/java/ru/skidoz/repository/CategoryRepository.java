@@ -11,14 +11,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CategoryRepository extends JpaRepository<CategoryEntity, Integer> {
 
-    CategoryEntity findByAliasAndCategoryGroup(String alias, CategoryGroupEntity categoryGroup);
-
-    List<CategoryEntity> findByCategoryGroup(CategoryGroupEntity categoryGroup);
+    CategoryEntity findByAliasAndCategoryGroup_Id(String alias, Integer categoryGroupId);
 
     List<CategoryEntity> findByCategoryGroup_Id(Integer categoryGroupId);
 
-//    List<Cat> findAllByNameContaining(String name);
-//
-//    List<Cat> findAllByNameContainingAndNameContaining(String name1, String name2);
     CategoryEntity save(CategoryEntity category);
 }

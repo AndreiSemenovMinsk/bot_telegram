@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
-import com.google.zxing.WriterException;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.IOUtils;
 import org.apache.poi.ss.usermodel.CellType;
@@ -38,7 +37,6 @@ import ru.skidoz.model.pojo.search.menu.FilterOption;
 import ru.skidoz.model.pojo.search.menu.FilterPoint;
 import ru.skidoz.model.pojo.side.Shop;
 import ru.skidoz.model.pojo.telegram.User;
-import ru.skidoz.repository.ShopRepository;
 import ru.skidoz.service.ScheduleService;
 import ru.skidoz.model.entity.category.LanguageEnum;
 import ru.skidoz.model.pojo.category.Category;
@@ -274,7 +272,7 @@ public class Exceler {
                                         String optionValue = sheet.getRow(i).getCell(j + 1).toString();
 
                                         FilterPoint filterPoint = filterPointRepository
-                                                .findByCategoryAndUnitNameRu(category.getId(),/* language,*/ filterPointName);
+                                                .findByCategoryAndUnitNameRU(category.getId(),/* language,*/ filterPointName);
 
                                         if (filterPoint != null) {
 

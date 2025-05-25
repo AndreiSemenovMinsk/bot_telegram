@@ -11,8 +11,6 @@ import org.springframework.stereotype.Service;
 @Service
 public interface ProductCacheRepository extends JpaRepositoryTest<Product, Integer> {
 
-//    Optional<Product> findById(Integer id);
-
     List<Product> findAllByShop_Id(Integer shopId);
 
     Product findAllByShop_IdAndArticle(Integer  shopId, String nameArticle);
@@ -20,10 +18,4 @@ public interface ProductCacheRepository extends JpaRepositoryTest<Product, Integ
     Product findAllByShop_IdAndAlias(Integer  shopId, String alias);
 
     public List<Product> findAllByCategory_IdAndActiveIsTrue(Integer  categoryId);
-//
-//    void replaceAfterStoreFromRepo();
-//
-//    void saveNew(Prd product);
-//
-//    void storeFromRepo(Prd product);
 }

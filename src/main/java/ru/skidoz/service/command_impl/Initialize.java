@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.springframework.context.annotation.Lazy;
 import ru.skidoz.model.pojo.telegram.Level;
 import ru.skidoz.model.pojo.telegram.LevelChat;
 import ru.skidoz.model.pojo.telegram.User;

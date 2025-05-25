@@ -47,7 +47,7 @@ public class Cashbacks implements Command {
         if (update.getCallbackQuery() != null) {
             if (update.getCallbackQuery().getData().length() == 19) {
 
-                Level userLevel = levelCacheRepository.findFirstByUsers_ChatIdAndCallName(users.getChatId(), CASHBACKS.name());
+                Level userLevel = levelCacheRepository.findFirstByUser_ChatIdAndCallName(users.getChatId(), CASHBACKS.name());
                 LevelDTOWrapper resultLevel = initialLevel.convertToLevel(userLevel,
                         true,
                         true);

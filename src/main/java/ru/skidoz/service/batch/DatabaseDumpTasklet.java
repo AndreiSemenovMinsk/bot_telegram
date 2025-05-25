@@ -12,10 +12,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.function.Consumer;
 
-import org.springframework.batch.core.StepContribution;
-import org.springframework.batch.core.scope.context.ChunkContext;
-import org.springframework.batch.core.step.tasklet.Tasklet;
-import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.stereotype.Component;
 
 
@@ -43,7 +39,7 @@ public class DatabaseDumpTasklet implements Tasklet {
 
 
     @Override
-    public RepeatStatus execute(StepContribution stepContribution, ChunkContext chunkContext) throws IOException, ExecutionException, InterruptedException, TimeoutException {
+    public void execute() {
 
 
         boolean isWindows = System.getProperty("os.name")
@@ -52,6 +48,7 @@ public class DatabaseDumpTasklet implements Tasklet {
         ExecutorService executorService = Executors.newFixedThreadPool(2);
 
         Process process;
+        try {
         if (isWindows) {
             process = Runtime.getRuntime()
                     .exec(String.format("cmd.exe mysqldump -u'%s' -p'%s' db_name > db_backup.sql", "~/Documents", "pass"));
@@ -64,14 +61,21 @@ public class DatabaseDumpTasklet implements Tasklet {
         Future<?> future = executorService.submit(streamGobbler);
 
         int exitCode = process.waitFor();
+            System.out.println(exitCode);
 
-        future.get(10, TimeUnit.SECONDS);
+            future.get(10, TimeUnit.SECONDS);
 
-        System.out.println(exitCode);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new RuntimeException(e);
+        } catch (TimeoutException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
 
         System.out.println(Runtime.getRuntime().availableProcessors());
-
-
-        return RepeatStatus.FINISHED;
     }
 }

@@ -9,8 +9,8 @@ import ru.skidoz.model.DTO;
 @Data
 public class AbstractDTO extends DTO {
 
+    //private int id;
     //@JsonIgnore
-//    private Integer id;
     private Instant time = Instant.now();
 
 //    @JsonIgnore
@@ -22,6 +22,7 @@ public class AbstractDTO extends DTO {
 
     public AbstractDTO() {
         super();
+        //this.id = super.getId();
 //        this.setId(-(long) (Math.random() * 1_000_000_000L));
     }
 

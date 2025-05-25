@@ -51,10 +51,10 @@ databaseChangeLog:
                     foreignKeyName: fk_abstract_group_entity_id
                     references: shop(id)
               - column:
-                  name: users_id
+                  name: user_id
                   type: int(11)
                   constraints:
                     nullable: false
-                    foreignKeyName: fk_users_id
+                    foreignKeyName: fk_user_id
                     references: users(id)
             tableName: schedule_buyer

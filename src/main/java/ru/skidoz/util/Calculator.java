@@ -21,7 +21,7 @@ public class Calculator {
     private PurchaseCacheRepository purchaseCacheRepository;
 
 
-    public BigDecimal purchaseSumByUsersAndShopAndAction_Type(Integer buyerId, Integer shopId, ActionTypeEnum actionTypeEnum) {
+    public BigDecimal purchaseSumByUserAndShopAndAction_Type(Integer buyerId, Integer shopId, ActionTypeEnum actionTypeEnum) {
 
         List<Cashback> cashbacks = cashbackCacheRepository
                 .findAllByShopAndBuyerAndAction_Type(shopId, buyerId, actionTypeEnum);

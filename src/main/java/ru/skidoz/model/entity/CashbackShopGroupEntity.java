@@ -15,9 +15,9 @@ import lombok.Data;
 @Table(name = "cashback_shop_group",
         indexes = {
                 @Index(name = "IDX_CASHBACK_SHOP_GROUP_COL_ID", columnList = "id"),
-                @Index(name = "IDX_CASHBACK_SHOP_GROUP_COL_USER", columnList = "users_id"),
+                @Index(name = "IDX_CASHBACK_SHOP_GROUP_COL_USER", columnList = "user_id"),
                 @Index(name = "IDX_CASHBACK_SHOP_GROUP_COL_SHOP", columnList = "shop_group_id"),
-                @Index(name = "IDX_CASHBACK_SHOP_GROUP_COL_USER_SHOP", columnList = "users_id,shop_group_id")})
+                @Index(name = "IDX_CASHBACK_SHOP_GROUP_COL_USER_SHOP", columnList = "user_id,shop_group_id")})
 public class CashbackShopGroupEntity extends AbstractEntity  implements Serializable {
 
     // OneToOne - потому что может быть только одна дефолтовая акция

@@ -7,12 +7,10 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import ru.skidoz.aop.repo.CategoryGroupCacheRepository;
-import ru.skidoz.aop.repo.CategorySuperGroupCacheRepository;
+import org.springframework.context.annotation.Lazy;
 import ru.skidoz.model.pojo.search.search.Search;
 import ru.skidoz.model.pojo.side.Product;
 import ru.skidoz.model.pojo.telegram.*;
-import ru.skidoz.aop.repo.CategoryCacheRepository;
 import ru.skidoz.aop.repo.ProductCacheRepository;
 import ru.skidoz.aop.repo.UserCacheRepository;
 import ru.skidoz.service.search.SearchService;
@@ -41,14 +39,6 @@ public class SearchCommand implements Command {
     private InitialLevel initialLevel;
     @Autowired
     private SearchService searchService;
-    @Autowired
-    private CategorySuperGroupCacheRepository categorySuperGroupRepository;
-    @Autowired
-    private CategoryGroupCacheRepository categoryGroupRepository;
-    @Autowired
-    private CategoryCacheRepository categoryRepository;
-    /*@Autowired
-    private SearchTemplate searchTemplate;*/
 
     @Override
     public List<LevelChat> runCommand(Update update, Level level, User users) throws CloneNotSupportedException {
@@ -63,11 +53,7 @@ public class SearchCommand implements Command {
         System.out.println("+++++++++++++++++++++++++++++++++++++++++Search+++++++++++++++++++++++++++++++++");
         System.out.println();
         System.out.println(update.getCallbackQuery() != null);
-        if (update.getCallbackQuery() != null) {
-            System.out.println(update.getCallbackQuery().getData());
-            System.out.println(update.getCallbackQuery().getData().startsWith("@" + MenuTypeEnum.LEVEL_CHOICER));
-            System.out.println(initialLevel.level_SEARCH.getIdString());
-        }
+
         System.out.println(update.getMessage() != null);
 
         List<Product> products = new ArrayList<>();

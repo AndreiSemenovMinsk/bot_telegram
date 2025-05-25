@@ -12,13 +12,13 @@ import ru.skidoz.aop.repo.BotCacheRepository;
 import ru.skidoz.aop.repo.LevelCacheRepository;
 import ru.skidoz.aop.repo.ShopCacheRepository;
 import ru.skidoz.service.InitialLevel;
-import  ru.skidoz.service.TelegramProcessor;
 import ru.skidoz.service.command.Command;
 import ru.skidoz.util.Structures;
 import com.google.zxing.WriterException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import ru.skidoz.util.TelegramElementsUtil;
 
 import static ru.skidoz.service.command.CommandName.ADMIN_SHOPS;
 
@@ -36,7 +36,7 @@ public class AdminShop implements Command {
     @Autowired
     LevelCacheRepository levelCacheRepository;
     @Autowired
-    private TelegramProcessor telegramProcessor;
+    private TelegramElementsUtil telegramElementsUtil;
     @Autowired
     private InitialLevel initialLevel;
 
@@ -86,21 +86,21 @@ public class AdminShop implements Command {
             System.out.println(shop.getAdminUser().equals(users.getId()));
 
             if (!shop.getAdminUser().equals(users.getId())) {
-                telegramProcessor.buttonDisabler(resultLevel, "Акции", language);
-                telegramProcessor.buttonDisabler(resultLevel, "Партнеры", language);
-                telegramProcessor.buttonDisabler(resultLevel, "Продавцы", language);
-                telegramProcessor.buttonDisabler(resultLevel, "Бот магазина", language);
-                telegramProcessor.buttonDisabler(resultLevel, "Товары", language);
+                telegramElementsUtil.buttonDisabler(resultLevel, "Акции", language);
+                telegramElementsUtil.buttonDisabler(resultLevel, "Партнеры", language);
+                telegramElementsUtil.buttonDisabler(resultLevel, "Продавцы", language);
+                telegramElementsUtil.buttonDisabler(resultLevel, "Бот магазина", language);
+                telegramElementsUtil.buttonDisabler(resultLevel, "Товары", language);
             }
 
             System.out.println();
             System.out.println("ADMIN_ADMIN*****" + resultLevel);
             System.out.println();
         } else {
-            System.out.println("------------------" + levelCacheRepository.findFirstByUsers_ChatIdAndCallName(users.getChatId(), ADMIN_SHOPS.name()));
+            System.out.println("------------------" + levelCacheRepository.findFirstByUser_ChatIdAndCallName(users.getChatId(), ADMIN_SHOPS.name()));
 
             resultLevel = initialLevel.convertToLevel(
-                    levelCacheRepository.findFirstByUsers_ChatIdAndCallName(users.getChatId(), ADMIN_SHOPS.name()),
+                    levelCacheRepository.findFirstByUser_ChatIdAndCallName(users.getChatId(), ADMIN_SHOPS.name()),
                     true,
                     true);
             System.out.println();

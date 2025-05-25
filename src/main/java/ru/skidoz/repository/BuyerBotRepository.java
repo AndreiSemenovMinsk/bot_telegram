@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface BuyerBotRepository extends JpaRepository<BuyerBotEntity, Integer> {
 
-//    BuyerBot findByUsersAndBot(Users buyer, Bot bot);
+//    BuyerBot findByUserAndBot(Users buyer, Bot bot);
 
     BuyerBotEntity save(BuyerBotEntity buyerBot);
 }

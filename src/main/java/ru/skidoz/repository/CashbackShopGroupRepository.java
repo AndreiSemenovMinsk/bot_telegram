@@ -17,10 +17,10 @@ public interface CashbackShopGroupRepository extends JpaRepository<CashbackShopG
     @Query(value = "select SUM(purhase.sum) from purhase \n" +
             "inner join cashback_shop_group on (purhase.id=cashback_shop_group.purсhase_id) \n" +
             "where  cashback_shop_group.shop_group_id=:shopGroupId AND " +
-            " purhase.users_id=:buyerId " +
+            " purhase.user_id=:buyerId " +
             "AND cashback_shop_group.manual=:manual",
             nativeQuery = true)
-    BigDecimal purchaseSumByUsersAndShop(@Param("buyerId") Integer buyerId, @Param("shopGroupId") Integer shopGroupId, @Param("manual") Boolean manual);
+    BigDecimal purchaseSumByUserAndShop(@Param("buyerId") Integer buyerId, @Param("shopGroupId") Integer shopGroupId, @Param("manual") Boolean manual);
 
     CashbackShopGroupEntity save(CashbackShopGroupEntity cashbackShopGroup);
 }

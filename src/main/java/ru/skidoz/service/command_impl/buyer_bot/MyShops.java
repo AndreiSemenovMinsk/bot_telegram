@@ -12,7 +12,6 @@ import ru.skidoz.model.pojo.side.Shop;
 import ru.skidoz.model.pojo.telegram.*;
 import ru.skidoz.aop.repo.*;
 import ru.skidoz.service.InitialLevel;
-import  ru.skidoz.service.TelegramProcessor;
 import ru.skidoz.service.command.Command;
 import ru.skidoz.service.command_impl.shop_bot.ShopBots;
 import ru.skidoz.util.Structures;
@@ -23,6 +22,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import ru.skidoz.util.TelegramElementsUtil;
 
 import static ru.skidoz.service.command.CommandName.MY_SHOPS;
 
@@ -38,7 +38,7 @@ public class MyShops implements Command {
     @Autowired
     private BotCacheRepository botCacheRepository;
     @Autowired
-    private TelegramProcessor telegramProcessor;
+    private TelegramElementsUtil telegramElementsUtil;
     @Autowired
     private ButtonRowCacheRepository buttonRowRepository;
     @Autowired
@@ -133,7 +133,7 @@ public class MyShops implements Command {
 
             if (callback.equals(initialLevel.level_MY_SHOPS.getIdString())) {
 
-                Level resultLevel = levelRepository.findFirstByUsers_ChatIdAndCallName(users.getChatId(), MY_SHOPS.name());
+                Level resultLevel = levelRepository.findFirstByUser_ChatIdAndCallName(users.getChatId(), MY_SHOPS.name());
 
                 resultLevelDTOWrapper = initialLevel.convertToLevel(resultLevel,
                         true,
@@ -161,7 +161,7 @@ public class MyShops implements Command {
 
                 System.out.println("bot+++" + bot);
 
-                if (bot == null || (botLevel = levelRepository.findFirstByUsers_ChatIdAndCallName(users.getChatId(), taxiBotLevel.getCallName())) == null) {
+                if (bot == null || (botLevel = levelRepository.findFirstByUser_ChatIdAndCallName(users.getChatId(), taxiBotLevel.getCallName())) == null) {
 
                     System.out.println(167);
 
@@ -274,7 +274,7 @@ public class MyShops implements Command {
             Bot bot = buyerLevel.getBot();*/
             System.out.println("users+++++++" + users);
 
-            Message finalMessage = telegramProcessor.convertUpdateToMessage(update, users);
+            Message finalMessage = telegramElementsUtil.convertUpdateToMessage(update, users);
 //SubmitBot не используется - сообщение идет напрямую
  /*
 BuyerBot buyerBot = buyerBotRepository.findByUserAndBot(users, bot);

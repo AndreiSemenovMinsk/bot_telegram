@@ -2,8 +2,12 @@ package ru.skidoz.service;
 
 
 import java.io.IOException;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import ru.skidoz.aop.CacheAspect;
@@ -12,13 +16,22 @@ import ru.skidoz.aop.repo.ButtonRowCacheRepository;
 import ru.skidoz.aop.repo.JpaRepositoryTest;
 import ru.skidoz.aop.repo.LevelCacheRepository;
 import ru.skidoz.aop.repo.MessageCacheRepository;
+import ru.skidoz.aop.repo.ProductCacheRepository;
+import ru.skidoz.aop.repo.ScheduleBuyerCacheRepository;
 import ru.skidoz.aop.repo.UserCacheRepository;
 import ru.skidoz.mapper.EntityMapper;
 import ru.skidoz.mapper.telegram.ButtonRowMapper;
 import ru.skidoz.mapper.telegram.UsersMapper;
 import ru.skidoz.model.DTO;
 import ru.skidoz.model.entity.AbstractEntity;
+import ru.skidoz.model.entity.category.LanguageEnum;
 import ru.skidoz.model.pojo.AbstractDTO;
+import ru.skidoz.model.pojo.telegram.Level;
+import ru.skidoz.model.pojo.telegram.LevelChat;
+import ru.skidoz.model.pojo.telegram.LevelDTOWrapper;
+import ru.skidoz.model.pojo.telegram.Message;
+import ru.skidoz.model.pojo.telegram.ScheduleBuyer;
+import ru.skidoz.model.pojo.telegram.User;
 import ru.skidoz.repository.telegram.ButtonRepository;
 import ru.skidoz.repository.telegram.ButtonRowRepository;
 import ru.skidoz.repository.telegram.LevelRepository;
@@ -38,9 +51,9 @@ public class ScheduleService {
 
     public static Integer timePoint = 0;
     @Autowired
-    private CacheAspect cacheAspect;
+    public TelegramBot telegramBot;
     @Autowired
-    private InitialLevel initialLevel;
+    private CacheAspect cacheAspect;
     @Autowired
     private LevelRepository levelRepository;
     @Autowired
@@ -48,7 +61,7 @@ public class ScheduleService {
     @Autowired
     private ButtonRowRepository buttonRowRepository;
     @Autowired
-    private ButtonRepository buttonRepository;
+    private ScheduleBuyerCacheRepository scheduleBuyerRepository;
     @Autowired
     private UserRepository userRepository;
 
@@ -67,6 +80,8 @@ public class ScheduleService {
     private ButtonRowMapper buttonRowMapper;
     @Autowired
     private UsersMapper usersMapper;
+    @Autowired
+    private ProductCacheRepository productCacheRepository;
 
     public <D extends AbstractDTO, E extends AbstractEntity> void store(
             JpaRepositoryTest<D, Integer> cache,
@@ -123,5 +138,44 @@ public class ScheduleService {
         System.out.println("-----------------ScheduleService---------------");
         System.out.println((System.currentTimeMillis() - start) + "ms");
         System.out.println();
+    }
+
+
+    @Scheduled(cron = "${remindTimer}")
+    public void reminder() {
+
+        ZoneId z = ZoneId.of("Europe/Minsk");
+        ZonedDateTime zdt = ZonedDateTime.now(z);
+
+        List<ScheduleBuyer> scheduleBuyer1HourList = scheduleBuyerRepository
+                .findAllByDayAndMonthAndYearAndTimeStart(zdt.getDayOfMonth(), zdt.getMonthValue(), zdt.getYear(), timePoint - 12);
+
+        for (ScheduleBuyer scheduleBuyer : scheduleBuyer1HourList) {
+
+            notificationHandler(scheduleBuyer, "Напоминание - через 1 час ");
+        }
+
+        List<ScheduleBuyer> scheduleBuyerHalfHourList = scheduleBuyerRepository
+                .findAllByDayAndMonthAndYearAndTimeStart(zdt.getDayOfMonth(), zdt.getMonthValue(), zdt.getYear(), timePoint - 12);
+        for (ScheduleBuyer scheduleBuyer : scheduleBuyerHalfHourList) {
+
+            notificationHandler(scheduleBuyer, "Напоминание - через полчаса ");
+        }
+    }
+
+    private void notificationHandler(ScheduleBuyer scheduleBuyer, String text) {
+        User user = userCacheRepository.findById(scheduleBuyer.getUser());
+        Level level = new Level();
+        Message message = new Message(level, Map.of(LanguageEnum.RU, text + productCacheRepository.findById(scheduleBuyer.getProduct()).getAlias()));
+        level.addMessage(message);
+
+        final LevelDTOWrapper levelWrapper = new LevelDTOWrapper();
+        levelWrapper.setLevel(level);
+
+        TelegramBot.Runner runner = telegramBot.getTelegramKey(new String(user.getRunner()));
+        runner.add(new ArrayList<>(Collections.singletonList(new LevelChat(e -> {
+            e.setLevel(levelWrapper);
+            e.setChatId(user.getChatId());
+        }))));
     }
 }

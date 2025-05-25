@@ -13,13 +13,13 @@ import ru.skidoz.model.pojo.telegram.ScheduleBuyer;
 public abstract class ScheduleBuyerMapper extends EntityMapper<ScheduleBuyer, ScheduleBuyerEntity> {
 
     @Override
-    @Mapping(source = "users.id", target = "users")
+    @Mapping(source = "user.id", target = "user")
     @Mapping(source = "product.id", target = "product")
     public abstract ScheduleBuyer toDto(ScheduleBuyerEntity entity);
 
 
     @Override
-    @Mapping(source = "users", target = "users.id")//, qualifiedByName = "idUser")
+    @Mapping(source = "user", target = "user.id")//, qualifiedByName = "idUser")
     @Mapping(source = "product", target = "product.id")//, qualifiedByName = "idPrd")
     public abstract ScheduleBuyerEntity toEntity(ScheduleBuyer scheduleBuyer);
 }

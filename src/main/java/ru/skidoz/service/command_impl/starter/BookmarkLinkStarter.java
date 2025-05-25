@@ -51,7 +51,7 @@ public class BookmarkLinkStarter extends LinkStarter {
 
         levelChatDTOList.add(new LevelChat(e -> {
             e.setChatId(chatId);
-            e.setLevel(initialLevel.convertToLevel(levelRepository.findFirstByUsers_ChatIdAndCallName(chatId, PSHARE2P.name()),
+            e.setLevel(initialLevel.convertToLevel(levelRepository.findFirstByUser_ChatIdAndCallName(chatId, PSHARE2P.name()),
                     true,
                     false));
         }));

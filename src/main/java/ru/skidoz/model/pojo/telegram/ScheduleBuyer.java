@@ -30,7 +30,7 @@ public class ScheduleBuyer extends AbstractDTO implements Serializable {
     private Integer year;
 
     @NotNull
-    private Integer/*User*/ users;
+    private Integer/*User*/ user;
 
     @NotNull
     private Integer/*ProductDTO*/ product;

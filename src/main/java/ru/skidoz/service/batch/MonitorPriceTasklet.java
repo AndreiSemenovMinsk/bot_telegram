@@ -1,6 +1,5 @@
 package ru.skidoz.service.batch;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -20,10 +19,6 @@ import ru.skidoz.service.TelegramBot;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
-import org.springframework.batch.core.StepContribution;
-import org.springframework.batch.core.scope.context.ChunkContext;
-import org.springframework.batch.core.step.tasklet.Tasklet;
-import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -41,7 +36,7 @@ public class MonitorPriceTasklet implements Tasklet {
     public UserRepository userRepository;
 
     @Override
-    public RepeatStatus execute(StepContribution stepContribution, ChunkContext chunkContext) throws IOException {
+    public void execute() {
 
         System.out.println("+++++++++++++++++++++++++++++++++++++++++++MonitorPriceTasklet+++++++++++++++++++++++++++++++++++");
 
@@ -124,7 +119,7 @@ public class MonitorPriceTasklet implements Tasklet {
                     final LevelDTOWrapper levelDTOWrapper = new LevelDTOWrapper();
                     levelDTOWrapper.setLevel(level);
 
-                    System.out.println("127-------" + userRepository.findByChatId(bookmark.getChatId()));
+                    //System.out.println("127-------" + userRepository.findByChatId(bookmark.getChatId()));
 
                     TelegramBot.Runner runner = telegramBot.getTelegramKey(new String(userRepository.findByChatId(bookmark.getChatId()).getRunner()));
                     runner.add(new ArrayList<>(Collections.singletonList(new LevelChat (e -> {
@@ -140,6 +135,5 @@ public class MonitorPriceTasklet implements Tasklet {
         });
 
         System.out.println("+++++++++++++++++++++++++++++++++++++++++++MonitorPriceTasklet finish+++++++++++++++++++++++++++++++++++");
-        return RepeatStatus.FINISHED;
     }
 }

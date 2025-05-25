@@ -10,7 +10,7 @@ public interface CashbackWriteOffCacheRepository extends JpaRepositoryTest<Cashb
 
 //    CashbackWriteOff findById(Integer id);
 
-    List<CashbackWriteOff> findAllByUser_Id(Integer id);
+    List<CashbackWriteOff> findAllByUser(Integer id);
 
     void delete(CashbackWriteOff purchase);
 }

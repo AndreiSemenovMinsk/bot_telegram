@@ -48,7 +48,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
 import static ru.skidoz.model.entity.category.LanguageEnum.RU;
-import static ru.skidoz.service.TelegramProcessor.qrInputStream;
+import static ru.skidoz.util.TelegramElementsUtil.qrInputStream;
 
 
 /**
@@ -76,7 +76,7 @@ public class TelegramBot {
 
     @PostConstruct
     public void onStart() throws TelegramApiException {
-        mainRunner = new Runner("8143499883:AAHN9cmb3M_xw3oTn1WrG37_z1_DjCado4o");
+        mainRunner = new Runner("646773878:AAFxwMEdey27R4AJkhFcWFxicu3SSjrC7Gc");
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
         telegramBotsApi.registerBot(mainRunner);
 

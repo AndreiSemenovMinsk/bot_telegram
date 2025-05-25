@@ -176,11 +176,11 @@ databaseChangeLog:
             unique:  true
 
         -  addForeignKeyConstraint:
-             baseColumnNames:  admin_users_id
+             baseColumnNames:  admin_user_id
              #             baseTableCatalogName:  cat
              baseTableName:  shop
              baseTableSchemaName:  public
-             constraintName:  fk_admin_users_id
+             constraintName:  fk_admin_user_id
              deferrable:  true
              initiallyDeferred:  true
              onDelete:  CASCADE

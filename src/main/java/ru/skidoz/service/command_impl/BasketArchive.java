@@ -75,7 +75,7 @@ public class BasketArchive implements Command {
 
             if (update.getCallbackQuery().getData().length() == 19) {
 
-                /*LevelDTOWrapper userLevel = initialLevel.convertToLevel(levelCacheRepository.findFirstByUsers_ChatIdAndCallName(users.getChatId(), BASKET.name()),
+                /*LevelDTOWrapper userLevel = initialLevel.convertToLevel(levelCacheRepository.findFirstByUser_ChatIdAndCallName(users.getChatId(), BASKET.name()),
                         true,
                         true);*/
 
@@ -202,7 +202,7 @@ public class BasketArchive implements Command {
             ButtonRow row4_0 = new ButtonRow();
 
             Button button4_0_0 = new Button(row4_0, Map.of(LanguageEnum.RU, "Поделиться ссылкой"),
-                    levelCacheRepository.findFirstByUsers_ChatIdAndCallName(users.getChatId(), CONNECT.name()).getIdString());
+                    levelCacheRepository.findFirstByUser_ChatIdAndCallName(users.getChatId(), CONNECT.name()).getIdString());
             row4_0.add(button4_0_0);
             buttonRowDTOS.add(row4_0);
         }

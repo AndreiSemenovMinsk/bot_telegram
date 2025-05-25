@@ -33,7 +33,7 @@ public class ScheduleBuyerEntity extends AbstractEntity  implements Serializable
     @NotNull
     @ManyToOne
     //@JoinColumn(name = "buyerId", nullable = false, insertable = false, updatable = false)
-    private UserEntity users;
+    private UserEntity user;
 
     @NotNull
     @ManyToOne

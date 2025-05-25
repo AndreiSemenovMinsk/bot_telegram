@@ -15,7 +15,4 @@ public interface AbstractGroupEntityRepository extends JpaRepository<AbstractGro
 
     /*@Query(value = "SELECT emp.* FROM employee emp WHERE MATCH (emp.name, emp.address, emp.passport_no) AGAINST (:lastName IN NATURAL LANGUAGE MODE)", nativeQuery = true)
     List<Employee> findFullTextSearchByLastName(@Param("lastName") String lastName);*/
-
-    AbstractGroupEntity save(AbstractGroupEntity abstractGroupEntity);
-
 }

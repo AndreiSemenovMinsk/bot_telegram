@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CategoryGroupRepository extends JpaRepository<CategoryGroupEntity, Integer> {
 
-    CategoryGroupEntity findByAliasAndCategorySuperGroup(String alias, CategorySuperGroupEntity categorySuperGroup);
+    CategoryGroupEntity findByAliasAndCategorySuperGroup_Id(String alias, Integer id);
 
     List<CategoryGroupEntity> findByCategorySuperGroup_Id(Integer id);
 

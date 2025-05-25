@@ -36,6 +36,6 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
     @Query(value = "select users.* from recommendation rmdn INNER JOIN users where rmdn.shop_id is null and rmdn.buyer_id=:buyer_id", nativeQuery = true)
     UserEntity findFirstByShopNullAndBuyer(@Param("buyer_id") Integer buyerId);
 
-    @Query(value = "SELECT * FROM users INNER JOIN users_shop_set on (users.id=users_shop_set.admin_users_id) WHERE shop_id = :buyer", nativeQuery = true)
+    @Query(value = "SELECT * FROM users INNER JOIN users_shop_set on (users.id=users_shop_set.admin_user_id) WHERE shop_id = :buyer", nativeQuery = true)
     Set<UserEntity> findAllByShopId(@Param("buyer") Integer shopId);
 }

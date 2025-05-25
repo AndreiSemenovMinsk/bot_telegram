@@ -35,7 +35,7 @@ public class BasketsForShop implements Command {
     @Override
     public List<LevelChat> runCommand(Update update, Level level, User users) throws IOException, WriterException {
 
-        Level userLevel = levelRepository.findFirstByUsers_ChatIdAndCallName(users.getChatId(), BASKETS_FOR_SHOP.name() + users.getCurrentAdminShop());
+        Level userLevel = levelRepository.findFirstByUser_ChatIdAndCallName(users.getChatId(), BASKETS_FOR_SHOP.name() + users.getCurrentAdminShop());
 
         LevelDTOWrapper resultLevel = initialLevel.convertToLevel(userLevel,
                 true,

@@ -15,5 +15,5 @@ public interface ScheduleBuyerCacheRepository extends JpaRepositoryTest<Schedule
 
     public void addByDayAndMonthAndYearAndTimeStart(Integer day, Integer month, Integer year, Integer timeStart, ScheduleBuyer scheduleBuyer);
 
-    public List<ScheduleBuyer> findAllByUser_Id(Integer/*Users*/ buyer);
+    public List<ScheduleBuyer> findAllByUser(Integer/*Users*/ buyer);
 }

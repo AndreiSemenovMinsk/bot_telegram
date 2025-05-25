@@ -37,7 +37,7 @@ public class Connect implements Command {
     @Override
     public List<LevelChat> runCommand(Update update, Level level, User users) throws IOException, WriterException {
 
-        Level finalNewLevel = levelCacheRepository.findFirstByUsers_ChatIdAndCallName(users.getChatId(), CONNECT.name());
+        Level finalNewLevel = levelCacheRepository.findFirstByUser_ChatIdAndCallName(users.getChatId(), CONNECT.name());
         LevelDTOWrapper resultLevel = initialLevel.convertToLevel(finalNewLevel,
                 true,
                 false);

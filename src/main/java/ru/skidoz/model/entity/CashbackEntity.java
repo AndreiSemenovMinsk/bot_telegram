@@ -15,9 +15,9 @@ import lombok.Data;
 @Table(name = "cashback",
         indexes = {
                 @Index(name = "IDX_CASHBACK_COL_ID", columnList = "id"),
-                @Index(name = "IDX_CASHBACK_COL_USER", columnList = "users_id"),
+                @Index(name = "IDX_CASHBACK_COL_USER", columnList = "user_id"),
                 @Index(name = "IDX_CASHBACK_COL_SHOP", columnList = "shop_id"),
-                @Index(name = "IDX_CASHBACK_COL_USER_SHOP", columnList = "users_id,shop_id")})
+                @Index(name = "IDX_CASHBACK_COL_USER_SHOP", columnList = "user_id,shop_id")})
 public class CashbackEntity extends AbstractEntity  implements Serializable {
 
     private Integer radius;

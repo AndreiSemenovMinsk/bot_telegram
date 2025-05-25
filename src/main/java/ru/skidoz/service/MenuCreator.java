@@ -21,7 +21,6 @@ import ru.skidoz.model.pojo.telegram.ButtonRow;
 import ru.skidoz.model.pojo.telegram.Level;
 import ru.skidoz.model.pojo.telegram.Message;
 import ru.skidoz.model.pojo.telegram.User;
-import ru.skidoz.repository.CategorySuperGroupRepository;
 import ru.skidoz.service.command.CommandProvider;
 import ru.skidoz.service.command_impl.search_goods.SearchCommand;
 import ru.skidoz.util.MenuTypeEnum;
@@ -38,8 +37,6 @@ public class MenuCreator {
     private SearchCommand search;
     @Autowired
     private CommandProvider commandProvider;
-    @Autowired
-    private CategorySuperGroupRepository categorySuperGroupRepository;
     @Autowired
     private CategoryGroupCacheRepository categoryGroupCacheRepository;
     @Autowired
@@ -94,7 +91,7 @@ public class MenuCreator {
         for (CategorySuperGroup categorySuperGroup : categorySuperGroupDTOList) {
 
             List<CategoryGroup> categoryGroupList = categoryGroupCacheRepository.findByCategorySuperGroup_Id(categorySuperGroup.getId());
-            Level levelGroup = levelCacheRepository.getChildLevel(levelSuper.getId(), categorySuperGroup.getAlias());
+            Level levelGroup = levelCacheRepository.findByParentLevelIdAndCallName(levelSuper.getId(), categorySuperGroup.getAlias());
             if (levelGroup == null) {
                 String callName = levelSuper.getCallName() + "*" + categorySuperGroup.getAlias() + menuTypeEnum;
                 levelGroup = new Level(user, callName, levelSuper, false);
@@ -148,7 +145,7 @@ public class MenuCreator {
             for (CategoryGroup categoryGroup : categoryGroupList) {
 
                 List<Category> categoryList = categoryCacheRepository.findByCategoryGroup_Id(categoryGroup.getId());
-                Level levelCategory = levelCacheRepository.getChildLevel(levelGroup.getId(), categorySuperGroup.getAlias());
+                Level levelCategory = levelCacheRepository.findByParentLevelIdAndCallName(levelGroup.getId(), categorySuperGroup.getAlias());
                 if (levelCategory == null) {
                     String callName = levelSuper.getCallName() + "*" + categorySuperGroup.getName(LanguageEnum.RU) + "*" + categoryGroup.getAlias() + menuTypeEnum;
                     levelCategory = new Level(user, callName, levelGroup, false);

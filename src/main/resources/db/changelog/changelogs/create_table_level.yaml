@@ -43,7 +43,7 @@ databaseChangeLog:
                   name: bot_id
                   type: int(11)
               - column:
-                  name: users_id
+                  name: user_id
                   type: int(11)
             tableName: level
         - createIndex:
@@ -54,7 +54,7 @@ databaseChangeLog:
                   name:  call_name
               - column:
                   descending:  true
-                  name:  users_id
+                  name:  user_id
             indexName:  UC_LEVEL_COL_USER_CALL_NAME
             schemaName:  public
             tableName:  level
@@ -74,7 +74,7 @@ databaseChangeLog:
             columns:
               - column:
                   descending:  true
-                  name:  users_id
+                  name:  user_id
             indexName:  IDX_LEVEL_COL_USER
             schemaName:  public
             tableName:  level

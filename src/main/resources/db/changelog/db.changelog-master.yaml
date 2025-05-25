@@ -25,13 +25,13 @@ databaseChangeLog:
       file: "changelogs/create_table_bot.yaml"
   - include:
       relativeToChangelogFile: true
-      file: "changelogs/create_table_buyer_bot.yaml"
-  - include:
-      relativeToChangelogFile: true
       file: "changelogs/create_table_abstract_group_entity.yaml"
   - include:
       relativeToChangelogFile: true
       file: "changelogs/create_table_users.yaml"
+  - include:
+      relativeToChangelogFile: true
+      file: "changelogs/create_table_buyer_bot.yaml"
   - include:
       relativeToChangelogFile: true
       file: "changelogs/create_table_shop_group_shop_set.yaml"

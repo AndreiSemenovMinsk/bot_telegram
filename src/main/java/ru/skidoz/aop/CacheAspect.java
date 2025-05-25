@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.StringJoiner;
 import java.util.concurrent.ConcurrentHashMap;
@@ -101,7 +102,7 @@ public class CacheAspect {
     //
     List<List<Integer>> DTOMethodDependentToIndependent = new ArrayList<>();
 
-    List<JpaRepository> jpaRepositories = new ArrayList<>();
+    List<JpaRepository<?, Integer>> jpaRepositories = new ArrayList<>();
     List<EntityMapper> mapRepositories = new ArrayList<>();
 
 
@@ -129,8 +130,13 @@ public class CacheAspect {
                     Integer dtoIndex = dtoNamePlaces.get(dtoName.substring(0, dtoName.length() - "Entity".length()));
 
                     if (dtoIndex != null) {
-                        JpaRepository myBean = (JpaRepository) context
+                        //System.out.println();
+                        //System.out.println("@*@*@* " + firstLower(interf.getSimpleName()));
+
+                        JpaRepository<?, Integer> myBean = (JpaRepository<?, Integer>) context
                                 .getBean(firstLower(interf.getSimpleName()));
+
+                        //System.out.println(dtoNames.get(dtoIndex) + " **@#*** " + myBean);
 
                         jpaRepositories.set(dtoIndex, myBean);
                     }
@@ -242,7 +248,13 @@ public class CacheAspect {
                             if (Arrays.stream(declaredMethod.getParameters())
                                     .noneMatch(t -> t.getType().getSimpleName().equals("Object"))) {
 
-                                String hash = declaredMethod.getName() + ":" +
+                                String methodName = declaredMethod.getName()
+                                    .replaceAll("_Id", "")
+                                    .replaceAll("Entity", "");
+
+                                System.out.println(declaredMethod.getName() + "---*)*)*)*)---" + methodName);
+
+                                String hash = methodName + ":" +
                                         Arrays.stream(declaredMethod.getParameters())
                                                 .map(t -> {
                                                     String simpleName = t.getType().getSimpleName();
@@ -328,6 +340,9 @@ public class CacheAspect {
                                     writeLock.unlock();
                                 }
                             }
+                            case "hashCode" -> this.hashCode();
+                            case "equals" -> this.equals(args[0]);
+                            case "toString" -> this.toString();
                             default -> {
                                 if (methodName.startsWith("findBy")) {
                                     try {
@@ -344,7 +359,7 @@ public class CacheAspect {
                                         readLock.unlock();
                                     }
                                 }
-                                throw new IllegalArgumentException("Unsupported");
+                                throw new IllegalArgumentException("Unsupported method: " + methodName + " " + Arrays.toString(args));
                             }
                         };
                     }
@@ -475,6 +490,7 @@ public class CacheAspect {
             List<String> hashes = new ArrayList<>();
 
             for (Method declaredMethod : subtype.getDeclaredMethods()) {
+
                 String hash = declaredMethod.getName() + ":" +
                         Arrays.stream(declaredMethod.getParameters())
                                 .map(t -> t.getType().getSimpleName())
@@ -488,18 +504,9 @@ public class CacheAspect {
                 }
             }
 
-
             Method jpaMethod = jpaMethods.get(repoIndex).get("findById:Integer");
 
-//            System.out.println(subtype.getName() + "+++_+" + Arrays.toString(subtype.getDeclaredMethods()));
-//            System.out.println("*+*+*+*+*+*+*+**" + Arrays.toString(subtype.getDeclaredMethods()));
-
-//            for (Method declaredMethod : subtype.getDeclaredMethods()) {
-//                System.out.println(declaredMethod);
-//            }
-
             Method cacheMethod = subtype.getMethod("findById", Object.class);
-//            System.out.println("cacheMethod----- " + cacheMethod);
 
             processMethod("findById", repoIndex, jpaMethod, 0, cacheMethod);
 
@@ -510,6 +517,15 @@ public class CacheAspect {
                 var findMethodName = method.getName();
 
                 String hash = hashes.get(hashInd);
+
+                System.out.println("_+__+_+" + dtoNames.get(repoIndex) + "." + findMethodName);
+                System.out.println(hash + "++hashes+++" + jpaMethods.get(repoIndex).get(hash));
+                System.out.println("*** " + jpaMethods.get(repoIndex));
+                System.out.println(jpaMethods.get(repoIndex).containsKey(hash));
+
+                jpaMethods.get(repoIndex).keySet()
+                        .forEach(k -> System.out.println("*" + k + "*--" + k.equals(hash)));
+
                 jpaMethod = jpaMethods.get(repoIndex).get(hash);
                 hashInd++;
 
@@ -518,8 +534,6 @@ public class CacheAspect {
                         || findMethodName.length() < 7) {
                     continue;
                 }
-
-//                System.out.println(dtoNames.get(repoIndex) + " " + methodInd + "+++++-*+" + findMethodName);
 
                 processMethod(findMethodName, repoIndex, jpaMethod, methodInd, method);
 
@@ -821,6 +835,7 @@ public class CacheAspect {
         List<Integer> paramFieldIndexDependantFree = new ArrayList<>();
 
 
+        System.out.println(dtoNames.get(repoIndex) + " 832c " + jpaMethod);
 
         jpaFindMethods.get(repoIndex).add(jpaMethod);
 
@@ -851,7 +866,7 @@ public class CacheAspect {
 
 
                         System.out.println("@_@****---" + dtoName + "+fieldName-" + fieldName
-                        + " repoIndex@@" + dtoNames.get(repoIndex) + " --- " + findMethodName);
+                        + " repoIndex@@ " + dtoNames.get(repoIndex) + " --- " + findMethodName);
 
                         Integer parentField;
                         if (dtoName.length() == fieldName.length()) {
@@ -955,17 +970,30 @@ public class CacheAspect {
 
     private Object processFindAll(Integer repoIndex) {
 
-        return idMap.get(repoIndex);
+        return idMap.get(repoIndex).values().stream().toList();
     }
 
 
-    private Object processFindById(Integer repoIndex, int id) {
+    private DTO processFindById(Integer repoIndex, int id) {
 
             DTO dto = idMap.get(repoIndex).get(id);
             if (dto != null) {
                 return dto;
             } else {
-                return jpaRepositories.get(repoIndex).findById(id).orElse(null);
+
+                System.out.println("******************");
+                System.out.println(jpaRepositories.get(repoIndex));
+                System.out.println(jpaRepositories.get(repoIndex).findById(id));
+
+
+                Object entity = jpaRepositories.get(repoIndex).findById(id).orElse(null);
+                if (entity != null) {
+                    DTO foundDTO = (DTO) mapRepositories.get(repoIndex).toDto(entity);
+                    idMap.get(repoIndex).put(id, foundDTO);
+
+                    return foundDTO;
+                }
+                return null;
             }
     }
 
@@ -981,20 +1009,6 @@ public class CacheAspect {
 
     private Object processFind(Integer repoIndex, String methodName, Object[] args)
             throws Exception {
-
-//        System.out.println(dtoNames.get(repoIndex) + " methodName----++-+@ " + methodName);
-//        int u = 0;
-//        for (var s : mapRepos.get(repoIndex)) {
-//            System.out.println(dtoNames.get(repoIndex)
-//                    + " W parameters " + (parameters.get(repoIndex).size() > u
-//                    ? Arrays.toString(parameters.get(repoIndex).get(u)) : null)
-//                    + " methodInd " + u + " repoIndex " + repoIndex
-//                    + " ++*-* " + u + " *** " + s);
-//            u++;
-//        }
-
-
-
         /*int parentIndex = -1;
         if (methodName.equals("findByLevel_Id")) {
             parentIndex = repos.get("LevelCacheRepository");
@@ -1011,17 +1025,16 @@ public class CacheAspect {
         }*/
         int methodOrder = methodOrders.get(repoIndex).get(methodName);
 
-        var parentDTOs = childDTOMethodParentMethodDTOList.get(repoIndex).get(methodOrder);
+        System.out.println(dtoNames.get(repoIndex) + " _+_+_methodName "
+                + methodName + " methodOrder--- " + methodOrder);
 
-//        System.out.println("@@+repoIndex " + dtoNames.get(repoIndex) + " methodOrder "
-//                + methodOrder + " methodName " + methodName + " parentDTOs-----" + parentDTOs);
+
+        var parentDTOs = childDTOMethodParentMethodDTOList.get(repoIndex).get(methodOrder);
 
         if (!parentDTOs.isEmpty()) {
             List<Integer> idss = new ArrayList<>();
 
             for (int i = 0; i < parentDTOs.size(); i++) {
-
-//                System.out.println("dtoNames parent******" + dtoNames.get(parentDTOs.get(i)));
 
                 var parentRepoInd = parentDTOs.get(i);
                 var parentMethodInd = childDTOMethodParentMethodMethodList.get(repoIndex)
@@ -1030,14 +1043,7 @@ public class CacheAspect {
                 var requestParams = childDTOMethodParentMethodRequestParamsList.get(repoIndex)
                         .get(methodOrder).get(i);
 
-//                System.out.println("parentMethodInd+++" + parentMethodInd + " requestParams--" + requestParams);
-
-
                 int type = collectionType.get(parentRepoInd).get(parentMethodInd);
-
-//                System.out.println("dto " + dtoNames.get(parentRepoInd));
-//                System.out.println("@+collectionType.get("+parentRepoInd+").get("+parentMethodInd+") " + type);
-
 
                 Set<Integer> childIds = null;
                 //List<Integer> parentResult = null;
@@ -1050,8 +1056,6 @@ public class CacheAspect {
                                 .get(parentRepoInd)
                                 .get(repoIndex)
                                 .get(parentId);
-
-//                        System.out.println("childIds+++++" + childIds);
 
                         if (i == 0) {
                             idss.addAll(childIds);
@@ -1069,13 +1073,7 @@ public class CacheAspect {
                     }
                     var parentKey = parentJoiner.toString();
 
-
-//                    System.out.println("parent " + dtoNames.get(parentRepoInd) + " parentKey " + parentKey
-//                            + " parentRepoInd " + parentRepoInd + " parentMethodInd " + parentMethodInd);
-
                     var parentResult = mapRepos.get(parentRepoInd).get(parentMethodInd).get(parentKey);
-
-//                    System.out.println("parentResult++++" + parentResult);
 
                     if (type == 0) {
                         var parentId = ((DTO) parentResult).getId();
@@ -1128,28 +1126,6 @@ public class CacheAspect {
                 }
             }
 
-
-
-
-
-
-
-
-//            System.out.println(dtoNames.get(repoIndex) + " TRmethodName----++-+@ " + methodName);
-//            u = 0;
-//            for (var s : mapRepos.get(repoIndex)) {
-//                System.out.println(dtoNames.get(repoIndex)
-//                        + " TR parameters " + (parameters.get(repoIndex).size() > u
-//                        ? Arrays.toString(parameters.get(repoIndex).get(u)) : null)
-//                        + " methodInd " + u + " repoIndex " + repoIndex
-//                        + " ++*-* " + u + " *** " + s);
-//                u++;
-//            }
-
-
-//            System.out.println(dtoNames.get(repoIndex) + " DTOMethodDependentToIndependent.get(repoIndex "
-//                    + DTOMethodDependentToIndependent.get(repoIndex));
-
             int methodIndex = DTOMethodDependentToIndependent.get(repoIndex).get(methodOrder);
             List<Integer> childParamIndexList = null;
 
@@ -1161,21 +1137,32 @@ public class CacheAspect {
             }
             var childKey = joiner.toString();
 
-
-//            System.out.println("mapRepos.get(" + repoIndex+").get("+methodIndex+").get("+childKey+") "
-//            + mapRepos.get(repoIndex).get(methodIndex).get(childKey));
-
             Object childObject = mapRepos.get(repoIndex).get(methodIndex).get(childKey);
+            if (childObject == null) {
 
-//            System.out.println(" childKey*-+* " + childKey + " childObject " + childObject);
+
+                Method method = jpaFindMethods.get(repoIndex).get(methodOrder);
+                System.out.println(" parentRepoInd "
+                        + " repoIndex " +  dtoNames.get(repoIndex)
+                        + " methodOrder " + methodOrder
+                        + " methodName-" + methodName);
+                System.out.println("*-+ " + jpaFindMethods.get(repoIndex));
+
+
+                if (method != null) {
+                    AbstractEntity entity =
+                            (AbstractEntity) method.invoke(jpaRepositories.get(repoIndex), args);
+                    if (entity == null) {
+                        return null;
+                    }
+                    childObject = mapRepositories.get(repoIndex).toDto(entity);
+                } else {
+                    throw new Exception("type == 000");
+                }
+            }
 
             int type = collectionType.get(repoIndex).get(methodIndex);
             int returnType = collectionType.get(repoIndex).get(methodOrder);
-
-//            System.out.println("dto " + dtoNames.get(repoIndex));
-//            System.out.println("type *+collectionType.get("+repoIndex+").get("+methodIndex+") " + type);
-//            System.out.println("returnType *+collectionType.get("+repoIndex+").get("+methodOrder+") " + returnType);
-//            System.out.println("childObject----- " + childObject);
 
             if (returnType == 0) {
                 if (type == 0) {
@@ -1205,21 +1192,6 @@ public class CacheAspect {
             }
         }
 
-
-
-//        u = 0;
-//        for (var s : mapRepos.get(repoIndex)) {
-//            System.out.println(dtoNames.get(repoIndex)
-//                    + " ER parameters " + (parameters.get(repoIndex).size() > u
-//                    ? Arrays.toString(parameters.get(repoIndex).get(u)) : null)
-//                    + " methodInd " + u + " repoIndex " + repoIndex
-//                    + " ++*-* " + u + " *** " + s);
-//            u++;
-//        }
-
-
-
-
         StringJoiner joiner = new StringJoiner("_");
         for (Object arg : args) {
             joiner.add(arg.toString());
@@ -1235,7 +1207,6 @@ public class CacheAspect {
 
             if (type == 0) {
                 Method method = jpaFindMethods.get(repoIndex).get(methodOrder);
-
 
                 if (method != null) {
                     AbstractEntity entity =
@@ -1303,10 +1274,6 @@ public class CacheAspect {
 
     private DTO save(DTO dto, Integer repoIndex)
             throws IllegalAccessException, NoSuchFieldException {
-        //var className = firstLower(obj.getClass().getSimpleName());
-        //EntityMapper mapper = (EntityMapper) context.getBean( className + "MapperImpl");
-        //var returnClass = mapper.getClass().getMethod("toDto", obj.getClass()).getReturnType();
-        //var dto = returnClass.cast(mapper.toDto(obj.getClass().cast(obj)));
 
         int id = dto.getId();
         idMap.get(repoIndex).put(id, dto);
@@ -1328,8 +1295,13 @@ public class CacheAspect {
 //            System.out.println("save new dto " + dto);
 
             var fieldValues = new ArrayList<>();
+            Field idField;
+            if (dto.getClass().getSuperclass().getSuperclass().getSimpleName().equals("DTO")) {
+                idField = dto.getClass().getSuperclass().getSuperclass().getDeclaredField("id");
+            } else {
+                idField = dto.getClass().getSuperclass().getSuperclass().getSuperclass().getDeclaredField("id");
+            }
 
-            var idField = dto.getClass().getSuperclass().getSuperclass().getDeclaredField("id");
             idField.setAccessible(true);
             Integer idValue = (Integer) idField.get(dto);
             idMap.get(repoIndex).put(idValue, dto);
@@ -1595,19 +1567,6 @@ public class CacheAspect {
                 //значения по методу поиска
                 var submap = mapRepos.get(repoIndex).get(methodInd);
 
-//                System.out.println(dtoNames.get(repoIndex) + " _+_+methodInd " + methodInd
-//                        + " mapRepos.get(" + repoIndex+ ") ");
-
-//                int u = 0;
-//                for (var s : mapRepos.get(repoIndex)) {
-//                    System.out.println(dtoNames.get(repoIndex)
-//                            + " parameters " + (parameters.get(repoIndex).size() > u
-//                            ? Arrays.toString(parameters.get(repoIndex).get(u)) : null)
-//                            + " methodInd " + methodInd + " repoIndex " + repoIndex
-//                            + " ++*-* " + u + " *** " + s);
-//                    u++;
-//                }
-
                 //String[] newKeyArr = new String[parameter.length];
                 List<String> newKeyArr = new ArrayList<>();
                 //String[] oldKeyArr = new String[parameter.length];
@@ -1624,7 +1583,13 @@ public class CacheAspect {
                     //индекс измененного поля
 
                     //newKeyArr[j] = dto.getFieldValues().get(fieldInd + 1).toString();
-                    String indStr = dto.getFieldValues().get(fieldInd + 1).toString();
+
+                    Object ind = dto.getFieldValues().get(fieldInd + 1);
+                    String indStr = null;
+                    if (ind != null) {
+                        indStr = ind.toString();
+                    }
+
                     newKeyArr.add(indStr);
 
                     if (fieldsChanged[fieldInd]) {

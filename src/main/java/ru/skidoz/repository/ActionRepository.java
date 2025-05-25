@@ -14,11 +14,9 @@ public interface ActionRepository extends JpaRepository<ActionEntity, Integer> {
 
     Optional<ActionEntity> findById(Integer id);
 
-    ActionEntity findFirstByShopAndTypeAndActiveIsTrue(ShopEntity shop, ActionTypeEnum type);
+    ActionEntity findFirstByShop_IdAndTypeAndActiveIsTrue(Integer shopId, ActionTypeEnum type);
 
-    List<ActionEntity> findAllByShopAndTypeAndActiveIsTrue(ShopEntity shop, ActionTypeEnum type);
+    List<ActionEntity> findAllByShop_IdAndTypeAndActiveIsTrue(Integer shopId, ActionTypeEnum type);
 
-    List<ActionEntity> findAllByShopAndActiveIsTrue(ShopEntity shop);
-
-    ActionEntity save(ActionEntity action);
+    List<ActionEntity> findAllByShop_IdAndActiveIsTrue(Integer shopId);
 }

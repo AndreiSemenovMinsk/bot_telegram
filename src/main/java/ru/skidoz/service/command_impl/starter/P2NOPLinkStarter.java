@@ -26,7 +26,7 @@ public class P2NOPLinkStarter extends LinkStarter {
 
         List<LevelChat> levelChatDTOList = new ArrayList<>(storeRecommendation(buyer, friend, null));
 
-        LevelDTOWrapper friendLevel = initialLevel.convertToLevel(initialLevel.level_P2NOP,//levelRepository.findFirstByUsers_ChatIdAndCallName(chatId, P2NOP.name()),
+        LevelDTOWrapper friendLevel = initialLevel.convertToLevel(initialLevel.level_P2NOP,//levelRepository.findFirstByUser_ChatIdAndCallName(chatId, P2NOP.name()),
                 false,
                 false);
 
@@ -39,7 +39,7 @@ public class P2NOPLinkStarter extends LinkStarter {
         }));
 
         Long buyerChatId = buyer.getChatId();
-        LevelDTOWrapper buyerLevel = initialLevel.convertToLevel(initialLevel.level_P2NOP_RESP,//levelRepository.findFirstByUsers_ChatIdAndCallName(buyerChatId, P2NOP_RESP.name()),
+        LevelDTOWrapper buyerLevel = initialLevel.convertToLevel(initialLevel.level_P2NOP_RESP,//levelRepository.findFirstByUser_ChatIdAndCallName(buyerChatId, P2NOP_RESP.name()),
                 false,
                 false);
 

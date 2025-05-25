@@ -31,7 +31,7 @@ public interface ScheduleBuyerRepository extends JpaRepository<ScheduleBuyerEnti
                             @Param("timeStart") Integer timeStart);
 
     @Modifying
-    @Query(value = "INSERT INTO schedule_buyer SET users_id=:usersId,"+
+    @Query(value = "INSERT INTO schedule_buyer SET user_id=:usersId,"+
         " day=:day, month=:month, year=:year, time_start=:timeStart, " +
         " time_end=(:timeStart + (SELECT duration FROM abstract_group_entity WHERE abstract_group_entity.id=:productId LIMIT 1)), "+
         " product_id=:productId", nativeQuery = true)

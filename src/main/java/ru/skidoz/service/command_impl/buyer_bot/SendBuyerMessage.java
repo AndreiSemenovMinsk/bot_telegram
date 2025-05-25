@@ -17,6 +17,7 @@ import com.google.zxing.WriterException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import ru.skidoz.util.TelegramElementsUtil;
 
 /**
  * @author andrey.semenov
@@ -29,7 +30,7 @@ public class SendBuyerMessage implements Command {
     @Autowired
     private ShopCacheRepository shopCacheRepository;
     @Autowired
-    private TelegramProcessor telegramProcessor;
+    private TelegramElementsUtil telegramElementsUtil;
 
     @Override
     public List<LevelChat> runCommand(Update update, Level buyerLevel, User users) throws IOException, WriterException {
@@ -53,7 +54,7 @@ public class SendBuyerMessage implements Command {
             //Level shopLevel = initialLevel.level0_1_5;
             //TODO - это надо отправить
             try {
-                shopLevel.addMessage(telegramProcessor.convertUpdateToMessage(update, users));
+                shopLevel.addMessage(telegramElementsUtil.convertUpdateToMessage(update, users));
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (UnirestException e) {

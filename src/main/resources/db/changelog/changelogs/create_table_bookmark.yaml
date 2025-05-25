@@ -48,10 +48,10 @@ databaseChangeLog:
                     foreignKeyName: fk_shop_id
                     references: shop(id)
               - column:
-                  name: users_id
+                  name: user_id
                   type: int(11)
                   constraints:
                     nullable: false
-                    foreignKeyName: fk_users_id
+                    foreignKeyName: fk_user_id
                     references: users(id)
             tableName: bookmark

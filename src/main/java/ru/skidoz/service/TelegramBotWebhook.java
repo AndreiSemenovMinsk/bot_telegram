@@ -47,7 +47,7 @@ import org.telegram.telegrambots.meta.api.objects.webapp.WebAppInfo;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import static ru.skidoz.model.entity.category.LanguageEnum.RU;
-import static ru.skidoz.service.TelegramProcessor.qrInputStream;
+import static ru.skidoz.util.TelegramElementsUtil.qrInputStream;
 
 
 /**

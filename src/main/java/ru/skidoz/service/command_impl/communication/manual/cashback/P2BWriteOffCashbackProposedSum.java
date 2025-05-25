@@ -67,8 +67,6 @@ public class P2BWriteOffCashbackProposedSum implements Command {
     private PurchaseCacheRepository purchaseCacheRepository;
     @Autowired
     private InitialLevel initialLevel;
-    @Autowired
-    private TelegramProcessor telegramProcessor;
 
     //@Transactional
     @Override
@@ -248,7 +246,7 @@ public class P2BWriteOffCashbackProposedSum implements Command {
                     System.out.println("3 freeLimit********" + freeLimit);
 
 
-                    BigDecimal sum = calculator.purchaseSumByUsersAndShopAndAction_Type(users.getId(), partnerShop, ActionTypeEnum.BASIC_MANUAL);
+                    BigDecimal sum = calculator.purchaseSumByUserAndShopAndAction_Type(users.getId(), partnerShop, ActionTypeEnum.BASIC_MANUAL);
 
                     System.out.println("4 proposedSum BASIC_MANUAL**********" + sum);
 
@@ -257,7 +255,7 @@ public class P2BWriteOffCashbackProposedSum implements Command {
                         Action actionPartnerBasicDefault = actionCacheRepository.findFirstByShopAndTypeAndActiveIsTrue(partnerShop, ActionTypeEnum.BASIC_DEFAULT);
 //            List<Cashback> cashbackPartnerList = cashbackRepository.findAllByUserAndAction(friend, actionPartnerBasicDefault);
 //            BigDecimal sum = cashbackPartnerList.stream().map(cashback -> cashback.getPurchase().getSum()).reduce(BigDecimal.ZERO, BigDecimal::add);
-                        BigDecimal totalSum = calculator.purchaseSumByUsersAndShopAndAction_Type(users.getId(), partnerShop, ActionTypeEnum.BASIC_DEFAULT);
+                        BigDecimal totalSum = calculator.purchaseSumByUserAndShopAndAction_Type(users.getId(), partnerShop, ActionTypeEnum.BASIC_DEFAULT);
 
                         int ratePartnerDefault = getRate(
                                 totalSum,
@@ -339,7 +337,7 @@ public class P2BWriteOffCashbackProposedSum implements Command {
 
                                 userSum = userSum.add(shopUserSum.get(shop));
                             } else {
-                                BigDecimal sum = calculator.purchaseSumByUsersAndShopAndAction_Type(users.getId(), shop.getId(), ActionTypeEnum.BASIC_MANUAL);
+                                BigDecimal sum = calculator.purchaseSumByUserAndShopAndAction_Type(users.getId(), shop.getId(), ActionTypeEnum.BASIC_MANUAL);
 
 
                                 System.out.println("7 BASIC_MANUAL********" + sum);
@@ -349,7 +347,7 @@ public class P2BWriteOffCashbackProposedSum implements Command {
 
 
                                     Action actionPartnerBasicDefault = actionCacheRepository.findFirstByShopAndTypeAndActiveIsTrue(shop.getId(), ActionTypeEnum.BASIC_DEFAULT);
-                                    sum = calculator.purchaseSumByUsersAndShopAndAction_Type(users.getId(), shop.getId(), ActionTypeEnum.BASIC_DEFAULT);
+                                    sum = calculator.purchaseSumByUserAndShopAndAction_Type(users.getId(), shop.getId(), ActionTypeEnum.BASIC_DEFAULT);
 
 
                                     System.out.println("8 BASIC_DEFAULT********" + sum);

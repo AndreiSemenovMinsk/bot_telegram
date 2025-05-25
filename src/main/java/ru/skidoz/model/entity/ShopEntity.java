@@ -25,7 +25,7 @@ import lombok.Data;
                 @UniqueConstraint(name = "UC_SHOP_COL_LOGIN", columnNames = {"login"})},
         indexes = {
                 //@Index(name = "IDX_SHOP_COL_ID", columnList = "id"),
-                @Index(name = "IDX_SHOP_NAME_USER", columnList = "admin_users_id,name"),
+                @Index(name = "IDX_SHOP_NAME_USER", columnList = "admin_user_id,name"),
                 @Index(name = "IDX_SHOP_NAME", columnList = "name"),
                 @Index(name = "IDX_SHOP_LAT", columnList = "lat"),
                 @Index(name = "IDX_SHOP_LNG", columnList = "lng")})
@@ -46,17 +46,17 @@ public class ShopEntity extends AbstractEntity  implements Serializable {
 
     private Integer currentChargeAction;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private ShopEntity currentConversationShop;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private ShopGroupEntity currentConversationShopGroup;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private PrdEntity currentCreatingProduct;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private ActionEntity currentCreatingAction;
 
     @NotNull
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private UserEntity adminUser;
 
     /*@ManyToMany(cascade = {
@@ -64,7 +64,7 @@ public class ShopEntity extends AbstractEntity  implements Serializable {
     })
     @JoinTable(name = "users_shop_set",
             joinColumns = @JoinColumn(name = "shop_id"),
-            inverseJoinColumns = @JoinColumn(name = "admin_users_id")
+            inverseJoinColumns = @JoinColumn(name = "admin_user_id")
     )*/
     @OneToMany(mappedBy="sellerShop")
     private List<UserEntity> sellerSet = new ArrayList<>();

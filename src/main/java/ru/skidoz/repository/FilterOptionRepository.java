@@ -11,9 +11,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface FilterOptionRepository extends JpaRepository<FilterOptionEntity, Integer> {
 
-    FilterOptionEntity findByFilterPointAndName(FilterPointEntity filterPoint, String name);
+    FilterOptionEntity findByFilterPoint_IdAndName(Integer filterPointId, String name);
 
-    List<FilterOptionEntity> findAllByFilterPoint(FilterPointEntity filterPoint);
+    List<FilterOptionEntity> findAllByFilterPoint_Id(Integer filterPointId);
 
     FilterOptionEntity save(FilterOptionEntity filterOption);
 }

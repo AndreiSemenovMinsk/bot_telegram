@@ -3,10 +3,6 @@ package ru.skidoz.service.batch;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.batch.core.StepContribution;
-import org.springframework.batch.core.scope.context.ChunkContext;
-import org.springframework.batch.core.step.tasklet.Tasklet;
-import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.skidoz.aop.repo.ShopCacheRepository;
@@ -28,8 +24,7 @@ public class ShopSearchTasklet implements Tasklet {
 
 
     @Override
-    public RepeatStatus execute(StepContribution stepContribution,
-                                ChunkContext chunkContext) {
+    public void execute() {
 
         System.out.println("----------------------------------CacheSearchTasklet start--------------------------------------");
 
@@ -40,8 +35,6 @@ public class ShopSearchTasklet implements Tasklet {
         ShopSearchHandler.wordPhraseList = TextParser.init(ShopSearchHandler.pairs, ShopSearchHandler.parts);
 
         System.out.println("----------------------------------CacheSearchTasklet finish--------------------------------------");
-
-        return RepeatStatus.FINISHED;
     }
 
 

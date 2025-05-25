@@ -31,10 +31,6 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.springframework.batch.core.StepContribution;
-import org.springframework.batch.core.scope.context.ChunkContext;
-import org.springframework.batch.core.step.tasklet.Tasklet;
-import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
@@ -62,11 +58,10 @@ public class CategoryOptionsTasklet implements Tasklet {
     @Autowired
     private Exceler exceler;
 
-    private static final String MANAGEMENT_FILE = "static/fold/components/Book.xlsx";
+    private static final String MANAGEMENT_FILE = "Book.xlsx";
 
     @Override
-    public RepeatStatus execute(StepContribution stepContribution,
-                                ChunkContext chunkContext) {
+    public void execute() {
 
         System.out.println("+++++++++++++++++++++++++++++++++++++++++++CategoryOptionsTasklet+++++++++++++++++++++++++++++");
 
@@ -115,20 +110,27 @@ public class CategoryOptionsTasklet implements Tasklet {
                             continue;
                         }
 
+                        System.out.println("@-+0 " + sheet.getRow(i).getCell(0));
+                        System.out.println("@-+1 " + sheet.getRow(i).getCell(2));
+                        System.out.println("@-+2 " + sheet.getRow(i).getCell(4));
+
                         if (sheet.getRow(i).getCell(0) != null
-                                && !sheet.getRow(i).getCell(0).toString().equals("")) {
+                                && !sheet.getRow(i).getCell(0).toString().isEmpty()) {
 
                             String categorySuperGroupAlias = sheet.getRow(i).getCell(0).toString();
                             categorySuperGroup = categorySuperGroupCacheRepository.findByAlias(categorySuperGroupAlias);
 
                         } else if (sheet.getRow(i).getCell(2) != null
-                                && !sheet.getRow(i).getCell(2).toString().equals("")) {
+                                && !sheet.getRow(i).getCell(2).toString().isEmpty()) {
 
                             String categoryGroupAlias = sheet.getRow(i).getCell(2).toString();
+
+                            System.out.println("categoryGroupAlias--- " + categoryGroupAlias);
+
                             categoryGroup = categoryGroupCacheRepository.findByAliasAndCategorySuperGroup(categoryGroupAlias, categorySuperGroup.getId());
 
                         } else if (sheet.getRow(i).getCell(4) != null
-                                && !sheet.getRow(i).getCell(4).toString().equals("")) {
+                                && !sheet.getRow(i).getCell(4).toString().isEmpty()) {
 
                             String categoryAlias = sheet.getRow(i).getCell(4).toString();
 
@@ -161,7 +163,7 @@ public class CategoryOptionsTasklet implements Tasklet {
 
                                     Set<String> newFilterOptionSet = new HashSet<>();
 
-                                    FilterPoint filterPoint = filterPointCacheRepository.findByCategoryAndNameRu(
+                                    FilterPoint filterPoint = filterPointCacheRepository.findByCategoryAndNameRU(
                                             categoryEntry.getId(),
                                             //language,
                                             excelPointName);
@@ -350,6 +352,5 @@ public class CategoryOptionsTasklet implements Tasklet {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return RepeatStatus.FINISHED;
     }
 }

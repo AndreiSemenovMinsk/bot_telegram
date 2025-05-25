@@ -11,13 +11,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface BasketProductRepository extends JpaRepository<BasketProductEntity, Integer> {
 
-    List<BasketProductEntity> findAllByBasket(BasketEntity basket);
+    List<BasketProductEntity> findAllByBasket_Id(Integer basketId);
 
-    List<BasketProductEntity> findAllByBasketId(Integer basketId);
+    List<BasketProductEntity> findAllByProduct_Id(Integer productId);
 
-    List<BasketProductEntity> findAllByProduct(PrdEntity product);
-
-    List<BasketProductEntity> findAllByBasket_User_IdAndBasket_Shop_Id(Integer/*Users*/ buyerId, Integer/*Shop*/ shopId);
-
-    BasketProductEntity save(BasketProductEntity basketProduct);
+    List<BasketProductEntity> findAllByBasket_User_IdAndBasket_Shop_Id(Integer buyerId, Integer shopId);
 }

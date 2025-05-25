@@ -50,7 +50,7 @@ public class Bookmarks implements Command {
 
             if (update.getCallbackQuery().getData().length() == 19) {
 
-                Level userLevel = levelCacheRepository.findFirstByUsers_ChatIdAndCallName(users.getChatId(), BOOKMARKS.name());
+                Level userLevel = levelCacheRepository.findFirstByUser_ChatIdAndCallName(users.getChatId(), BOOKMARKS.name());
 
                 LevelDTOWrapper resultLevel = initialLevel.convertToLevel(userLevel,
                         true,

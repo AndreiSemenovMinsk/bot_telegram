@@ -50,7 +50,7 @@ databaseChangeLog:
                   type: int(11)
                   constraints:
                     nullable: false
-                    foreignKeyName: fk_users_id
+                    foreignKeyName: fk_user_id
                     references: users(id)
             tableName: cashback
         - createIndex:
@@ -58,7 +58,7 @@ databaseChangeLog:
             columns:
               - column:
                   descending:  true
-                  name:  users_id
+                  name:  user_id
               - column:
                   descending:  true
                   name:  shop_id

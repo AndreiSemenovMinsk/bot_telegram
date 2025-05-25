@@ -44,13 +44,18 @@
         <!--<dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-batch</artifactId>
-            <version>3.4.1</version>
+            <version>3.4.5</version>
         </dependency>-->
-        <dependency>
+        <!--<dependency>
             <groupId>org.springframework.batch</groupId>
             <artifactId>spring-batch-core</artifactId>
-            <version>4.3.9</version> <!-- Убедитесь, что используете актуальную версию -->
-        </dependency>
+            <version>5.1.1</version> &lt;!&ndash; or latest 5.x &ndash;&gt;
+        </dependency>-->
+        <!--<dependency>
+            <groupId>org.springframework.batch</groupId>
+            <artifactId>spring-batch-core</artifactId>
+            <version>4.3.9</version> &lt;!&ndash; Убедитесь, что используете актуальную версию &ndash;&gt;
+        </dependency>-->
 
         <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
         <dependency>

@@ -107,7 +107,7 @@ public class UserEntity extends AbstractEntity {
     @OneToMany(mappedBy="friend")
     private List<RecommendationEntity> takenRecommendationList = new ArrayList<>();
 
-    @OneToMany(mappedBy="users")
+    @OneToMany(mappedBy="user")
     //@LazyCollection(LazyCollectionOption.FALSE)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private List<BuyerBotEntity> buyerBotList = new ArrayList<>();
@@ -126,19 +126,19 @@ public class UserEntity extends AbstractEntity {
     @OneToMany(mappedBy="buyer")
     private List<PurchaseEntity> purchaseList = new ArrayList<>();
 
-    @OneToMany(mappedBy="users")
+    @OneToMany(mappedBy="user")
     private List<BasketEntity> basketList = new ArrayList<>();
 
-    @OneToMany(mappedBy="users")
+    @OneToMany(mappedBy="user")
     private List<BookmarkEntity> bookmarksList = new ArrayList<>();
 
-    @OneToMany(mappedBy="users")
+    @OneToMany(mappedBy="user")
     private List<CashbackEntity> cashbackList = new ArrayList<>();
 
-    @OneToMany(mappedBy="users")
+    @OneToMany(mappedBy="user")
     private List<CashbackWriteOffEntity> cashbackWriteOffList = new ArrayList<>();
 
-    @OneToMany(mappedBy="users")
+    @OneToMany(mappedBy= "user")
     private List<ScheduleBuyerEntity> scheduleBuyerList = new ArrayList<>();
 /*
     @OneToMany(mappedBy="currentConversationUser")
@@ -159,7 +159,7 @@ public class UserEntity extends AbstractEntity {
     private MessageEntity currentChangingMessage;
 
 
-    @OneToMany(mappedBy = "users", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private List<LevelEntity> levels = new ArrayList<>();
 /*
@@ -231,7 +231,7 @@ public class UserEntity extends AbstractEntity {
 
     @Override
     public String toString() {
-        return "Users{" +
+        return "User{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", login=" + login +
@@ -248,18 +248,18 @@ public class UserEntity extends AbstractEntity {
     @Override
     public boolean equals(Object o) {
 
-        System.out.println("(o instanceof Users)+++++++"+(o instanceof UserEntity));
+        System.out.println("(o instanceof User)+++++++"+(o instanceof UserEntity));
         System.out.println("super.equals(o)+++++++++++"+super.equals(o));
 
         if (this == o) return true;
         if (!(o instanceof UserEntity)) return false;
         if (!super.equals(o)) return false;
-        UserEntity users = (UserEntity) o;
+        UserEntity user = (UserEntity) o;
 
-        System.out.println("super.id+++" + super.id + "+++++users.getId()+" + users.getId());
-        System.out.println(super.id.equals(users.getId()));
+        System.out.println("super.id+++" + super.id + "+++++user.getId()+" + user.getId());
+        System.out.println(super.id.equals(user.getId()));
 
-        return super.id.equals(users.getId());
+        return super.id.equals(user.getId());
     }
 
     @Override

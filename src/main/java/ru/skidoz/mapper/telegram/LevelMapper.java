@@ -15,7 +15,7 @@ public abstract class LevelMapper extends EntityMapper<Level, LevelEntity> {
     @Mapping(target = "usersWithCurrentLevelBeforeInterruptionList", ignore = true)
     @Mapping(target = "messages", ignore = true)
     @Mapping(target = "buttonRows", ignore = true)
-    @Mapping(source = "users.id", target = "userId")
+    @Mapping(source = "user.id", target = "userId")
     @Mapping(source = "bot.id", target = "bot")
     public abstract Level toDto(LevelEntity entity);
 

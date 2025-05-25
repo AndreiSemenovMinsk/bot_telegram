@@ -11,7 +11,7 @@ databaseChangeLog:
                   autoIncrement: true
                   constraints:
                     primaryKey: true
-                    primaryKeyName: bot_pk
+                    primaryKeyName: buyer_bot_pk
                     nullable: false
               - column:
                   name: time
@@ -19,57 +19,30 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: name
-                  type: varchar(255)
-              - column:
-                  name: initial_level
+                  name: bot_id
                   type: int(11)
                   constraints:
                     nullable: false
-                    foreignKeyName: fk_initial_level
-                    references: level(id)
+                    foreignKeyName: fk_bot_id
+                    references: bot(id)
               - column:
-                  name: shop_id
+                  name: user_id
                   type: int(11)
                   constraints:
                     nullable: false
-                    foreignKeyName: fk_shop_id
-                    references: shop(id)
-            tableName: bot
-        -  addForeignKeyConstraint:
-             baseColumnNames:  bot_id
-             #             baseTableCatalogName:  cat
-             baseTableName:  level
-             baseTableSchemaName:  public
-             constraintName:  fk_bot_id
-             deferrable:  true
-             initiallyDeferred:  true
-             onDelete:  CASCADE
-             onUpdate:  RESTRICT
-             referencedColumnNames:  id
-             #             referencedTableCatalogName:  cat
-             referencedTableName:  bot
-             referencedTableSchemaName:  public
-             validate:  true
-        -  addForeignKeyConstraint:
-             baseColumnNames:  bot_id
-             #             baseTableCatalogName:  cat
-             baseTableName:  shop
-             baseTableSchemaName:  public
-             constraintName:  fk_bot_id
-             deferrable:  true
-             initiallyDeferred:  true
-             onDelete:  CASCADE
-             onUpdate:  RESTRICT
-             referencedColumnNames:  id
-             #             referencedTableCatalogName:  cat
-             referencedTableName:  bot
-             referencedTableSchemaName:  public
-             validate:  true
-
-
-
-             constraints:
-               nullable: true
-               foreignKeyName: fk_bot_id
-               references: bot(id)
+                    foreignKeyName: fk_user_id
+                    references: users(id)
+            tableName: buyer_bot
+        - createIndex:
+            #            clustered:  true
+            columns:
+              - column:
+                  descending:  true
+                  name:  user_id
+              - column:
+                  descending:  true
+                  name:  bot_id
+            indexName:  IDX_BUYER_BOT_COL_USER_BOT
+            schemaName:  public
+            tableName:  buyer_bot
+            unique:  true

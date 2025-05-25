@@ -14,7 +14,7 @@ public interface BuyerBotMessageRepository extends JpaRepository<BuyerBotMessage
 
     Optional<BuyerBotMessageEntity> findById(Integer id);
 
-    List<BuyerBotMessageEntity> findByBuyerBot_BotAndBuyerBot_Users(BotEntity buyerBot_bot, UserEntity buyerBot_buyer);
+    List<BuyerBotMessageEntity> findByBuyerBot_BotAndBuyerBot_User(BotEntity buyerBot_bot, UserEntity buyerBot_buyer);
 
     BuyerBotMessageEntity save(BuyerBotMessageEntity buyerBotMessage);
 }

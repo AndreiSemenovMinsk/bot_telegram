@@ -141,7 +141,7 @@ public class ConstructSetMinBillShare implements Command {
 
 
 
-        if (levelCacheRepository.findFirstByUsers_ChatIdAndCallName(users.getChatId(), ADMIN_SHOPS.name()) == null) {
+        if (levelCacheRepository.findFirstByUser_ChatIdAndCallName(users.getChatId(), ADMIN_SHOPS.name()) == null) {
             Level adminShopLevel = initialLevel.cloneLevel(initialLevel.level_ADMIN_SHOPS, users);//levelRepository.findFirstByUserAndCallName(Users, initialLevel.level_BASKET.getCallName()).clone(users);
 
             System.out.println("adminShopLevel*" + adminShopLevel);

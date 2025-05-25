@@ -14,7 +14,9 @@ public interface LevelCacheRepository extends JpaRepositoryTest<Level, Integer> 
 
     Level findFirstBySourceIsMessageIsTrueAndParentLevel_Id(Integer parentLevelId);
 
-    Level findFirstByUsers_ChatIdAndCallName(Long chatId, String callName);
+    Level findFirstByUser_ChatIdAndCallName(Long chatId, String callName);
+
+    Level findByParentLevelIdAndCallName(Integer parentLevelId, String callName);
 
     Level getChildLevel(Integer parentLevelId, String callName);
 

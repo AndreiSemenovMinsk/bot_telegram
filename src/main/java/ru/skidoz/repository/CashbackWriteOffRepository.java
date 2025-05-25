@@ -15,11 +15,11 @@ public interface CashbackWriteOffRepository extends JpaRepository<CashbackWriteO
 
     List<CashbackWriteOffEntity> findAllByUserIdAndApprovedIsFalse(Integer id);
 
-    CashbackWriteOffEntity findAllByUsersAndShopAndApprovedIsFalse(UserEntity buyer, ShopEntity shop);
+    CashbackWriteOffEntity findAllByUserAndShopAndApprovedIsFalse(UserEntity buyer, ShopEntity shop);
 
     Optional<CashbackWriteOffEntity> findById(Integer id);
 
-    CashbackWriteOffEntity findByShopAndUsersAndApprovedFalse(ShopEntity shop, UserEntity buyer);
+    CashbackWriteOffEntity findByShopAndUserAndApprovedFalse(ShopEntity shop, UserEntity buyer);
 
     List<CashbackWriteOffEntity> findAllByUser_Id(Integer/*Users*/ buyer);
 

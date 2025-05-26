@@ -111,14 +111,17 @@ public class CategoryOptionsTasklet implements Tasklet {
                         }
 
                         System.out.println("@-+0 " + sheet.getRow(i).getCell(0));
-                        System.out.println("@-+1 " + sheet.getRow(i).getCell(2));
-                        System.out.println("@-+2 " + sheet.getRow(i).getCell(4));
+                        System.out.println("@-+2 " + sheet.getRow(i).getCell(2));
+                        System.out.println("@-+4 " + sheet.getRow(i).getCell(4));
 
                         if (sheet.getRow(i).getCell(0) != null
                                 && !sheet.getRow(i).getCell(0).toString().isEmpty()) {
 
                             String categorySuperGroupAlias = sheet.getRow(i).getCell(0).toString();
                             categorySuperGroup = categorySuperGroupCacheRepository.findByAlias(categorySuperGroupAlias);
+
+
+                            System.out.println(categorySuperGroup + " @categorySuperGroupAlias--- " + categorySuperGroupAlias);
 
                         } else if (sheet.getRow(i).getCell(2) != null
                                 && !sheet.getRow(i).getCell(2).toString().isEmpty()) {

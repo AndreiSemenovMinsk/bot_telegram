@@ -71,14 +71,13 @@ public class InitialExcelMenu {
                     for (int i = 0; i < rows; i++) {
 
                         if (sheet.getRow(i) == null) {
-//                        System.out.println("continue i+++" + i);
                             continue;
                         }
 
                         int columns = sheet.getRow(i).getLastCellNum();
 
 
-                        System.out.println("****+_=-="+sheet.getRow(i).getCell(0));
+                        System.out.println("*" + i + "****+_=-="+sheet.getRow(i).getCell(0));
 
 
                         if (sheet.getRow(i).getCell(0) != null
@@ -89,7 +88,8 @@ public class InitialExcelMenu {
 
                             categorySuperGroup = categorySuperGroupCacheRepository.findByAlias(categorySuperGroupAlias);
 
-                            System.out.println(categorySuperGroupAlias + " categorySuperGroupAlias+++++++++++ categorySuperGroup   " + categorySuperGroup);
+                            System.out.println(categorySuperGroupAlias + " categorySuperGroupAlias+++++++++++ categorySuperGroup   "
+                                    + categorySuperGroup);
 
                             if (categorySuperGroup == null) {
                                 categorySuperGroup = new CategorySuperGroup(e -> {
@@ -99,6 +99,15 @@ public class InitialExcelMenu {
                             categorySuperGroup.addName(categorySuperGroupName, language);
 
                             categorySuperGroupCacheRepository.save(categorySuperGroup);
+
+
+                            CategorySuperGroup byAlias = categorySuperGroupCacheRepository
+                                    .findByAlias(categorySuperGroupAlias);
+
+                            System.out.println(categorySuperGroupAlias + " find@*-+- " + byAlias);
+                            if (byAlias == null) {
+                                System.exit(123);
+                            }
 
                         } else if (columns > 2
                                 && sheet.getRow(i).getCell(2) != null

@@ -416,12 +416,10 @@ public class CacheAspect {
             List<Integer> childDTOFieldParentFieldDTO = new ArrayList<>();
             List<Integer> childDTOFieldParentField = new ArrayList<>();
 
-            Field[] declaredFields = null;
-
-
-            declaredFields = ArrayUtils.addAll(
+            Field[] declaredFields = ArrayUtils.addAll(
                     dtoTypes.get(repoIndex).getDeclaredFields(),
                     dtoTypes.get(repoIndex).getSuperclass().getDeclaredFields());
+            declaredFieldsDTO[repoIndex] = declaredFields;
 
             dtoSuperclassFieldStart.add(dtoTypes.get(repoIndex).getDeclaredFields().length);
 
@@ -706,6 +704,11 @@ public class CacheAspect {
 
                         parameterDTOFieldInds.get(childInd).add(childFieldsArr);
                         parameters.get(childInd).add(fieldNames);
+
+
+                        System.out.println(709 + " @" + dtoNames.get(childInd)
+                                + " " + Arrays.toString(fieldNames));
+
                         mapRepos.get(childInd).add(new ConcurrentHashMap<>());
                         collectionType.get(childInd).add(1);
 
@@ -772,6 +775,10 @@ public class CacheAspect {
                             }
 
                             parameterDTOFieldInds.get(parentInd).add(parentFieldsArr);
+
+                            System.out.println(774 + " @" + dtoNames.get(parentInd)
+                                    + " " + Arrays.toString(fieldNames));
+
                             parameters.get(parentInd).add(fieldNames);
                             mapRepos.get(parentInd).add(new ConcurrentHashMap<>());
                             collectionType.get(parentInd).add(1);
@@ -900,6 +907,9 @@ public class CacheAspect {
         }
 
         parameters.get(repoIndex).add(fieldsLower);
+
+        System.out.println(911 + " @" + dtoNames.get(repoIndex)
+                + " " + Arrays.toString(fieldsLower));
 
         parameterDTOFieldInds.get(repoIndex).add(paramFieldIndex);
 
@@ -1300,13 +1310,7 @@ public class CacheAspect {
             int fieldIndex = 0;
             for (var fieldName : dtoFieldNames.get(repoIndex)) {
 
-                Field field = null;
-                if (dtoSuperclassFieldStart.get(repoIndex) >= fieldIndex) {
-                    field = dto.getClass().getSuperclass().getDeclaredField(fieldName);
-                } else {
-                    field = dto.getClass().getDeclaredField(fieldName);
-                }
-                field.setAccessible(true);
+                Field field = getField(dto, repoIndex, fieldIndex, fieldName);
 
                 var fieldValue = field.get(dto);
                 fieldValues.add(fieldValue);
@@ -1345,19 +1349,20 @@ public class CacheAspect {
             for (int i = 0; i < parameters.get(repoIndex).size(); i++) {
 
                 var parameter = parameters.get(repoIndex).get(i);
+                var paramFieldInd = parameterDTOFieldInds.get(repoIndex).get(i);
                 var submap = mapRepos.get(repoIndex).get(i);
 
+                System.out.println(dtoNames.get(repoIndex) + " parameters-----" + Arrays.toString(parameter));
+
                 List<String> newKeyArr = new ArrayList<>();//String[parameter.length];
+                int paramIndex = 0;
                 for (String param : parameter) {
                     if (param != null && !param.equals("id")) {
 
-                        Field field = null;
-                        if (dtoSuperclassFieldStart.get(repoIndex) >= fieldIndex) {
-                            field = dto.getClass().getSuperclass().getDeclaredField(param);
-                        } else {
-                            field = dto.getClass().getDeclaredField(param);
-                        }
-                        field.setAccessible(true);
+                        System.out.println(dtoNames.get(repoIndex) + " " +
+                                paramFieldInd[paramIndex] + " --*@ " + param);
+
+                        Field field = getField(dto, repoIndex, paramFieldInd[paramIndex], param);
 
                         var newFieldValue = field.get(dto);
                         if (newFieldValue == null) {
@@ -1366,6 +1371,7 @@ public class CacheAspect {
                             newKeyArr.add(newFieldValue.toString());
                         }
                     }
+                    paramIndex++;
                 }
 
                 String newKey = String.join("_", newKeyArr);
@@ -1426,13 +1432,7 @@ public class CacheAspect {
                     for (var dependentId : dependentIds) {
                         DTO childDto = idMap.get(childInd).get(dependentId);
 
-                        Field field = null;
-                        if (dtoSuperclassFieldStart.get(repoIndex) >= fieldIndex) {
-                            field = childDto.getClass().getSuperclass().getDeclaredField(fieldName);
-                        } else {
-                            field = childDto.getClass().getDeclaredField(fieldName);
-                        }
-                        field.setAccessible(true);
+                        Field field = getField(childDto, childInd, fieldIndex, fieldName);
 
                         field.set(childDto, newFieldIdValue);
                     }
@@ -1499,14 +1499,7 @@ public class CacheAspect {
 
                 var fieldName = dtoFields[fieldIndex];
 
-                Field field = null;
-                if (dtoSuperclassFieldStart.get(repoIndex) >= fieldIndex) {
-                    field = dto.getClass().getSuperclass().getDeclaredField(fieldName);
-                } else {
-                    field = dto.getClass().getDeclaredField(fieldName);
-                }
-                field.setAccessible(true);
-
+                Field field = getField(dto, repoIndex, fieldIndex, fieldName);
 
                 var newFieldValue = field.get(dto);
                 var oldValue = dto.getFieldValues().get(fieldIndex + 1);
@@ -1655,14 +1648,7 @@ public class CacheAspect {
 
         for (int i = 0; i < repoFieldCollectionNames.length; i++) {
 
-            Field field = null;
-            if (dtoSuperclassFieldStart.get(repoIndex) >= i) {
-                field = dto.getClass().getSuperclass().getDeclaredField(repoFieldCollectionNames[i]);
-            } else {
-                field = dto.getClass().getDeclaredField(repoFieldCollectionNames[i]);
-            }
-            field.setAccessible(true);
-
+            Field field = getField(dto, repoIndex, i, repoFieldCollectionNames[i]);
 
             List<DTO> fieldValues = (List<DTO>) field.get(dto);
             int childDTOIndex = dtoFieldCollectionOrder.get(repoIndex)[i];
@@ -1713,6 +1699,24 @@ public class CacheAspect {
         char c[] = s.toCharArray();
         c[0] = Character.toLowerCase(c[0]);
         return new String(c);
+    }
+
+
+    private Field getField(DTO dto, int repoIndex, int fieldIndex, String fieldName) throws NoSuchFieldException {
+        Field field;
+        if (dtoSuperclassFieldStart.get(repoIndex) <= fieldIndex) {
+            System.out.println(dtoSuperclassFieldStart.get(repoIndex) +">="
+                    + fieldIndex + " -- " + fieldName);
+
+            for (Field declaredField : dto.getClass().getSuperclass().getDeclaredFields()) {
+                System.out.println("super@ " + declaredField.getName());
+            }
+            field = dto.getClass().getSuperclass().getDeclaredField(fieldName);
+        } else {
+            field = dto.getClass().getDeclaredField(fieldName);
+        }
+        field.setAccessible(true);
+        return field;
     }
 
     private void processParentDTO() {

@@ -5,9 +5,6 @@ import java.math.BigDecimal;
 import java.util.Iterator;
 import java.util.Objects;
 
-//
-
-
 import ru.skidoz.model.entity.category.LanguageEnum;
 import ru.skidoz.model.pojo.category.Category;
 import ru.skidoz.model.pojo.category.CategoryGroup;
@@ -40,7 +37,7 @@ public class InitialExcelMenu {
     @Autowired
     private FilterOptionCacheRepository filterOptionCacheRepository;
 
-    private static final String MANAGEMENT_FILE = "Book.xlsx";
+    private static final String MANAGEMENT_FILE = "static/Book.xlsx";
 
     //@Transactional
     public void execute() {

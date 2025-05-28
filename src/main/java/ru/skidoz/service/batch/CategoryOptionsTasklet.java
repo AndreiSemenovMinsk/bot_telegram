@@ -58,7 +58,7 @@ public class CategoryOptionsTasklet implements Tasklet {
     @Autowired
     private Exceler exceler;
 
-    private static final String MANAGEMENT_FILE = "Book.xlsx";
+    private static final String MANAGEMENT_FILE = "static/Book.xlsx";
 
     @Override
     public void execute() {
@@ -106,7 +106,6 @@ public class CategoryOptionsTasklet implements Tasklet {
                     for (int i = 0; i < rows; i++) {
 
                         if (sheet.getRow(i) == null) {
-//                            System.out.println("continue i+++" + i);
                             continue;
                         }
 

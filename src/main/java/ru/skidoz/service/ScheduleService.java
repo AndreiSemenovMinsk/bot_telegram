@@ -91,7 +91,7 @@ public class ScheduleService {
         String simpleName = cache.getClass().getSimpleName();
         System.out.println("simpleName " + simpleName);
 
-        Integer repoIndex = cacheAspect.repos.get(simpleName);
+        int repoIndex = cacheAspect.repos.get(simpleName);
         ConcurrentHashMap<Integer, DTO> newDTOs = cacheAspect.idNewMap.get(repoIndex);
 
         int size = newDTOs.size();

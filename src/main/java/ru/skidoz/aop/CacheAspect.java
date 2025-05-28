@@ -253,7 +253,7 @@ public class CacheAspect {
                                     .replaceAll("_Id", "")
                                     .replaceAll("Entity", "");
 
-                                System.out.println(declaredMethod.getName() + "---*)*)*)*)---" + methodName);
+                                //System.out.println(declaredMethod.getName() + "---*)*)*)*)---" + methodName);
 
                                 String hash = methodName + ":" +
                                         Arrays.stream(declaredMethod.getParameters())
@@ -521,13 +521,9 @@ public class CacheAspect {
 
                 String hash = hashes.get(hashInd);
 
-                System.out.println("_+__+_+" + dtoNames.get(repoIndex) + "." + findMethodName);
-                System.out.println(hash + "++hashes+++" + jpaMethods.get(repoIndex).get(hash));
-                System.out.println("*** " + jpaMethods.get(repoIndex));
-                System.out.println(jpaMethods.get(repoIndex).containsKey(hash));
-
-                jpaMethods.get(repoIndex).keySet()
-                        .forEach(k -> System.out.println("*" + k + "*--" + k.equals(hash)));
+//                System.out.println("_+__+_+" + dtoNames.get(repoIndex) + "." + findMethodName);
+//                System.out.println(hash + "++hashes+++" + jpaMethods.get(repoIndex).get(hash));
+//                System.out.println(jpaMethods.get(repoIndex).containsKey(hash));
 
                 jpaMethod = jpaMethods.get(repoIndex).get(hash);
                 hashInd++;

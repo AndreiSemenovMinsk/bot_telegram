@@ -28,7 +28,6 @@ import ru.skidoz.model.pojo.side.Shop;
 import ru.skidoz.model.pojo.telegram.Button;
 import ru.skidoz.model.pojo.telegram.ButtonRow;
 import ru.skidoz.model.pojo.telegram.Level;
-import ru.skidoz.model.pojo.telegram.LevelDTOWrapper;
 import ru.skidoz.model.pojo.telegram.Message;
 import ru.skidoz.model.pojo.telegram.User;
 import ru.skidoz.util.MenuTypeEnum;
@@ -211,7 +210,7 @@ public class LevelInitializer {
     @Autowired
     private InitialLevel initialLevel;
 
-    private static final String MANAGEMENT_FILE = "Book.xlsx";
+    private static final String MANAGEMENT_FILE = "static/Book.xlsx";
 
     public void initLevels() {
 

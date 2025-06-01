@@ -37,7 +37,7 @@ public class InitialExcelMenu {
     @Autowired
     private FilterOptionCacheRepository filterOptionCacheRepository;
 
-    private static final String MANAGEMENT_FILE = "static/Book.xlsx";
+    private static final String MANAGEMENT_FILE = "Book.xlsx";
 
     //@Transactional
     public void execute() {
@@ -46,7 +46,9 @@ public class InitialExcelMenu {
         System.out.println("+++++++++++++++++++++++++++++++++++++++++++InitialExcelMenu+++++++++++++++++++++++++++++");
 //        Workbook workbook = null;
         try {
-            XSSFWorkbook workbook = new XSSFWorkbook((new ClassPathResource(MANAGEMENT_FILE)).getInputStream());
+            XSSFWorkbook workbook = new XSSFWorkbook(getClass()
+                    .getClassLoader()
+                    .getResourceAsStream(MANAGEMENT_FILE));
 
             for (Iterator<Sheet> sheetIterator = workbook.sheetIterator(); sheetIterator.hasNext(); ) {
 
@@ -74,7 +76,7 @@ public class InitialExcelMenu {
                         int columns = sheet.getRow(i).getLastCellNum();
 
 
-                        System.out.println("*" + i + "****+_=-="+sheet.getRow(i).getCell(0));
+                        //ystem.out.println("*" + i + "****+_=-="+sheet.getRow(i).getCell(0));
 
 
                         if (sheet.getRow(i).getCell(0) != null
@@ -157,14 +159,15 @@ public class InitialExcelMenu {
                                     category = new Category(e -> {
                                         e.setAlias(categoryAlias);
                                     });
-
-//                                    System.out.println("categoryGroup.getId()++++++++++++++++++" + categoryGroup.getId());
-
                                     category.setCategoryGroup(categoryGroup.getId());
                                     category.setCategorySuperGroup(categorySuperGroup.getId());
                                     if (groupLevel > 0) {
                                         category.setParentCategory(parentCats[groupLevel - 1].getId());
                                     }
+
+//                                    System.out.println(category + " categoryAlias " + category.getAlias() + " ---"+
+//                                            categoryAlias + " categoryGroup.getId()++++++++++++++++++" + categoryGroup.getId());
+
                                     categoryCacheRepository.save(category);
                                 }
                                 parentCats[groupLevel] = category;

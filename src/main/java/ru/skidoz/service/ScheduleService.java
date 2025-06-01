@@ -123,7 +123,6 @@ public class ScheduleService {
             d.setId(newId);
             cache.save(d);
         }
-
     }
 
     @Scheduled(cron = "${saveToRepoTimer}")
@@ -161,6 +160,8 @@ public class ScheduleService {
 
             notificationHandler(scheduleBuyer, "Напоминание - через полчаса ");
         }
+
+        timePoint++;
     }
 
     private void notificationHandler(ScheduleBuyer scheduleBuyer, String text) {

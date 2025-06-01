@@ -23,7 +23,7 @@ import org.springframework.stereotype.Component;
  * Created by Users on 30.05.2020.
  */
 @Component
-public class PriceNotifierTasklet implements Tasklet {
+public class BookmarkPriceNotifierTasklet implements Tasklet {
 
     @Autowired
     public TelegramBot telegramBot;
@@ -37,7 +37,7 @@ public class PriceNotifierTasklet implements Tasklet {
     @Override
     public void execute() {
 
-        System.out.println("+++++++++++++++++++++++++++++++++++++++++++PriceNotifierTasklet+++++++++++++++++++++++++++++++++++");
+        System.out.println("+++++++++++++++++++++++++++++++++++++++++++BookmarkPriceNotifierTasklet+++++++++++++++++++++++++++++++++++");
 
         bookmarkRepository.findAllNotify().forEach(bookmark -> {
             Product prd = productRepository.findById(bookmark.getProduct());
@@ -61,6 +61,6 @@ public class PriceNotifierTasklet implements Tasklet {
         });
 
 
-        System.out.println("+++++++++++++++++++++++++++++++++++++++++++PriceNotifierTasklet finish+++++++++++++++++++++++++++++++++++");
+        System.out.println("+++++++++++++++++++++++++++++++++++++++++++BookmarkPriceNotifierTasklet finish+++++++++++++++++++++++++++++++++++");
     }
 }

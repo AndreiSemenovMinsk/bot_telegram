@@ -58,7 +58,7 @@ public class CategoryOptionsTasklet implements Tasklet {
     @Autowired
     private Exceler exceler;
 
-    private static final String MANAGEMENT_FILE = "static/Book.xlsx";
+    private static final String MANAGEMENT_FILE = "Book.xlsx";
 
     @Override
     public void execute() {
@@ -71,7 +71,9 @@ public class CategoryOptionsTasklet implements Tasklet {
 //             templateWorkbook = Workbook.getWorkbook((new ClassPathResource(MANAGEMENT_FILE)).getInputStream());
 //            workbook = Workbook.createWorkbook(new File(MANAGEMENT_FILE));
 
-            InputStream inputStream = (new ClassPathResource(MANAGEMENT_FILE)).getInputStream();
+            InputStream inputStream = getClass()
+                    .getClassLoader()
+                    .getResourceAsStream(MANAGEMENT_FILE);
 
 //            File file1 = new ClassPathResource(MANAGEMENT_FILE).getInputStream();
 //            System.out.println("file1***" + file1);
@@ -109,10 +111,6 @@ public class CategoryOptionsTasklet implements Tasklet {
                             continue;
                         }
 
-                        System.out.println("@-+0 " + sheet.getRow(i).getCell(0));
-                        System.out.println("@-+2 " + sheet.getRow(i).getCell(2));
-                        System.out.println("@-+4 " + sheet.getRow(i).getCell(4));
-
                         if (sheet.getRow(i).getCell(0) != null
                                 && !sheet.getRow(i).getCell(0).toString().isEmpty()) {
 
@@ -137,15 +135,12 @@ public class CategoryOptionsTasklet implements Tasklet {
                             String categoryAlias = sheet.getRow(i).getCell(4).toString();
 
 
-//                            System.out.println("categoryGroupDTO+++++++++++" + categoryGroup + " +categoryAlias+ " + categoryAlias);
+                            //System.out.println("categoryGroupDTO+++++++++++" + categoryGroup + " +categoryAlias+ " + categoryAlias);
 
                             Category categoryEntry = categoryCacheRepository.findByAliasAndCategoryGroup(categoryAlias, categoryGroup.getId());
 
-//                        System.out.println("categoryEntry.getAlias()++++++++" + categoryEntry.getAlias());
-//                        System.out.println("categoryOptionsMapMap.containsKey(categoryEntry.getName())+" + categoryOptionsMapMap.containsKey(categoryEntry.getAlias()));
-
                             if (categoryEntry == null) {
-                                System.out.println(categoryAlias + "*****categoryAlias+++++++" + categoryGroup.getId());
+                                System.out.println(categoryAlias + "@*****categoryAlias+++++++" + categoryGroup.getId());
                             }
 
                             Map<String, Set<String>> optionsSetMap = categoryOptionsMapMap.get(categoryEntry.getAlias());

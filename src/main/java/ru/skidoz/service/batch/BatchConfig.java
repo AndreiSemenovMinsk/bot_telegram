@@ -15,10 +15,6 @@ public class BatchConfig {
     @Autowired
     private CategoryOptionsTasklet categoryOptionsTasklet;
     @Autowired
-    private ResetTimePointTasklet resetTimePointTasklet;
-    @Autowired
-    private ScheduleServiceTasklet scheduleServiceTasklet;
-    @Autowired
     private DatabaseDumpTasklet databaseDumpTasklet;
     @Autowired
     private ProductExcelsTasklet productExcelsTasklet;
@@ -27,24 +23,26 @@ public class BatchConfig {
     @Autowired
     private InitialLevelCashbackTasklet initialLevelCashbackTasklet;
     @Autowired
-    private PriceNotifierTasklet priceNotifierTasklet;
+    private BookmarkPriceNotifierTasklet bookmarkPriceNotifierTasklet;
     @Autowired
     private MonitorPriceTasklet monitorPriceTasklet;
 
-    @Scheduled(cron = "${cronBatch}")
-    public void currencyJob() {
-
-        System.out.println("currencyJob____");
+    @Scheduled(cron = "${systemInitializeCron}")
+    public void systemInitializeJob() {
 
         CompletableFuture.runAsync(() -> excelMenuTasklet.execute())
                 .thenRun(() -> categoryOptionsTasklet.execute())
-                .thenRun(() -> resetTimePointTasklet.execute())
-                .thenRun(() -> scheduleServiceTasklet.execute())
-                .thenRun(() -> databaseDumpTasklet.execute())
+                .thenRun(() -> initialLevelCashbackTasklet.execute())
+                .join();
+    }
+
+    @Scheduled(cron = "${systemRefreshCron}")
+    public void systemRefreshJob() {
+
+        CompletableFuture.runAsync(() -> databaseDumpTasklet.execute())
                 .thenRun(() -> productExcelsTasklet.execute())
                 .thenRun(() -> cacheSearchTasklet.execute())
-                .thenRun(() -> initialLevelCashbackTasklet.execute())
-                .thenRun(() -> priceNotifierTasklet.execute())
+                .thenRun(() -> bookmarkPriceNotifierTasklet.execute())
                 .thenRun(() -> monitorPriceTasklet.execute())
                 .join();
     }

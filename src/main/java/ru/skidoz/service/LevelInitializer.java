@@ -210,7 +210,7 @@ public class LevelInitializer {
     @Autowired
     private InitialLevel initialLevel;
 
-    private static final String MANAGEMENT_FILE = "static/Book.xlsx";
+    private static final String MANAGEMENT_FILE = "Book.xlsx";
 
     public void initLevels() {
 
@@ -1578,7 +1578,9 @@ public class LevelInitializer {
                 Message message17_1 = new Message(initialLevel.level_ADD_TAXI_BOT, Map.of(RU, "Здравствуйте! Пришлите геолокацию, куда необходимо подать машину:"));
                 messageRepository.cache(message17_1);
                 initialLevel.level_ADD_TAXI_BOT.addMessage(message17_1);
-                Message message17_2 = new Message(initialLevel.level_ADD_TAXI_BOT, 1, null, IOUtils.toByteArray((new ClassPathResource(MANAGEMENT_FILE)).getInputStream()), "как отправить геолокацию");
+                Message message17_2 = new Message(initialLevel.level_ADD_TAXI_BOT, 1, null,
+                        IOUtils.toByteArray(getClass().getClassLoader().getResourceAsStream(MANAGEMENT_FILE)),
+                        "как отправить геолокацию");
                 messageRepository.cache(message17_2);
                 initialLevel.level_ADD_TAXI_BOT.addMessage(message17_2);
 //                        ButtonRow row17_0 = new ArrayList<>();
@@ -2129,8 +2131,6 @@ public class LevelInitializer {
                 addFinalButton(initialLevel.level_INITIALIZE);
 
                 System.out.println("POST addFinalButton");
-                
-                
 
             } catch (IOException | WriterException e) {
                 e.printStackTrace();
@@ -2157,7 +2157,10 @@ public class LevelInitializer {
         }
         levelRepository.cache(level);
 
-        Set<Level> levels = levelRepository.findAllByParentLevelId(level.getId());
+        List<Level> levels = levelRepository.findAllByParentLevelId(level.getId());
+
+        System.out.println("level.getId() " + level.getId() + " levels  " + levels);
+
         for (Level childLevel : levels) {
             addFinalButton(childLevel);
         }

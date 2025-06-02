@@ -31,9 +31,9 @@ public class Category extends AbstractGroup implements Cloneable {
     //@JoinColumn(name = "categoryGroupId", nullable = false)
     private  Integer/*Cat*/ parentCategory;
 
-    @NotNull
-    @Size(max=50)
-    private String alias;
+//    @NotNull
+//    @Size(max=50)
+//    private String alias;
 
     @NotNull
     private boolean actual;

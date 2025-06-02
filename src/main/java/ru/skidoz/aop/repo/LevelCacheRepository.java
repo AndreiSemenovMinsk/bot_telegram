@@ -1,5 +1,6 @@
 package ru.skidoz.aop.repo;
 
+import java.util.List;
 import java.util.Set;
 
 import ru.skidoz.model.pojo.telegram.Level;
@@ -22,5 +23,5 @@ public interface LevelCacheRepository extends JpaRepositoryTest<Level, Integer> 
 
     Level getChildLevel(Integer parentLevelId, Integer levelId);
 
-    Set<Level> findAllByParentLevelId(Integer parentLevelId);
+    List<Level> findAllByParentLevelId(Integer parentLevelId);
 }

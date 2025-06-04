@@ -18,7 +18,7 @@ public class DTO {
     private List<String> methodKeys;
 
     public DTO () {
-        id = - ThreadLocalRandom.current().nextInt();
+        id = ThreadLocalRandom.current().nextInt(Integer.MIN_VALUE, -1);
         mark = id;
     }
 

@@ -19,7 +19,7 @@ public interface BookmarkRepository extends JpaRepository<BookmarkEntity, Intege
     List<BookmarkEntity> findAllByUserAndShopBuyer(@Param("buyer") UserEntity buyer, @Param("shopBuyer") UserEntity shopBuyer);
 
     @Query(value = "SELECT bkmrk FROM BookmarkEntity bkmrk JOIN bkmrk.product product WHERE product.price < bkmrk.bidPrice AND bkmrk.priceUpdated = FALSE")
-    List<BookmarkEntity> findAllNotify();
+    List<BookmarkEntity> findAllByPriceStrikeAndPriceUpdated(Boolean strike, Boolean updated);
 
 
     List<BookmarkEntity> findAllByUser_IdAndShop_Id(Integer userId, Integer shopId);

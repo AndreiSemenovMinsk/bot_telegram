@@ -1,5 +1,6 @@
 package ru.skidoz.repository.telegram;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -15,7 +16,7 @@ public interface LevelRepository extends JpaRepository<LevelEntity, Integer> {
 
     Optional<LevelEntity> findById(Integer id);
 
-    Set<LevelEntity> findAllByParentLevelId(Integer parentLevelId);
+    List<LevelEntity> findAllByParentLevelId(Integer parentLevelId);
 
     LevelEntity findFirstBySourceIsMessageIsTrueAndParentLevelId(Integer parentLevelId);
 

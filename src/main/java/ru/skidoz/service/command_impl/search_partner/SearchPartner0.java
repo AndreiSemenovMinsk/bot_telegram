@@ -38,7 +38,7 @@ public class SearchPartner0 implements Command {
         LevelDTOWrapper resultLevel = initialLevel.convertToLevel(initialLevel.level_SEARCH_PARTNER,
                 false,
                 false);
-        Set<Shop> shopSet = shopCacheRepository.findAllByActiveIsTrue();
+        List<Shop> shopSet = shopCacheRepository.findAllByActiveIsTrue();
         Long chatId = users.getChatId();
         Shop shopInitiator = shopCacheRepository.findByChatId(chatId);
 

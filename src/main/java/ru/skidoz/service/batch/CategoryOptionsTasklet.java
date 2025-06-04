@@ -38,6 +38,7 @@ import ru.skidoz.util.Exceler;
 import ru.skidoz.util.Structures;
 
 import static ru.skidoz.model.entity.category.LanguageEnum.RU;
+import static ru.skidoz.service.ScheduleService.timePoint;
 
 /**
  * Created by Users on 30.05.2020.
@@ -332,17 +333,17 @@ public class CategoryOptionsTasklet implements Tasklet {
             workbook.write(bytesOut);
             workbook.close();
 
-            final byte[] byteArray = bytesOut.toByteArray();
-            bytesOut.close();
+            //final byte[] byteArray = bytesOut.toByteArray();
+            //bytesOut.close();
 //                File file = new ClassPathResource(MANAGEMENT_FILE).getFile();
 
-            File file = new File(MANAGEMENT_FILE);
+            //File file = new File(timePoint + MANAGEMENT_FILE);
             // commons-io
-            FileUtils.copyInputStreamToFile(inputStream, file);
+            //FileUtils.copyInputStreamToFile(inputStream, file);
 
-            final FileOutputStream fileOut = new FileOutputStream(file);
-            fileOut.write(byteArray);
-            fileOut.close();
+            //final FileOutputStream fileOut = new FileOutputStream(file);
+            //fileOut.write(byteArray);
+            //fileOut.close();
 
             System.out.println("----------------------------CategoryOptionsTasklet finish-------------------------------");
 

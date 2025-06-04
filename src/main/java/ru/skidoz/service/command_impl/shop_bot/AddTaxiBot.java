@@ -60,7 +60,7 @@ public class AddTaxiBot implements Command {
         }
         // теперь это не надо делать cloneEditBotLevel.setCallName(newCallName);
 
-        Set<Level> childLevels = levelCacheRepository.findAllByParentLevel_Id(cloneEditBotLevel.getId());
+        List<Level> childLevels = levelCacheRepository.findAllByParentLevelId(cloneEditBotLevel.getId());
         for (Level childLevel : childLevels) {
             updateLevelNames(childLevel, bot, сhatId);
         }
@@ -113,7 +113,7 @@ public class AddTaxiBot implements Command {
         cloneBot.setBot(bot.getId());
         cloneBot.setChatId(chatId);
 
-        Set<Level> levels = levelCacheRepository.findAllByParentLevel_Id(cloneBot.getId());
+        List<Level> levels = levelCacheRepository.findAllByParentLevelId(cloneBot.getId());
         for (Level childLevel : levels) {
             updateLevelNames(childLevel, bot, chatId);
         }

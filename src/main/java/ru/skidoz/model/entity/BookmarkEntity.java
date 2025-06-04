@@ -44,6 +44,8 @@ public class BookmarkEntity extends AbstractEntity  implements Serializable {
 
     private boolean notificationSent = false;
 
+    private boolean priceStrike = false;
+
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     private PrdEntity product;

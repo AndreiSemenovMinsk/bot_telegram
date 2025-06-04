@@ -96,7 +96,7 @@ public class MenuCreator {
                 String callName = levelSuper.getCallName() + "*" + categorySuperGroup.getAlias() + menuTypeEnum;
                 levelGroup = new Level(user, callName, levelSuper, false);
 
-                System.out.println("callName---" + callName + " user.getId() " + user.getId());
+                //System.out.println("callName---" + callName + " user.getId() " + user.getId());
 
                 levelCacheRepository.save(levelGroup);
 
@@ -121,7 +121,7 @@ public class MenuCreator {
             buttonRowCacheRepository.save(row_super);
             levelSuper.addRow(row_super);
 
-            System.out.println("categorySuperGroup***" + categorySuperGroup.getName(LanguageEnum.RU) + "***" + levelGroup.getIdString());
+            //System.out.println("categorySuperGroup***" + categorySuperGroup.getName(LanguageEnum.RU) + "***" + levelGroup.getIdString());
 
             if (menuTypeEnum.equals(MenuTypeEnum.LEVEL_CHOICER)/* || menuTypeEnum.equals(MenuTypeEnum.SEARCH_LEVEL_CHOICER)*/) {
                 ButtonRow row_group = new ButtonRow(levelGroup);

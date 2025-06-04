@@ -133,7 +133,7 @@ public class CacheSearchTasklet implements Tasklet {
 
 //            System.out.println("nameWord+++" + nameWord);
 
-            Set<NameWordProduct> nameWordProducts = nameWordProductRepository.findByNameWord(nameWord.getId());
+            List<NameWordProduct> nameWordProducts = nameWordProductRepository.findByNameWord(nameWord.getId());
 
 //            System.out.println("nameWordProducts+++" + nameWordProducts);
 

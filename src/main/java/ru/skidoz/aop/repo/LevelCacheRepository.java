@@ -11,7 +11,7 @@ public interface LevelCacheRepository extends JpaRepositoryTest<Level, Integer> 
 
 //    Level findById(Integer id);
 
-    Set<Level> findAllByParentLevel_Id(Integer parentLevelId);
+    List<Level> findAllByParentLevel_Id(Integer parentLevelId);
 
     Level findFirstBySourceIsMessageIsTrueAndParentLevel_Id(Integer parentLevelId);
 

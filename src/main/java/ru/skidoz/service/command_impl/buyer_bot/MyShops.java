@@ -84,7 +84,7 @@ public class MyShops implements Command {
         }
         // теперь это не надо делать oldBotLevel.setCallName(newCallName);
 
-        Set<Level> childLevels = levelRepository.findAllByParentLevel_Id(oldBotLevel.getId());
+        List<Level> childLevels = levelRepository.findAllByParentLevelId(oldBotLevel.getId());
         for (Level childLevel : childLevels) {
 
             System.out.println("childLevel***" + childLevel);
@@ -184,7 +184,7 @@ public class MyShops implements Command {
                     cloneBot.setBot(bot.getId());
                     cloneBot.setChatId(users.getChatId());
 
-                    Set<Level> levels = levelRepository.findAllByParentLevel_Id(taxiBotLevel.getId());
+                    List<Level> levels = levelRepository.findAllByParentLevelId(taxiBotLevel.getId());
                     for (Level childLevel : levels) {
                         childLevel.setParentLevelId(cloneBot.getId());
                         updateLevelNames(childLevel, bot, users);

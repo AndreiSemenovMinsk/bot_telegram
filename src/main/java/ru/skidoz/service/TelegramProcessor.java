@@ -289,7 +289,7 @@ public class TelegramProcessor {
 
                 System.out.println("newLevel   findFirstBySourceIsMessageIsTrueAndParentLevelId***" + newLevel);
 
-                System.out.println("all child levels " + levelCacheRepository.findAllByParentLevel_Id(currentLevelId));
+                System.out.println("all child levels " + levelCacheRepository.findAllByParentLevelId(currentLevelId));
 
                 if (newLevel == null) {
                     final Level currentLevel = levelCacheRepository.findById(currentLevelId);

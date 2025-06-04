@@ -1,5 +1,6 @@
 package ru.skidoz.aop.repo;
 
+import java.util.List;
 import java.util.Set;
 
 import ru.skidoz.model.pojo.telegram.User;
@@ -11,15 +12,15 @@ import org.springframework.stereotype.Service;
 @Service
 public interface UserCacheRepository extends JpaRepositoryTest<User, Integer> {
 
-    public User findByChatId(Long chatId);
+    User findByChatId(Long chatId);
 
 //    public Users findById(Integer userId);
 
-    public User findBySessionId(String sessionId);
+    User findBySessionId(String sessionId);
 
-    public void saveByCacheOnly(User users);
+    void saveByCacheOnly(User users);
 
-    public void storeFromRepo(User users);
+    void storeFromRepo(User users);
 
     void replaceAfterStoreFromRepo();
 
@@ -27,5 +28,5 @@ public interface UserCacheRepository extends JpaRepositoryTest<User, Integer> {
 
     User findFirstByShopNullAndBuyer_Id(Integer buyerId);
 
-    Set<User> findAllByShopId(Integer shopId);
+    List<User> findAllByShopId(Integer shopId);
 }

@@ -14,7 +14,7 @@ import ru.skidoz.util.TextParser;
 @Service
 public interface ShopCacheRepository extends JpaRepositoryTest<Shop, Integer> {
 
-    Set<Shop> findAllByActiveIsTrue();
+    List<Shop> findAllByActiveIsTrue();
 
 //    Shop findById(Integer shopId);
 

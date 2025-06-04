@@ -49,8 +49,8 @@ public class P2BChargeBasketCashback implements Command {
     private ProductCacheRepository productCacheRepository;
     @Autowired
     private CashbackWriteOffCacheRepository cashbackWriteOffCacheRepository;
-    @Autowired
-    private CashbackWriteOffResultPurchaseCacheRepository cashbackWriteOffResultPurchaseCacheRepository;
+//    @Autowired
+//    private CashbackWriteOffResultPurchaseCacheRepository cashbackWriteOffResultPurchaseCacheRepository;
     @Autowired
     private InitialLevel initialLevel;
     @Autowired

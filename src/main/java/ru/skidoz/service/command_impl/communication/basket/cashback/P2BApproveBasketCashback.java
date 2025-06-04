@@ -61,8 +61,8 @@ public class P2BApproveBasketCashback implements Command {
     private CashbackWriteOffCacheRepository cashbackWriteOffCacheRepository;
     @Autowired
     private RecommendationCacheRepository recommendationCacheRepository;
-    @Autowired
-    private CashbackWriteOffResultPurchaseCacheRepository cashbackWriteOffResultPurchaseCacheRepository;
+//    @Autowired
+//    private CashbackWriteOffResultPurchaseCacheRepository cashbackWriteOffResultPurchaseCacheRepository;
     @Autowired
     private PartnerGroupCacheRepository partnerGroupCacheRepository;
     @Autowired

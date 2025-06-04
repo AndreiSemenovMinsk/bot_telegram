@@ -39,7 +39,7 @@ public class BookmarkPriceNotifierTasklet implements Tasklet {
 
         System.out.println("+++++++++++++++++++++++++++++++++++++++++++BookmarkPriceNotifierTasklet+++++++++++++++++++++++++++++++++++");
 
-        bookmarkRepository.findAllNotify().forEach(bookmark -> {
+        bookmarkRepository.findAllByPriceStrikeAndPriceUpdated(true, false).forEach(bookmark -> {
             Product prd = productRepository.findById(bookmark.getProduct());
 
             Level level = new Level ();

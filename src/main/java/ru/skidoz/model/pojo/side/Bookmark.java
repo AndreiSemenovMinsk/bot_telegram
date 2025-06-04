@@ -19,10 +19,10 @@ public class Bookmark extends AbstractSideDTO {
     private Integer/*ShopDTO*/ shop;
     private Integer/*ShopDTO*/ user;
     private Instant lastNotification;
-    private boolean priceUpdated = true;
+    private boolean priceUpdated = false;
     private BigDecimal bidPrice;
     private Instant notification;
-
+    private boolean priceStrike = false;
 
     public Bookmark(Consumer<Bookmark> builder){
         super();

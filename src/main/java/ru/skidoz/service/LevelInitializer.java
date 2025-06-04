@@ -2128,7 +2128,7 @@ public class LevelInitializer {
 
                 System.out.println("PRE addFinalButton");
 
-                addFinalButton(initialLevel.level_INITIALIZE);
+                addFinalButton(initialLevel.level_INITIALIZE/*, 0*/);
 
                 System.out.println("POST addFinalButton");
 
@@ -2140,7 +2140,7 @@ public class LevelInitializer {
     private boolean isBotLevel = false;
 
 
-    private void addFinalButton(Level level) {
+    private void addFinalButton(Level level/*, int iii*/) {
 
         List<ButtonRow> buttonRows = buttonRowRepository.findAllByLevel_Id(level.getId());
 
@@ -2159,10 +2159,13 @@ public class LevelInitializer {
 
         List<Level> levels = levelRepository.findAllByParentLevelId(level.getId());
 
-        System.out.println("level.getId() " + level.getId() + " levels  " + levels);
+//        System.out.println(level.getCallName() + " level.getId() " + level.getId() + " levels+++" + levels.size()
+//        +  " " + level.getParentLevelId() + " " + iii);
+
+        //iii++;
 
         for (Level childLevel : levels) {
-            addFinalButton(childLevel);
+            addFinalButton(childLevel/*, iii*/);
         }
     }
 }

@@ -288,10 +288,6 @@ public class ScheduleService {
         String intefaceName = cache.getClass().getGenericInterfaces()[0].getTypeName();
         final String[] split = intefaceName.split("\\.");
         final String simpleName = split[split.length - 1];
-        System.out.println("simpleName+++ " + simpleName );
-
-
-        System.out.println("cacheAspect.repoOrders@@@ " + cacheAspect.repoOrders);
 
         int repoIndex = cacheAspect.repoOrders.get(simpleName);
         ConcurrentHashMap<Integer, DTO> newDTOs = cacheAspect.idNewMap.get(repoIndex);
@@ -310,7 +306,6 @@ public class ScheduleService {
         for (int i = 0; i < size; i++) {
             D value = dtos.get(i);
             if (value != null) {
-                //value.setId(null);
                 E entity = entityMapper.toEntity(value);
                 entity.setId(null);
                 entities.add(entity);
@@ -356,7 +351,6 @@ public class ScheduleService {
         store(buttonCacheRepository, buttonRepository, buttonMapper);
 
         store(messageCacheRepository, messageRepository, messageMapper);
-
 
 
         store(userCacheRepository, userRepository, usersMapper);

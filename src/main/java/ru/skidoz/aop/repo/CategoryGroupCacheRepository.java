@@ -17,5 +17,5 @@ public interface CategoryGroupCacheRepository extends JpaRepositoryTest<Category
 
 //    CategoryGroup findById(Integer id);
 
-    CategoryGroup save(CategoryGroup categoryGroup);
+    //CategoryGroup save(CategoryGroup categoryGroup);
 }

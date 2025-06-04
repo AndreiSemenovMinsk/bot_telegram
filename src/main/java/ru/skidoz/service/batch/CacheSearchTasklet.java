@@ -158,7 +158,7 @@ public class CacheSearchTasklet implements Tasklet {
         catSGList.forEach(categorySuperGroup -> {
 
             List<CategoryGroup>  catGList = categoryGroupRepository.findByCategorySuperGroup_Id(categorySuperGroup.getId());
-            categorySuperGroup.setCategoryGroupSet(new HashSet<>(catGList));
+            categorySuperGroup.setCategoryGroupSet(new ArrayList<>(catGList));
 
             Set<Integer> categoryGroupProductIds = new HashSet<>();
 
@@ -166,13 +166,13 @@ public class CacheSearchTasklet implements Tasklet {
 
                 List<Category>  catList = categoryCacheRepository.findByCategoryGroup_Id(categoryGroup.getId());
 
-                categoryGroup.setCategorySet(new HashSet<>(catList));
+                categoryGroup.setCategorySet(new ArrayList<>(catList));
                 catList.forEach(category -> {
 
                     List<Product>  productDTOs = productCacheRepository.findAllByCategory_IdAndActiveIsTrue(category.getId());
 
                     // где это используется
-                    category.setProductSet(new HashSet<>(productDTOs));
+                    category.setProductSet(new ArrayList<>(productDTOs));
 
 //                    System.out.println("category.getId()--------- " + category.getId());
 

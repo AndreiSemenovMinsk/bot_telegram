@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import ru.skidoz.aop.repo.PartnerCacheRepository;
@@ -86,7 +85,7 @@ public class Partners implements Command {
         for (PartnerGroup debtorGroup : debtorGroupList) {
 
             ButtonRow row = new ButtonRow();
-            Set<Shop> shopSet = shopGroupCacheRepository.findById(debtorGroup.getDebtor()).getShopSet();
+            List<Shop> shopSet = shopGroupCacheRepository.findById(debtorGroup.getDebtor()).getShopSet();
             BigDecimal sum = getSum(shopInitiator.getId(), shopSet);
 
             Message message = new Message(null, 0,
@@ -110,7 +109,7 @@ public class Partners implements Command {
     }
 
 
-    private BigDecimal getSum(Integer/*Shop*/ shopInitiator, Set<Shop> shopSet) {
+    private BigDecimal getSum(Integer/*Shop*/ shopInitiator, List<Shop> shopSet) {
         BigDecimal resultSum = BigDecimal.ZERO;
         for (Shop shopPartner : shopSet) {
             Partner partner = partnerCacheRepository.findFirstByCreditor_IdAndDebtor_Id(shopInitiator, shopPartner.getId());

@@ -6,8 +6,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Consumer;
 import jakarta.persistence.*;
 
@@ -21,7 +21,7 @@ import jakarta.persistence.*;
 public class CategorySuperGroupEntity extends AbstractGroupEntity implements Serializable {
 
     @OneToMany(mappedBy="categorySuperGroup")
-    private Set<CategoryGroupEntity> categoryGroupSet = new HashSet<>();
+    private List<CategoryGroupEntity> categoryGroupSet = new ArrayList<>();
 
 /*
     @ManyToMany(cascade = {
@@ -35,7 +35,7 @@ public class CategorySuperGroupEntity extends AbstractGroupEntity implements Ser
     private Set<Prd> productSet = new HashSet<>();*/
 
     @OneToMany(mappedBy="categorySuperGroup")
-    private Set<PrdEntity> productSet = new HashSet<>();
+    private List<PrdEntity> productSet = new ArrayList<>();
 
     public CategorySuperGroupEntity(Consumer<CategorySuperGroupEntity> builder){
         builder.accept(this);
@@ -49,11 +49,11 @@ public class CategorySuperGroupEntity extends AbstractGroupEntity implements Ser
         this.categoryGroupSet.add(categoryGroup);
     }
 
-    public Set<PrdEntity> getProductSet() {
+    public List<PrdEntity> getProductSet() {
         return productSet;
     }
 
-    public void setProductSet(Set<PrdEntity> productSet) {
+    public void setProductSet(List<PrdEntity> productSet) {
         this.productSet = productSet;
     }
 

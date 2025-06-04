@@ -1,8 +1,8 @@
 package ru.skidoz.model.pojo.telegram;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Consumer;
 
 import ru.skidoz.model.pojo.AbstractDTO;
@@ -20,7 +20,7 @@ public class ShopGroup extends AbstractDTO implements Serializable {
     @NotNull
     private String name;
 
-    Set<Shop> shopSet = new HashSet<>();
+    List<Shop> shopSet = new ArrayList<>();
 
     public ShopGroup(Consumer<ShopGroup> builder){
         super();

@@ -2,10 +2,8 @@ package ru.skidoz.model.entity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToMany;
@@ -21,7 +19,7 @@ public class ShopGroupEntity extends AbstractEntity  implements Serializable {
     private String name;
 
     @ManyToMany(mappedBy = "shopGroupSet")
-    Set<ShopEntity> shopSet = new HashSet<>();
+    List<ShopEntity> shopSet = new ArrayList<>();
 
     @OneToMany(mappedBy="currentConversationShopGroup")
     private List<ShopEntity> currentConversationShopGroupShopList = new ArrayList<>();

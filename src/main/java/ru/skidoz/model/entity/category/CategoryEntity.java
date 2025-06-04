@@ -3,9 +3,7 @@ package ru.skidoz.model.entity.category;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.function.Consumer;
 
 import ru.skidoz.model.entity.AbstractGroupEntity;
@@ -43,7 +41,7 @@ public class CategoryEntity extends AbstractGroupEntity implements Serializable 
     private CategoryEntity parentCategory;
 
     @OneToMany(mappedBy="parentCategory")
-    private Set<CategoryEntity> childCategorySet = new HashSet<>();
+    private List<CategoryEntity> childCategorySet = new ArrayList<>();
 
     /*@ManyToMany
     @JoinTable(name = "category_product",
@@ -53,7 +51,7 @@ public class CategoryEntity extends AbstractGroupEntity implements Serializable 
     private Set<Prd> productSet = new HashSet<>();*/
 
     @OneToMany(mappedBy="category")
-    private Set<PrdEntity> productSet = new HashSet<>();
+    private List<PrdEntity> productSet = new ArrayList<>();
 
 /*
     @ManyToMany(cascade = {

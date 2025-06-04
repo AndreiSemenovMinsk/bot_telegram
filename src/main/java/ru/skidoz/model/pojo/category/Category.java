@@ -1,16 +1,13 @@
 package ru.skidoz.model.pojo.category;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.function.Consumer;
 
 import ru.skidoz.model.pojo.search.menu.FilterPoint;
 import ru.skidoz.model.pojo.side.Product;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -38,10 +35,10 @@ public class Category extends AbstractGroup implements Cloneable {
     @NotNull
     private boolean actual;
 
-    private Set<Category> childCategorySet = new HashSet<>();
+    private List<Category> childCategorySet = new ArrayList<>();
 
     @JsonIgnore
-    private Set<Product> productSet = new HashSet<>();
+    private List<Product> productSet = new ArrayList<>();
 
     @JsonIgnore
     private List<FilterPoint> filterPointList = new ArrayList<>();

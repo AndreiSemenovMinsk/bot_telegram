@@ -1,8 +1,8 @@
 package ru.skidoz.model.entity.category;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Consumer;
 
 import ru.skidoz.model.entity.AbstractGroupEntity;
@@ -24,7 +24,7 @@ public class CategoryGroupEntity extends AbstractGroupEntity implements Serializ
     private CategorySuperGroupEntity categorySuperGroup;
 
     @OneToMany(mappedBy="categoryGroup")
-    private Set<CategoryEntity> categorySet = new HashSet<>();
+    private List<CategoryEntity> categorySet = new ArrayList<>();
 
     /*@ManyToMany(cascade = {
             CascadeType.PERSIST,
@@ -37,7 +37,7 @@ public class CategoryGroupEntity extends AbstractGroupEntity implements Serializ
     private Set<Prd> productSet = new HashSet<>();*/
 
     @OneToMany(mappedBy="categoryGroup")
-    private Set<PrdEntity> productSet = new HashSet<>();
+    private List<PrdEntity> productSet = new ArrayList<>();
 
     public CategoryGroupEntity(Consumer<CategoryGroupEntity> builder){
         builder.accept(this);

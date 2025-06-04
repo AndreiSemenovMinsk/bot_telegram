@@ -1,7 +1,7 @@
 package ru.skidoz.model.pojo.category;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Consumer;
 
 import ru.skidoz.model.pojo.side.Product;
@@ -14,9 +14,9 @@ import lombok.Setter;
 @Getter
 public class CategorySuperGroup extends AbstractGroup implements Cloneable {
 
-    private Set<CategoryGroup> categoryGroupSet = new HashSet<>();
+    private List<CategoryGroup> categoryGroupSet = new ArrayList<>();
 
-    private Set<Product> productSet = new HashSet<>();
+    private List<Product> productSet = new ArrayList<>();
 
     public CategorySuperGroup(Consumer<CategorySuperGroup> builder){
         super();

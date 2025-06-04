@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import ru.skidoz.aop.repo.PartnerCacheRepository;
 import ru.skidoz.aop.repo.ShopGroupCacheRepository;
@@ -64,7 +63,7 @@ public class WithdrawPartnerGroup implements Command {
             shopCacheRepository.save(shopInitiator);
 
 
-            Set<Shop> shopSet = shopGroupCacheRepository.findById(partnerGroup.getDebtor()).getShopSet();
+            List<Shop> shopSet = shopGroupCacheRepository.findById(partnerGroup.getDebtor()).getShopSet();
             for (Shop shopPartner : shopSet) {
 
                 Partner debtor = partnerCacheRepository.findFirstByCreditor_IdAndDebtor_Id(shopInitiator.getId(), shopPartner.getId());

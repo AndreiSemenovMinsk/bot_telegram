@@ -471,7 +471,7 @@ public class CacheAspect {
         }
         //processParentInit();
 
-        listDtos = new String[dtoFieldNames.size()][dtoFieldNames.size()];
+        listDtos = new String[dtoNames.size()][dtoNames.size()];
 
         repoIndex = 0;
         for (var subtype : subTypes) {
@@ -550,23 +550,29 @@ public class CacheAspect {
             List<Integer> order = new ArrayList<>();
 
 
-            for (int declaredFieldInd = 0; declaredFieldInd
-                    < declaredFields.length; declaredFieldInd++) {
+            for (int declaredFieldInd = 0; declaredFieldInd < declaredFields.length; declaredFieldInd++) {
 
                 if ("List".equals(declaredFields[declaredFieldInd].getType().getSimpleName())) {
 
                     Type genericFieldType = declaredFields[declaredFieldInd].getGenericType();
 
+//                    System.out.println( "560 ***@ " + genericFieldType.getTypeName());
+
                     if (genericFieldType instanceof ParameterizedType aType) {
 
                         final String typeName = aType.getActualTypeArguments()[0].getTypeName();
-                        final String simpleName = firstLower(typeName.substring(typeName.lastIndexOf(
-                                ".") + 1));
+                        final String simpleName = firstLower(
+                                typeName.substring(typeName.lastIndexOf(".") + 1));
 
                         final int index = dtoNames.indexOf(simpleName);
+
+//                        System.out.println(dtoNames.get(repoIndex) +" 570 simpleName " + simpleName + " typeName " + typeName + " index " + index);
+
                         if (index > -1) {
                             order.add(index);
                             fieldNames.add(declaredFields[declaredFieldInd].getName());
+
+//                            System.out.println("575 " + dtoNames.get(repoIndex) + " " + dtoNames.get(index) + " " + declaredFields[declaredFieldInd].getName());
 
                             listDtos[repoIndex][index] = declaredFields[declaredFieldInd].getName();
                         }
@@ -1395,6 +1401,11 @@ public class CacheAspect {
 
                 var parentDT0Ind = childDTOFieldParentDTOIndex.get(repoIndex).get(fieldIndex);
 
+//                System.out.println("1398new " + dtoNames.get(repoIndex) + " fieldName " + fieldName
+//                        + " parentDT0Ind " + parentDT0Ind + " fieldValue " + fieldValue );
+//                if (parentDT0Ind != null) {
+//                    System.out.println(" parentDT0Ind " + dtoNames.get(parentDT0Ind) );
+//                }
                 if (parentDT0Ind != null && fieldValue != null) {
                     int parentDTOId = (Integer) fieldValue;
                     var set = mapDependant.get(parentDT0Ind).get(repoIndex).get(parentDTOId);
@@ -1409,13 +1420,19 @@ public class CacheAspect {
 
                     final DTO parentDTO = idMap.get(parentDT0Ind).get(parentDTOId);
 
-                    System.out.println("parentDT0Ind " + dtoNames.get(parentDT0Ind) + " repoIndex " + dtoNames.get(repoIndex) +
-                            " dto " + dto + " parentDTOId-*-*- " + parentDTOId + " map " +idMap.get(parentDT0Ind));
+//                    System.out.println("parentDT0Ind " + dtoNames.get(parentDT0Ind) + " repoIndex " + dtoNames.get(repoIndex) +
+//                            " dto " + dto + " parentDTOId-*-*- " + parentDTOId + "---"  + listDtos[parentDT0Ind][repoIndex]);
+//                    System.out.println(parentDTO);
 
-                    addChildToParent(
-                            parentDTO,
-                            listDtos[parentDT0Ind][repoIndex],
-                            dto);
+                    if (listDtos[parentDT0Ind][repoIndex] != null) {
+
+                        addChildToParent(
+                                parentDTO,
+                                listDtos[parentDT0Ind][repoIndex],
+                                dto);
+                    } else {
+                        System.out.println("Нет коллекции дочернего класса у родительского");
+                    }
                 }
                 fieldIndex++;
             }
@@ -1484,11 +1501,16 @@ public class CacheAspect {
 
             if (oldId != newFieldIdValue) {
 
+//                System.out.println("@1487  oldId " + oldId + " newFieldIdValue " + newFieldIdValue);
+
                 dtoKeys.get(repoIndex).put(
                         newFieldIdValue,
                         dtoKeys.get(repoIndex).remove(oldId));
 
                 var chDTO = mapDependant.get(repoIndex);
+
+
+//                System.out.println(dtoNames.get(repoIndex) + " -@@***" + chDTO.size());
 
                 for (int childInd = 0; childInd < chDTO.size(); childInd++) {
 
@@ -1496,6 +1518,9 @@ public class CacheAspect {
 
                     //все id дочерних -
                     var dependentIds = parentChildren.get(oldId);
+
+//                    System.out.println("oldId " + oldId + " dependentIds " + dependentIds);
+
                     parentChildren.put(newFieldIdValue, dependentIds);
 
                     if (dependentIds == null || dependentIds.size() == 0) {
@@ -1590,12 +1615,9 @@ public class CacheAspect {
                     //если поменяли не id
                     //если поменяли в дочернем объекте поле - перекидываем его id в куче дочерних элементов из его
                     // предыдущего родителя в кучу нового
-
                     var parentDT0 = childDTOFieldParentDTOIndex.get(repoIndex).get(fieldIndex);
 
-
                     if (parentDT0 != null) {
-
 
                         Set<Integer> oldSet = mapDependant
                                 .get(parentDT0)
@@ -1780,13 +1802,15 @@ public class CacheAspect {
                                 .length());
 
                         //если правда называется так - значит дочерний - ищем индекс этого поля
-                        if (childFieldNameRest.equals("Id")) {
+                        if (childFieldNameRest.equals("Id") || childFieldNameRest.isEmpty()) {
                             parentDTOChildDTOIndex.get(parentDTOInd).add(childDTOInd);
                             parentDTOChildDTOFieldIndex.get(parentDTOInd).add(childFieldInd);
 
                             childDTOFieldParentDTOIndex
                                     .get(childDTOInd)
                                     .set(childFieldInd, parentDTOInd);
+
+//                            System.out.println(1805 + " " + dtoNames.get(childDTOInd) + " parent " + dtoNames.get(parentDTOInd));
                             //просто список методов, где используется поле
                             //                                 дочерний dto     зависимое поле
                             int size = DTOFieldMethodIndex

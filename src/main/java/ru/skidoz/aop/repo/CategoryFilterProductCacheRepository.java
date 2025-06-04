@@ -12,5 +12,5 @@ public interface CategoryFilterProductCacheRepository extends JpaRepositoryTest<
 
     CategoryFilterProduct findByFilterPoint_IdAndProduct_Id(Integer filterPointId, Integer productId);
 
-    CategoryFilterProduct save(CategoryFilterProduct categoryFilterProduct);
+    //CategoryFilterProduct save(CategoryFilterProduct categoryFilterProduct);
 }

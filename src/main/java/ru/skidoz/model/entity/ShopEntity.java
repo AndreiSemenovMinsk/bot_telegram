@@ -3,10 +3,8 @@ package ru.skidoz.model.entity;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 import java.util.function.Consumer;
 
 import ru.skidoz.model.entity.telegram.UserEntity;
@@ -167,7 +165,7 @@ public class ShopEntity extends AbstractEntity  implements Serializable {
             joinColumns = @JoinColumn(name = "shop_id"),
             inverseJoinColumns = @JoinColumn(name = "shop_group_id")
     )
-    private Set<ShopGroupEntity> shopGroupSet = new HashSet<>();
+    private List<ShopGroupEntity> shopGroupSet = new ArrayList<>();
 
 
     @OneToMany(mappedBy="shop")

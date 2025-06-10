@@ -370,8 +370,8 @@ public class ScheduleService {
         storeNew(userCacheRepository, userRepository, usersMapper);
 
 
-        System.out.println("*-*-*-@@@*-*-*-@@@");
-        System.out.println(cacheAspect.idUpdateMap.get(28));
+//        System.out.println("*-*-*-@@@*-*-*-@@@");
+//        System.out.println(cacheAspect.idUpdateMap.get(28));
 
         storeNew(shopCacheRepository, shopRepository, shopMapper);
 

@@ -488,8 +488,8 @@ public class LevelInitializer {
 //                buttonRowRepository.cache(row0_2);
 
 
-                System.out.println("@@*-*-*- " + buttonRepository
-                        .findAllByLevel_CallName(initialLevel.level_INITIALIZE.getCallName()));
+//                System.out.println("@@*-*-*- " + buttonRepository
+//                        .findAllByLevel_CallName(initialLevel.level_INITIALIZE.getCallName()));
 
 
                 //////////СТАРТОВОЕ МЕНЮ для пользователя без магазинов

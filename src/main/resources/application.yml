@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: localers
+  jpa:
+    properties:
+      hibernate:
+        show_sql:false
+systemInitializeCron: 0 */2 * * * *
+systemRefreshCron: 0 */2 * * * *
+remindTimer: 0 */4 * * * *
+saveToRepoTimer: 0 */2 * * * *

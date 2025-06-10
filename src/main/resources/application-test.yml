@@ -1,0 +1,12 @@
+systemInitializeCron: 0 */2 * * * *
+systemRefreshCron: 0 */2 * * * *
+remindTimer: 0 */4 * * * *
+saveToRepoTimer: 0 */2 * * * *
+
+spring:
+  datasource:
+    url: jdbc:tc:postgresql:latest://localhost/mail_service_db
+    username: mail_service
+    password: mail_service
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.yaml

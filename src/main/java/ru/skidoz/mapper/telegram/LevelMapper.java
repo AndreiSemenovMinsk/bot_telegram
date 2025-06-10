@@ -12,7 +12,7 @@ import ru.skidoz.model.pojo.telegram.Level;
 public abstract class LevelMapper extends EntityMapper<Level, LevelEntity> {
 
     @Override
-    @Mapping(target = "usersWithCurrentLevelBeforeInterruptionList", ignore = true)
+    //@Mapping(target = "usersWithCurrentLevelBeforeInterruptionList", ignore = true)
     @Mapping(target = "messages", ignore = true)
     @Mapping(target = "buttonRows", ignore = true)
     @Mapping(source = "user.id", target = "userId")
@@ -22,7 +22,7 @@ public abstract class LevelMapper extends EntityMapper<Level, LevelEntity> {
     @Override
 //    @Mapping(source = "users", target = "users", qualifiedByName = "idUser")
     @Mapping(source = "bot", target = "bot.id")//, qualifiedByName = "idBot")
-    @Mapping(target = "usersWithCurrentLevelBeforeInterruptionList", ignore = true)
+    //@Mapping(target = "usersWithCurrentLevelBeforeInterruptionList", ignore = true)
     @Mapping(target = "messages", ignore = true)
     @Mapping(target = "buttonRows", ignore = true)
     public abstract LevelEntity toEntity(Level level);

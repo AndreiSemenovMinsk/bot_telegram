@@ -58,28 +58,28 @@ public class MessageEntity extends AbstractEntity {
     private Double longitude;
     private Double latitude;
 
-    @OneToMany(mappedBy="currentChangingMessage", fetch = FetchType.LAZY)
-    private List<UserEntity> usersWithChangingMessageList = new ArrayList<>();
+//    @OneToMany(mappedBy="currentChangingMessage", fetch = FetchType.LAZY)
+//    private List<UserEntity> usersWithChangingMessageList = new ArrayList<>();
 
-    public MessageEntity(LevelEntity newLevel,
-                         Integer levelID,
-                         String nameEN,
-                         String nameRU,
-                         String nameDE,
-                         byte[] image,
-                         String imageDescription,
-                         Double longitude,
-                         Double latitude) {
-        this.level = newLevel;
-        this.levelID = levelID;
-        this.nameEN = nameEN;
-        this.nameRU = nameRU;
-        this.nameDE = nameDE;
-        this.image = image;
-        this.imageDescription = imageDescription;
-        this.longitude = longitude;
-        this.latitude = latitude;
-    }
+//    public MessageEntity(LevelEntity newLevel,
+//                         Integer levelID,
+//                         String nameEN,
+//                         String nameRU,
+//                         String nameDE,
+//                         byte[] image,
+//                         String imageDescription,
+//                         Double longitude,
+//                         Double latitude) {
+//        this.level = newLevel;
+//        this.levelID = levelID;
+//        this.nameEN = nameEN;
+//        this.nameRU = nameRU;
+//        this.nameDE = nameDE;
+//        this.image = image;
+//        this.imageDescription = imageDescription;
+//        this.longitude = longitude;
+//        this.latitude = latitude;
+//    }
 
     public MessageEntity(LevelEntity newLevel,
                          Integer levelID,

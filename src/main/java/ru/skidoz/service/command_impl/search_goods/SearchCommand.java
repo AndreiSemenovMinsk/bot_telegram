@@ -83,7 +83,7 @@ public class SearchCommand implements Command {
                 searchProducts = true;
 
                 abstractGroupEntityId = Structures.parseInt(code);
-                products = productCacheRepository.findAllByCategory_IdAndActiveIsTrue(abstractGroupEntityId);
+                products = productCacheRepository.findAllByCategory_IdAndActive(abstractGroupEntityId, true);
 
             } else {
                 resultLevel = initialLevel.convertToLevel(level,

@@ -149,14 +149,21 @@ public class UserEntity extends AbstractEntity {
     //@ManyToOne(fetch = FetchType.LAZY)
     private Integer currentLevelId;
     private Integer currentLevelBeforeConfigId;
-    @ManyToOne
-    private LevelEntity currentLevelBeforeInterruption;
-    @ManyToOne(fetch = FetchType.LAZY)
-    private BotEntity currentChangingBot;
-    @ManyToOne(fetch = FetchType.LAZY)
-    private ButtonEntity currentChangingButton;
-    @ManyToOne(fetch = FetchType.LAZY)
-    private MessageEntity currentChangingMessage;
+//    @ManyToOne
+//    private LevelEntity currentLevelBeforeInterruption;
+    private Integer currentLevelBeforeInterruption;
+
+
+    private Integer currentChangingBot;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    private BotEntity currentChangingBot;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    private ButtonEntity currentChangingButton;
+    private Integer currentChangingButton;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    private MessageEntity currentChangingMessage;
+    private Integer currentChangingMessage;
+
 
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)

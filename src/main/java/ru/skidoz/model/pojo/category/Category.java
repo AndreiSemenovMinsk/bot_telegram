@@ -73,11 +73,14 @@ public class Category extends AbstractGroup implements Cloneable {
 
     @Override
     public String toString() {
-        return "CategoryDTO{" +
+        return "CategoryDTO {" +
                 " id=" + super.getId() +
                 ", name=" + super.getName() +
                 ", alias=" + super.getAlias() +
                 ", productSet=" + productSet +
+                ", parentCategory=" + parentCategory +
+                ", categoryGroup=" + categoryGroup +
+                ", categorySuperGroup=" + categorySuperGroup +
                 '}';
     }
 

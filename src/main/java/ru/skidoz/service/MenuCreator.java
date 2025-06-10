@@ -86,11 +86,11 @@ public class MenuCreator {
 //        System.out.println("categorySuperGroupList.size()***" + categorySuperGroupList.size());
 
         List<CategorySuperGroup> categorySuperGroupDTOList = categorySuperGroupCacheRepository.findAll();
-        System.out.println("categorySuperGroupDTOList.size()***" + categorySuperGroupDTOList.size() + categorySuperGroupDTOList);
+        //System.out.println("categorySuperGroupDTOList.size()***" + categorySuperGroupDTOList.size() + categorySuperGroupDTOList);
 
         for (CategorySuperGroup categorySuperGroup : categorySuperGroupDTOList) {
 
-            List<CategoryGroup> categoryGroupList = categoryGroupCacheRepository.findByCategorySuperGroup_Id(categorySuperGroup.getId());
+            List<CategoryGroup> categoryGroupList = categoryGroupCacheRepository.findAllByCategorySuperGroup_Id(categorySuperGroup.getId());
             Level levelGroup = levelCacheRepository.findByParentLevelIdAndCallName(levelSuper.getId(), categorySuperGroup.getAlias());
             if (levelGroup == null) {
                 String callName = levelSuper.getCallName() + "*" + categorySuperGroup.getAlias() + menuTypeEnum;

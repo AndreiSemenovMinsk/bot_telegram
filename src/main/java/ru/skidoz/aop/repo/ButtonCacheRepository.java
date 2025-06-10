@@ -20,4 +20,6 @@ public interface ButtonCacheRepository extends JpaRepositoryTest<Button, Integer
     void deleteButtonByLevelId(Integer  levelId);
 
     void delete(Button button);
+
+    List<Button> findAllByLevel_CallName(String callName);
 }

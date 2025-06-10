@@ -29,8 +29,8 @@ public class BotEntity extends AbstractEntity  implements Serializable {
     @OneToMany(mappedBy="bot")
     private List<BuyerBotEntity> buyerBotList = new ArrayList<>();
 
-    @OneToMany(mappedBy="currentChangingBot", fetch = FetchType.LAZY)
-    private List<UserEntity> currentChangingBotUsersList = new ArrayList<>();
+//    @OneToMany(mappedBy="currentChangingBot", fetch = FetchType.LAZY)
+//    private List<UserEntity> currentChangingBotUsersList = new ArrayList<>();
 /*
     @OneToMany(mappedBy="bot")
     private List<BuyerBotMessage> buyerBotMessageList;*/

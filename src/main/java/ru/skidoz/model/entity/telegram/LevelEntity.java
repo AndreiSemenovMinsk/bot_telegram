@@ -59,8 +59,8 @@ public class LevelEntity extends AbstractEntity implements Cloneable {
     /*@OneToMany(fetch = FetchType.LAZY, mappedBy="currentLevel")
     private List<Users> userWithCurrentLevelList = new ArrayList<>();*/
 
-    @OneToMany(mappedBy="currentLevelBeforeInterruption")
-    private List<UserEntity> usersWithCurrentLevelBeforeInterruptionList = new ArrayList<>();
+//    @OneToMany(mappedBy="currentLevelBeforeInterruption")
+//    private List<UserEntity> usersWithCurrentLevelBeforeInterruptionList = new ArrayList<>();
 
     /*@OneToMany(mappedBy = "parentLevelId", fetch = FetchType.LAZY)//, fetch = FetchType.EAGER)
     //@LazyCollection(LazyCollectionOption.FALSE)

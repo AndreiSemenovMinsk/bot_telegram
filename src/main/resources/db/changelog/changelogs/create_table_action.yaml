@@ -74,18 +74,18 @@ databaseChangeLog:
                     references: shop(id)
             tableName: action
 
-        -  addForeignKeyConstraint:
-             baseColumnNames:  current_creating_action_id
-             #             baseTableCatalogName:  cat
-             baseTableName:  shop
-             baseTableSchemaName:  public
-             constraintName:  fk_current_creating_action_id
-             deferrable:  true
-             initiallyDeferred:  true
-             onDelete:  CASCADE
-             onUpdate:  RESTRICT
-             referencedColumnNames:  id
-             #             referencedTableCatalogName:  cat
-             referencedTableName:  action
-             referencedTableSchemaName:  public
-             validate:  true
+#        -  addForeignKeyConstraint:
+#             baseColumnNames:  current_creating_action_id
+#             #             baseTableCatalogName:  cat
+#             baseTableName:  shop
+#             baseTableSchemaName:  public
+#             constraintName:  fk_current_creating_action_id
+#             deferrable:  true
+#             initiallyDeferred:  true
+#             onDelete:  CASCADE
+#             onUpdate:  RESTRICT
+#             referencedColumnNames:  id
+#             #             referencedTableCatalogName:  cat
+#             referencedTableName:  action
+#             referencedTableSchemaName:  public
+#             validate:  true

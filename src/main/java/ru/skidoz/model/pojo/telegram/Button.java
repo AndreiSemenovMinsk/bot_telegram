@@ -28,7 +28,7 @@ public class Button extends AbstractDTO {
 
     private String webApp;
 
-    private List<Integer/*User*/> usersWithCurrentChangingButtonList = new ArrayList<>();
+//    private List<Integer/*User*/> usersWithCurrentChangingButtonList = new ArrayList<>();
 
     public Button(Consumer<Button> builder){
         super();

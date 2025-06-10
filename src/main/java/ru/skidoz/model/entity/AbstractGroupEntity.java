@@ -19,12 +19,12 @@ import org.springframework.data.annotation.CreatedDate;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @Data
 @Table(uniqueConstraints = {
-        @UniqueConstraint(name="UC_categorySuperGroup_name", columnNames={"nameru"}),
+        //@UniqueConstraint(name="UC_categorySuperGroup_name", columnNames={"nameru"}),
         @UniqueConstraint(name = "UC_PRODUCT_COL_NAME", columnNames = {"shop_id"})},
         indexes = {
                 @Index(name = "IDX_PRODUCT_ID", columnList = "id"),
 //                @Index(name = "IDX_PRODUCT_NAME_SHOP", columnList = "active,shop_id,name"),
-                @Index(name = "IDX_PRODUCT_SHOP", columnList = "active,shop_id"),
+                @Index(name = "IDX_PRODUCT_SHOP", columnList = "shop_id,active "),
 //                @Index(name = "IDX_PRODUCT_NAME", columnList = "active,name"),
                 @Index(name = "IDX_PRODUCT_POPULARITY", columnList = "popularity")})
 public class AbstractGroupEntity extends AbstractEntity implements Serializable {

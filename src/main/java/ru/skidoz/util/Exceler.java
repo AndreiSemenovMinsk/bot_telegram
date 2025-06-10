@@ -2,6 +2,7 @@ package ru.skidoz.util;
 
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
@@ -112,7 +113,7 @@ public class Exceler {
                     Shop shop = shopCacheRepository.findByNameAndAdminUser_Id(sheet.getRow(0).getCell(0).getStringCellValue(), users.getId());
 
                     /*if (shop.getId() < 0) {
-                        scheduleService.store(shopCacheRepository, shopRepository, shopMapper);
+                        scheduleService.storeNew(shopCacheRepository, shopRepository, shopMapper);
 
                         shop = shopCacheRepository.findByNameAndAdminUser_Id(sheet.getRow(0).getCell(0).getStringCellValue(), users.getId());
                     }*/
@@ -233,7 +234,14 @@ public class Exceler {
                             productRepository.save(product);
                         });
 
-                        shop.setExcel(excelBA);
+                        //shop.setExcel(excelBA);
+                        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                        try {
+                            workbook.write(bos);
+                        } finally {
+                            bos.close();
+                        }
+                        shop.setExcel(bos.toByteArray());
                         shopCacheRepository.save(shop);
 
                         int prdI = 0;

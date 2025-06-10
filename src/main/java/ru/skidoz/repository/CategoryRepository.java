@@ -4,7 +4,6 @@ package ru.skidoz.repository;
 import java.util.List;
 
 import ru.skidoz.model.entity.category.CategoryEntity;
-import ru.skidoz.model.entity.category.CategoryGroupEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

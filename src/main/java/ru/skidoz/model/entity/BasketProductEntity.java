@@ -18,7 +18,7 @@ public class BasketProductEntity extends AbstractEntity implements Serializable 
 
     @NotNull
     @ManyToOne
-    private PrdEntity product;
+    private ProductEntity product;
 
     @NotNull
     private Integer productAmount;

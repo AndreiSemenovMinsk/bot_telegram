@@ -55,10 +55,10 @@ databaseChangeLog:
               - column:
                   name: current_conversation_shop_group_id
                   type: int(11)
-                  constraints:
-                    nullable: true
-                    foreignKeyName: fk_current_conversation_shop_group_id
-                    references: shop_group(id)
+#                  constraints:
+#                    nullable: true
+#                    foreignKeyName: fk_current_conversation_shop_group_id
+#                    references: shop_group(id)
               - column:
                   name: current_creating_action_id
                   type: int(11)

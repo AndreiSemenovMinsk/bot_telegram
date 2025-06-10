@@ -1,5 +1,6 @@
 package ru.skidoz.aop.repo;
 
+import java.io.Serializable;
 import java.util.List;
 
 import ru.skidoz.model.entity.ActionTypeEnum;

@@ -56,8 +56,8 @@ public class Actions implements Command {
             for (Action action : actionList) {
 
                 String text;
-                if (action.getRateFuturePurchase() != null) {
-                    text = action.getName() + " - кэшбек " + action.getRateFuturePurchase() + "%";
+                if (action.getFuturePurchaseRate() != null) {
+                    text = action.getName() + " - кэшбек " + action.getFuturePurchaseRate() + "%";
                 } else if (action.getNumberCoupon() != null) {
                     text = action.getName() + " - " + action.getNumberCoupon() + " купонов";
                 } else {

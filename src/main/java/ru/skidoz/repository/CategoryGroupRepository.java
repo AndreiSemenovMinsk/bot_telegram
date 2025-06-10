@@ -13,7 +13,7 @@ public interface CategoryGroupRepository extends JpaRepository<CategoryGroupEnti
 
     CategoryGroupEntity findByAliasAndCategorySuperGroup_Id(String alias, Integer id);
 
-    List<CategoryGroupEntity> findByCategorySuperGroup_Id(Integer id);
+    List<CategoryGroupEntity> findAllByCategorySuperGroup_Id(Integer id);
 
 //    List<CatG> findAllByNameContaining(String name);
 //

@@ -18,7 +18,6 @@ import ru.skidoz.model.pojo.main.Purchase;
 import ru.skidoz.model.pojo.side.*;
 import ru.skidoz.model.pojo.telegram.*;
 import ru.skidoz.aop.repo.*;
-import ru.skidoz.repository.CashbackShopGroupRepository;
 import ru.skidoz.service.InitialLevel;
 import ru.skidoz.service.command.Command;
 import com.google.zxing.WriterException;
@@ -275,7 +274,7 @@ public class ConnectShop implements Command {
                 cashbackMessage.append(" по акции ")
                         .append(action.getDescription())
                         .append(" скидка ")
-                        .append(action.getRateFuturePurchase())
+                        .append(action.getFuturePurchaseRate())
                         .append("% сумма ")
                         .append(purchase.getSum());
             }

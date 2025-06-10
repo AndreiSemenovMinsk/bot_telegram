@@ -13,17 +13,17 @@ import ru.skidoz.model.pojo.telegram.Button;
 @Mapper(componentModel = "spring", uses = {ButtonRowMapper.class})
 public abstract class ButtonMapper extends EntityMapper<Button, ButtonEntity> {
 
-    @Mapping(target = "usersWithCurrentChangingButtonList", ignore = true)
+//    @Mapping(target = "usersWithCurrentChangingButtonList", ignore = true)
     @Mapping(source = "buttonRow.id", target = "buttonRow")
     @Mapping(source = "buttonRow.level.id", target = "level")
     public abstract Button toDto(ButtonEntity entity);
 
-    @Mapping(target = "usersWithCurrentChangingButtonList", ignore = true)
+//    @Mapping(target = "usersWithCurrentChangingButtonList", ignore = true)
     @Mapping(source = "buttonRow.id", target = "buttonRow")
     @Mapping(source = "buttonRow.level.id", target = "level")
     public abstract List<Button> toDto(List<ButtonEntity> entity);
 
-    @Mapping(target = "usersWithCurrentChangingButtonList", ignore = true)
+//    @Mapping(target = "usersWithCurrentChangingButtonList", ignore = true)
     @Mapping(source = "buttonRow", target = "buttonRow.id")//, qualifiedByName = "idButtonRow")
     public abstract ButtonEntity toEntity(Button entity);
 

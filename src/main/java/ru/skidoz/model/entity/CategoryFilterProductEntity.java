@@ -29,7 +29,7 @@ public class CategoryFilterProductEntity extends AbstractEntity  implements Seri
     @NotNull
     @ManyToOne
     //@JoinColumn(name = "productId", nullable = false, insertable = false, updatable = false)
-    private PrdEntity product;
+    private ProductEntity product;
 
     @NotNull
     @ManyToOne

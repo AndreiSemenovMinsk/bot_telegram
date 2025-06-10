@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-import ru.skidoz.model.entity.PrdEntity;
+import ru.skidoz.model.entity.ProductEntity;
 import jakarta.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -20,7 +20,7 @@ public class CategoryGroup extends AbstractGroup implements Cloneable {
 
     private List<Category> categorySet = new ArrayList<>();
 
-    private List<PrdEntity> productSet = new ArrayList<>();
+    private List<ProductEntity> productSet = new ArrayList<>();
 
     public CategoryGroup(Consumer<CategoryGroup> builder){
         super();

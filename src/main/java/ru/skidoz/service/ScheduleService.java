@@ -280,16 +280,12 @@ public class ScheduleService {
     @Autowired
     private ScheduleBuyerMapper scheduleBuyerMapper;
 
-    public <D extends AbstractDTO, E extends AbstractEntity> void store(
+    public <D extends AbstractDTO, E extends AbstractEntity> void storeNew(
             JpaRepositoryTest<D, Integer> cache,
             JpaRepository<E, Integer> repository,
             EntityMapper<D, E> entityMapper) {
 
-        String intefaceName = cache.getClass().getGenericInterfaces()[0].getTypeName();
-        final String[] split = intefaceName.split("\\.");
-        final String simpleName = split[split.length - 1];
-
-        int repoIndex = cacheAspect.repoOrders.get(simpleName);
+        int repoIndex = getRepoIndex(cache);
         ConcurrentHashMap<Integer, DTO> newDTOs = cacheAspect.idNewMap.get(repoIndex);
 
         int size = newDTOs.size();
@@ -319,8 +315,40 @@ public class ScheduleService {
             int newId = results.get(i).getId();
             D d = dtos.get(i);
             d.setId(newId);
+
+            System.out.println("319 dto " + d);
+
             cache.save(d);
         }
+
+        cacheAspect.idNewMap.forEach(ConcurrentHashMap::clear);
+    }
+
+
+    private <D extends AbstractDTO, E extends AbstractEntity> void secondStore(
+            JpaRepositoryTest<D, Integer> cache,
+            JpaRepository<E, Integer> repository,
+            EntityMapper<D, E> entityMapper) {
+        ConcurrentHashMap<Integer, DTO> allDTOs = cacheAspect.idUpdateMap.get(getRepoIndex(cache));
+
+        List<D> dtos = new ArrayList<>();
+        List<E> saveList = new ArrayList<>();
+        allDTOs.forEach((id, dto) -> {
+            if (dto != null) {
+
+                D d = (D) dto;
+                dtos.add(d);
+                saveList.add(entityMapper.toEntity(d));
+            }
+        });
+
+        repository.saveAll(saveList);
+
+        for (D d : dtos) {
+            cache.save(d);
+        }
+
+        cacheAspect.idUpdateMap.forEach(ConcurrentHashMap::clear);
     }
 
 
@@ -329,71 +357,123 @@ public class ScheduleService {
         long start = System.currentTimeMillis();
         System.out.println("+++++++++++++++++++++++++++++++++++++++++++ScheduleService+++++++++++++++++++++++++++++++++++");
 
+        storeNew(categorySuperGroupCacheRepository, categorySuperGroupRepository, categorySuperGroupMapper);
+
+        storeNew(categoryGroupCacheRepository, categoryGroupRepository, categoryGroupMapper);
+
+        storeNew(categoryCacheRepository, categoryRepository, categoryMapper);
+
+        storeNew(filterPointCacheRepository, filterPointRepository, filterPointMapper);
+
+        storeNew(filterOptionCacheRepository, filterOptionRepository, filterOptionMapper);
+
+        storeNew(userCacheRepository, userRepository, usersMapper);
 
 
-        store(categorySuperGroupCacheRepository, categorySuperGroupRepository, categorySuperGroupMapper);
+        System.out.println("*-*-*-@@@*-*-*-@@@");
+        System.out.println(cacheAspect.idUpdateMap.get(28));
 
-        store(categoryGroupCacheRepository, categoryGroupRepository, categoryGroupMapper);
+        storeNew(shopCacheRepository, shopRepository, shopMapper);
 
-        store(categoryCacheRepository, categoryRepository, categoryMapper);
+        storeNew(botCacheRepository, botRepository, botMapper);
 
-        store(filterPointCacheRepository, filterPointRepository, filterPointMapper);
+        storeNew(levelCacheRepository, levelRepository, levelMapper);
 
-        store(filterOptionCacheRepository, filterOptionRepository, filterOptionMapper);
+        storeNew(buttonRowCacheRepository, buttonRowRepository, buttonRowMapper);
 
+        storeNew(buttonCacheRepository, buttonRepository, buttonMapper);
 
-        store(userCacheRepository, userRepository, usersMapper);
-
-        store(levelCacheRepository, levelRepository, levelMapper);
-
-        store(buttonRowCacheRepository, buttonRowRepository, buttonRowMapper);
-
-        store(buttonCacheRepository, buttonRepository, buttonMapper);
-
-        store(messageCacheRepository, messageRepository, messageMapper);
+        storeNew(messageCacheRepository, messageRepository, messageMapper);
 
 
-        store(userCacheRepository, userRepository, usersMapper);
-
-        store(shopCacheRepository, shopRepository, shopMapper);
-
-        store(shopGroupCacheRepository, shopGroupRepository, shopGroupMapper);
-
-        store(partnerCacheRepository, partnerRepository, partnerMapper);
-
-        store(partnerGroupCacheRepository, partnerGroupRepository, partnerGroupMapper);
-
-        //actionCacheRepository.getNewList().forEach(e -> System.out.println("***++++" + e));
-        //actionCacheRepository.getNewList().forEach(e -> System.out.println(e.getShop() + "@@@@@" + commonReplace.containsKey(e.getShop()) + "++++" + commonReplace.get(e.getShop())));
-
-        store(actionCacheRepository, actionRepository, actionMapper);
-
-        store(productCacheRepository, productRepository, productMapper);
-
-        store(basketCacheRepository, basketRepository, basketMapper);
-
-        store(basketProductCacheRepository, basketProductRepository, basketProductMapper);
-
-        store(bookmarkCacheRepository, bookmarkRepository, bookmarkMapper);
-
-        store(purchaseCacheRepository, purchaseRepository, purchaseMapper);
-
-        store(recommendationCacheRepository, recommendationRepository, recommendationMapper);
+//        storeNew(userCacheRepository, userRepository, usersMapper);
 
 
-        //cashbackCacheRepository.getNewList().forEach(e -> System.out.println("cashback***++++" + e));
-        //cashbackCacheRepository.getNewList().forEach(e -> System.out.println(e.getShop() + "+++cashback@@@@@" + commonReplace.containsKey(e.getShop()) + "++++" + commonReplace.get(e.getShop())));
+
+        storeNew(shopGroupCacheRepository, shopGroupRepository, shopGroupMapper);
+
+        storeNew(partnerCacheRepository, partnerRepository, partnerMapper);
+
+        storeNew(partnerGroupCacheRepository, partnerGroupRepository, partnerGroupMapper);
+
+        storeNew(actionCacheRepository, actionRepository, actionMapper);
+
+        storeNew(productCacheRepository, productRepository, productMapper);
+
+        storeNew(basketCacheRepository, basketRepository, basketMapper);
+
+        storeNew(basketProductCacheRepository, basketProductRepository, basketProductMapper);
+
+        storeNew(bookmarkCacheRepository, bookmarkRepository, bookmarkMapper);
+
+        storeNew(purchaseCacheRepository, purchaseRepository, purchaseMapper);
+
+        storeNew(recommendationCacheRepository, recommendationRepository, recommendationMapper);
+
+        storeNew(cashbackCacheRepository, cashbackRepository, cashbackMapper);
+
+        storeNew(cashbackWriteOffCacheRepository, cashbackWriteOffRepository, cashbackWriteOffMapper);
 
 
-        store(cashbackCacheRepository, cashbackRepository, cashbackMapper);
 
-        store(cashbackWriteOffCacheRepository, cashbackWriteOffRepository, cashbackWriteOffMapper);
+        storeNew(nameWordProductCacheRepository, nameWordProductRepository, nameWordProductMapper);
 
-        //store(cashbackWriteOffResultPurchaseCacheRepository, cashbackWriteOffResultPurchaseRepository, cashbackWriteOffResultPurchaseMapper);
 
-        store(botCacheRepository, botRepository, botMapper);
 
-        store(nameWordProductCacheRepository, nameWordProductRepository, nameWordProductMapper);
+
+        secondStore(categorySuperGroupCacheRepository, categorySuperGroupRepository, categorySuperGroupMapper);
+
+        secondStore(categoryGroupCacheRepository, categoryGroupRepository, categoryGroupMapper);
+
+        secondStore(categoryCacheRepository, categoryRepository, categoryMapper);
+
+        secondStore(filterPointCacheRepository, filterPointRepository, filterPointMapper);
+
+        secondStore(filterOptionCacheRepository, filterOptionRepository, filterOptionMapper);
+
+        secondStore(userCacheRepository, userRepository, usersMapper);
+
+        secondStore(levelCacheRepository, levelRepository, levelMapper);
+
+        secondStore(buttonRowCacheRepository, buttonRowRepository, buttonRowMapper);
+
+        secondStore(buttonCacheRepository, buttonRepository, buttonMapper);
+
+        secondStore(messageCacheRepository, messageRepository, messageMapper);
+
+
+        secondStore(userCacheRepository, userRepository, usersMapper);
+
+        secondStore(shopCacheRepository, shopRepository, shopMapper);
+
+        secondStore(shopGroupCacheRepository, shopGroupRepository, shopGroupMapper);
+
+        secondStore(partnerCacheRepository, partnerRepository, partnerMapper);
+
+        secondStore(partnerGroupCacheRepository, partnerGroupRepository, partnerGroupMapper);
+
+        secondStore(actionCacheRepository, actionRepository, actionMapper);
+
+        secondStore(productCacheRepository, productRepository, productMapper);
+
+        secondStore(basketCacheRepository, basketRepository, basketMapper);
+
+        secondStore(basketProductCacheRepository, basketProductRepository, basketProductMapper);
+
+        secondStore(bookmarkCacheRepository, bookmarkRepository, bookmarkMapper);
+
+        secondStore(purchaseCacheRepository, purchaseRepository, purchaseMapper);
+
+        secondStore(recommendationCacheRepository, recommendationRepository, recommendationMapper);
+
+        secondStore(cashbackCacheRepository, cashbackRepository, cashbackMapper);
+
+        secondStore(cashbackWriteOffCacheRepository, cashbackWriteOffRepository, cashbackWriteOffMapper);
+
+        secondStore(botCacheRepository, botRepository, botMapper);
+
+        secondStore(nameWordProductCacheRepository, nameWordProductRepository, nameWordProductMapper);
+
 
         System.out.println();
         System.out.println("-----------------ScheduleService---------------");
@@ -439,5 +519,16 @@ public class ScheduleService {
             e.setLevel(levelWrapper);
             e.setChatId(user.getChatId());
         }))));
+    }
+
+    private <D extends AbstractDTO> int getRepoIndex(JpaRepositoryTest<D, Integer> cache) {
+
+        String intefaceName = cache.getClass().getGenericInterfaces()[0].getTypeName();
+        final String[] split = intefaceName.split("\\.");
+        final String simpleName = split[split.length - 1];
+
+        System.out.println(simpleName + " getRepoIndex---* " + cacheAspect.repoOrders.get(simpleName));
+
+        return cacheAspect.repoOrders.get(simpleName);
     }
 }

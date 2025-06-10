@@ -143,7 +143,7 @@ public class AddActionSource implements Command {
 
                 try {
                     Action action = actionCacheRepository.findById(shopInitiator.getCurrentCreatingAction());
-                    action.setRateFriendFuturePurchase(Integer.parseInt(inputText));
+                    action.setFriendFuturePurchaseRate(Integer.parseInt(inputText));
                     actionCacheRepository.save(action);
                 } catch (NumberFormatException formatException) {
                     resultLevel = initialLevel.convertToLevel(levelCacheRepository.findById(level.getParentLevelId()),
@@ -170,7 +170,7 @@ public class AddActionSource implements Command {
 
                     System.out.println("action-------" + action);
 
-                    action.setRateFuturePurchase(Integer.parseInt(inputText));
+                    action.setFuturePurchaseRate(Integer.parseInt(inputText));
                     actionCacheRepository.save(action);
 
                     System.out.println("action+++++++" + action);

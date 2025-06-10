@@ -7,7 +7,7 @@ import ru.skidoz.mapper.EntityMapper;
 import ru.skidoz.mapper.category.CategoryGroupMapper;
 import ru.skidoz.mapper.category.CategoryMapper;
 import ru.skidoz.mapper.category.CategorySuperGroupMapper;
-import ru.skidoz.model.entity.PrdEntity;
+import ru.skidoz.model.entity.ProductEntity;
 import ru.skidoz.model.pojo.side.Product;
 
 @Component
@@ -16,13 +16,13 @@ import ru.skidoz.model.pojo.side.Product;
         CategoryMapper.class,
         CategoryGroupMapper.class,
         CategorySuperGroupMapper.class})
-public abstract class ProductMapper extends EntityMapper<Product, PrdEntity> {
+public abstract class ProductMapper extends EntityMapper<Product, ProductEntity> {
 
     @Override
     @Mapping(source = "category.id", target = "category")
     @Mapping(source = "categoryGroup.id", target = "categoryGroup")
     @Mapping(source = "categorySuperGroup.id", target = "categorySuperGroup")
-    public abstract Product toDto(PrdEntity product);
+    public abstract Product toDto(ProductEntity product);
 
     @Override
     @Mapping(source = "category", target = "category.id")//, qualifiedByName = "idCat")
@@ -34,8 +34,8 @@ public abstract class ProductMapper extends EntityMapper<Product, PrdEntity> {
     @Mapping(target = "basketProductList", ignore = true)
     @Mapping(target = "bookmarkList", ignore = true)
     @Mapping(target = "categoryFilterProductList", ignore = true)
-    @Mapping(target = "currentCreatingProductShopList", ignore = true)
-    public abstract PrdEntity toEntity(Product product);
+//    @Mapping(target = "currentCreatingProductShopList", ignore = true)
+    public abstract ProductEntity toEntity(Product product);
 
 
 /*

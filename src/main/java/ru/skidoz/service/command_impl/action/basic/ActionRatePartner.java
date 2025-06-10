@@ -51,7 +51,7 @@ public class ActionRatePartner implements Command {
 
         try {
             Action action = actionCacheRepository.findById(shopInitiator.getCurrentCreatingAction());
-            action.setRateFuturePurchase(Integer.parseInt(inputText));
+            action.setFuturePurchaseRate(Integer.parseInt(inputText));
             actionCacheRepository.save(action);
         } catch (NumberFormatException formatException) {
 

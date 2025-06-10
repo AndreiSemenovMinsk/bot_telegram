@@ -22,11 +22,11 @@ public class Bot extends AbstractDTO implements Serializable {
 
     private List<BuyerBot> buyerBotList = new ArrayList<>();
 
-    private List<User> currentChangingBotUsersList = new ArrayList<>();
+//    private List<User> currentChangingBotUsersList = new ArrayList<>();
 
     private Integer initialLevel;
 
-    private List<Level> levelList;
+    //private List<Level> levelList;
 
     public Bot(Consumer<Bot> builder){
         super();

@@ -38,7 +38,7 @@ public class ScheduleBuyerEntity extends AbstractEntity  implements Serializable
     @NotNull
     @ManyToOne
     //@JoinColumn(name = "productId", nullable = false, insertable = false, updatable = false)
-    private PrdEntity product;
+    private ProductEntity product;
 
     public ScheduleBuyerEntity(Consumer<ScheduleBuyerEntity> builder){
         builder.accept(this);

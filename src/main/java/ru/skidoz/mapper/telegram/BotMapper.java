@@ -14,14 +14,14 @@ public abstract class BotMapper extends EntityMapper<Bot, BotEntity> {
 
     @Override
     @Mapping(target = "buyerBotList", ignore = true)
-    @Mapping(target = "currentChangingBotUsersList", ignore = true)
-    @Mapping(target = "levelList", ignore = true)
+//    @Mapping(target = "currentChangingBotUsersList", ignore = true)
+//    @Mapping(target = "levelList", ignore = true)
     @Mapping(source = "shop.id", target = "shop")
     public abstract Bot toDto(BotEntity entity);
 
     @Override
     @Mapping(target = "buyerBotList", ignore = true)
-    @Mapping(target = "currentChangingBotUsersList", ignore = true)
+//    @Mapping(target = "currentChangingBotUsersList", ignore = true)
     @Mapping(target = "levelList", ignore = true)
 //    @Mapping(source = "shop", target = "shop", qualifiedByName = "idShop")
     @Mapping(source = "initialLevel", target = "initialLevel")

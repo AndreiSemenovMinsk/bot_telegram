@@ -30,10 +30,10 @@ public abstract class UsersMapper extends EntityMapper<User, UserEntity> {
     @Mapping(target = "cashbackWriteOffList", ignore = true)
     @Mapping(target = "scheduleBuyerList", ignore = true)
     @Mapping(target = "levels", ignore = true)
-    @Mapping(source = "currentLevelBeforeInterruption.id", target = "currentLevelBeforeInterruption")
-    @Mapping(source = "currentChangingBot.id", target = "currentChangingBot")
-    @Mapping(source = "currentChangingButton.id", target = "currentChangingButton")
-    @Mapping(source = "currentChangingMessage.id", target = "currentChangingMessage")
+//    @Mapping(source = "currentLevelBeforeInterruption.id", target = "currentLevelBeforeInterruption")
+//    @Mapping(source = "currentChangingBot.id", target = "currentChangingBot")
+//    @Mapping(source = "currentChangingButton.id", target = "currentChangingButton")
+//    @Mapping(source = "currentChangingMessage.id", target = "currentChangingMessage")
     public abstract User toDto(UserEntity entity);
 
     @Override
@@ -49,13 +49,13 @@ public abstract class UsersMapper extends EntityMapper<User, UserEntity> {
     @Mapping(target = "cashbackWriteOffList", ignore = true)
     @Mapping(target = "scheduleBuyerList", ignore = true)
     @Mapping(target = "levels", ignore = true)
-    @Mapping(source = "currentLevelBeforeInterruption", target = "currentLevelBeforeInterruption.id")//, qualifiedByName = "idLevel")
+//    @Mapping(source = "currentLevelBeforeInterruption", target = "currentLevelBeforeInterruption.id")//, qualifiedByName = "idLevel")
 //    @Mapping(source = "currentAdminShop", target = "currentAdminShop", qualifiedByName = "requestReplace")
 //    @Mapping(source = "currentConstructShop", target = "currentConstructShop", qualifiedByName = "requestReplace")
 //    @Mapping(source = "currentConversationShop", target = "currentConversationShop", qualifiedByName = "requestReplace")
-    @Mapping(source = "currentChangingBot", target = "currentChangingBot.id")//, qualifiedByName = "idBot")
-    @Mapping(source = "currentChangingButton", target = "currentChangingButton.id")//, qualifiedByName = "idButton")
-    @Mapping(source = "currentChangingMessage", target = "currentChangingMessage.id")//, qualifiedByName = "idMessage")
+//    @Mapping(source = "currentChangingBot", target = "currentChangingBot.id")//, qualifiedByName = "idBot")
+//    @Mapping(source = "currentChangingButton", target = "currentChangingButton.id")//, qualifiedByName = "idButton")
+//    @Mapping(source = "currentChangingMessage", target = "currentChangingMessage.id")//, qualifiedByName = "idMessage")
     public abstract UserEntity toEntity(User entity);
 
 

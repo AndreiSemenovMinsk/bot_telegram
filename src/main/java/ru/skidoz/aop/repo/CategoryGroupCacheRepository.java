@@ -13,7 +13,7 @@ public interface CategoryGroupCacheRepository extends JpaRepositoryTest<Category
 
     CategoryGroup findByAliasAndCategorySuperGroup(String alias, Integer categoryGroupId);
 
-    List<CategoryGroup> findByCategorySuperGroup_Id(Integer categorySuperGroupId);
+    List<CategoryGroup> findAllByCategorySuperGroup_Id(Integer categorySuperGroupId);
 
 //    CategoryGroup findById(Integer id);
 

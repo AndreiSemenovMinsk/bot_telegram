@@ -81,23 +81,37 @@ databaseChangeLog:
               - column:
                   name: shop_id
                   type: int(11)
+
             tableName: abstract_group_entity
             remarks: Родитель
-        -  addForeignKeyConstraint:
-             baseColumnNames:  current_creating_product_id
-             #             baseTableCatalogName:  cat
-             baseTableName:  shop
-             baseTableSchemaName:  public
-             constraintName:  fk_current_creating_product_id
-             deferrable:  true
-             initiallyDeferred:  true
-             onDelete:  CASCADE
-             onUpdate:  RESTRICT
-             referencedColumnNames:  id
-             #             referencedTableCatalogName:  cat
-             referencedTableName:  abstract_group_entity
-             referencedTableSchemaName:  public
-             validate:  true
+#        -  addForeignKeyConstraint:
+#             baseColumnNames:  current_creating_product_id
+#             #             baseTableCatalogName:  cat
+#             baseTableName:  shop
+#             baseTableSchemaName:  public
+#             constraintName:  fk_current_creating_product_id
+#             deferrable:  true
+#             initiallyDeferred:  true
+#             onDelete:  CASCADE
+#             onUpdate:  RESTRICT
+#             referencedColumnNames:  id
+#             #             referencedTableCatalogName:  cat
+#             referencedTableName:  abstract_group_entity
+#             referencedTableSchemaName:  public
+#             validate:  true
+        - createIndex:
+            #            clustered:  true
+            columns:
+              - column:
+                  descending: true
+                  name: shop_id
+              - column:
+                  descending: true
+                  name: active
+            indexName: SHOP_ACTIVE_IND
+            schemaName: public
+            tableName: abstract_group_entity
+            unique: true
 
 
 

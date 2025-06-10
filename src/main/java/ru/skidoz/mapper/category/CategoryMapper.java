@@ -26,7 +26,7 @@ public abstract class CategoryMapper extends EntityMapper<Category, CategoryEnti
     @Mapping(target = "childCategorySet", ignore = true)
     @Mapping(target = "productSet", ignore = true)
     @Mapping(target = "filterPointList", ignore = true)
-    @Mapping(source = "parentCategory", target = "parentCategory.id")//, qualifiedByName = "idCat")
+    @Mapping(target = "parentCategory", ignore = true)//убрал маппинг - может быть потом понадобится?, target = "parentCategory.id"
     @Mapping(source = "categoryGroup", target = "categoryGroup.id")//, qualifiedByName = "idCatG")
     @Mapping(source = "categorySuperGroup", target = "categorySuperGroup.id")//, qualifiedByName = "idCatSG")
     public abstract CategoryEntity toEntity(Category entity);

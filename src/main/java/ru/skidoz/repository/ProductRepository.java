@@ -2,13 +2,13 @@ package ru.skidoz.repository;
 
 import java.util.List;
 
-import ru.skidoz.model.entity.PrdEntity;
+import ru.skidoz.model.entity.ProductEntity;
 import ru.skidoz.model.entity.category.CategoryEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ProductRepository extends JpaRepository<PrdEntity, Integer> {
+public interface ProductRepository extends JpaRepository<ProductEntity, Integer> {
 
 //    List<Prd> findAllByCategorySuperGroupAndNameInAndActiveIsTrue(CatSG categorySuperGroup, List<String> names);
 //
@@ -16,7 +16,7 @@ public interface ProductRepository extends JpaRepository<PrdEntity, Integer> {
 //
 //    List<Prd> findAllByCategoryAndNameInAndActiveIsTrue(Cat category, List<String> names);
 
-    List<PrdEntity> findAllByShop_Id(Integer shopId);
+    List<ProductEntity> findAllByShop_Id(Integer shopId);
 
 //    List<Prd> findAllByNameInAndActiveIsTrue(List<String> names);
 //
@@ -24,15 +24,15 @@ public interface ProductRepository extends JpaRepository<PrdEntity, Integer> {
 //
 //    List<Prd> findAllByCategoryGroupAndActiveIsTrue(CatG categoryGroup);
 
-    List<PrdEntity> findAllByCategoryAndActiveIsTrue(CategoryEntity category);
+    List<ProductEntity> findAllByCategoryAndActive(CategoryEntity category, Boolean active);
 
-    List<PrdEntity> findAllByCategory_IdAndActiveIsTrue(Integer categoryId);
+    List<ProductEntity> findAllByCategory_IdAndActive(Integer categoryId, Boolean active);
 
 //    List<Prd> findAllByNameContaining(String name);
 
 //    Prd findAllByShopAndName(Shop shop, String name);
 
-    PrdEntity findAllByShop_IdAndArticle(Integer shopId, String nameArticle);
+    ProductEntity findAllByShop_IdAndArticle(Integer shopId, String nameArticle);
 
-    PrdEntity save(PrdEntity prd);
+    ProductEntity save(ProductEntity prd);
 }

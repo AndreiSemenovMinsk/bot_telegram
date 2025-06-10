@@ -27,38 +27,38 @@ databaseChangeLog:
               - column:
                   name: current_admin_shop
                   type: int(11)
-                  constraints:
-                    nullable: true
-                    foreignKeyName: fk_current_admin_shop
-                    references: users(id)
+#                  constraints:
+#                    nullable: true
+#                    foreignKeyName: fk_current_admin_shop
+#                    references: users(id)
               - column:
                   name: current_construct_shop
                   type: int(11)
-                  constraints:
-                    nullable: true
-                    foreignKeyName: fk_current_construct_shop_user
-                    references: shop(id)
+#                  constraints:
+#                    nullable: true
+#                    foreignKeyName: fk_current_construct_shop_user
+#                    references: shop(id)
               - column:
                   name: current_conversation_shop
                   type: int(11)
-                  constraints:
-                    nullable: true
-                    foreignKeyName: fk_current_conversation_shop
-                    references: shop(id)
+#                  constraints:
+#                    nullable: true
+#                    foreignKeyName: fk_current_conversation_shop
+#                    references: shop(id)
               - column:
                   name: current_level_before_config_id
                   type: int(11)
-                  constraints:
-                    nullable: true
-                    foreignKeyName: fk_current_level_before_config_id
-                    references: level(id)
+#                  constraints:
+#                    nullable: true
+#                    foreignKeyName: fk_current_level_before_config_id
+#                    references: level(id)
               - column:
                   name: current_level_id
                   type: int(11)
-                  constraints:
-                    nullable: true
-                    foreignKeyName: fk_current_level_id
-                    references: level(id)
+#                  constraints:
+#                    nullable: true
+#                    foreignKeyName: fk_current_level_id
+#                    references: level(id)
               - column:
                   name: current_search_abstract_group_entity
                   type: int(11)
@@ -111,24 +111,24 @@ databaseChangeLog:
               - column:
                   name: current_changing_bot_id
                   type: int(11)
-                  constraints:
-                    nullable: true
-                    foreignKeyName: fk_current_changing_bot_id
-                    references: bot(id)
+#                  constraints:
+#                    nullable: true
+#                    foreignKeyName: fk_current_changing_bot_id
+#                    references: bot(id)
               - column:
                   name: current_changing_button_id
                   type: int(11)
-                  constraints:
-                    nullable: true
-                    foreignKeyName: fk_current_changing_button_id
-                    references: button(id)
+#                  constraints:
+#                    nullable: true
+#                    foreignKeyName: fk_current_changing_button_id
+#                    references: button(id)
               - column:
                   name: current_changing_message_id
                   type: int(11)
-                  constraints:
-                    nullable: true
-                    foreignKeyName: fk_current_changing_message_id
-                    references: message(id)
+#                  constraints:
+#                    nullable: true
+#                    foreignKeyName: fk_current_changing_message_id
+#                    references: message(id)
               - column:
                   name: current_level_before_interruption_id
                   type: int(11)
@@ -175,18 +175,18 @@ databaseChangeLog:
             tableName:  users
             unique:  true
 
-        -  addForeignKeyConstraint:
-             baseColumnNames:  admin_user_id
-             #             baseTableCatalogName:  cat
-             baseTableName:  shop
-             baseTableSchemaName:  public
-             constraintName:  fk_admin_user_id
-             deferrable:  true
-             initiallyDeferred:  true
-             onDelete:  CASCADE
-             onUpdate:  RESTRICT
-             referencedColumnNames:  id
-             #             referencedTableCatalogName:  cat
-             referencedTableName:  users
-             referencedTableSchemaName:  public
-             validate:  true
+#        -  addForeignKeyConstraint:
+#             baseColumnNames:  admin_user_id
+#             #             baseTableCatalogName:  cat
+#             baseTableName:  shop
+#             baseTableSchemaName:  public
+#             constraintName:  fk_admin_user_id
+#             deferrable:  true
+#             initiallyDeferred:  true
+#             onDelete:  CASCADE
+#             onUpdate:  RESTRICT
+#             referencedColumnNames:  id
+#             #             referencedTableCatalogName:  cat
+#             referencedTableName:  users
+#             referencedTableSchemaName:  public
+#             validate:  true

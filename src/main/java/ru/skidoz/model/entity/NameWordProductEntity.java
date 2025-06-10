@@ -17,7 +17,7 @@ public class NameWordProductEntity extends AbstractEntity  implements Serializab
     private NameWordEntity nameWord;
 
     @ManyToOne
-    private PrdEntity product;
+    private ProductEntity product;
 
     public NameWordProductEntity(Consumer<NameWordProductEntity> builder){
         builder.accept(this);

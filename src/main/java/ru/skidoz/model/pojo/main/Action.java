@@ -24,8 +24,8 @@ public class Action extends AbstractDTO {
     private boolean active = false;
     private ActionTypeEnum type;
     private Integer numberCoupon;
-    private Integer rateFuturePurchase;
-    private Integer rateFriendFuturePurchase;
+    private Integer futurePurchaseRate;
+    private Integer friendFuturePurchaseRate;
     private Integer/*AbstractGroupDTO*/ productSource;
 //    private List<Cashback> cashbackList = new ArrayList<>();
 //    private List<AbstractGroup> productTargetList = new ArrayList<>();
@@ -87,7 +87,7 @@ public class Action extends AbstractDTO {
                 ", accommodateSum=" + accommodateSum +
                 ", type=" + type +
                 ", numberCoupon=" + numberCoupon +
-                ", rateFuturePurchase=" + rateFuturePurchase +
+                ", rateFuturePurchase=" + futurePurchaseRate +
                 ", levelRatePreviousPurchaseList=" + levelRatePreviousPurchaseList +
 
                 ", levelSumList=" + levelSumList  +

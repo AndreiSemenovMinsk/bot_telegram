@@ -21,8 +21,8 @@ public class ShopGroupEntity extends AbstractEntity  implements Serializable {
     @ManyToMany(mappedBy = "shopGroupSet")
     List<ShopEntity> shopSet = new ArrayList<>();
 
-    @OneToMany(mappedBy="currentConversationShopGroup")
-    private List<ShopEntity> currentConversationShopGroupShopList = new ArrayList<>();
+//    @OneToMany(mappedBy="currentConversationShopGroup")
+//    private List<ShopEntity> currentConversationShopGroupShopList = new ArrayList<>();
 
 
     @OneToMany(mappedBy="shopGroup")

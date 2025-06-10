@@ -12,12 +12,12 @@ import ru.skidoz.model.pojo.telegram.Message;
 public abstract class MessageMapper extends EntityMapper<Message, MessageEntity> {
 
     @Override
-    @Mapping(target = "usersWithChangingMessageList", ignore = true)
+//    @Mapping(target = "usersWithChangingMessageList", ignore = true)
     @Mapping(source = "level.id", target = "level")
     public abstract Message toDto(MessageEntity entity);
 
     @Override
-    @Mapping(target = "usersWithChangingMessageList", ignore = true)
+//    @Mapping(target = "usersWithChangingMessageList", ignore = true)
     @Mapping(source = "level", target = "level.id")//, qualifiedByName = "idLevel")
     public abstract MessageEntity toEntity(Message message);
 

@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import ru.skidoz.model.entity.AbstractGroupEntity;
-import ru.skidoz.model.entity.PrdEntity;
+import ru.skidoz.model.entity.ProductEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -37,7 +37,7 @@ public class CategoryGroupEntity extends AbstractGroupEntity implements Serializ
     private Set<Prd> productSet = new HashSet<>();*/
 
     @OneToMany(mappedBy="categoryGroup")
-    private List<PrdEntity> productSet = new ArrayList<>();
+    private List<ProductEntity> productSet = new ArrayList<>();
 
     public CategoryGroupEntity(Consumer<CategoryGroupEntity> builder){
         builder.accept(this);

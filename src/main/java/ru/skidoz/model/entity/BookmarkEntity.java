@@ -48,7 +48,7 @@ public class BookmarkEntity extends AbstractEntity  implements Serializable {
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
-    private PrdEntity product;
+    private ProductEntity product;
 
     public BookmarkEntity(Consumer<BookmarkEntity> builder){
         builder.accept(this);

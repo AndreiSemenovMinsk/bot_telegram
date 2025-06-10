@@ -2,9 +2,8 @@ package ru.skidoz.repository;
 
 import java.util.List;
 
-import ru.skidoz.model.entity.BasketEntity;
 import ru.skidoz.model.entity.BasketProductEntity;
-import ru.skidoz.model.entity.PrdEntity;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

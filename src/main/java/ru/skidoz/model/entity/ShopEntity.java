@@ -44,14 +44,18 @@ public class ShopEntity extends AbstractEntity  implements Serializable {
 
     private Integer currentChargeAction;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private ShopEntity currentConversationShop;
-    @ManyToOne(fetch = FetchType.LAZY)
-    private ShopGroupEntity currentConversationShopGroup;
-    @ManyToOne(fetch = FetchType.LAZY)
-    private PrdEntity currentCreatingProduct;
-    @ManyToOne(fetch = FetchType.LAZY)
-    private ActionEntity currentCreatingAction;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    private ShopEntity currentConversationShop;
+    private Integer currentConversationShop;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    private ShopGroupEntity currentConversationShopGroup;
+    private Integer currentConversationShopGroup;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    private ProductEntity currentCreatingProduct;
+    private Integer currentCreatingProduct;
+    //@ManyToOne(fetch = FetchType.LAZY)
+//    private ActionEntity currentCreatingAction;
+    private Integer currentCreatingAction;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
@@ -72,7 +76,7 @@ public class ShopEntity extends AbstractEntity  implements Serializable {
 
     @Lob
     @JsonIgnore
-    @Column(name = "excel", columnDefinition="BYTEA")
+    @Column(name = "excel"/*, columnDefinition="BYTEA"*/)
     private byte[] excel;
 
     @Lob
@@ -117,7 +121,7 @@ public class ShopEntity extends AbstractEntity  implements Serializable {
     private BotEntity bot;
 
     @OneToMany(mappedBy="shop")
-    private List<PrdEntity> productList = new ArrayList<>();
+    private List<ProductEntity> productList = new ArrayList<>();
 
     @OneToMany(mappedBy="shop")
     private List<ActionEntity> actionList = new ArrayList<>();
@@ -142,8 +146,8 @@ public class ShopEntity extends AbstractEntity  implements Serializable {
     @OneToMany(mappedBy="creditor")//@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private List<PartnerEntity> creditorList = new ArrayList<>();
 
-    @OneToMany(mappedBy="currentConversationShop")
-    private List<ShopEntity> currentConversationShopShopList = new ArrayList<>();
+//    @OneToMany(mappedBy="currentConversationShop")
+//    private List<ShopEntity> currentConversationShopShopList = new ArrayList<>();
 
 
 
@@ -196,7 +200,7 @@ public class ShopEntity extends AbstractEntity  implements Serializable {
         super.id = id;
     }
 
-    public void addProduct(PrdEntity product) {
+    public void addProduct(ProductEntity product) {
         this.productList.add(product);
     }
 

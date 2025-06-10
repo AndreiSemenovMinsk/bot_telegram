@@ -87,8 +87,8 @@ public class InitialExcelMenu {
 
                             categorySuperGroup = categorySuperGroupCacheRepository.findByAlias(categorySuperGroupAlias);
 
-                            System.out.println(categorySuperGroupAlias + " categorySuperGroupAlias+++++++++++ categorySuperGroup   "
-                                    + categorySuperGroup);
+//                            System.out.println(categorySuperGroupAlias + " categorySuperGroupAlias+++++++++++ categorySuperGroup   "
+//                                    + categorySuperGroup);
 
                             if (categorySuperGroup == null) {
                                 categorySuperGroup = new CategorySuperGroup(e -> {
@@ -103,7 +103,7 @@ public class InitialExcelMenu {
                             CategorySuperGroup byAlias = categorySuperGroupCacheRepository
                                     .findByAlias(categorySuperGroupAlias);
 
-                            System.out.println(categorySuperGroupAlias + " find@*-+- " + byAlias);
+                            //System.out.println(categorySuperGroupAlias + " find@*-+- " + byAlias);
                             if (byAlias == null) {
                                 System.exit(123);
                             }
@@ -115,12 +115,11 @@ public class InitialExcelMenu {
                             String categoryGroupAlias = sheet.getRow(i).getCell(2).toString();
                             String categoryGroupName = sheet.getRow(i).getCell(3).toString();
 
-
-                            System.out.println(categoryGroupAlias + " @_@@__@ " + categorySuperGroup.getId());
+                            //System.out.println(categoryGroupAlias + " @_@@__@ " + categorySuperGroup.getId());
 
                             categoryGroup = categoryGroupCacheRepository.findByAliasAndCategorySuperGroup(categoryGroupAlias, categorySuperGroup.getId());
 
-                            System.out.println(categorySuperGroup.getId() + "---------" + categoryGroupAlias + " categoryGroupAlias+++++++++++ categoryGroup   " + categorySuperGroup);
+                            //System.out.println(categorySuperGroup.getId() + "---------" + categoryGroupAlias + " categoryGroupAlias+++++++++++ categoryGroup   " + categorySuperGroup);
 
                             if (categoryGroup == null) {
                                 categoryGroup = new CategoryGroup(e -> {
@@ -129,9 +128,7 @@ public class InitialExcelMenu {
                             }
                             categoryGroup.addName(categoryGroupName, language);
 
-
-                            System.out.println("categorySuperGroupDTO+-+-+-+-+-+--+-++-+-+" + categorySuperGroup);
-
+                            //System.out.println("categorySuperGroupDTO+-+-+-+-+-+--+-++-+-+" + categorySuperGroup);
 
                             categoryGroup.setCategorySuperGroup(categorySuperGroup.getId());
                             categoryGroupCacheRepository.save(categoryGroup);
@@ -227,8 +224,6 @@ public class InitialExcelMenu {
                                                 //language,
                                                 sheet.getRow(i).getCell(j + 1).toString());
 
-//                                        System.out.println("208+|" + filterPoint);
-//                                        System.out.println(i  + "i*****" + j  + "j*****" + sheet.getRow(i).getCell(j + 1).toString());
 
                                         if (filterPoint == null) {
                                             filterPoint = new FilterPoint();
@@ -239,14 +234,13 @@ public class InitialExcelMenu {
                                         }
                                         filterPoint.addUnitName(sheet.getRow(i).getCell(j + 2).toString(), language);
 
-//                                System.out.println(j + "---" + sheet.getRow(i).getCell(j + 1).toString());
-//                                System.out.println(j + "+++++" + sheet.getRow(i).getCell(j + 2).toString());
-//                                System.out.println(j + "sheet.getRow(i).getCell(j + 3).toString()+++" + sheet.getRow(i).getCell(j + 3).toString());
-
                                         inputType = ((Double) Double.parseDouble(sheet.getRow(i).getCell(j + 3).toString())).intValue();
                                         filterPoint.setInputType(inputType);
 
-//                                System.out.println("filterPoint-----" + filterPoint);
+
+//                                System.out.println("filterPoint-----" + filterPoint + " category.getId()*-*-*" + category.getId());
+
+
                                         if (inputType == 1) {
 //                                        List<FilterOption> filterOptionList = filterOptionRepository.findAllByFilterPoint(filterPoint);
 //                                        filterOptionList.forEach(e->{

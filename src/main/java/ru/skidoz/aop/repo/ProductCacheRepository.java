@@ -17,5 +17,5 @@ public interface ProductCacheRepository extends JpaRepositoryTest<Product, Integ
 
     Product findAllByShop_IdAndAlias(Integer  shopId, String alias);
 
-    public List<Product> findAllByCategory_IdAndActiveIsTrue(Integer  categoryId);
+    List<Product> findAllByCategory_IdAndActive(Integer  categoryId, Boolean active);
 }

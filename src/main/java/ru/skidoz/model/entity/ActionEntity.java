@@ -40,8 +40,8 @@ public class ActionEntity extends AbstractEntity implements Serializable {
 //    @OneToMany(mappedBy="action")
 //    private List<CashbackWriteOff> cashbackWriteOffList = new ArrayList<>();
 
-    @OneToMany(mappedBy="currentCreatingAction")
-    private List<ShopEntity> currentCreatingActionShopList = new ArrayList<>();
+//    @OneToMany(mappedBy="currentCreatingAction")
+//    private List<ShopEntity> currentCreatingActionShopList = new ArrayList<>();
 /*
     @OneToMany(mappedBy="action")
     private List<CashbackWriteOff> cashbackWriteOffList = new ArrayList<>();*/
@@ -66,9 +66,9 @@ public class ActionEntity extends AbstractEntity implements Serializable {
     private String levelRatePreviousPurchaseList;
 
     //"Введите в % максимальную долю списания кэшбека в стоимости последуюшей покупке"
-    private Integer rateFuturePurchase;
+    private Integer futurePurchaseRate;
     //Введите в % размер кешбека для партнера
-    private Integer rateFriendFuturePurchase;
+    private Integer friendFuturePurchaseRate;
 
     private Integer numberCoupon;
 
@@ -135,8 +135,8 @@ public class ActionEntity extends AbstractEntity implements Serializable {
                 ", description='" + description + '\'' +
                 ", levelSumString='" + levelSumString + '\'' +
                 ", levelRatePreviousPurchaseList='" + levelRatePreviousPurchaseList + '\'' +
-                ", rateFuturePurchase=" + rateFuturePurchase +
-                ", rateFriendFuturePurchase=" + rateFriendFuturePurchase +
+                ", rateFuturePurchase=" + futurePurchaseRate +
+                ", rateFriendFuturePurchase=" + friendFuturePurchaseRate +
                 ", numberCoupon=" + numberCoupon +
                 ", active=" + active +
                 '}';

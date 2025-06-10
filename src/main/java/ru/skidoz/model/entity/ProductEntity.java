@@ -28,7 +28,7 @@ import lombok.Data;
                 @Index(name = "IDX_PRODUCT_SHOP", columnList = "active,shop_id"),
 //                @Index(name = "IDX_PRODUCT_NAME", columnList = "active,name"),
                 @Index(name = "IDX_PRODUCT_POPULARITY", columnList = "popularity")})*/
-public class PrdEntity extends AbstractGroupEntity  implements Serializable {
+public class ProductEntity extends AbstractGroupEntity  implements Serializable {
 
     @NotNull
     private Long chatId;
@@ -119,18 +119,18 @@ public class PrdEntity extends AbstractGroupEntity  implements Serializable {
     @OneToMany(mappedBy="product", fetch = FetchType.LAZY)
     private List<CategoryFilterProductEntity> categoryFilterProductList = new ArrayList<>();
 
-    @OneToMany(mappedBy="currentCreatingProduct", fetch = FetchType.LAZY)
-    private List<ShopEntity> currentCreatingProductShopList = new ArrayList<>();
+//    @OneToMany(mappedBy="currentCreatingProduct", fetch = FetchType.LAZY)
+//    private List<ShopEntity> currentCreatingProductShopList = new ArrayList<>();
 
-    public PrdEntity(Consumer<PrdEntity> builder){
+    public ProductEntity(Consumer<ProductEntity> builder){
         builder.accept(this);
     }
 
-    public PrdEntity(Integer id){
+    public ProductEntity(Integer id){
         super.setId(id);
     }
 
-    public PrdEntity() {
+    public ProductEntity() {
         super();
     }
 
@@ -218,9 +218,9 @@ public class PrdEntity extends AbstractGroupEntity  implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof PrdEntity)) return false;
+        if (!(o instanceof ProductEntity)) return false;
         if (!super.equals(o)) return false;
-        PrdEntity action = (PrdEntity) o;
+        ProductEntity action = (ProductEntity) o;
         return super.getId().equals(action.getId());
     }
 

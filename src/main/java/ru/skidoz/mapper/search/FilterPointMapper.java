@@ -17,7 +17,7 @@ public abstract class FilterPointMapper extends EntityMapper<FilterPoint, Filter
     public abstract FilterPoint toDto(FilterPointEntity filterPoint);
 
     @Override
-//    @Mapping(source = "categoryId", target = "category", qualifiedByName = "idCat")
+    @Mapping(source = "categoryId", target = "category.id")
     @Mapping(target = "filterOptionList", ignore = true)
     @Mapping(target = "categoryFilterProductList", ignore = true)
     public abstract FilterPointEntity toEntity(FilterPoint filterPoint);

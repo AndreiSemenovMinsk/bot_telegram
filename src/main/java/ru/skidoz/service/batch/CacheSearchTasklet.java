@@ -157,7 +157,7 @@ public class CacheSearchTasklet implements Tasklet {
         List<CategorySuperGroup>  catSGList = categorySuperGroupRepository.findAll();
         catSGList.forEach(categorySuperGroup -> {
 
-            List<CategoryGroup>  catGList = categoryGroupRepository.findByCategorySuperGroup_Id(categorySuperGroup.getId());
+            List<CategoryGroup>  catGList = categoryGroupRepository.findAllByCategorySuperGroup_Id(categorySuperGroup.getId());
             categorySuperGroup.setCategoryGroupSet(new ArrayList<>(catGList));
 
             Set<Integer> categoryGroupProductIds = new HashSet<>();
@@ -169,7 +169,9 @@ public class CacheSearchTasklet implements Tasklet {
                 categoryGroup.setCategorySet(new ArrayList<>(catList));
                 catList.forEach(category -> {
 
-                    List<Product>  productDTOs = productCacheRepository.findAllByCategory_IdAndActiveIsTrue(category.getId());
+                    //System.out.println("category.getId()@@@ " + category.getId());
+
+                    List<Product> productDTOs = productCacheRepository.findAllByCategory_IdAndActive(category.getId(), true);
 
                     // где это используется
                     category.setProductSet(new ArrayList<>(productDTOs));
@@ -178,7 +180,10 @@ public class CacheSearchTasklet implements Tasklet {
 
 //                    filterPointRepository.findAllByCategory_Id(category.getId()).forEach(e -> System.out.println("filterPoint***" + e.getId()));
 
-                    List<FilterPoint>  filterPointDTOS = filterPointRepository.findAllByCategory_Id(category.getParentCategoryId());
+//                    System.out.println(category + " *-*-*-*-*-* " + category.getId() + " " + productDTOs.size());
+
+                    List<FilterPoint>  filterPointDTOS = filterPointRepository.findAllByCategory_Id(category.getId());
+                                                                                //getParentCategoryId
 
                     // где это используется
                     category.setFilterPointList(filterPointDTOS);

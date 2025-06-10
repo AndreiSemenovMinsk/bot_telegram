@@ -107,7 +107,7 @@ public class ConstructSetMinBillShare implements Command {
             e.setAccommodateSum(true);
             e.addRatePreviousPurchase(100);
             e.addLevelSum(0);
-            e.setRateFuturePurchase(100);
+            e.setFuturePurchaseRate(100);
             e.setActive(true);
         });
         actionCacheRepository.save(defaultBasicManualAction);
@@ -134,7 +134,7 @@ public class ConstructSetMinBillShare implements Command {
             e.setAccommodateSum(true);
             e.addRatePreviousPurchase(0);
             e.addLevelSum(0);
-            e.setRateFuturePurchase(100);
+            e.setFuturePurchaseRate(100);
             e.setActive(true);
         });
         actionCacheRepository.save(defaultBasicAction);

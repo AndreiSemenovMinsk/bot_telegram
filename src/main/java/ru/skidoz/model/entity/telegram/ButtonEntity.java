@@ -58,8 +58,8 @@ public class ButtonEntity extends AbstractEntity {
 
     private String webApp;
 
-    @OneToMany(mappedBy = "currentChangingButton", fetch = FetchType.LAZY)
-    private List<UserEntity> usersWithCurrentChangingButtonList = new ArrayList<>();
+//    @OneToMany(mappedBy = "currentChangingButton", fetch = FetchType.LAZY)
+//    private List<UserEntity> usersWithCurrentChangingButtonList = new ArrayList<>();
 
     public ButtonEntity(ButtonRowEntity buttonRow, Map<LanguageEnum, String> nameLanguages, String callback) {
         this.buttonRow = buttonRow;

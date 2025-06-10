@@ -430,7 +430,6 @@ public class LevelInitializer {
 
 
 
-
                 //////////СТАРТОВОЕ МЕНЮ для пользователя с магазинами
 
                 initialLevel.level_INITIALIZE.updateLevel(Users, INITIALIZE.name(), initialLevel.level_INITIALIZE222, false);
@@ -487,6 +486,11 @@ public class LevelInitializer {
                 buttonRepository.cache(button0_1_0_11);
                 row0_3.add(button0_1_0_11);
 //                buttonRowRepository.cache(row0_2);
+
+
+                System.out.println("@@*-*-*- " + buttonRepository
+                        .findAllByLevel_CallName(initialLevel.level_INITIALIZE.getCallName()));
+
 
                 //////////СТАРТОВОЕ МЕНЮ для пользователя без магазинов
 

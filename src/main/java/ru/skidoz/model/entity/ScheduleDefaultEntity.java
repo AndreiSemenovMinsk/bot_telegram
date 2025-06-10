@@ -31,7 +31,7 @@ public class ScheduleDefaultEntity extends AbstractEntity  implements Serializab
     @NotNull
     @ManyToOne
     //@JoinColumn(name = "productId", nullable = false, insertable = true, updatable = true)
-    private PrdEntity product;
+    private ProductEntity product;
 
     public ScheduleDefaultEntity(Consumer<ScheduleDefaultEntity> builder){
         builder.accept(this);

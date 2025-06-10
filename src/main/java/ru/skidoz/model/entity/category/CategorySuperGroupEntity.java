@@ -1,7 +1,7 @@
 package ru.skidoz.model.entity.category;
 
 import ru.skidoz.model.entity.AbstractGroupEntity;
-import ru.skidoz.model.entity.PrdEntity;
+import ru.skidoz.model.entity.ProductEntity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -35,7 +35,7 @@ public class CategorySuperGroupEntity extends AbstractGroupEntity implements Ser
     private Set<Prd> productSet = new HashSet<>();*/
 
     @OneToMany(mappedBy="categorySuperGroup")
-    private List<PrdEntity> productSet = new ArrayList<>();
+    private List<ProductEntity> productSet = new ArrayList<>();
 
     public CategorySuperGroupEntity(Consumer<CategorySuperGroupEntity> builder){
         builder.accept(this);
@@ -49,11 +49,11 @@ public class CategorySuperGroupEntity extends AbstractGroupEntity implements Ser
         this.categoryGroupSet.add(categoryGroup);
     }
 
-    public List<PrdEntity> getProductSet() {
+    public List<ProductEntity> getProductSet() {
         return productSet;
     }
 
-    public void setProductSet(List<PrdEntity> productSet) {
+    public void setProductSet(List<ProductEntity> productSet) {
         this.productSet = productSet;
     }
 

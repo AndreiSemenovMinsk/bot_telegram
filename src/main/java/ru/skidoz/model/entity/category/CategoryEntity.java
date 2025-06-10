@@ -8,7 +8,7 @@ import java.util.function.Consumer;
 
 import ru.skidoz.model.entity.AbstractGroupEntity;
 import ru.skidoz.model.entity.FilterPointEntity;
-import ru.skidoz.model.entity.PrdEntity;
+import ru.skidoz.model.entity.ProductEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
@@ -51,7 +51,7 @@ public class CategoryEntity extends AbstractGroupEntity implements Serializable 
     private Set<Prd> productSet = new HashSet<>();*/
 
     @OneToMany(mappedBy="category")
-    private List<PrdEntity> productSet = new ArrayList<>();
+    private List<ProductEntity> productSet = new ArrayList<>();
 
 /*
     @ManyToMany(cascade = {
@@ -77,7 +77,7 @@ public class CategoryEntity extends AbstractGroupEntity implements Serializable 
         super();
     }
 
-    public void addProduct(PrdEntity product) {
+    public void addProduct(ProductEntity product) {
         this.productSet.add(product);
     }
 

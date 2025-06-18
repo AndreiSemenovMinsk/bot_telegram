@@ -22,6 +22,9 @@ databaseChangeLog:
                   name: note
                   type: varchar(255)
               - column:
+                  name: radius
+                  type: int(11)
+              - column:
                   name: temp
                   type: bit(1)
               - column:

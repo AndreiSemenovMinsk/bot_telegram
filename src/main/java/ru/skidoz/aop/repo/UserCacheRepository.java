@@ -29,4 +29,6 @@ public interface UserCacheRepository extends JpaRepositoryTest<User, Integer> {
     User findFirstByShopNullAndBuyer_Id(Integer buyerId);
 
     List<User> findAllByShopId(Integer shopId);
+
+    List<User> findAllByName(String name);
 }

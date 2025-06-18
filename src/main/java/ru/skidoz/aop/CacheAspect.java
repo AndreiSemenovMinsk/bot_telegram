@@ -1145,6 +1145,10 @@ public class CacheAspect {
 //                        + " parentKey@@@" + parentKey
 //                + " parentResult---" + parentResult);
 
+                if (parentResult == null) {
+                    return null;
+                }
+
                 if (parentType == 0) {
                     var parentId = ((DTO) parentResult).getId();
                     ///mapDependant - не верный выбор

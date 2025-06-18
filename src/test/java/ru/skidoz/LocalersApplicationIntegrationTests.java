@@ -43,6 +43,9 @@ class LocalersApplicationIntegrationTests {
     private CashbackCacheRepository cashbackRepository;
 
     private static int shopId = 0;
+    private static int userId = 0;
+    private static int cashbackId = 0;
+    private static int actionId = 0;
 
     @BeforeEach
     void setUpBeforeClass() throws Exception {
@@ -56,6 +59,7 @@ class LocalersApplicationIntegrationTests {
         action.setType(ActionTypeEnum.BASIC);
         action.setShop(shopId);
         actionRepository.save(action);
+        actionId = action.getId();
 
         long start = System.currentTimeMillis();
         for (int i = 0; i < 100; i++) {
@@ -84,9 +88,22 @@ class LocalersApplicationIntegrationTests {
         var cb1 = cashbackRepository.findAllByUserId(user.getId());
         System.out.println(cb1);
 
-        System.out.println("-*-*-*-*-*-*- " +
+        System.out.println("BASIC-*-*-*-*-*-*-0 " +
                 cashbackRepository
                         .findAllByShopAndBuyerAndAction_Type(shopId, user.getId(), ActionTypeEnum.BASIC));
+
+        final Action action = actionRepository.findById(actionId);
+        System.out.println("@@@" + action);
+        action.setType(ActionTypeEnum.COUPON);
+        actionRepository.save(action);
+
+        System.out.println("BASIC-*-*-*-*-*-*-1 " +
+                cashbackRepository
+                        .findAllByShopAndBuyerAndAction_Type(shopId, user.getId(), ActionTypeEnum.BASIC));
+
+        System.out.println("COUPON-*-*-*-*-*-*-0 " +
+                cashbackRepository
+                        .findAllByShopAndBuyerAndAction_Type(shopId, user.getId(), ActionTypeEnum.COUPON));
     }
 
     @Test

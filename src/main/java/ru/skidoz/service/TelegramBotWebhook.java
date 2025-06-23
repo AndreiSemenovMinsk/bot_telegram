@@ -103,7 +103,7 @@ public class TelegramBotWebhook {
     }
 
     @SneakyThrows
-    public BotApiMethod onWebhookUpdateReceived(Update update, String id, Runner runner) {
+    public BotApiMethod onUpdateReceived(Update update, String id, Runner runner) {
 
         long timeNow = System.currentTimeMillis();
 

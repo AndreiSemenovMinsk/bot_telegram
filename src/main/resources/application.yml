@@ -5,6 +5,10 @@ spring:
     properties:
       hibernate:
         show_sql:false
+  datasource:
+    url: jdbc:postgresql://postgres:5432/mail_service_db
+    username: mail_service
+    password: mail_sevice
 systemInitializeCron: 0 */2 * * * *
 systemRefreshCron: 0 */2 * * * *
 remindTimer: 0 */4 * * * *

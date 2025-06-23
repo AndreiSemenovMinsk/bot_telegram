@@ -204,6 +204,7 @@ public class TelegramBot {
 
             //System.out.println("users.getCurrentLevelId();+++++" + users.getCurrentLevelId());
 
+
             List<LevelChat> newLevel = telegramProcessor.plainLevelChoicer(currentLevelId, update, users, chatId, newUser);
 
             for (LevelChat levelChat : newLevel) {

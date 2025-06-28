@@ -1,9 +1,7 @@
 package ru.skidoz.service.command_impl.monitor_price;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
 import ru.skidoz.aop.repo.BookmarkCacheRepository;
@@ -15,15 +13,15 @@ import ru.skidoz.model.pojo.side.Product;
 import ru.skidoz.model.pojo.side.Shop;
 import ru.skidoz.model.pojo.telegram.*;
 import ru.skidoz.aop.repo.ProductCacheRepository;
-import ru.skidoz.service.InitialLevel;
+import ru.skidoz.service.initializers.InitialLevel;
 import ru.skidoz.service.command.Command;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-import static ru.skidoz.service.InitialLevel.bigCategory;
-import static ru.skidoz.service.InitialLevel.bigCategoryGroup;
-import static ru.skidoz.service.InitialLevel.bigCategorySuperGroup;
+import static ru.skidoz.service.initializers.InitialLevel.bigCategory;
+import static ru.skidoz.service.initializers.InitialLevel.bigCategoryGroup;
+import static ru.skidoz.service.initializers.InitialLevel.bigCategorySuperGroup;
 
 
 /**
@@ -42,7 +40,7 @@ public class MonitorResp implements Command {
     private BookmarkCacheRepository bookmarkCacheRepository;
 
     @Override
-    public List<LevelChat> runCommand(Update update, Level level, User users) throws CloneNotSupportedException {
+    public LevelResponse runCommand(Update update, Level level, User users) throws CloneNotSupportedException {
 
         System.out.println();
         System.out.println("********************MonitorResp******************" + level.getCallName());
@@ -104,10 +102,10 @@ public class MonitorResp implements Command {
         }
 
         LevelDTOWrapper finalResultLevel = resultLevel;
-        return new ArrayList<>(Collections.singletonList(new LevelChat(e -> {
+        return new LevelResponse(Collections.singletonList(new LevelChat(e -> {
             e.setChatId(chatId);
             e.setUser(users);
             e.setLevel(finalResultLevel);
-        })));
+        })), null, null);
     }
 }

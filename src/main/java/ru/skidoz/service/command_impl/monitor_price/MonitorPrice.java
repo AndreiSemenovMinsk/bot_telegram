@@ -1,15 +1,13 @@
 package ru.skidoz.service.command_impl.monitor_price;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
 import ru.skidoz.aop.repo.RemotedPriceCacheRepository;
 import ru.skidoz.model.entity.category.LanguageEnum;
 import ru.skidoz.model.pojo.side.RemotedPrice;
 import ru.skidoz.model.pojo.telegram.*;
-import ru.skidoz.service.InitialLevel;
+import ru.skidoz.service.initializers.InitialLevel;
 import ru.skidoz.service.command.Command;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
@@ -29,7 +27,7 @@ public class MonitorPrice implements Command {
     public RemotedPriceCacheRepository remotedPriceRepository;
 
     @Override
-    public List<LevelChat> runCommand(Update update, Level level, User users) throws CloneNotSupportedException {
+    public LevelResponse runCommand(Update update, Level level, User users) throws CloneNotSupportedException {
 
         System.out.println();
         System.out.println("********************RemotedPrice******************" + level.getCallName());
@@ -172,10 +170,10 @@ public class MonitorPrice implements Command {
         }
 
         LevelDTOWrapper finalResultLevel = resultLevel;
-        return new ArrayList<>(Collections.singletonList(new LevelChat(e -> {
+        return new LevelResponse(Collections.singletonList(new LevelChat(e -> {
             e.setChatId(chatId);
             e.setUser(users);
             e.setLevel(finalResultLevel);
-        })));
+        })), null, null);
     }
 }

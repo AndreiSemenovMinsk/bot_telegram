@@ -23,12 +23,15 @@ import ru.skidoz.model.pojo.telegram.ButtonRow;
 import ru.skidoz.model.pojo.telegram.Level;
 import ru.skidoz.model.pojo.telegram.LevelChat;
 import ru.skidoz.model.pojo.telegram.LevelDTOWrapper;
+import ru.skidoz.model.pojo.telegram.LevelResponse;
 import ru.skidoz.model.pojo.telegram.Message;
 import ru.skidoz.model.pojo.telegram.User;
 import com.google.zxing.WriterException;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import ru.skidoz.service.initializers.InitialLevel;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
@@ -204,8 +207,7 @@ public class TelegramBot {
 
             //System.out.println("users.getCurrentLevelId();+++++" + users.getCurrentLevelId());
 
-
-            List<LevelChat> newLevel = telegramProcessor.plainLevelChoicer(currentLevelId, update, users, chatId, newUser);
+            LevelResponse newLevel = telegramProcessor.plainLevelChoicer(currentLevelId, update, users, chatId, newUser, null);
 
             for (LevelChat levelChat : newLevel) {
                 User users1 = levelChat.getUser();
@@ -236,8 +238,6 @@ public class TelegramBot {
             System.out.println();
             System.out.println();
         }
-
-
 
 
         private class ParamQueue extends ConcurrentLinkedQueue<List<LevelChat>> {

@@ -7,10 +7,11 @@ import java.util.Map;
 import ru.skidoz.model.entity.category.LanguageEnum;
 import ru.skidoz.model.pojo.telegram.LevelChat;
 import ru.skidoz.model.pojo.telegram.LevelDTOWrapper;
+import ru.skidoz.model.pojo.telegram.LevelResponse;
 import ru.skidoz.model.pojo.telegram.Message;
 import ru.skidoz.model.pojo.telegram.User;
 import ru.skidoz.aop.repo.MessageCacheRepository;
-import ru.skidoz.service.InitialLevel;
+import ru.skidoz.service.initializers.InitialLevel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -21,11 +22,9 @@ import org.springframework.stereotype.Component;
 public class P2PNewBuyerLinkStarter extends LinkStarter {
 
     @Autowired
-    private MessageCacheRepository messageRepository;
-    @Autowired
     private InitialLevel initialLevel;
 
-    public List<LevelChat> getLevel(Long chatId, User buyer, User friend) {
+    public  List<LevelChat> getLevel(Long chatId, User buyer, User friend) {
 
         System.out.println();
         System.out.println("+++++++++++++++++++++++++++P2PNewBuyerLinkStarter+++++++++++++++++++++++++++++");

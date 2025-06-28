@@ -1,24 +1,12 @@
 package ru.skidoz.service;
 
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mashape.unirest.http.Unirest;
-import com.mashape.unirest.http.exceptions.UnirestException;
-import org.telegram.telegrambots.meta.api.objects.PhotoSize;
 import ru.skidoz.aop.repo.CashbackCacheRepository;
 import ru.skidoz.aop.repo.LevelCacheRepository;
 import ru.skidoz.aop.repo.ScheduleBuyerCacheRepository;
@@ -29,7 +17,6 @@ import ru.skidoz.aop.repo.PurchaseCacheRepository;
 import ru.skidoz.aop.repo.ShopCacheRepository;
 import ru.skidoz.aop.repo.UserCacheRepository;
 import ru.skidoz.aop.repo.RecommendationCacheRepository;
-import ru.skidoz.model.entity.category.LanguageEnum;
 import ru.skidoz.model.pojo.side.Basket;
 import ru.skidoz.model.pojo.side.Bookmark;
 import ru.skidoz.model.pojo.side.Cashback;
@@ -37,14 +24,10 @@ import ru.skidoz.model.pojo.side.Shop;
 import ru.skidoz.model.pojo.telegram.Level;
 import ru.skidoz.model.pojo.telegram.LevelChat;
 import ru.skidoz.model.pojo.telegram.LevelDTOWrapper;
-import ru.skidoz.model.pojo.telegram.Message;
+import ru.skidoz.model.pojo.telegram.LevelResponse;
 import ru.skidoz.model.pojo.telegram.User;
 import ru.skidoz.service.command.Command;
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.WriterException;
-import com.google.zxing.client.j2se.MatrixToImageWriter;
-import com.google.zxing.common.BitMatrix;
-import com.google.zxing.qrcode.QRCodeWriter;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Location;
@@ -57,9 +40,9 @@ import ru.skidoz.service.command_impl.starter.P2PExistBuyerLinkStarter;
 import ru.skidoz.service.command_impl.starter.P2PNewBuyerLinkStarter;
 import ru.skidoz.service.command_impl.starter.P2BLinkStarter;
 import ru.skidoz.service.command_impl.starter.B2BLinkStarter;
+import ru.skidoz.service.initializers.InitialLevel;
 import ru.skidoz.util.XMLGettingService;
 
-import static ru.skidoz.model.entity.category.LanguageEnum.RU;
 import static ru.skidoz.util.Structures.parseInt;
 
 /**
@@ -212,7 +195,7 @@ public class TelegramProcessor {
             }
         System.out.println("levelChatDTOList+++++++++++++++" + levelChatDTOList);
 
-        return levelChatDTOList;
+        return new LevelResponse(levelChatDTOList, null, null);
     }
 
     public void mergeUser(User targetUsersDTO, User duplicateUsersDTO) {
@@ -265,16 +248,18 @@ public class TelegramProcessor {
     }
 
 
-    List<LevelChat> plainLevelChoicer(Integer currentLevelId, Update update, User users, long chatId, boolean newUser) throws Exception {
+    LevelResponse plainLevelChoicer(Integer currentLevelId, Update update, User users, long chatId, boolean newUser, String key) throws Exception {
 
         Level newLevel = null;
+        final List<LevelChat> levelChats;
         if (update.hasMessage()) {
 
             String inputText = update.getMessage().getText();
             Location location = update.getMessage().getLocation();
 
             if (inputText != null && inputText.startsWith("/start ")) {
-                return startProcessor(users, chatId, update, newUser);
+                levelChats = startProcessor(users, chatId, update, newUser);
+                return new LevelResponse(levelChats, null, key);
             }
             //TODO - make refactoring, may not be null, but empty...
             if (inputText != null || update.getMessage().hasPhoto()) {
@@ -347,11 +332,12 @@ public class TelegramProcessor {
                         true,
                         true);
 
-                return new ArrayList<>(Collections.singletonList(new LevelChat(e -> {
+                levelChats =  new ArrayList<>(Collections.singletonList(new LevelChat(e -> {
                     e.setChatId(chatId);
                     e.setUser(users);
                     e.setLevel(levelDTOWrapper);
                 })));
+                return new LevelResponse(levelChats, null, key);
             }
         }
 
@@ -364,11 +350,13 @@ public class TelegramProcessor {
                 true,
                 true);
 
-        return new ArrayList<>(Collections.singletonList(new LevelChat(e -> {
-            e.setChatId(chatId);
-            e.setUser(users);
-            e.setLevel(levelDTOWrapper);
-        })));
+        levelChats = new ArrayList<>(Collections.singletonList(new LevelChat(
+                e -> {
+                    e.setChatId(chatId);
+                    e.setUser(users);
+                    e.setLevel(levelDTOWrapper);
+                })));
+        return new LevelResponse(levelChats, null, key);
     }
 
 }

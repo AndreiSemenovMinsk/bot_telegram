@@ -1,6 +1,5 @@
 package ru.skidoz.service.command_impl.search_partner;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -10,7 +9,7 @@ import ru.skidoz.model.entity.category.LanguageEnum;
 import ru.skidoz.model.pojo.side.Shop;
 import ru.skidoz.model.pojo.telegram.*;
 import ru.skidoz.aop.repo.ShopCacheRepository;
-import ru.skidoz.service.InitialLevel;
+import ru.skidoz.service.initializers.InitialLevel;
 import ru.skidoz.service.command.Command;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -30,7 +29,7 @@ public class SearchPartnerResp1 implements Command {
     private InitialLevel initialLevel;
 
     @Override
-    public List<LevelChat> runCommand(Update update, Level level, User users) throws CloneNotSupportedException {
+    public LevelResponse runCommand(Update update, Level level, User users) throws CloneNotSupportedException {
         // перешли с кнопки, а потом нажимаем на кнопку выбора
         LevelDTOWrapper resultLevel = initialLevel.convertToLevel(initialLevel.level_SEARCH_PARTNER_RESP,
                 true,
@@ -66,10 +65,10 @@ public class SearchPartnerResp1 implements Command {
             resultLevel.addRow(row);
         }
 
-        return new ArrayList<>(Collections.singletonList(new LevelChat(e -> {
+        return new LevelResponse(Collections.singletonList(new LevelChat(e -> {
             e.setChatId(chatId);
             e.setUser(users);
             e.setLevel(resultLevel);
-        })));
+        })), null, null);
     }
 }

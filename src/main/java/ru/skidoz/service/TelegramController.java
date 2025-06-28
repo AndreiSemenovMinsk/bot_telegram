@@ -29,11 +29,11 @@ public class TelegramController {
 
         System.out.println(id);
 
-        TelegramBotWebhook.Runner runner = telegramBot.getTelegramKey(id);
+//        TelegramBotWebhook.Runner runner = telegramBot.getTelegramKey(id);
 
-        if (runner != null){
-            return telegramBot.onUpdateReceived(update, id, runner);
-        }
-        return null;
+//        if (runner != null){
+            return telegramBot.onUpdateReceived(update, id);
+//        }
+//        return null;
     }
 }

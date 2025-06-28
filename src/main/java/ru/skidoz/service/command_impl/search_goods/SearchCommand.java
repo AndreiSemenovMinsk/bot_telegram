@@ -7,14 +7,13 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import org.springframework.context.annotation.Lazy;
 import ru.skidoz.model.pojo.search.search.Search;
 import ru.skidoz.model.pojo.side.Product;
 import ru.skidoz.model.pojo.telegram.*;
 import ru.skidoz.aop.repo.ProductCacheRepository;
 import ru.skidoz.aop.repo.UserCacheRepository;
 import ru.skidoz.service.search.SearchService;
-import ru.skidoz.service.InitialLevel;
+import ru.skidoz.service.initializers.InitialLevel;
 import ru.skidoz.service.command.Command;
 import ru.skidoz.util.MenuTypeEnum;
 import ru.skidoz.util.Structures;
@@ -41,7 +40,7 @@ public class SearchCommand implements Command {
     private SearchService searchService;
 
     @Override
-    public List<LevelChat> runCommand(Update update, Level level, User users) throws CloneNotSupportedException {
+    public LevelResponse runCommand(Update update, Level level, User users) throws CloneNotSupportedException {
 
         LevelDTOWrapper resultLevel = null;/* = initialLevel.convertToLevel(level,
                 true,
@@ -210,10 +209,10 @@ public class SearchCommand implements Command {
 //        userRepository.saveByMap(users);
 
         LevelDTOWrapper finalResultLevel = resultLevel;
-        return new ArrayList<>(Collections.singletonList(new LevelChat(e -> {
+        return new LevelResponse(Collections.singletonList(new LevelChat(e -> {
             e.setChatId(chatId);
             e.setUser(users);
             e.setLevel(finalResultLevel);
-        })));
+        })), null, null);
     }
 }

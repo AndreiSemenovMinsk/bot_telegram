@@ -20,7 +20,7 @@ import ru.skidoz.aop.repo.LevelCacheRepository;
 import ru.skidoz.aop.repo.ProductCacheRepository;
 import ru.skidoz.aop.repo.ShopCacheRepository;
 import ru.skidoz.aop.repo.BasketProductCacheRepository;
-import ru.skidoz.service.InitialLevel;
+import ru.skidoz.service.initializers.InitialLevel;
 import ru.skidoz.service.command.Command;
 import ru.skidoz.util.ConnectComparator;
 import com.google.zxing.WriterException;
@@ -58,7 +58,7 @@ public class BasketArchive implements Command {
     private ProductCacheRepository productCacheRepository;
 
     @Override
-    public List<LevelChat> runCommand(Update update, Level level, User users) throws IOException, WriterException {
+    public LevelResponse runCommand(Update update, Level level, User users) throws IOException, WriterException {
 
 
         System.out.println();
@@ -84,22 +84,22 @@ public class BasketArchive implements Command {
                 userLevel.getButtonRows().stream().peek(row -> System.out.println("row.getId()***" + row.getId()))
                         .forEach(row-> row.getButtonList().forEach(button -> System.out.println(button.getId()+"+++" + button.getNameRU())));
 
-                return new ArrayList<>(Collections.singletonList(new LevelChat(e -> {
+                return new LevelResponse(Collections.singletonList(new LevelChat(e -> {
                     e.setChatId(users.getChatId());
                     e.setUser(users);
                     e.setLevel(userLevel);
-                })));
+                })), null, null);
             } else {
 
                 LevelDTOWrapper userLevel = initialLevel.convertToLevel(connectComparator.compare(update.getCallbackQuery().getData(), level, users),
                         true,
                         true);
 
-                return new ArrayList<>(Collections.singletonList(new LevelChat(e -> {
+                return new LevelResponse(Collections.singletonList(new LevelChat(e -> {
                     e.setChatId(users.getChatId());
                     e.setUser(users);
                     e.setLevel(userLevel);
-                })));
+                })), null, null);
             }
         }
 
@@ -109,11 +109,11 @@ public class BasketArchive implements Command {
 
         System.out.println("resultLevel+++++++++" + resultLevel);
 
-        return new ArrayList<>(Collections.singletonList(new LevelChat(e -> {
+        return new LevelResponse(Collections.singletonList(new LevelChat(e -> {
             e.setChatId(users.getChatId());
             e.setUser(users);
             e.setLevel(resultLevel);
-        })));
+        })), null, null);
     }
 
 

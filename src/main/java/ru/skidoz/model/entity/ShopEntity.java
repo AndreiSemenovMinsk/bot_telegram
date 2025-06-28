@@ -57,6 +57,8 @@ public class ShopEntity extends AbstractEntity  implements Serializable {
 //    private ActionEntity currentCreatingAction;
     private Integer currentCreatingAction;
 
+    private Integer initialLevelId;
+
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     private UserEntity adminUser;

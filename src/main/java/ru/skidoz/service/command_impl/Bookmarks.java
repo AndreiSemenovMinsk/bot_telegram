@@ -1,16 +1,15 @@
 package ru.skidoz.service.command_impl;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 import ru.skidoz.model.pojo.telegram.LevelChat;
 import ru.skidoz.model.pojo.telegram.Level;
 import ru.skidoz.model.pojo.telegram.LevelDTOWrapper;
+import ru.skidoz.model.pojo.telegram.LevelResponse;
 import ru.skidoz.model.pojo.telegram.User;
 import ru.skidoz.aop.repo.LevelCacheRepository;
-import ru.skidoz.service.InitialLevel;
+import ru.skidoz.service.initializers.InitialLevel;
 import ru.skidoz.service.command.Command;
 import ru.skidoz.util.ConnectComparator;
 import com.google.zxing.WriterException;
@@ -39,7 +38,7 @@ public class Bookmarks implements Command {
     private InitialLevel initialLevel;
 
     @Override
-    public List<LevelChat> runCommand(Update update, Level level, User users) throws IOException, WriterException {
+    public LevelResponse runCommand(Update update, Level level, User users) throws IOException, WriterException {
 
         System.out.println();
         System.out.println("----------------------------Bookmarks--------------------------");
@@ -56,11 +55,11 @@ public class Bookmarks implements Command {
                         true,
                         true);
 
-                return new ArrayList<>(Collections.singletonList(new LevelChat(e -> {
+                return new LevelResponse(Collections.singletonList(new LevelChat(e -> {
                     e.setChatId(users.getChatId());
                     e.setUser(users);
                     e.setLevel(resultLevel);
-                })));
+                })), null, null);
             } else {
                 //TODO - это не срабатывает, так как нет такой кнопки на BOOKMARKS + id
                 Level finalNewLevel = connectComparator.compare(update.getCallbackQuery().getData(), level, users);
@@ -69,21 +68,21 @@ public class Bookmarks implements Command {
                         true,
                         true);
 
-                return new ArrayList<>(Collections.singletonList(new LevelChat(e -> {
+                return new LevelResponse(Collections.singletonList(new LevelChat(e -> {
                     e.setChatId(users.getChatId());
                     e.setUser(users);
                     e.setLevel(resultLevel);
-                })));
+                })), null, null);
             }
         }
 
         LevelDTOWrapper resultLevel = initialLevel.convertToLevel(level,
                 true,
                 true);
-        return new ArrayList<>(Collections.singletonList(new LevelChat(e -> {
+        return new LevelResponse(Collections.singletonList(new LevelChat(e -> {
             e.setChatId(users.getChatId());
             e.setUser(users);
             e.setLevel(resultLevel);
-        })));
+        })), null, null);
     }
 }

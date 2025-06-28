@@ -480,8 +480,8 @@ public class Optimizator {
 //            }
 //            restedCashback.add(cashback);*/
 //        }
-//        //return new ArrayList<>(List.of(withdrawProduct, restedCashback));
-//        return new ArrayList<>(List.of(resultPurchaseList, maxVariant));
+//        //return new LevelResponse(List.of(withdrawProduct, restedCashback));
+//        return new LevelResponse(List.of(resultPurchaseList, maxVariant));
 //    }
 //
 //    private static class CashbackSum {

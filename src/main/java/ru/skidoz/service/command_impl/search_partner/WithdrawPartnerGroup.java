@@ -1,7 +1,6 @@
 package ru.skidoz.service.command_impl.search_partner;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -14,7 +13,7 @@ import ru.skidoz.model.pojo.telegram.*;
 import ru.skidoz.aop.repo.MessageCacheRepository;
 import ru.skidoz.aop.repo.ShopCacheRepository;
 import ru.skidoz.aop.repo.PartnerGroupCacheRepository;
-import ru.skidoz.service.InitialLevel;
+import ru.skidoz.service.initializers.InitialLevel;
 import ru.skidoz.service.command.Command;
 import com.google.zxing.WriterException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +42,7 @@ public class WithdrawPartnerGroup implements Command {
     private InitialLevel initialLevel;
 
     @Override
-    public List<LevelChat> runCommand(Update update, Level level, User users) throws IOException, WriterException {
+    public LevelResponse runCommand(Update update, Level level, User users) throws IOException, WriterException {
 
         //Level resultLevel = initialLevel.level_WITHDRAW_PARTNER;
         LevelDTOWrapper resultLevel = initialLevel.convertToLevel(initialLevel.level_WITHDRAW_PARTNER_RESP,
@@ -85,11 +84,11 @@ public class WithdrawPartnerGroup implements Command {
             }
         }
 
-        return new ArrayList<>(Collections.singletonList(new LevelChat(e -> {
+        return new LevelResponse(Collections.singletonList(new LevelChat(e -> {
             e.setChatId(users.getChatId());
             e.setUser(users);
             e.setLevel(resultLevel);
-        })));
+        })), null, null);
     }
 
 /*

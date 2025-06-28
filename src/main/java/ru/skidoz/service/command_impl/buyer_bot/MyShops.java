@@ -5,13 +5,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import ru.skidoz.model.entity.category.LanguageEnum;
 import ru.skidoz.model.pojo.side.Shop;
 import ru.skidoz.model.pojo.telegram.*;
 import ru.skidoz.aop.repo.*;
-import ru.skidoz.service.InitialLevel;
+import ru.skidoz.service.initializers.InitialLevel;
 import ru.skidoz.service.command.Command;
 import ru.skidoz.service.command_impl.shop_bot.ShopBots;
 import ru.skidoz.util.Structures;
@@ -101,7 +100,7 @@ public class MyShops implements Command {
     }
 
     @Override
-    public List<LevelChat> runCommand(Update update, Level buyerLevel, User users) throws IOException, WriterException, UnirestException, CloneNotSupportedException {
+    public LevelResponse runCommand(Update update, Level buyerLevel, User users) throws IOException, WriterException, UnirestException, CloneNotSupportedException {
 
         System.out.println();
         System.out.println("++++++++++++++++++++++++++++++++++MyShops+++++++++++++++++++++++++++++++++++++++++");
@@ -203,11 +202,11 @@ public class MyShops implements Command {
                             Map.of(LanguageEnum.RU, "Бот типа " + bot.getName()
                             + " уже создан для этого магазина, отредактируйте его либо выберите другой тип")));
 
-                    return new ArrayList<>(Collections.singletonList(new LevelChat(e -> {
+                    return new LevelResponse(Collections.singletonList(new LevelChat(e -> {
                         e.setChatId(users.getChatId());
                         e.setUser(users);
                         e.setLevel(resultLevel);
-                    })));
+                    })), null, null);
                 }
 
                 //cloneBot;
@@ -254,11 +253,11 @@ public class MyShops implements Command {
                 }
             }
 
-            return new ArrayList<>(Collections.singletonList(new LevelChat(e -> {
+            return new LevelResponse(Collections.singletonList(new LevelChat(e -> {
                 e.setChatId(users.getChatId());
                 e.setUser(users);
                 e.setLevel(resultLevelDTOWrapper);
-            })));
+            })), null, null);
 
         } else if (update.getMessage() != null) {
             System.out.println();
@@ -323,7 +322,7 @@ BuyerBot buyerBot = buyerBotRepository.findByUserAndBot(users, bot);
                 e.setChatId(users.getCurrentConversationShop());
                 e.setLevel(shoplevel);
             }));
-            return levelChatDTOList;
+            return new LevelResponse(levelChatDTOList, null, null);
         }
         return null;
     }

@@ -47,6 +47,9 @@ databaseChangeLog:
                   name: current_construct_shop_user
                   type: int(11)
               - column:
+                  name: initial_level_id
+                  type: int(11)
+              - column:
                   name: current_conversation_user_chat_id
                   type: bigint(20)
               - column:

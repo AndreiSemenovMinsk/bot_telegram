@@ -1,16 +1,14 @@
 package ru.skidoz.service.command_impl;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
 import ru.skidoz.model.entity.category.LanguageEnum;
 import ru.skidoz.model.pojo.telegram.*;
 import ru.skidoz.aop.repo.LevelCacheRepository;
 import ru.skidoz.aop.repo.UserCacheRepository;
-import ru.skidoz.service.InitialLevel;
+import ru.skidoz.service.initializers.InitialLevel;
 import ru.skidoz.service.command.Command;
 import com.google.zxing.WriterException;
 import lombok.AllArgsConstructor;
@@ -39,7 +37,7 @@ public class Languager implements Command {
     private InitialLevel initialLevel;
 
     @Override
-    public List<LevelChat> runCommand(Update update, Level level, User users) throws IOException, WriterException {
+    public LevelResponse runCommand(Update update, Level level, User users) throws IOException, WriterException {
 
 
         String callback = update.getCallbackQuery().getData();
@@ -64,10 +62,10 @@ public class Languager implements Command {
         }
 
         LevelDTOWrapper finalResultLevel = resultLevel;
-        return new ArrayList<>(Collections.singletonList(new LevelChat(e -> {
+        return new LevelResponse(Collections.singletonList(new LevelChat(e -> {
             e.setChatId(users.getChatId());
             e.setUser(users);
             e.setLevel(finalResultLevel);
-        })));
+        })), null, null);
     }
 }

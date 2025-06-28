@@ -16,7 +16,7 @@ import ru.skidoz.model.pojo.main.Purchase;
 import ru.skidoz.model.pojo.side.*;
 import ru.skidoz.model.pojo.telegram.*;
 import ru.skidoz.aop.repo.*;
-import ru.skidoz.service.InitialLevel;
+import ru.skidoz.service.initializers.InitialLevel;
 import ru.skidoz.service.command.Command;
 import ru.skidoz.util.Optimizator;
 import com.google.zxing.WriterException;
@@ -74,7 +74,7 @@ public class P2BApproveBasketCashback implements Command {
 
     //@Transactional
     @Override
-    public List<LevelChat> runCommand(Update update, Level level, User users) throws IOException, WriterException {
+    public LevelResponse runCommand(Update update, Level level, User users) throws IOException, WriterException {
 
         List<LevelChat> levelChatDTOList = new ArrayList<>();
         LevelDTOWrapper resultLevel = null;
@@ -300,7 +300,7 @@ public class P2BApproveBasketCashback implements Command {
             e.setUser(users);
             e.setLevel(finalResultLevel);
         }));
-        return levelChatDTOList;
+        return new LevelResponse(levelChatDTOList, null, null);
     }
 
     /* пока не будем дельать так чтобы в акцию попадали те товары, которые куплены до начала акции

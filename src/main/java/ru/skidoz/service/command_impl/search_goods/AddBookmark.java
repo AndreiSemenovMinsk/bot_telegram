@@ -1,8 +1,6 @@
 package ru.skidoz.service.command_impl.search_goods;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 import ru.skidoz.aop.repo.BookmarkCacheRepository;
 import ru.skidoz.model.pojo.side.Bookmark;
@@ -10,9 +8,10 @@ import ru.skidoz.model.pojo.side.Product;
 import ru.skidoz.model.pojo.telegram.LevelChat;
 import ru.skidoz.model.pojo.telegram.Level;
 import ru.skidoz.model.pojo.telegram.LevelDTOWrapper;
+import ru.skidoz.model.pojo.telegram.LevelResponse;
 import ru.skidoz.model.pojo.telegram.User;
 import ru.skidoz.aop.repo.ProductCacheRepository;
-import ru.skidoz.service.InitialLevel;
+import ru.skidoz.service.initializers.InitialLevel;
 import ru.skidoz.service.command.Command;
 import ru.skidoz.util.Structures;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +32,7 @@ public class AddBookmark implements Command {
     private BookmarkCacheRepository bookmarkCacheRepository;
 
     @Override
-    public List<LevelChat> runCommand(Update update, Level level, User users) throws CloneNotSupportedException {
+    public LevelResponse runCommand(Update update, Level level, User users) throws CloneNotSupportedException {
 
         Long chatId = users.getChatId();
 
@@ -67,10 +66,10 @@ public class AddBookmark implements Command {
         };
 
 
-        return new ArrayList<>(Collections.singletonList(new LevelChat(e -> {
+        return new LevelResponse(Collections.singletonList(new LevelChat(e -> {
             e.setChatId(chatId);
             e.setUser(users);
             e.setLevel(resultLevel);
-        })));
+        })), null, null);
     }
 }

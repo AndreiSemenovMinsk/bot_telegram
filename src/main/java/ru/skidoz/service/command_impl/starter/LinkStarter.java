@@ -8,7 +8,7 @@ import ru.skidoz.aop.repo.RecommendationCacheRepository;
 import ru.skidoz.model.entity.category.LanguageEnum;
 import ru.skidoz.model.pojo.side.Shop;
 import ru.skidoz.model.pojo.telegram.*;
-import ru.skidoz.service.InitialLevel;
+import ru.skidoz.service.initializers.InitialLevel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

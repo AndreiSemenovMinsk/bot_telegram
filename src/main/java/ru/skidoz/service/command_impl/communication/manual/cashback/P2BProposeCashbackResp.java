@@ -15,7 +15,7 @@ import ru.skidoz.model.pojo.side.Cashback;
 import ru.skidoz.model.pojo.side.Shop;
 import ru.skidoz.model.pojo.telegram.*;
 import ru.skidoz.aop.repo.*;
-import ru.skidoz.service.InitialLevel;
+import ru.skidoz.service.initializers.InitialLevel;
 import ru.skidoz.service.command.Command;
 import com.google.zxing.WriterException;
 import lombok.AllArgsConstructor;
@@ -55,7 +55,7 @@ public class P2BProposeCashbackResp implements Command {
     private InitialLevel initialLevel;
 
     @Override
-    public List<LevelChat> runCommand(Update update, Level level, User users) throws IOException, WriterException {
+    public LevelResponse runCommand(Update update, Level level, User users) throws IOException, WriterException {
 
         List<LevelChat> levelChatDTOList = new ArrayList<>();
         String inputText = update.getMessage().getText().replaceAll("[^0-9]", "");
@@ -201,6 +201,6 @@ public class P2BProposeCashbackResp implements Command {
             e.setUser(users);
             e.setLevel(finalResultLevel1);
         }));
-        return levelChatDTOList;
+        return new LevelResponse(levelChatDTOList, null, null);
     }
 }

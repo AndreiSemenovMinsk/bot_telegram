@@ -12,7 +12,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.springframework.data.jpa.repository.Query;
 import ru.skidoz.model.entity.ActionTypeEnum;
 import ru.skidoz.model.entity.category.LanguageEnum;
 import ru.skidoz.model.pojo.main.Action;
@@ -21,8 +20,7 @@ import ru.skidoz.model.pojo.side.Cashback;
 import ru.skidoz.model.pojo.side.Shop;
 import ru.skidoz.model.pojo.telegram.*;
 import ru.skidoz.aop.repo.*;
-import ru.skidoz.service.InitialLevel;
-import  ru.skidoz.service.TelegramProcessor;
+import ru.skidoz.service.initializers.InitialLevel;
 import ru.skidoz.service.command.Command;
 import com.google.zxing.WriterException;
 import lombok.AllArgsConstructor;
@@ -70,7 +68,7 @@ public class P2BWriteOffCashbackProposedSum implements Command {
 
     //@Transactional
     @Override
-    public List<LevelChat> runCommand(Update update, Level level, User users) throws IOException, WriterException {
+    public LevelResponse runCommand(Update update, Level level, User users) throws IOException, WriterException {
 
         List<LevelChat> levelChatDTOList = new ArrayList<>();
         LevelDTOWrapper resultLevel = null;
@@ -647,7 +645,7 @@ public class P2BWriteOffCashbackProposedSum implements Command {
             e.setLevel(finalLevel);
         }));
 
-        return levelChatDTOList;
+        return new LevelResponse(levelChatDTOList, null, null);
     }
 
 }

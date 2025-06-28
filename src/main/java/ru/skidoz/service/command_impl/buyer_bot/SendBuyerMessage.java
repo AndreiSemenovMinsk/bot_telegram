@@ -10,8 +10,7 @@ import ru.skidoz.model.entity.category.LanguageEnum;
 import ru.skidoz.model.pojo.side.Shop;
 import ru.skidoz.model.pojo.telegram.*;
 import ru.skidoz.aop.repo.ShopCacheRepository;
-import ru.skidoz.service.InitialLevel;
-import  ru.skidoz.service.TelegramProcessor;
+import ru.skidoz.service.initializers.InitialLevel;
 import ru.skidoz.service.command.Command;
 import com.google.zxing.WriterException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +32,7 @@ public class SendBuyerMessage implements Command {
     private TelegramElementsUtil telegramElementsUtil;
 
     @Override
-    public List<LevelChat> runCommand(Update update, Level buyerLevel, User users) throws IOException, WriterException {
+    public LevelResponse runCommand(Update update, Level buyerLevel, User users) throws IOException, WriterException {
 
         System.out.println();
         System.out.println("++++++++++++++++++++++++++++++++++SendBuyerMessage+++++++++++++++++++++++++++++++++++++++++");
@@ -79,6 +78,6 @@ public class SendBuyerMessage implements Command {
             e.setUser(users);
             e.setLevel(shopLevel);
         }));*/
-        return levelChatDTOList;
+        return new LevelResponse(levelChatDTOList, null, null);
     }
 }

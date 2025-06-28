@@ -3,7 +3,6 @@ package ru.skidoz.service.command_impl.add_goods;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -14,10 +13,11 @@ import ru.skidoz.model.pojo.side.Shop;
 import ru.skidoz.model.pojo.telegram.LevelChat;
 import ru.skidoz.model.pojo.telegram.Level;
 import ru.skidoz.model.pojo.telegram.LevelDTOWrapper;
+import ru.skidoz.model.pojo.telegram.LevelResponse;
 import ru.skidoz.model.pojo.telegram.User;
 import ru.skidoz.aop.repo.ProductCacheRepository;
 import ru.skidoz.aop.repo.ShopCacheRepository;
-import ru.skidoz.service.InitialLevel;
+import ru.skidoz.service.initializers.InitialLevel;
 import ru.skidoz.service.command.Command;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -45,7 +45,7 @@ public class AddGoodsDescription implements Command {
     private InitialLevel initialLevel;
 
     @Override
-    public List<LevelChat> runCommand(Update update, Level level, User users) throws CloneNotSupportedException, IOException, ParseException, UnirestException {
+    public LevelResponse runCommand(Update update, Level level, User users) throws CloneNotSupportedException, IOException, ParseException, UnirestException {
 
         System.out.println("***********AddGoodsDescription**************");
         //Level resultLevel = level;//initialLevel.level_ADD_GOODS_PHOTO;
@@ -104,10 +104,10 @@ public class AddGoodsDescription implements Command {
             productCacheRepository.save(product);
         }
 
-        return new ArrayList<>(Collections.singletonList(new LevelChat(e -> {
+        return new LevelResponse(Collections.singletonList(new LevelChat(e -> {
             e.setChatId(chatId);
             e.setUser(users);
             e.setLevel(resultLevel);
-        })));
+        })), null, null);
     }
 }

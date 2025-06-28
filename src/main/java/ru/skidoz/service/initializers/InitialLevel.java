@@ -1,7 +1,10 @@
-package ru.skidoz.service;
+package ru.skidoz.service.initializers;
 
+
+import static ru.skidoz.model.entity.category.LanguageEnum.RU;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import ru.skidoz.aop.repo.ButtonCacheRepository;
@@ -185,6 +188,150 @@ public class InitialLevel {
     public Level level_NEW_LEVEL_END_BUTTON;
     public Level level_NEW_LEVEL_INPUT_BUTTON;
     public Level level_NEW_LEVEL_BUTTON;
+    
+    public void initLevels() {
+
+        level_INITIALIZE222 = levelRepository.cache(new Level());
+        level_INITIALIZE0 = levelRepository.cache(new Level());
+        level_INITIALIZE = levelRepository.cache(new Level());
+        level_ADMIN = levelRepository.cache(new Level());
+        level_ADMIN_ADMIN = levelRepository.cache(new Level());
+        level_LANGUAGES = levelRepository.cache(new Level());
+        level_LANGUAGER = levelRepository.cache(new Level());
+        level_MAP = levelRepository.cache(new Level());
+        level_MONITOR = levelRepository.cache(new Level());
+        level_MONITOR_PRICE = levelRepository.cache(new Level());
+        level_MONITOR_RESP = levelRepository.cache(new Level());
+        level_GOODS_LIST = levelRepository.cache(new Level());
+        level_SHOP_BOTS = levelRepository.cache(new Level());
+        level_PARTNERS = levelRepository.cache(new Level());
+        level_SELLERS = levelRepository.cache(new Level());
+        level_SELLERS_REMOVE = levelRepository.cache(new Level());
+        level_SELLERS_ADD = levelRepository.cache(new Level());
+        level_SELLERS_ADD_APPROVE = levelRepository.cache(new Level());
+        level_SELLERS_ADD_DISMISS = levelRepository.cache(new Level());
+        level_SELLERS_REMOVE_APPROVE = levelRepository.cache(new Level());
+        level_SELLERS_REMOVE_DISMISS = levelRepository.cache(new Level());
+        level_BASIC = levelRepository.cache(new Level());
+        level_WITHDRAW_PARTNER = levelRepository.cache(new Level());
+        level_WITHDRAW_PARTNER_GROUP = levelRepository.cache(new Level());
+        level_WITHDRAW_PARTNER_RESP = levelRepository.cache(new Level());
+        level_WITHDRAW_PARTNER_END = levelRepository.cache(new Level());
+        level_SEARCH_PARTNER = levelRepository.cache(new Level());
+        level_SEARCH_PARTNER_RESP = levelRepository.cache(new Level());
+        level_SEARCH_PARTNER_RESP_BUTTON = levelRepository.cache(new Level());
+        level_SEARCH_PARTNER_RATE = levelRepository.cache(new Level());
+        level_SEARCH_PARTNER_LIMIT = levelRepository.cache(new Level());
+        level_SEARCH_PARTNER_END = levelRepository.cache(new Level());
+        level_EDIT_PARTNER = levelRepository.cache(new Level());
+        level_SEARCH_GROUP = levelRepository.cache(new Level());
+        level_SEARCH_GROUP_RESP = levelRepository.cache(new Level());
+        level_SEARCH_GROUP_LIMIT = levelRepository.cache(new Level());
+        level_SEARCH_GROUP_END = levelRepository.cache(new Level());
+        level_ADD_PARTNER = levelRepository.cache(new Level());
+        level_ADD_GROUP = levelRepository.cache(new Level());
+        level_ACTIONS = levelRepository.cache(new Level());
+        level_BASKETS_FOR_SHOP = levelRepository.cache(new Level());
+        level_ACTION_TYPE = levelRepository.cache(new Level());
+        level_SELECT_LEVEL_TYPE = levelRepository.cache(new Level());
+        level_MULTI_ACTION_LEVEL = levelRepository.cache(new Level());
+        level_MULTI_ACTION_LEVEL_BASIC = levelRepository.cache(new Level());
+        level_MULTI_LEVEL_RATE = levelRepository.cache(new Level());
+        level_MULTI_LEVEL_RATE_BASIC = levelRepository.cache(new Level());
+        level_MULTI_LEVEL_QUESTION = levelRepository.cache(new Level());
+        level_MULTI_LEVEL_QUESTION_BASIC = levelRepository.cache(new Level());
+        level_ONE_LEVEL_RATE = levelRepository.cache(new Level());
+        level_ONE_LEVEL_RATE_BASIC = levelRepository.cache(new Level());
+        level_ACTION_RATE_WITHDRAW = levelRepository.cache(new Level());
+        level_ACTION_RATE_WITHDRAW_BASIC = levelRepository.cache(new Level());
+        level_ACTION_RATE_PARTNER = levelRepository.cache(new Level());
+        level_ADD_ACTION_RATE_SOURCE = levelRepository.cache(new Level());
+        level_ADD_ACTION_COUPON_TARGET = levelRepository.cache(new Level());
+        level_COUPON = levelRepository.cache(new Level());
+        level_COUPON_NUMBER = levelRepository.cache(new Level());
+        level_COUPON_RATE_WITHDRAW = levelRepository.cache(new Level());
+        level_ADD_ACTION_COUPON_SOURCE = levelRepository.cache(new Level());
+        level_ADD_ACTION_RATE_TARGET = levelRepository.cache(new Level());
+        level_LINK_TO_PRODUCT = levelRepository.cache(new Level());
+        level_LINK_TO_PRODUCT_NUMBER = levelRepository.cache(new Level());
+        level_ADD_ACTION_LINK_SOURCE = levelRepository.cache(new Level());
+        level_ADD_ACTION_LINK_TARGET = levelRepository.cache(new Level());
+        level_MY_SHOPS = levelRepository.cache(new Level());
+        level_CASHBACKS = levelRepository.cache(new Level());
+        level_CONNECT = levelRepository.cache(new Level());
+        level_CONNECT_SHOP = levelRepository.cache(new Level());
+        level_BOOKMARKS = levelRepository.cache(new Level());
+        level_ADD_BOOKMARK = levelRepository.cache(new Level());
+        level_BASKET = levelRepository.cache(new Level());
+        level_BASKET_ARCHIVE = levelRepository.cache(new Level());
+        level_ADD_BASKET = levelRepository.cache(new Level());
+        level_SEARCH = levelRepository.cache(new Level());
+        level_SEARCH_RESULT = levelRepository.cache(new Level());
+        level_SEARCH_RESULT_PRODUCT = levelRepository.cache(new Level());
+        level_CONSTRUCT = levelRepository.cache(new Level());
+        level_ADMIN_SHOPS = levelRepository.cache(new Level());
+        level_CONSTRUCT_SARAFAN_SHARE = levelRepository.cache(new Level());
+        level_CONSTRUCT_MIN_BILL_SHARE = levelRepository.cache(new Level());
+        level_CONSTRUCT_ADD = levelRepository.cache(new Level());
+        level_ADD_GOODS = levelRepository.cache(new Level());
+        level_ADD_GOODS_NAME = levelRepository.cache(new Level());
+        level_ADD_GOODS_PHOTO = levelRepository.cache(new Level());
+        level_ADD_GOODS_DESCRIPTION = levelRepository.cache(new Level());
+        level_ADD_GOODS_PRICE = levelRepository.cache(new Level());
+        level_ADD_GOODS_END = levelRepository.cache(new Level());
+        level_ADD_BOT = levelRepository.cache(new Level());
+        level_ADD_TAXI_BOT = levelRepository.cache(new Level());
+        level_TAXI_LOCATION = levelRepository.cache(new Level());
+        level_TAXI_SUBMIT = levelRepository.cache(new Level());
+        level_PSHARE2P = levelRepository.cache(new Level());
+        level_P2NOP = levelRepository.cache(new Level());
+        level_P2NOP_RESP = levelRepository.cache(new Level());
+        level_P2P = levelRepository.cache(new Level());
+        level_P2P_RESP = levelRepository.cache(new Level());
+        level_P2B = levelRepository.cache(new Level());
+        level_NEGATIVE_SUM = levelRepository.cache(new Level());
+        level_NEGATIVE_COUNT = levelRepository.cache(new Level());
+        level_P2B_PROPOSE_CASHBACK = levelRepository.cache(new Level());
+        level_P2B_PROPOSE_CASHBACK_RESP = levelRepository.cache(new Level());
+        level_P2B_WRITEOFF_CASHBACK = levelRepository.cache(new Level());
+        level_P2B_WRITEOFF_CASHBACK_RESP = levelRepository.cache(new Level());
+        level_P2B_WRITEOFF_CASHBACK_REQUEST = levelRepository.cache(new Level());
+        level_P2B_WRITEOFF_CASHBACK_APPROVE = levelRepository.cache(new Level());
+        level_P2B_WRITEOFF_CASHBACK_DISMISS = levelRepository.cache(new Level());
+        level_P2B_CHARGE_BASKET_CASHBACK = levelRepository.cache(new Level());
+        level_P2B_APPROVE_BASKET_CASHBACK = levelRepository.cache(new Level());
+        level_P2B_CHARGE_COUPON = levelRepository.cache(new Level());
+        level_P2B_CHARGE_COUPON_REQUEST = levelRepository.cache(new Level());
+        level_P2B_CHARGE_COUPON_RESP = levelRepository.cache(new Level());
+        level_P2B_CHARGE_COUPON_BASKET = levelRepository.cache(new Level());
+        level_P2B_WRITEOFF_COUPON = levelRepository.cache(new Level());
+        level_P2B_WRITEOFF_COUPON_SELECT_ACTION = levelRepository.cache(new Level());
+        level_P2B_WRITEOFF_COUPON_BASKET = levelRepository.cache(new Level());
+        level_P2B_WRITEOFF_COUPON_REQUEST = levelRepository.cache(new Level());
+        level_P2B_WRITEOFF_COUPON_RESP = levelRepository.cache(new Level());
+        level_P2B_WRITEOFF_COUPON_APPROVE = levelRepository.cache(new Level());
+        level_P2B_RESP = levelRepository.cache(new Level());
+        level_B2B = levelRepository.cache(new Level());
+        level_B2NOB = levelRepository.cache(new Level());
+        level_DISCARD_NEW_PARTNER = levelRepository.cache(new Level());
+        level_APPROVE_NEW_PARTNER = levelRepository.cache(new Level());
+        level_NEW_GRUPP = levelRepository.cache(new Level());
+        level_DISCARD_NEW_GRUPP = levelRepository.cache(new Level());
+        level_APPROVE_NEW_GRUPP = levelRepository.cache(new Level());
+        level0_1_1 = levelRepository.cache(new Level());
+        level_RESPONSE_BUYER_MESSAGE = levelRepository.cache(new Level());
+        level_RESPONSE_SHOP_MESSAGE = levelRepository.cache(new Level());
+        level_NON_RESPONSE = levelRepository.cache(new Level());
+        level0_1_3 = levelRepository.cache(new Level());
+        level0_1_4 = levelRepository.cache(new Level());
+        level0_1_5 = levelRepository.cache(new Level());
+        level_EDIT_BUTTON_NAME = levelRepository.cache(new Level());
+        level_EDIT_MESSAGE = levelRepository.cache(new Level());
+        level_NEW_LEVEL_END_BUTTON = levelRepository.cache(new Level());
+        level_NEW_LEVEL_INPUT_BUTTON = levelRepository.cache(new Level());
+        level_NEW_LEVEL_BUTTON = levelRepository.cache(new Level());
+
+    }
 
 
     public List<Message> retrieveMessages(Level level) {
@@ -295,5 +442,29 @@ public class InitialLevel {
         }
         levelRepository.cache(newLevel);
         return newLevel;
+    }
+
+    protected  void addFinalButton(Level level, Level initialLevel) {
+
+        List<ButtonRow> buttonRows = buttonRowRepository.findAllByLevel_Id(level.getId());
+
+        if (buttonRows != null && !buttonRows.isEmpty()) {
+
+            ButtonRow backRow = new ButtonRow(level);
+            buttonRowRepository.cache(backRow);
+
+            Button backButton = new Button(backRow, Map.of(RU, "В начало"), initialLevel.getIdString());
+            buttonRepository.cache(backButton);
+            backRow.add(backButton);
+            buttonRowRepository.cache(backRow);
+            //level.addRow(backRow);
+        }
+        levelRepository.cache(level);
+
+        List<Level> levels = levelRepository.findAllByParentLevelId(level.getId());
+
+        for (Level childLevel : levels) {
+            addFinalButton(childLevel, initialLevel);
+        }
     }
 }

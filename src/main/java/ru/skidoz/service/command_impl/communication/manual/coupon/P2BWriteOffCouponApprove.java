@@ -14,8 +14,7 @@ import ru.skidoz.model.pojo.side.Cashback;
 import ru.skidoz.model.pojo.side.Shop;
 import ru.skidoz.model.pojo.telegram.*;
 import ru.skidoz.aop.repo.*;
-import ru.skidoz.repository.CashbackWriteOffRepository;
-import ru.skidoz.service.InitialLevel;
+import ru.skidoz.service.initializers.InitialLevel;
 import ru.skidoz.service.command.Command;
 import com.google.zxing.WriterException;
 import lombok.AllArgsConstructor;
@@ -53,7 +52,7 @@ public class P2BWriteOffCouponApprove implements Command {
     private InitialLevel initialLevel;
 
     @Override
-    public List<LevelChat> runCommand(Update update, Level level, User users) throws IOException, WriterException {
+    public LevelResponse runCommand(Update update, Level level, User users) throws IOException, WriterException {
 
         System.out.println();
         System.out.println("+++++++++++++++++++++P2BWriteOffCouponApprove++++++++++++++++++++");
@@ -127,6 +126,6 @@ public class P2BWriteOffCouponApprove implements Command {
             e.setUser(userCacheRepository.findById(shopInitiator.getAdminUser()));
             e.setLevel(finalResultLevel1);
         }));
-        return levelChatDTOList;
+        return new LevelResponse(levelChatDTOList, null, null);
     }
 }

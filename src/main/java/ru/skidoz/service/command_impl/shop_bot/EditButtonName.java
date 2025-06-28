@@ -1,13 +1,11 @@
 package ru.skidoz.service.command_impl.shop_bot;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 import ru.skidoz.model.pojo.telegram.*;
 import ru.skidoz.aop.repo.ButtonCacheRepository;
 import ru.skidoz.aop.repo.LevelCacheRepository;
-import ru.skidoz.service.InitialLevel;
+import ru.skidoz.service.initializers.InitialLevel;
 import ru.skidoz.service.command.Command;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -28,7 +26,7 @@ public class EditButtonName implements Command {
 
 
     @Override
-    public List<LevelChat> runCommand(Update update, Level level, User users) throws CloneNotSupportedException {
+    public LevelResponse runCommand(Update update, Level level, User users) throws CloneNotSupportedException {
 
         System.out.println();
         System.out.println("++++++++++++++++++++++++++++++++++EditButtonName+++++++++++++++++++++++++++++++++++++++++");
@@ -49,10 +47,10 @@ public class EditButtonName implements Command {
                 true,
                 false);
 
-        return new ArrayList<>(Collections.singletonList(new LevelChat(e -> {
+        return new LevelResponse(Collections.singletonList(new LevelChat(e -> {
             e.setChatId(users.getChatId());
             e.setUser(users);
             e.setLevel(resultLevel);
-        })));
+        })), null, null);
     }
 }

@@ -12,7 +12,7 @@ import ru.skidoz.model.pojo.main.Action;
 import ru.skidoz.model.pojo.side.*;
 import ru.skidoz.model.pojo.telegram.*;
 import ru.skidoz.aop.repo.*;
-import ru.skidoz.service.InitialLevel;
+import ru.skidoz.service.initializers.InitialLevel;
 import ru.skidoz.service.command.Command;
 import ru.skidoz.util.Optimizator;
 import com.google.zxing.WriterException;
@@ -57,7 +57,7 @@ public class P2BChargeBasketCashback implements Command {
     private Optimizator optimizator;
 
     @Override
-    public List<LevelChat> runCommand(Update update, Level level, User users) throws IOException, WriterException {
+    public LevelResponse runCommand(Update update, Level level, User users) throws IOException, WriterException {
 
         System.out.println();
         System.out.println("+++++++++++++++++++++++++++++++++++++P2BChargeBasketCashback++++++++++++++++++++++++++++++++++++++++++++++++");
@@ -157,6 +157,6 @@ public class P2BChargeBasketCashback implements Command {
             e.setUser(users);
             e.setLevel(finalResultLevel);
         }));
-        return levelChatDTOList;
+        return new LevelResponse(levelChatDTOList, null, null);
     }
 }

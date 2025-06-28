@@ -16,15 +16,17 @@ public interface ShopCacheRepository extends JpaRepositoryTest<Shop, Integer> {
 
     List<Shop> findAllByActiveIsTrue();
 
+    Shop findBySecretId(String secretId);
+
 //    Shop findById(Integer shopId);
 
-    public Shop findByChatId(Long userChatId);
+    Shop findByChatId(Long userChatId);
 
-    public Shop findBySellerChatId(Long userChatId);
+    Shop findBySellerChatId(Long userChatId);
 
-    public Shop findByNameAndAdminUser_Id(String name, Integer userId);
+    Shop findByNameAndAdminUser_Id(String name, Integer userId);
 
-    public Shop findByName(String name);
+    Shop findByName(String name);
 
     List<Shop> findAllBySellerIdAndActiveIsTrue(Integer userId);
 

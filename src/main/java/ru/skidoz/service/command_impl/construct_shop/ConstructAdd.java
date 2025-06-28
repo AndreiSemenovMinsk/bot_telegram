@@ -2,9 +2,7 @@ package ru.skidoz.service.command_impl.construct_shop;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
 import ru.skidoz.model.entity.category.LanguageEnum;
@@ -12,7 +10,7 @@ import ru.skidoz.model.pojo.side.Shop;
 import ru.skidoz.model.pojo.telegram.*;
 import ru.skidoz.aop.repo.LevelCacheRepository;
 import ru.skidoz.aop.repo.ShopCacheRepository;
-import ru.skidoz.service.InitialLevel;
+import ru.skidoz.service.initializers.InitialLevel;
 import ru.skidoz.service.command.Command;
 import ru.skidoz.util.Structures;
 import com.google.zxing.WriterException;
@@ -36,7 +34,7 @@ public class ConstructAdd implements Command {
     private LevelCacheRepository levelCacheRepository;
 
     @Override
-    public List<LevelChat> runCommand(Update update, Level level, User users) throws IOException, WriterException, CloneNotSupportedException {
+    public LevelResponse runCommand(Update update, Level level, User users) throws IOException, WriterException, CloneNotSupportedException {
 
         String inputText = update.getMessage().getText().replaceAll("[^0-9]", "");
 
@@ -85,10 +83,10 @@ public class ConstructAdd implements Command {
         }
 
         LevelDTOWrapper finalResultLevel = resultLevel;
-        return new ArrayList<>(Collections.singletonList(new LevelChat(e -> {
+        return new LevelResponse(Collections.singletonList(new LevelChat(e -> {
             e.setChatId(users.getChatId());
             e.setUser(users);
             e.setLevel(finalResultLevel);
-        })));
+        })), null, null);
     }
 }

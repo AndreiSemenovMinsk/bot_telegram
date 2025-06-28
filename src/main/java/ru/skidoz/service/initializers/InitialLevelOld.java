@@ -1,4 +1,4 @@
-package ru.skidoz.service;
+package ru.skidoz.service.initializers;
 
 
 import org.springframework.stereotype.Component;

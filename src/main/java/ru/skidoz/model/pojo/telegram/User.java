@@ -50,8 +50,8 @@ public class User extends AbstractDTO {
 
     private String sessionId;
 
-    @JsonIgnore
-    private byte[] runner;
+//    @JsonIgnore
+//    private byte[] runner;
 
     @Size(max=30)
     private String viber;
@@ -74,7 +74,6 @@ public class User extends AbstractDTO {
     private String role;
 
     private Long chatId;
-    private Integer currentLevelId;
     private Integer currentLevelBeforeConfigId;
 
     private Integer/*LevelDTO*/ currentLevelBeforeInterruption;
@@ -173,7 +172,6 @@ public class User extends AbstractDTO {
                 ", login=" + login +
                 ", password=" + Arrays.toString(password) +
                 ", sessionId='" + sessionId + '\'' +
-                ", currentLevelId=" + currentLevelId +
                 ", currentAdminShop=" + currentAdminShop +
                 ", currentConstructShop=" + currentConstructShop +
                 ", currentConversationShop=" + currentConversationShop +

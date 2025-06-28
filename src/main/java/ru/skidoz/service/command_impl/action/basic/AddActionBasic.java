@@ -1,8 +1,6 @@
 package ru.skidoz.service.command_impl.action.basic;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 import ru.skidoz.model.entity.ActionTypeEnum;
 import ru.skidoz.model.pojo.main.Action;
@@ -10,10 +8,11 @@ import ru.skidoz.model.pojo.side.Shop;
 import ru.skidoz.model.pojo.telegram.LevelChat;
 import ru.skidoz.model.pojo.telegram.Level;
 import ru.skidoz.model.pojo.telegram.LevelDTOWrapper;
+import ru.skidoz.model.pojo.telegram.LevelResponse;
 import ru.skidoz.model.pojo.telegram.User;
 import ru.skidoz.aop.repo.ActionCacheRepository;
 import ru.skidoz.aop.repo.ShopCacheRepository;
-import ru.skidoz.service.InitialLevel;
+import ru.skidoz.service.initializers.InitialLevel;
 import ru.skidoz.service.command.Command;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -33,7 +32,7 @@ public class AddActionBasic implements Command {
     private InitialLevel initialLevel;
 
     @Override
-    public List<LevelChat> runCommand(Update update, Level level, User users) throws CloneNotSupportedException {
+    public LevelResponse runCommand(Update update, Level level, User users) throws CloneNotSupportedException {
 
         LevelDTOWrapper resultLevel = initialLevel.convertToLevel(initialLevel.level_BASIC,
                 true,
@@ -71,10 +70,10 @@ public class AddActionBasic implements Command {
 
         System.out.println("shopInitiator.getCurrentCreatingAction()-----------" + shopInitiator.getCurrentCreatingAction());
 
-        return new ArrayList<>(Collections.singletonList(new LevelChat(e -> {
+        return new LevelResponse(Collections.singletonList(new LevelChat(e -> {
             e.setChatId(chatId);
             e.setUser(users);
             e.setLevel(resultLevel);
-        })));
+        })), null, null);
     }
 }

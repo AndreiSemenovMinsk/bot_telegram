@@ -12,7 +12,7 @@ import ru.skidoz.model.pojo.main.Action;
 import ru.skidoz.model.pojo.side.Shop;
 import ru.skidoz.model.pojo.telegram.*;
 import ru.skidoz.aop.repo.*;
-import ru.skidoz.service.InitialLevel;
+import ru.skidoz.service.initializers.InitialLevel;
 import ru.skidoz.service.command.Command;
 import com.google.zxing.WriterException;
 import lombok.AllArgsConstructor;
@@ -53,7 +53,7 @@ public class P2BWriteOffCashbackRequest implements Command {
     private InitialLevel initialLevel;
 
     @Override
-    public List<LevelChat> runCommand(Update update, Level level, User users) throws IOException, WriterException {
+    public LevelResponse runCommand(Update update, Level level, User users) throws IOException, WriterException {
 
         List<LevelChat> levelChatDTOList = new ArrayList<>();
         LevelDTOWrapper resultLevel = null;
@@ -214,6 +214,6 @@ e.printStackTrace();
                 e.setLevel(finalShopLevel);
             }));
         }
-        return levelChatDTOList;
+        return new LevelResponse(levelChatDTOList, null, null);
     }
 }

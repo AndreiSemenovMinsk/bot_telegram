@@ -3,14 +3,13 @@ package ru.skidoz.service.command_impl.search_partner;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import ru.skidoz.aop.repo.PartnerCacheRepository;
 import ru.skidoz.model.entity.category.LanguageEnum;
 import ru.skidoz.model.pojo.side.Shop;
 import ru.skidoz.model.pojo.telegram.*;
 import ru.skidoz.aop.repo.ShopCacheRepository;
-import ru.skidoz.service.InitialLevel;
+import ru.skidoz.service.initializers.InitialLevel;
 import ru.skidoz.service.command.Command;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -31,7 +30,7 @@ public class EditPartner0 implements Command {
     private InitialLevel initialLevel;
 
     @Override
-    public List<LevelChat> runCommand(Update update, Level level, User users) throws CloneNotSupportedException {
+    public LevelResponse runCommand(Update update, Level level, User users) throws CloneNotSupportedException {
 
         // перешли с кнопки, а потом нажимаем на кнопку выбора
         //Level resultLevel = initialLevel.level_SEARCH_PARTNER;
@@ -83,6 +82,6 @@ public class EditPartner0 implements Command {
             e.setUser(users);
             e.setLevel(resultLevel);
         }));
-        return levelChatDTOList;
+        return new LevelResponse(levelChatDTOList, null, null);
     }
 }

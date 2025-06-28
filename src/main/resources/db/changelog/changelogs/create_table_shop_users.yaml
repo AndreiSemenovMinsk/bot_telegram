@@ -1,0 +1,192 @@
+databaseChangeLog:
+  - changeSet:
+      id: 3-users
+      author: a.semenov
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: users_pk
+                    nullable: false
+              - column:
+                  name: access_token
+                  type: varchar(255)
+              - column:
+                  name: time
+                  type: datetime
+                  constraints:
+                    nullable: false
+              - column:
+                  name: chat_id
+                  type: bigint(20)
+              - column:
+                  name: current_admin_shop
+                  type: int(11)
+#                  constraints:
+#                    nullable: true
+#                    foreignKeyName: fk_current_admin_shop
+#                    references: users(id)
+              - column:
+                  name: current_construct_shop
+                  type: int(11)
+#                  constraints:
+#                    nullable: true
+#                    foreignKeyName: fk_current_construct_shop_user
+#                    references: shop(id)
+              - column:
+                  name: current_conversation_shop
+                  type: int(11)
+#                  constraints:
+#                    nullable: true
+#                    foreignKeyName: fk_current_conversation_shop
+#                    references: shop(id)
+              - column:
+                  name: current_level_before_config_id
+                  type: int(11)
+#                  constraints:
+#                    nullable: true
+#                    foreignKeyName: fk_current_level_before_config_id
+#                    references: level(id)
+              - column:
+                  name: current_level_id
+                  type: int(11)
+#                  constraints:
+#                    nullable: true
+#                    foreignKeyName: fk_current_level_id
+#                    references: level(id)
+              - column:
+                  name: current_search_abstract_group_entity
+                  type: int(11)
+                  constraints:
+                    nullable: true
+                    foreignKeyName: fk_current_search_abstract_group_entity
+                    references: abstract_group_entity(id)
+              - column:
+                  name: email
+                  type: varchar(50)
+              - column:
+                  name: expiration_time_milliseconds
+                  type: bigint(20)
+              - column:
+                  name: language
+                  type: int(11)
+              - column:
+                  name: login
+                  type: varchar(20)
+              - column:
+                  name: name
+                  type: varchar(30)
+              - column:
+                  name: password
+                  type: varchar(255)
+              - column:
+                  name: refresh_token
+                  type: varchar(255)
+              - column:
+                  name: role
+                  type: varchar(255)
+              - column:
+                  name: runner
+                  type: tinyblob
+              - column:
+                  name: session_id
+                  type: varchar(255)
+              - column:
+                  name: shop_owner
+                  type: bit(1)
+              - column:
+                  name: viber
+                  type: varchar(30)
+              - column:
+                  name: viber_avatar
+                  type: varchar(255)
+              - column:
+                  name: viber_last
+                  type: varchar(255)
+              - column:
+                  name: current_changing_bot_id
+                  type: int(11)
+#                  constraints:
+#                    nullable: true
+#                    foreignKeyName: fk_current_changing_bot_id
+#                    references: bot(id)
+              - column:
+                  name: current_changing_button_id
+                  type: int(11)
+#                  constraints:
+#                    nullable: true
+#                    foreignKeyName: fk_current_changing_button_id
+#                    references: button(id)
+              - column:
+                  name: current_changing_message_id
+                  type: int(11)
+#                  constraints:
+#                    nullable: true
+#                    foreignKeyName: fk_current_changing_message_id
+#                    references: message(id)
+              - column:
+                  name: current_level_before_interruption_id
+                  type: int(11)
+                  constraints:
+                    nullable: true
+                    foreignKeyName: fk_current_level_before_interruption_id
+                    references: level(id)
+              - column:
+                  name: seller_shop_id
+                  type: int(11)
+                  constraints:
+                    nullable: true
+                    foreignKeyName: fk_seller_shop_id
+                    references: users(id)
+            tableName: users
+        - createIndex:
+            #            clustered:  true
+            columns:
+              - column:
+                  descending:  true
+                  name:  login
+            indexName:  UC_USER_COL_LOGIN
+            schemaName:  public
+            tableName:  users
+            unique:  true
+        - createIndex:
+            #            clustered:  true
+            columns:
+              - column:
+                  descending:  true
+                  name:  chat_id
+            indexName:  UC_USER_COL_CHAT
+            schemaName:  public
+            tableName:  users
+            unique:  true
+        - createIndex:
+            #            clustered:  true
+            columns:
+              - column:
+                  descending:  true
+                  name:  viber
+            indexName:  UC_USER_COL_VIBER
+            schemaName:  public
+            tableName:  users
+            unique:  true
+
+#        -  addForeignKeyConstraint:
+#             baseColumnNames:  admin_user_id
+#             #             baseTableCatalogName:  cat
+#             baseTableName:  shop
+#             baseTableSchemaName:  public
+#             constraintName:  fk_admin_user_id
+#             deferrable:  true
+#             initiallyDeferred:  true
+#             onDelete:  CASCADE
+#             onUpdate:  RESTRICT
+#             referencedColumnNames:  id
+#             #             referencedTableCatalogName:  cat
+#             referencedTableName:  users
+#             referencedTableSchemaName:  public
+#             validate:  true

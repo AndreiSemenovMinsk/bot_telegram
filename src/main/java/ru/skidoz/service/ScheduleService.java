@@ -101,6 +101,8 @@ import ru.skidoz.repository.telegram.LevelRepository;
 import ru.skidoz.repository.telegram.MessageRepository;
 import ru.skidoz.repository.telegram.UserRepository;
 import com.google.zxing.WriterException;
+import ru.skidoz.service.initializers.InitialLevel;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.jpa.repository.JpaRepository;

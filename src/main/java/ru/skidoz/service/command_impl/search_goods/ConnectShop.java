@@ -18,7 +18,7 @@ import ru.skidoz.model.pojo.main.Purchase;
 import ru.skidoz.model.pojo.side.*;
 import ru.skidoz.model.pojo.telegram.*;
 import ru.skidoz.aop.repo.*;
-import ru.skidoz.service.InitialLevel;
+import ru.skidoz.service.initializers.InitialLevel;
 import ru.skidoz.service.command.Command;
 import com.google.zxing.WriterException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,7 +67,7 @@ public class ConnectShop implements Command {
     private TelegramElementsUtil telegramElementsUtil;
 
     @Override
-    public List<LevelChat> runCommand(Update update, Level level, User users) throws IOException, WriterException {
+    public LevelResponse runCommand(Update update, Level level, User users) throws IOException, WriterException {
 
         LevelDTOWrapper resultLevel = initialLevel.convertToLevel(level,
                 true,
@@ -91,14 +91,14 @@ public class ConnectShop implements Command {
 
             User shopUsers = userCacheRepository.findByChatId(shopGetter.getChatId());
 
-            return getInfoLevel(shopUsers, users, shopGetter);
+            return new LevelResponse(getInfoLevel(shopUsers, users, shopGetter), null, null);
         }
 
-        return new ArrayList<>(Collections.singletonList(new LevelChat(e -> {
+        return new LevelResponse(Collections.singletonList(new LevelChat(e -> {
             e.setChatId(users.getChatId());
             e.setUser(users);
             e.setLevel(resultLevel);
-        })));
+        })), null, null);
     }
 
 
@@ -723,6 +723,6 @@ public class ConnectShop implements Command {
             e.setUser(friend);
             e.setLevel(friendLevel);
         }));
-        return levelChatDTOList;
+        return new LevelResponse(levelChatDTOList, null, null);
     }
 }

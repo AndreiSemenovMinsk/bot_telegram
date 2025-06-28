@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentMap;
 import ru.skidoz.model.entity.category.LanguageEnum;
 import ru.skidoz.model.pojo.telegram.*;
 import ru.skidoz.aop.repo.*;
-import ru.skidoz.service.InitialLevel;
+import ru.skidoz.service.initializers.InitialLevel;
 import ru.skidoz.service.command.Command;
 import ru.skidoz.util.Structures;
 import com.google.zxing.WriterException;
@@ -123,7 +123,7 @@ public class ShopBots implements Command {
     }
 
     @Override
-    public List<LevelChat> runCommand(Update update, Level level, User users) throws IOException, WriterException {
+    public LevelResponse runCommand(Update update, Level level, User users) throws IOException, WriterException {
 
         System.out.println();
         System.out.println("++++++++++++++++++++++++++++++++++ShopBots+++++++++++++++++++++++++++++++++++++++++");
@@ -200,7 +200,7 @@ public class ShopBots implements Command {
                     }
                 }
 /*
-            return new ArrayList<>(Collections.singletonList(new LevelChat(e -> {
+            return new LevelResponse(Collections.singletonList(new LevelChat(e -> {
                 e.setChatId(users.getChatId());
                 e.setLevel(resultLevel);
             })));*/
@@ -409,11 +409,11 @@ public class ShopBots implements Command {
         }
 
             LevelDTOWrapper finalResultLevel = resultLevel;
-            return new ArrayList<>(Collections.singletonList(new LevelChat(e -> {
+            return new LevelResponse(Collections.singletonList(new LevelChat(e -> {
                 e.setChatId(users.getChatId());
                 e.setUser(users);
                 e.setLevel(finalResultLevel);
-            })));
+            })), null, null);
 
     }
 }

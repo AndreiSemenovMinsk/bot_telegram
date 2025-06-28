@@ -1,9 +1,7 @@
 package ru.skidoz.service.command_impl.buyer_bot;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
 import ru.skidoz.model.entity.category.LanguageEnum;
@@ -11,7 +9,7 @@ import ru.skidoz.model.pojo.side.Shop;
 import ru.skidoz.model.pojo.telegram.*;
 import ru.skidoz.aop.repo.ShopCacheRepository;
 import ru.skidoz.aop.repo.UserCacheRepository;
-import ru.skidoz.service.InitialLevel;
+import ru.skidoz.service.initializers.InitialLevel;
 import ru.skidoz.service.command.Command;
 import com.google.zxing.WriterException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +30,7 @@ public class ResponseShopMessage implements Command {
     private InitialLevel initialLevel;
 
     @Override
-    public List<LevelChat> runCommand(Update update, Level buyerLevel, User users) throws IOException, WriterException {
+    public LevelResponse runCommand(Update update, Level buyerLevel, User users) throws IOException, WriterException {
 
         Long buyerChatId = users.getChatId();
         //User users = userRepository.findFirstByChatId(buyerChatId);
@@ -59,10 +57,10 @@ public class ResponseShopMessage implements Command {
                 false);
         resultLevel.addMessage(new Message(null, Map.of(LanguageEnum.RU, "Введите ответ магазину @3" + shop.getName())));
 
-        return new ArrayList<>(Collections.singletonList(new LevelChat(e -> {
+        return new LevelResponse(Collections.singletonList(new LevelChat(e -> {
             e.setChatId(buyerChatId);
             e.setUser(users);
             e.setLevel(resultLevel);
-        })));
+        })), null, null);
     }
 }

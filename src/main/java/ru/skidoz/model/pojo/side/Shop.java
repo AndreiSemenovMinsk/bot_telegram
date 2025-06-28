@@ -38,6 +38,7 @@ public class Shop extends AbstractDTO {
     @ToString.Exclude
     @JsonIgnore
     private String secretId;
+    private Integer initialLevelId;
 
     private Integer currentConstructShopUser;
     private Long currentConversationShopUserChatId;

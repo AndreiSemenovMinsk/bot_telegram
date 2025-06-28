@@ -9,7 +9,7 @@ import ru.skidoz.model.entity.category.LanguageEnum;
 import ru.skidoz.model.pojo.side.Shop;
 import ru.skidoz.model.pojo.telegram.*;
 import ru.skidoz.aop.repo.ShopCacheRepository;
-import ru.skidoz.service.InitialLevel;
+import ru.skidoz.service.initializers.InitialLevel;
 import ru.skidoz.service.command.Command;
 import com.google.zxing.WriterException;
 import com.mashape.unirest.http.exceptions.UnirestException;
@@ -31,7 +31,7 @@ public class SendShopMessage implements Command {
     private TelegramElementsUtil telegramElementsUtil;
 
     @Override
-    public List<LevelChat> runCommand(Update update, Level shopLevel, User users) throws IOException, WriterException, UnirestException {
+    public LevelResponse runCommand(Update update, Level shopLevel, User users) throws IOException, WriterException, UnirestException {
 
         Long shopChatId = users.getChatId();
         Shop shop = shopCacheRepository.findBySellerChatId(shopChatId);
@@ -64,6 +64,6 @@ public class SendShopMessage implements Command {
             e.setChatId(buyerChatId);
             e.setLevel(buyerLevel);
         }));
-        return levelChatDTOList;
+        return new LevelResponse(levelChatDTOList, null, null);
     }
 }

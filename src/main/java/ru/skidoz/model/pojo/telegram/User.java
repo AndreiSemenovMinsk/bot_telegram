@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
+import jakarta.persistence.Transient;
 import ru.skidoz.model.entity.category.LanguageEnum;
 import ru.skidoz.model.pojo.AbstractDTO;
 import ru.skidoz.model.pojo.main.Purchase;
@@ -72,6 +73,11 @@ public class User extends AbstractDTO {
     private boolean shopOwner;
 
     private String role;
+
+    @Transient
+    private Integer currentRunnerShop;
+    private Integer firstRunnerShop;
+
 
     private Long chatId;
     private Integer currentLevelBeforeConfigId;

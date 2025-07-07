@@ -5,8 +5,8 @@ import org.mapstruct.Mapping;
 import org.springframework.stereotype.Component;
 import ru.skidoz.mapper.EntityMapper;
 import ru.skidoz.mapper.telegram.UsersMapper;
-import ru.skidoz.model.entity.CashbackShopGroupEntity;
-import ru.skidoz.model.pojo.telegram.CashbackShopGroup;
+import ru.skidoz.model.entity.PurchaseShopGroupEntity;
+import ru.skidoz.model.pojo.telegram.PurchaseShopGroup;
 
 @Component
 @Mapper(componentModel = "spring", uses = {
@@ -14,20 +14,20 @@ import ru.skidoz.model.pojo.telegram.CashbackShopGroup;
         ShopMapper.class,
         PurchaseMapper.class,
         UsersMapper.class})
-public abstract class CashbackShopGroupMapper extends EntityMapper<CashbackShopGroup, CashbackShopGroupEntity> {
+public abstract class CashbackShopGroupMapper extends EntityMapper<PurchaseShopGroup, PurchaseShopGroupEntity> {
 
     @Override
     @Mapping(source = "shop.id", target = "shop")
     @Mapping(source = "shopGroup.id", target = "shopGroup")
     @Mapping(source = "purchase.id", target = "purchase")
     @Mapping(source = "user.id", target = "user")
-    public abstract CashbackShopGroup toDto(CashbackShopGroupEntity entity);
+    public abstract PurchaseShopGroup toDto(PurchaseShopGroupEntity entity);
 
     @Override
     @Mapping(source = "shop", target = "shop.id")//, qualifiedByName = "idShop")
     @Mapping(source = "shopGroup", target = "shopGroup.id")//, qualifiedByName = "idShopGroup")
     @Mapping(source = "purchase", target = "purchase.id")//, qualifiedByName = "idPurchase")
     @Mapping(source = "user", target = "user.id")//, qualifiedByName = "idUser")
-    public abstract CashbackShopGroupEntity toEntity(CashbackShopGroup dto);
+    public abstract PurchaseShopGroupEntity toEntity(PurchaseShopGroup dto);
 
 }

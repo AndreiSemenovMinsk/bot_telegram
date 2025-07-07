@@ -470,8 +470,8 @@ public class ConnectShop implements Command {
         StringBuilder cashbackMessagePartnerGroup = new StringBuilder("\r\n");
         BigDecimal sumPartnerGroups = BigDecimal.ZERO;
         /*
-        List<CashbackShopGroup> cashbackShopGroupList = cashbackShopGroupRepository.findAllByUserAndManual(friend, false);
-        HashMap<ShopGroup, List<CashbackShopGroup>> userShopGroup_CashbackMap = new HashMap<>();
+        List<PurchaseShopGroup> cashbackShopGroupList = cashbackShopGroupRepository.findAllByUserAndManual(friend, false);
+        HashMap<ShopGroup, List<PurchaseShopGroup>> userShopGroup_CashbackMap = new HashMap<>();
         HashMap<ShopGroup, BigDecimal> userShopGroup_SumListHashMap = new HashMap<>();
         HashMap<Shop, Map<ShopGroup, BigDecimal>> userShop_ShopGroup_SumMap = new HashMap<>();
 
@@ -516,8 +516,8 @@ public class ConnectShop implements Command {
             BigDecimal freeLimit = limit.subtract(balance);
 
             BigDecimal userSum = BigDecimal.ZERO;
-//                TODO-по идее, можно отказаться от CashbackShopGroup вообще как от класса???
-//                List<CashbackShopGroup> cashbackShopGroups = userShopGroup_CashbackMap.get(partnerShopGroup);
+//                TODO-по идее, можно отказаться от PurchaseShopGroup вообще как от класса???
+//                List<PurchaseShopGroup> cashbackShopGroups = userShopGroup_CashbackMap.get(partnerShopGroup);
             Map<Shop, Boolean> shopIsGroupMemberMap = new HashMap<>();
             partnerShopSet.forEach(shop -> shopIsGroupMemberMap.put(shop, false));
 
@@ -723,6 +723,6 @@ public class ConnectShop implements Command {
             e.setUser(friend);
             e.setLevel(friendLevel);
         }));
-        return new LevelResponse(levelChatDTOList, null, null);
+        return levelChatDTOList;
     }
 }

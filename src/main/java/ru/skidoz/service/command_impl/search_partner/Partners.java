@@ -1,4 +1,4 @@
-package ru.skidoz.service.command_impl;
+package ru.skidoz.service.command_impl.search_partner;
 
 import java.io.IOException;
 import java.math.BigDecimal;

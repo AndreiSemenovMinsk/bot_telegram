@@ -12,13 +12,13 @@ import lombok.Data;
 //@EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
-@Table(name = "cashback_shop_group",
+@Table(name = "purchase_shop_group",
         indexes = {
-                @Index(name = "IDX_CASHBACK_SHOP_GROUP_COL_ID", columnList = "id"),
-                @Index(name = "IDX_CASHBACK_SHOP_GROUP_COL_USER", columnList = "user_id"),
-                @Index(name = "IDX_CASHBACK_SHOP_GROUP_COL_SHOP", columnList = "shop_group_id"),
-                @Index(name = "IDX_CASHBACK_SHOP_GROUP_COL_USER_SHOP", columnList = "user_id,shop_group_id")})
-public class CashbackShopGroupEntity extends AbstractEntity  implements Serializable {
+                @Index(name = "IDX_PURCHASE_SHOP_GROUP_COL_ID", columnList = "id"),
+                @Index(name = "IDX_PURCHASE_SHOP_GROUP_COL_USER", columnList = "user_id"),
+                @Index(name = "IDX_PURCHASE_SHOP_GROUP_COL_SHOP", columnList = "shop_group_id"),
+                @Index(name = "IDX_PURCHASE_SHOP_GROUP_COL_USER_SHOP", columnList = "user_id,shop_group_id")})
+public class PurchaseShopGroupEntity extends AbstractEntity  implements Serializable {
 
     // OneToOne - потому что может быть только одна дефолтовая акция
     @NotNull
@@ -43,20 +43,20 @@ public class CashbackShopGroupEntity extends AbstractEntity  implements Serializ
     //@JoinColumn(name = "shopId", nullable = false, insertable = false, updatable = false)
     private ShopEntity shop;
 
-    public CashbackShopGroupEntity(Consumer<CashbackShopGroupEntity> builder){
+    public PurchaseShopGroupEntity(Consumer<PurchaseShopGroupEntity> builder){
         builder.accept(this);
     }
 
-    public CashbackShopGroupEntity() {
+    public PurchaseShopGroupEntity() {
         super();
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof CashbackShopGroupEntity)) return false;
+        if (!(o instanceof PurchaseShopGroupEntity)) return false;
         if (!super.equals(o)) return false;
-        CashbackShopGroupEntity action = (CashbackShopGroupEntity) o;
+        PurchaseShopGroupEntity action = (PurchaseShopGroupEntity) o;
         return super.id.equals(action.getId());
     }
 

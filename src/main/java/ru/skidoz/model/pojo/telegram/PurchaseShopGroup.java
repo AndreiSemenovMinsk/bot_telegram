@@ -1,6 +1,7 @@
 package ru.skidoz.model.pojo.telegram;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.function.Consumer;
 
 import ru.skidoz.model.pojo.AbstractDTO;
@@ -10,7 +11,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class CashbackShopGroup extends AbstractDTO implements Serializable {
+public class PurchaseShopGroup extends AbstractDTO implements Serializable {
 
     @NotNull
     private boolean manual;
@@ -27,12 +28,15 @@ public class CashbackShopGroup extends AbstractDTO implements Serializable {
     @NotNull
     private Integer/*User*/ user;
 
-    public CashbackShopGroup(Consumer<CashbackShopGroup> builder){
+    @NotNull
+    private int sum;
+
+    public PurchaseShopGroup(Consumer<PurchaseShopGroup> builder){
         super();
         builder.accept(this);
     }
 
-    public CashbackShopGroup() {
+    public PurchaseShopGroup() {
         super();
     }
 

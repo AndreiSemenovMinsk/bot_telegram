@@ -52,6 +52,8 @@ public class InitialLevel {
     public Level level_INITIALIZE222;
     public Level level_INITIALIZE0;
     public Level level_INITIALIZE;
+    public Level level_TOKEN_REQUEST;
+    public Level level_INITIALIZE_CENTRAL;
     public Level level_ADMIN;
     public Level level_ADMIN_ADMIN;
     public Level level_LANGUAGES;
@@ -194,6 +196,9 @@ public class InitialLevel {
         level_INITIALIZE222 = levelRepository.cache(new Level());
         level_INITIALIZE0 = levelRepository.cache(new Level());
         level_INITIALIZE = levelRepository.cache(new Level());
+        level_INITIALIZE_CENTRAL = levelRepository.cache(new Level());
+        level_TOKEN_REQUEST = levelRepository.cache(new Level());
+
         level_ADMIN = levelRepository.cache(new Level());
         level_ADMIN_ADMIN = levelRepository.cache(new Level());
         level_LANGUAGES = levelRepository.cache(new Level());

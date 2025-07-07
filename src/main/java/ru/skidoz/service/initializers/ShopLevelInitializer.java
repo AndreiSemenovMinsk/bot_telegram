@@ -173,14 +173,6 @@ import org.springframework.stereotype.Component;
 public class ShopLevelInitializer {
 
     public static User Users = null;
-
-    public static Shop SHOP = null;
-
-    public static CategorySuperGroup bigCategorySuperGroup = null;
-
-    public static CategoryGroup bigCategoryGroup = null;
-
-    public static Category bigCategory = null;
     
     @Autowired
     private MenuCreator menuCreator;
@@ -505,7 +497,7 @@ public class ShopLevelInitializer {
 
                 System.out.println("POST addFinalButton");
 
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
     }

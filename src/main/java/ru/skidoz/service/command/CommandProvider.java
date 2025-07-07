@@ -16,7 +16,7 @@ import ru.skidoz.service.command_impl.Connect;
 import ru.skidoz.service.command_impl.Initialize;
 import ru.skidoz.service.command_impl.GoodsList;
 import ru.skidoz.service.command_impl.Languager;
-import ru.skidoz.service.command_impl.Partners;
+import ru.skidoz.service.command_impl.search_partner.Partners;
 import ru.skidoz.service.command_impl.action.AddActionSource;
 import ru.skidoz.service.command_impl.action.basic.*;
 import ru.skidoz.service.command_impl.action.coupon.AddActionCoupon;
@@ -33,6 +33,7 @@ import ru.skidoz.service.command_impl.communication.manual.cashback.P2BWriteOffC
 import ru.skidoz.service.command_impl.communication.manual.cashback.P2BWriteOffCashbackRequest;
 import ru.skidoz.service.command_impl.communication.manual.coupon.*;
 import ru.skidoz.service.command_impl.construct_shop.AdminShop;
+import ru.skidoz.service.command_impl.construct_shop.Construct;
 import ru.skidoz.service.command_impl.construct_shop.ConstructAdd;
 import ru.skidoz.service.command_impl.construct_shop.ConstructSarafanShare;
 import ru.skidoz.service.command_impl.construct_shop.ConstructSetMinBillShare;
@@ -49,7 +50,6 @@ import ru.skidoz.service.command_impl.shop_bot.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 
 @Component
 @RequiredArgsConstructor
@@ -111,6 +111,8 @@ public class CommandProvider {
     private AdminShop adminShop;
     @Autowired
     private ConstructSetMinBillShare constructSetMinBillShare;
+    @Autowired
+    private Construct construct;
     @Autowired
     private ConstructSarafanShare constructSarafanShare;
     @Autowired
@@ -268,6 +270,8 @@ public class CommandProvider {
         //commands.put(CommandName.ADMIN, new Admin());
         commands.put(CommandName.ADMIN_SHOPS.name(), adminShop);
         commands.put(CommandName.CONSTRUCT_MIN_BILL_SHARE.name(), constructSetMinBillShare);
+
+        commands.put(CommandName.CONSTRUCT.name(), construct);
 
         commands.put(CommandName.ACTION_RATE_WITHDRAW_BASIC.name(), actionRateWithdrawBasic);
 

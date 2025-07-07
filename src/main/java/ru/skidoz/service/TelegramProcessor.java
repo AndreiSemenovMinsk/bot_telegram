@@ -195,7 +195,7 @@ public class TelegramProcessor {
             }
         System.out.println("levelChatDTOList+++++++++++++++" + levelChatDTOList);
 
-        return new LevelResponse(levelChatDTOList, null, null);
+        return levelChatDTOList;
     }
 
     public void mergeUser(User targetUsersDTO, User duplicateUsersDTO) {

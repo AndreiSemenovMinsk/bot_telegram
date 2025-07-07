@@ -84,7 +84,7 @@ public class Shop extends AbstractDTO {
 
 //    private List<Integer>/*Shop*/ currentConversationShopShopList = new ArrayList<>();
 
-    private List<Integer>/*CashbackShopGroup*/ cashbackShopGroupList = new ArrayList<>();
+    private List<Integer>/*PurchaseShopGroup*/ cashbackShopGroupList = new ArrayList<>();
 
     public Shop(Consumer<Shop> builder) {
         super();

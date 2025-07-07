@@ -45,6 +45,19 @@ public class Optimizator {
     @Autowired
     private PurchaseCacheRepository purchaseRepository;
 
+
+
+
+
+
+
+
+
+
+
+
+
+
     public static Integer getRate(BigDecimal sum,
                                   List<BigDecimal> levelSum,
                                   List<Integer> levelRatePreviousPurchase) {
@@ -70,7 +83,6 @@ public class Optimizator {
                              List<Action>  suitableActions,
                              Map<Integer, List<BigDecimal>> actionProductSumByProducts,
                              BigDecimal max) {
-
 
         Map<Integer, BigDecimal> actionProductSum = new HashMap<>();
 

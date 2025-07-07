@@ -322,8 +322,8 @@ public class P2BWriteOffCashbackProposedSum implements Command {
 
                     System.out.println("6 partnerGroup**************** " + partnerGroup);
 
-//                TODO-по идее, можно отказаться от CashbackShopGroup вообще как от класса???
-//                List<CashbackShopGroup> cashbackShopGroups = userShopGroup_CashbackMap.get(partnerShopGroup);
+//                TODO-по идее, можно отказаться от PurchaseShopGroup вообще как от класса???
+//                List<PurchaseShopGroup> cashbackShopGroups = userShopGroup_CashbackMap.get(partnerShopGroup);
                     Map<Integer, Boolean> shopIsGroupMemberMap = new HashMap<>();
                     partnerShopSet.forEach(shopPartner -> shopIsGroupMemberMap.put(shopPartner, false));
 

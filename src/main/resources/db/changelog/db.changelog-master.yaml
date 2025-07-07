@@ -70,7 +70,7 @@ databaseChangeLog:
       file: "changelogs/create_table_cashback.yaml"
   - include:
       relativeToChangelogFile: true
-      file: "changelogs/create_table_cashback_shop_group.yaml"
+      file: "changelogs/create_table_purchase_shop_group.yaml"
   - include:
       relativeToChangelogFile: true
       file: "changelogs/create_table_cashback_write_off.yaml"

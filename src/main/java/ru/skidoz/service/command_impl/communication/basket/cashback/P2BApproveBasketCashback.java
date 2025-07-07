@@ -52,7 +52,7 @@ public class P2BApproveBasketCashback implements Command {
     @Autowired
     private CashbackCacheRepository cashbackCacheRepository;
     @Autowired
-    private CashbackShopGroupCacheRepository cashbackShopGroupCacheRepository;
+    private PurchaseShopGroupCacheRepository purchaseShopGroupCacheRepository;
     @Autowired
     private ActionCacheRepository actionCacheRepository;
     @Autowired
@@ -139,14 +139,14 @@ public class P2BApproveBasketCashback implements Command {
                 cashbackCacheRepository.save(cashbackDefault);
 
                 partnerGroupCacheRepository.findAllByCreditor_Id(shopInitiator.getId()).forEach(partnerGroup -> {
-                    CashbackShopGroup cashbackShopGroupDefault = new CashbackShopGroup(e -> {
+                    PurchaseShopGroup purchaseShopGroupDefault = new PurchaseShopGroup(e -> {
                         e.setShopGroup(partnerGroup.getDebtor());
                         e.setShop(shopInitiator.getId());
                         e.setUser(usersCurrentConversation.getId());
                         e.setPurchase(purchase.getId());
                         e.setManual(false);
                     });
-                    cashbackShopGroupCacheRepository.save(cashbackShopGroupDefault);
+                    purchaseShopGroupCacheRepository.save(purchaseShopGroupDefault);
                 });
 
                 User friendA = userCacheRepository.findFirstByShop_IdAndBuyer_Id(shopInitiator.getId(), usersCurrentConversation.getId());
@@ -180,14 +180,14 @@ public class P2BApproveBasketCashback implements Command {
                     cashbackCacheRepository.save(cashbackFriend);
 
                     partnerGroupCacheRepository.findAllByCreditor_Id(shopInitiator.getId()).forEach(partnerGroup -> {
-                        CashbackShopGroup cashbackShopGroupDefault = new CashbackShopGroup(e -> {
+                        PurchaseShopGroup purchaseShopGroupDefault = new PurchaseShopGroup(e -> {
                             e.setShopGroup(partnerGroup.getDebtor());
                             e.setShop(shopInitiator.getId());
                             e.setUser(usersCurrentConversation.getId());
                             e.setPurchase(purchase.getId());
                             e.setManual(false);
                         });
-                        cashbackShopGroupCacheRepository.save(cashbackShopGroupDefault);
+                        purchaseShopGroupCacheRepository.save(purchaseShopGroupDefault);
                     });
                 }
 

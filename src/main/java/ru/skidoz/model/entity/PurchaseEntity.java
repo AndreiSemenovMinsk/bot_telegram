@@ -42,7 +42,7 @@ public class PurchaseEntity extends AbstractEntity  implements Serializable {
 
     // OneToOne - потому что может быть только одна дефолтовая акция
     @OneToOne(mappedBy="purchase")
-    private CashbackShopGroupEntity cashbackShopGroup;
+    private PurchaseShopGroupEntity cashbackShopGroup;
 
     public PurchaseEntity(Consumer<PurchaseEntity> builder){
         builder.accept(this);

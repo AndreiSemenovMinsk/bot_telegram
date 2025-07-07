@@ -1,8 +1,12 @@
 package ru.skidoz.service.command_impl;
 
 
-import java.util.Collections;
+import static ru.skidoz.service.initializers.InitialLevel.SHOP;
 
+import java.util.Collections;
+import java.util.Objects;
+
+import ru.skidoz.aop.repo.ShopCacheRepository;
 import ru.skidoz.model.pojo.telegram.Level;
 import ru.skidoz.model.pojo.telegram.LevelChat;
 import ru.skidoz.model.pojo.telegram.LevelResponse;
@@ -21,6 +25,8 @@ public class Initialize implements Command {
 
     @Autowired
     private InitialLevel initialLevel;
+    @Autowired
+    private ShopCacheRepository shopCacheRepository;
 
     @Override
     public LevelResponse runCommand(Update update, Level level, User users) {
@@ -31,12 +37,37 @@ public class Initialize implements Command {
         System.out.println();
         System.out.println(users.getChatId());
 
-        return new LevelResponse(Collections.singletonList(new LevelChat(e -> {
-            e.setChatId(users.getChatId());
-            e.setUser(users);
-            e.setLevel(initialLevel.convertToLevel(initialLevel.level_INITIALIZE,
-                    true,
-                    true));
-        })), null, null);
+        if (Objects.equals(users.getCurrentRunnerShop(), SHOP.getId())) {
+
+            if (shopCacheRepository.findBySellerChatId(users.getChatId()) != null){
+                return new LevelResponse(
+                        Collections.singletonList(new LevelChat(e -> {
+                            e.setChatId(users.getChatId());
+                            e.setUser(users);
+                            e.setLevel(initialLevel.convertToLevel(
+                                    initialLevel.level_ADMIN_ADMIN,
+                                    true,
+                                    true));
+                        })), null, null);
+            } else {
+                return new LevelResponse(
+                        Collections.singletonList(new LevelChat(e -> {
+                            e.setChatId(users.getChatId());
+                            e.setUser(users);
+                            e.setLevel(initialLevel.convertToLevel(
+                                    initialLevel.level_ADMIN,
+                                    true,
+                                    true));
+                        })), null, null);
+            }
+        } else {
+            return new LevelResponse(Collections.singletonList(new LevelChat(e -> {
+                e.setChatId(users.getChatId());
+                e.setUser(users);
+                e.setLevel(initialLevel.convertToLevel(initialLevel.level_INITIALIZE,
+                        true,
+                        true));
+            })), null, null);
+        }
     }
 }

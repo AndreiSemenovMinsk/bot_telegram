@@ -11,7 +11,7 @@ databaseChangeLog:
                   autoIncrement: true
                   constraints:
                     primaryKey: true
-                    primaryKeyName: cashback_shop_group_pk
+                    primaryKeyName: purchase_shop_group_pk
                     nullable: false
               - column:
                   name: time
@@ -49,7 +49,7 @@ databaseChangeLog:
                     nullable: false
                     foreignKeyName: fk_user_id
                     references: users(id)
-            tableName: cashback_shop_group
+            tableName: purchase_shop_group
         - createIndex:
             #            clustered:  true
             columns:
@@ -59,7 +59,7 @@ databaseChangeLog:
               - column:
                   descending:  true
                   name:  shop_group_id
-            indexName:  IDX_CASHBACK_SHOP_GROUP_COL_USER_SHOP
+            indexName:  IDX_PURCHASE_SHOP_GROUP_COL_USER_SHOP
             schemaName:  public
-            tableName:  cashback_shop_group
+            tableName:  purchase_shop_group
             unique:  true

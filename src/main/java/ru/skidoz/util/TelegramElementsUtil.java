@@ -23,6 +23,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.PhotoSize;
 import org.telegram.telegrambots.meta.api.objects.Update;
+
+import ru.skidoz.aop.repo.ShopCacheRepository;
 import ru.skidoz.model.entity.category.LanguageEnum;
 import ru.skidoz.model.pojo.telegram.LevelDTOWrapper;
 import ru.skidoz.model.pojo.telegram.Message;
@@ -38,6 +40,8 @@ public class TelegramElementsUtil {
 
     @Autowired
     private XMLGettingService xmlGettingService;
+    @Autowired
+    public ShopCacheRepository shopRepository;
 
     public static InputStream qrInputStream(String text) throws WriterException, IOException {
         QRCodeWriter barcodeWriter = new QRCodeWriter();
@@ -85,7 +89,10 @@ public class TelegramElementsUtil {
 
                 Unirest.setTimeouts(0, 0);
                 InputStream responseProjectArray = null;
-                responseProjectArray = Unirest.get("https://api.telegram.org/bot" + new String(users.getRunner()) + "/getFile?file_id=" + f_id)
+
+                final String runner = shopRepository.findById(users.getFirstRunnerShop()).getSecretId();
+
+                responseProjectArray = Unirest.get("https://api.telegram.org/bot" + runner + "/getFile?file_id=" + f_id)
                         .asString().getRawBody();
 
                 ObjectMapper objectMapper = new ObjectMapper();
@@ -98,7 +105,7 @@ public class TelegramElementsUtil {
                     System.out.println("file_path" + f_path);
 
                     InputStream is = xmlGettingService.getXMLRatesStream("https://api.telegram.org/file/bot"
-                            + new String(users.getRunner()) + "/" + f_path);
+                            + runner + "/" + f_path);
 
                     byte[] targetArray = new byte[is.available()];
                     is.read(targetArray);

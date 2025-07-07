@@ -154,7 +154,7 @@ public class ShopEntity extends AbstractEntity  implements Serializable {
 
 
     @OneToMany(mappedBy="shop")
-    private List<CashbackShopGroupEntity> cashbackShopGroupList = new ArrayList<>();
+    private List<PurchaseShopGroupEntity> cashbackShopGroupList = new ArrayList<>();
 
 
 

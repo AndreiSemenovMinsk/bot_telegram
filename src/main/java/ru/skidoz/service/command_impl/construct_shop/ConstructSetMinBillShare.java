@@ -76,92 +76,11 @@ public class ConstructSetMinBillShare implements Command {
                 true,
                 true);
 
+        final Integer currentConstructShop = users.getCurrentConstructShop();
+        final Shop shop = shopCacheRepository.findById(currentConstructShop);
 
-
-        Shop shop = new Shop();
         shop.setName(inputText);
-        shop.setAdminUser(users.getId());
-        shop.setSellerSet(List.of(users.getId()));
-        shop.setChatId(users.getChatId());
-        shop.setCurrentConversationShopUserChatId(users.getChatId());
-        shop.setActive(false);
         shopCacheRepository.save(shop);
-
-        users.setCurrentConstructShop(shop.getId());
-        users.setCurrentAdminShop(shop.getId());
-        users.setShopOwner(true);
-        users.setRole("USER");
-
-        if (users.getSessionId() == null) {
-            users.setSessionId(Long.toString((long) (Math.random() * 1000000000000L)));
-        }
-
-
-        Action defaultBasicManualAction = new Action(e -> {
-            e.setName("Начисление кешбека вручную");
-            e.setDescription("Начисление кешбека вручную");
-            e.setShop(shop.getId());
-            e.setTowardFriend(false);
-            e.setType(ActionTypeEnum.BASIC_MANUAL);
-            e.setAccommodateSum(true);
-            e.addRatePreviousPurchase(100);
-            e.addLevelSum(0);
-            e.setFuturePurchaseRate(100);
-            e.setActive(true);
-        });
-        actionCacheRepository.save(defaultBasicManualAction);
-
-        Action defaultCouponAction = new Action(e -> {
-            e.setName("Дефолтовая по купонам");
-            e.setDescription("Дефолтовая по купонам");
-            e.setShop(shop.getId());
-            e.setTowardFriend(false);
-            e.setType(ActionTypeEnum.COUPON_DEFAULT);
-            e.setAccommodateSum(true);
-            e.setActive(true);
-            e.setNumberCoupon(0);
-        });
-        actionCacheRepository.save(defaultCouponAction);
-
-
-        Action defaultBasicAction = new Action(e -> {
-            e.setName("Дефолтовая по сумме");
-            e.setDescription("Дефолтовая по сумме");
-            e.setShop(shop.getId());
-            e.setTowardFriend(false);
-            e.setType(ActionTypeEnum.BASIC_DEFAULT);
-            e.setAccommodateSum(true);
-            e.addRatePreviousPurchase(0);
-            e.addLevelSum(0);
-            e.setFuturePurchaseRate(100);
-            e.setActive(true);
-        });
-        actionCacheRepository.save(defaultBasicAction);
-
-
-
-        if (levelCacheRepository.findFirstByUser_ChatIdAndCallName(users.getChatId(), ADMIN_SHOPS.name()) == null) {
-            Level adminShopLevel = initialLevel.cloneLevel(initialLevel.level_ADMIN_SHOPS, users);//levelRepository.findFirstByUserAndCallName(Users, initialLevel.level_BASKET.getCallName()).clone(users);
-
-            System.out.println("adminShopLevel*" + adminShopLevel);
-
-            adminShopLevel.setUserId(users.getId());
-            levelCacheRepository.save(adminShopLevel);
-        }
-
-
-        System.out.println("defaultBasicAction+++++++ " + defaultBasicAction);
-
-        shop.setCurrentCreatingAction(defaultBasicAction.getId());
-
-        System.out.println("155 action*********************" + defaultBasicAction.getId());
-
-        shopCacheRepository.save(shop);
-
-        System.out.println("shopCacheRepository.saveNew++++" + shop);
-
-        //users.setCurrentChangingBot(botRepository.findByShopId(shop.getId()));
-        userCacheRepository.save(users);
 
         return new LevelResponse(Collections.singletonList(new LevelChat(e -> {
             e.setChatId(users.getChatId());

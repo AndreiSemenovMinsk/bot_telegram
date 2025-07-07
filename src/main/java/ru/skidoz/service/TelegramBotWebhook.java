@@ -127,7 +127,7 @@ public class TelegramBotWebhook {
         boolean newUser = false;
 
         if (user == null) {
-            user = createUser(user, chatId, update);
+            user = createUser(user, chatId, update, shop);
             //user.setRunner(id.getBytes());
             newUser = true;
         }
@@ -219,7 +219,7 @@ public class TelegramBotWebhook {
 
 
 
-        shopUserCacheRepository.save(new ShopUser(shop.getId(), users.getId(), shop.getInitialLevel()));
+        shopUserCacheRepository.save(new ShopUser(shop.getId(), users.getId(), shop.getInitialLevelId()));
 
         //Level currentLevel = initialLevel.level_INITIALIZE;
 
@@ -312,7 +312,7 @@ public class TelegramBotWebhook {
         });
     }
 
-    private void addAsync(LevelResponse levelResponse) {
+    public void addAsync(LevelResponse levelResponse) {
         WRITE_QUEUE.offer(levelResponse);
         initExecutionAsync();
     }

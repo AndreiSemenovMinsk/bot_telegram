@@ -71,6 +71,7 @@ import ru.skidoz.model.pojo.AbstractDTO;
 import ru.skidoz.model.pojo.telegram.Level;
 import ru.skidoz.model.pojo.telegram.LevelChat;
 import ru.skidoz.model.pojo.telegram.LevelDTOWrapper;
+import ru.skidoz.model.pojo.telegram.LevelResponse;
 import ru.skidoz.model.pojo.telegram.Message;
 import ru.skidoz.model.pojo.telegram.ScheduleBuyer;
 import ru.skidoz.model.pojo.telegram.User;
@@ -115,7 +116,7 @@ public class ScheduleService {
 
     public static Integer timePoint = 0;
     @Autowired
-    public TelegramBot telegramBot;
+    public TelegramBotWebhook telegramBot;
     @Autowired
     private CacheAspect cacheAspect;
 
@@ -516,11 +517,13 @@ public class ScheduleService {
         final LevelDTOWrapper levelWrapper = new LevelDTOWrapper();
         levelWrapper.setLevel(level);
 
-        TelegramBot.Runner runner = telegramBot.getTelegramKey(new String(user.getRunner()));
-        runner.add(new ArrayList<>(Collections.singletonList(new LevelChat(e -> {
+        final String runner = shopCacheRepository.findById(user.getFirstRunnerShop()).getSecretId();
+        telegramBot.addAsync(
+                new LevelResponse(
+                        new ArrayList<>(Collections.singletonList(new LevelChat(e -> {
             e.setLevel(levelWrapper);
             e.setChatId(user.getChatId());
-        }))));
+        }))), null, runner));
     }
 
     private <D extends AbstractDTO> int getRepoIndex(JpaRepositoryTest<D, Integer> cache) {

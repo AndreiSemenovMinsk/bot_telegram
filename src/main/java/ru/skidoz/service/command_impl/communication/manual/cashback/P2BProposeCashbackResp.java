@@ -50,7 +50,7 @@ public class P2BProposeCashbackResp implements Command {
     @Autowired
     private PartnerGroupCacheRepository partnerGroupCacheRepository;
     @Autowired
-    private CashbackShopGroupCacheRepository cashbackShopGroupCacheRepository;
+    private PurchaseShopGroupCacheRepository purchaseShopGroupCacheRepository;
     @Autowired
     private InitialLevel initialLevel;
 
@@ -97,14 +97,14 @@ public class P2BProposeCashbackResp implements Command {
                 cashbackCacheRepository.save(cashback);
 
                 partnerGroupCacheRepository.findAllByCreditor_Id(shopInitiator.getId()).forEach(partnerGroup -> {
-                    CashbackShopGroup cashbackShopGroupDefault = new CashbackShopGroup(e -> {
+                    PurchaseShopGroup purchaseShopGroupDefault = new PurchaseShopGroup(e -> {
                         e.setShopGroup(partnerGroup.getDebtor());
                         e.setShop(shopInitiator.getId());
                         e.setUser(buyer.getId());
                         e.setPurchase(purchase.getId());
                         e.setManual(true);
                     });
-                    cashbackShopGroupCacheRepository.save(cashbackShopGroupDefault);
+                    purchaseShopGroupCacheRepository.save(purchaseShopGroupDefault);
                 });
 
 
@@ -139,14 +139,15 @@ public class P2BProposeCashbackResp implements Command {
                     cashbackCacheRepository.save(cashbackFriend);
 
                     partnerGroupCacheRepository.findAllByCreditor_Id(shopInitiator.getId()).forEach(partnerGroup -> {
-                        CashbackShopGroup cashbackShopGroupDefault = new CashbackShopGroup(e -> {
+                        PurchaseShopGroup purchaseShopGroupDefault = new PurchaseShopGroup(e -> {
                             e.setShopGroup(partnerGroup.getDebtor());
                             e.setShop(shopInitiator.getId());
                             e.setUser(buyer.getId());
                             e.setPurchase(purchase.getId());
+                            e.setSum(shopGroupMaxSum);
                             e.setManual(true);
                         });
-                        cashbackShopGroupCacheRepository.save(cashbackShopGroupDefault);
+                        purchaseShopGroupCacheRepository.save(purchaseShopGroupDefault);
                     });
 
                     LevelDTOWrapper friendResultLevel = initialLevel.convertToLevel(initialLevel.level_P2B_PROPOSE_CASHBACK_RESP,

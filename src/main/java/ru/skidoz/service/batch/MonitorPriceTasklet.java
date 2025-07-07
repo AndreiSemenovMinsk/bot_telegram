@@ -7,18 +7,25 @@ import java.util.Map;
 
 
 import ru.skidoz.aop.repo.RemotedPriceCacheRepository;
+import ru.skidoz.aop.repo.ShopCacheRepository;
+import ru.skidoz.aop.repo.UserCacheRepository;
 import ru.skidoz.model.entity.category.LanguageEnum;
 
+import ru.skidoz.model.entity.telegram.UserEntity;
 import ru.skidoz.model.pojo.side.RemotedPrice;
 import ru.skidoz.model.pojo.telegram.LevelChat;
 import ru.skidoz.model.pojo.telegram.Level;
 import ru.skidoz.model.pojo.telegram.LevelDTOWrapper;
+import ru.skidoz.model.pojo.telegram.LevelResponse;
 import ru.skidoz.model.pojo.telegram.Message;
+import ru.skidoz.model.pojo.telegram.User;
 import ru.skidoz.repository.telegram.UserRepository;
 import ru.skidoz.service.TelegramBot;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import ru.skidoz.service.TelegramBotWebhook;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -29,11 +36,13 @@ import org.springframework.stereotype.Component;
 public class MonitorPriceTasklet implements Tasklet {
 
     @Autowired
-    public TelegramBot telegramBot;
+    public TelegramBotWebhook telegramBot;
     @Autowired
     public RemotedPriceCacheRepository remotedPriceRepository;
     @Autowired
-    public UserRepository userRepository;
+    public UserCacheRepository userRepository;
+    @Autowired
+    public ShopCacheRepository shopRepository;
 
     @Override
     public void execute() {
@@ -121,11 +130,15 @@ public class MonitorPriceTasklet implements Tasklet {
 
                     //System.out.println("127-------" + userRepository.findByChatId(bookmark.getChatId()));
 
-                    TelegramBot.Runner runner = telegramBot.getTelegramKey(new String(userRepository.findByChatId(bookmark.getChatId()).getRunner()));
-                    runner.add(new ArrayList<>(Collections.singletonList(new LevelChat (e -> {
+                    final User byChatId = userRepository.findByChatId(bookmark.getChatId());
+
+
+                    final String runner = shopRepository.findById(byChatId.getFirstRunnerShop()).getSecretId();
+                    telegramBot.addAsync(
+                            new LevelResponse(new ArrayList<>(Collections.singletonList(new LevelChat (e -> {
                         e.setLevel(levelDTOWrapper); //убрать так же в оригинальном методе
                         e.setChatId(bookmark.getChatId());
-                    }))));
+                    }))), null, runner));
 
                     remotedPriceRepository.delete(bookmark);
                 }

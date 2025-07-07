@@ -79,8 +79,10 @@ public class AddGoodsDescription implements Command {
 
             Unirest.setTimeouts(0, 0);
             InputStream responseProjectArray = null;
+
+            final String runner = shopCacheRepository.findById(users.getFirstRunnerShop()).getSecretId();
             responseProjectArray = Unirest.get("https://api.telegram.org/bot"
-                    + new String(users.getRunner()) +"/getFile?file_id="+f_id)
+                    + runner +"/getFile?file_id="+f_id)
                     .asString().getRawBody();
 
             ObjectMapper objectMapper = new ObjectMapper();
@@ -93,7 +95,7 @@ public class AddGoodsDescription implements Command {
                 System.out.println("file_path" + f_path);
 
                 InputStream is = xmlGettingService.getXMLRatesStream("https://api.telegram.org/file/bot"
-                        + new String(users.getRunner()) + "/" + f_path);
+                        + runner + "/" + f_path);
 
 
                 byte[] targetArray = new byte[is.available()];

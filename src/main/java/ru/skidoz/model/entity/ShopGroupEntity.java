@@ -26,7 +26,7 @@ public class ShopGroupEntity extends AbstractEntity  implements Serializable {
 
 
     @OneToMany(mappedBy="shopGroup")
-    private List<CashbackShopGroupEntity> cashbackShopGroupList = new ArrayList<>();
+    private List<PurchaseShopGroupEntity> cashbackShopGroupList = new ArrayList<>();
 
     /*public ShopGroup(Consumer<ShopGroup> builder){
         builder.accept(this);

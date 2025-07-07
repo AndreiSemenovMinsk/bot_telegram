@@ -2,9 +2,6 @@ package ru.skidoz.aop.repo;
 
 import java.math.BigDecimal;
 import java.util.List;
-
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import ru.skidoz.model.entity.ActionTypeEnum;
 import ru.skidoz.model.pojo.side.Cashback;
 import org.springframework.stereotype.Service;

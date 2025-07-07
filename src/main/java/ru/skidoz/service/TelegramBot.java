@@ -152,12 +152,12 @@ public class TelegramBot {
 
         @Override
         public void onUpdateReceived(Update update) {
-            //long timeNow = System.currentTimeMillis();
+            long timeNow = System.currentTimeMillis();
             System.out.println("update ++++++" + update);
 
             service.execute(() -> asynchronicUpdateReceive(update));
 
-            //System.out.println("timeNow onWebhookUpdateReceived***" + (System.currentTimeMillis() - timeNow));
+            System.out.println("timeNow onWebhookUpdateReceived***" + (System.currentTimeMillis() - timeNow));
         }
 
         @Override
@@ -209,7 +209,7 @@ public class TelegramBot {
 
             LevelResponse newLevel = telegramProcessor.plainLevelChoicer(currentLevelId, update, users, chatId, newUser, null);
 
-            for (LevelChat levelChat : newLevel) {
+            for (LevelChat levelChat : newLevel.getLevelChats()) {
                 User users1 = levelChat.getUser();
 
                 System.out.println(users1 + "users1********" + levelChat.getLevel().getLevel());

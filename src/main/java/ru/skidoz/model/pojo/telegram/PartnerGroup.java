@@ -6,7 +6,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
+
 import java.util.function.Consumer;
 import jakarta.validation.constraints.NotNull;
 
@@ -16,20 +16,18 @@ import jakarta.validation.constraints.NotNull;
 public class PartnerGroup extends AbstractDTO implements Serializable {
 
     @NotNull
-    private Integer/*ShopGroup*/ debtor;
+    private Integer/*ShopGroup*/ shopGroup;
 
     @NotNull
-    private Integer/*Shop*/ creditor;
+    private Integer/*Shop*/ shop;
 
-    @NotNull
-    private BigDecimal lim;
     // почему нет rate ставки на группу?
 
     @NotNull
     private String name;
 
     @NotNull
-    private BigDecimal sum;
+    private Integer sum;
 
     public PartnerGroup(Consumer<PartnerGroup> builder){
         super();

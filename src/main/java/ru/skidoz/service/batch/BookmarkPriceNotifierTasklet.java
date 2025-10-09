@@ -17,12 +17,10 @@ import ru.skidoz.model.pojo.telegram.LevelDTOWrapper;
 import ru.skidoz.model.pojo.telegram.LevelResponse;
 import ru.skidoz.model.pojo.telegram.Message;
 import ru.skidoz.model.pojo.telegram.User;
-import ru.skidoz.service.TelegramBot;
 import ru.skidoz.service.TelegramBotWebhook;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.bots.TelegramWebhookBot;
 
 /**
  * Created by Users on 30.05.2020.

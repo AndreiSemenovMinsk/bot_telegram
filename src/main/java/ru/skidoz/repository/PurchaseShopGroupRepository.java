@@ -1,6 +1,6 @@
 package ru.skidoz.repository;
 
-import java.math.BigDecimal;
+
 import java.util.List;
 
 import ru.skidoz.model.entity.*;
@@ -23,5 +23,5 @@ public interface PurchaseShopGroupRepository extends JpaRepository<PurchaseShopG
             nativeQuery = true)
     List<PurchaseShopGroupEntity> findAllByBuyerAndShop(@Param("buyerId") Integer buyerId, @Param("shopId") Integer shopId);
 
-    PurchaseShopGroupEntity save(PurchaseShopGroupEntity cashbackShopGroup);
+    PurchaseShopGroupEntity save(PurchaseShopGroupEntity purchaseShopGroup);
 }

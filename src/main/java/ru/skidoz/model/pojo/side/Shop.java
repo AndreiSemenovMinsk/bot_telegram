@@ -1,6 +1,6 @@
 package ru.skidoz.model.pojo.side;
 
-import java.math.BigDecimal;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -58,13 +58,13 @@ public class Shop extends AbstractDTO {
 
     private List<Integer/*User*/> sellerSet = new ArrayList<>();
 
-    private BigDecimal sarafanShare;
+    private Integer sarafanShare;
 
-    private BigDecimal minBillShare;
+    private Integer minBillShare;
 
-    private BigDecimal paymentBalance;
+    private Integer paymentBalance;
 
-    private BigDecimal cashbackBalance;
+    private Integer cashbackBalance;
 
     private List<Product> productList = new ArrayList<>();
 
@@ -84,7 +84,7 @@ public class Shop extends AbstractDTO {
 
 //    private List<Integer>/*Shop*/ currentConversationShopShopList = new ArrayList<>();
 
-    private List<Integer>/*PurchaseShopGroup*/ cashbackShopGroupList = new ArrayList<>();
+    private List<Integer>/*PurchaseShopGroup*/ purchaseShopGroupList = new ArrayList<>();
 
     public Shop(Consumer<Shop> builder) {
         super();

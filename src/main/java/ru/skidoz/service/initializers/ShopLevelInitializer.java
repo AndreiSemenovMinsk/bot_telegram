@@ -2,78 +2,8 @@ package ru.skidoz.service.initializers;
 
 
 import static ru.skidoz.model.entity.category.LanguageEnum.RU;
-import static ru.skidoz.service.command.CommandName.ACTIONS;
-import static ru.skidoz.service.command.CommandName.ACTION_RATE_PARTNER;
-import static ru.skidoz.service.command.CommandName.ACTION_RATE_WITHDRAW;
-import static ru.skidoz.service.command.CommandName.ACTION_RATE_WITHDRAW_BASIC;
-import static ru.skidoz.service.command.CommandName.ACTION_TYPE;
-import static ru.skidoz.service.command.CommandName.ADD_ACTION_COUPON_SOURCE;
-import static ru.skidoz.service.command.CommandName.ADD_ACTION_COUPON_TARGET;
-import static ru.skidoz.service.command.CommandName.ADD_ACTION_LINK_SOURCE;
-import static ru.skidoz.service.command.CommandName.ADD_ACTION_LINK_TARGET;
-import static ru.skidoz.service.command.CommandName.ADD_ACTION_RATE_SOURCE;
-import static ru.skidoz.service.command.CommandName.ADD_ACTION_RATE_TARGET;
-import static ru.skidoz.service.command.CommandName.ADD_BASKET;
-import static ru.skidoz.service.command.CommandName.ADD_BOOKMARK;
-import static ru.skidoz.service.command.CommandName.ADD_BOT;
-import static ru.skidoz.service.command.CommandName.ADD_GOODS;
-import static ru.skidoz.service.command.CommandName.ADD_GOODS_DESCRIPTION;
-import static ru.skidoz.service.command.CommandName.ADD_GOODS_END;
-import static ru.skidoz.service.command.CommandName.ADD_GOODS_NAME;
-import static ru.skidoz.service.command.CommandName.ADD_GOODS_PHOTO;
-import static ru.skidoz.service.command.CommandName.ADD_GOODS_PRICE;
-import static ru.skidoz.service.command.CommandName.ADD_PARTNER;
-import static ru.skidoz.service.command.CommandName.ADD_TAXI_BOT;
-import static ru.skidoz.service.command.CommandName.ADMIN;
-import static ru.skidoz.service.command.CommandName.ADMIN_ADMIN;
-import static ru.skidoz.service.command.CommandName.ADMIN_SHOPS;
-import static ru.skidoz.service.command.CommandName.APPROVE_NEW_GRUPP;
-import static ru.skidoz.service.command.CommandName.APPROVE_NEW_PARTNER;
-import static ru.skidoz.service.command.CommandName.B2B;
-import static ru.skidoz.service.command.CommandName.B2NOB;
-import static ru.skidoz.service.command.CommandName.BASIC;
-import static ru.skidoz.service.command.CommandName.BASKET;
-import static ru.skidoz.service.command.CommandName.BASKET_ARCHIVE;
-import static ru.skidoz.service.command.CommandName.BOOKMARKS;
-import static ru.skidoz.service.command.CommandName.CASHBACKS;
-import static ru.skidoz.service.command.CommandName.CONNECT;
-import static ru.skidoz.service.command.CommandName.CONNECT_SHOP;
-import static ru.skidoz.service.command.CommandName.CONSTRUCT;
-import static ru.skidoz.service.command.CommandName.CONSTRUCT_ADD;
-import static ru.skidoz.service.command.CommandName.CONSTRUCT_MIN_BILL_SHARE;
-import static ru.skidoz.service.command.CommandName.CONSTRUCT_SARAFAN_SHARE;
-import static ru.skidoz.service.command.CommandName.COUPON;
-import static ru.skidoz.service.command.CommandName.COUPON_NUMBER;
-import static ru.skidoz.service.command.CommandName.COUPON_RATE_WITHDRAW;
-import static ru.skidoz.service.command.CommandName.DISCARD_NEW_GRUPP;
-import static ru.skidoz.service.command.CommandName.DISCARD_NEW_PARTNER;
-import static ru.skidoz.service.command.CommandName.EDIT_BUTTON_NAME;
-import static ru.skidoz.service.command.CommandName.EDIT_MESSAGE;
-import static ru.skidoz.service.command.CommandName.EDIT_PARTNER;
-import static ru.skidoz.service.command.CommandName.GEOMAP;
-import static ru.skidoz.service.command.CommandName.GOODS_LIST;
-import static ru.skidoz.service.command.CommandName.INITIALIZE;
-import static ru.skidoz.service.command.CommandName.LINK_TO_PRODUCT;
-import static ru.skidoz.service.command.CommandName.LINK_TO_PRODUCT_NUMBER;
-import static ru.skidoz.service.command.CommandName.MONITOR;
-import static ru.skidoz.service.command.CommandName.MONITOR_PRICE;
-import static ru.skidoz.service.command.CommandName.MONITOR_RESP;
-import static ru.skidoz.service.command.CommandName.MULTI_ACTION_LEVEL;
-import static ru.skidoz.service.command.CommandName.MULTI_ACTION_LEVEL_BASIC;
-import static ru.skidoz.service.command.CommandName.MULTI_LEVEL_QUESTION;
-import static ru.skidoz.service.command.CommandName.MULTI_LEVEL_QUESTION_BASIC;
-import static ru.skidoz.service.command.CommandName.MULTI_LEVEL_RATE;
-import static ru.skidoz.service.command.CommandName.MULTI_LEVEL_RATE_BASIC;
-import static ru.skidoz.service.command.CommandName.MY_SHOPS;
 import static ru.skidoz.service.command.CommandName.NEGATIVE_COUNT;
 import static ru.skidoz.service.command.CommandName.NEGATIVE_SUM;
-import static ru.skidoz.service.command.CommandName.NEW_GRUPP;
-import static ru.skidoz.service.command.CommandName.NEW_LEVEL_BUTTON;
-import static ru.skidoz.service.command.CommandName.NEW_LEVEL_END_BUTTON;
-import static ru.skidoz.service.command.CommandName.NEW_LEVEL_INPUT_BUTTON;
-import static ru.skidoz.service.command.CommandName.NON_RESPONSE;
-import static ru.skidoz.service.command.CommandName.ONE_LEVEL_RATE;
-import static ru.skidoz.service.command.CommandName.ONE_LEVEL_RATE_BASIC;
 import static ru.skidoz.service.command.CommandName.P2B;
 import static ru.skidoz.service.command.CommandName.P2B_APPROVE_BASKET_CASHBACK;
 import static ru.skidoz.service.command.CommandName.P2B_CHARGE_BASKET_CASHBACK;
@@ -95,47 +25,7 @@ import static ru.skidoz.service.command.CommandName.P2B_WRITEOFF_COUPON_BASKET;
 import static ru.skidoz.service.command.CommandName.P2B_WRITEOFF_COUPON_REQUEST;
 import static ru.skidoz.service.command.CommandName.P2B_WRITEOFF_COUPON_RESP;
 import static ru.skidoz.service.command.CommandName.P2B_WRITEOFF_COUPON_SELECT_ACTION;
-import static ru.skidoz.service.command.CommandName.P2NOP;
-import static ru.skidoz.service.command.CommandName.P2NOP_RESP;
-import static ru.skidoz.service.command.CommandName.P2P;
-import static ru.skidoz.service.command.CommandName.P2P_RESP;
-import static ru.skidoz.service.command.CommandName.PARTNERS;
-import static ru.skidoz.service.command.CommandName.PSHARE2P;
-import static ru.skidoz.service.command.CommandName.RESPONSE_BUYER_MESSAGE;
-import static ru.skidoz.service.command.CommandName.RESPONSE_SHOP_MESSAGE;
-import static ru.skidoz.service.command.CommandName.SEARCH;
-import static ru.skidoz.service.command.CommandName.SEARCH_GROUP;
-import static ru.skidoz.service.command.CommandName.SEARCH_GROUP_END;
-import static ru.skidoz.service.command.CommandName.SEARCH_GROUP_LIMIT;
-import static ru.skidoz.service.command.CommandName.SEARCH_GROUP_RESP;
-import static ru.skidoz.service.command.CommandName.SEARCH_PARTNER;
-import static ru.skidoz.service.command.CommandName.SEARCH_PARTNER_END;
-import static ru.skidoz.service.command.CommandName.SEARCH_PARTNER_LIMIT;
-import static ru.skidoz.service.command.CommandName.SEARCH_PARTNER_RATE;
-import static ru.skidoz.service.command.CommandName.SEARCH_PARTNER_RESP;
-import static ru.skidoz.service.command.CommandName.SEARCH_PARTNER_RESP_BUTTON;
-import static ru.skidoz.service.command.CommandName.SEARCH_RESULT;
-import static ru.skidoz.service.command.CommandName.SEARCH_RESULT_PRODUCT;
-import static ru.skidoz.service.command.CommandName.SELECT_LEVEL_TYPE;
-import static ru.skidoz.service.command.CommandName.SELLERS;
-import static ru.skidoz.service.command.CommandName.SELLERS_ADD;
-import static ru.skidoz.service.command.CommandName.SELLERS_ADD_APPROVE;
-import static ru.skidoz.service.command.CommandName.SELLERS_ADD_DISMISS;
-import static ru.skidoz.service.command.CommandName.SELLERS_REMOVE;
-import static ru.skidoz.service.command.CommandName.SELLERS_REMOVE_APPROVE;
-import static ru.skidoz.service.command.CommandName.SELLERS_REMOVE_DISMISS;
-import static ru.skidoz.service.command.CommandName.SEND_BUYER_MESSAGE;
-import static ru.skidoz.service.command.CommandName.SEND_SHOP_MESSAGE;
-import static ru.skidoz.service.command.CommandName.SHOP_BOTS;
-import static ru.skidoz.service.command.CommandName.TAXI_LOCATION;
-import static ru.skidoz.service.command.CommandName.TAXI_SUBMIT;
-import static ru.skidoz.service.command.CommandName.WITHDRAW_PARTNER;
-import static ru.skidoz.service.command.CommandName.WITHDRAW_PARTNER_END;
-import static ru.skidoz.service.command.CommandName.WITHDRAW_PARTNER_GROUP;
-import static ru.skidoz.service.command.CommandName.WITHDRAW_PARTNER_RESP;
-import static ru.skidoz.util.TelegramElementsUtil.qrInputStream;
 
-import com.google.zxing.WriterException;
 import ru.skidoz.aop.repo.ButtonCacheRepository;
 import ru.skidoz.aop.repo.ButtonRowCacheRepository;
 import ru.skidoz.aop.repo.CategoryCacheRepository;
@@ -145,24 +35,14 @@ import ru.skidoz.aop.repo.LevelCacheRepository;
 import ru.skidoz.aop.repo.MessageCacheRepository;
 import ru.skidoz.aop.repo.ShopCacheRepository;
 import ru.skidoz.aop.repo.UserCacheRepository;
-import ru.skidoz.model.entity.ActionTypeEnum;
-import ru.skidoz.model.pojo.category.Category;
-import ru.skidoz.model.pojo.category.CategoryGroup;
-import ru.skidoz.model.pojo.category.CategorySuperGroup;
-import ru.skidoz.model.pojo.side.Shop;
 import ru.skidoz.model.pojo.telegram.Button;
 import ru.skidoz.model.pojo.telegram.ButtonRow;
-import ru.skidoz.model.pojo.telegram.Level;
 import ru.skidoz.model.pojo.telegram.Message;
 import ru.skidoz.model.pojo.telegram.User;
 import ru.skidoz.service.MenuCreator;
-import ru.skidoz.util.MenuTypeEnum;
 
-import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -201,9 +81,7 @@ public class ShopLevelInitializer {
 
     public void initLevels() {
 
-
         try {
-
                 //////////СООБЩЕНИЕ, КОТОРОЕ ПРИХОДИТ ПОСЛЕ ПОЛУЧЕНИЯ BK, BM, CB, PI-И ПОЛУЧАТЕЛь BI
 
                 initialLevel.level_P2B.updateLevel(Users, P2B.name(), initialLevel.level_INITIALIZE, false);
@@ -311,21 +189,20 @@ public class ShopLevelInitializer {
                 /////СПИСАНИЕ КЭШБЕКА
 
                 initialLevel.level_P2B_WRITEOFF_CASHBACK.updateLevel(Users, P2B_WRITEOFF_CASHBACK.name(), initialLevel.level_P2B, false);
-
                 levelRepository.cache(initialLevel.level_P2B_WRITEOFF_CASHBACK);
                 Message message22_1_0 = new Message(initialLevel.level_P2B_WRITEOFF_CASHBACK, Map.of(RU, "Введите сумму списания кэшбека:"));
                 messageRepository.cache(message22_1_0);
                 initialLevel.level_P2B_WRITEOFF_CASHBACK.addMessage(message22_1_0);
 
-                initialLevel.level_P2B_WRITEOFF_CASHBACK_RESP.updateLevel(Users, P2B_WRITEOFF_CASHBACK_RESP.name(), initialLevel.level_P2B_WRITEOFF_CASHBACK, false);//true
 
+                initialLevel.level_P2B_WRITEOFF_CASHBACK_RESP.updateLevel(Users, P2B_WRITEOFF_CASHBACK_RESP.name(), initialLevel.level_P2B_WRITEOFF_CASHBACK, false);//true
                 levelRepository.cache(initialLevel.level_P2B_WRITEOFF_CASHBACK_RESP);
                 Message message22_1_3 = new Message(initialLevel.level_P2B_WRITEOFF_CASHBACK_RESP, Map.of(RU, "Запрос на списание отправлен"));
                 messageRepository.cache(message22_1_3);
                 initialLevel.level_P2B_WRITEOFF_CASHBACK_RESP.addMessage(message22_1_3);
 
-                initialLevel.level_P2B_WRITEOFF_CASHBACK_REQUEST.updateLevel(Users, P2B_WRITEOFF_CASHBACK_REQUEST.name(), initialLevel.level_P2B_WRITEOFF_CASHBACK, true);
 
+                initialLevel.level_P2B_WRITEOFF_CASHBACK_REQUEST.updateLevel(Users, P2B_WRITEOFF_CASHBACK_REQUEST.name(), initialLevel.level_P2B_WRITEOFF_CASHBACK, true);
                 levelRepository.cache(initialLevel.level_P2B_WRITEOFF_CASHBACK_REQUEST);
                 Message message22_1_2 = new Message(initialLevel.level_P2B_WRITEOFF_CASHBACK_REQUEST, Map.of(RU, "Магазин Y предлагает списать X"));
                 messageRepository.cache(message22_1_2);
@@ -340,15 +217,15 @@ public class ShopLevelInitializer {
                 row22_0_0.add(button22_0_0_1);
                 initialLevel.level_P2B_WRITEOFF_CASHBACK_REQUEST.addRow(row22_0_0);
 
-                initialLevel.level_P2B_WRITEOFF_CASHBACK_APPROVE.updateLevel(Users, P2B_WRITEOFF_CASHBACK_APPROVE.name(), initialLevel.level_P2B, false);
 
+                initialLevel.level_P2B_WRITEOFF_CASHBACK_APPROVE.updateLevel(Users, P2B_WRITEOFF_CASHBACK_APPROVE.name(), initialLevel.level_P2B, false);
                 levelRepository.cache(initialLevel.level_P2B_WRITEOFF_CASHBACK_APPROVE);
                 Message message22_1_1 = new Message(initialLevel.level_P2B_WRITEOFF_CASHBACK_APPROVE, Map.of(RU, "Списано кешбека X"));
                 messageRepository.cache(message22_1_1);
                 initialLevel.level_P2B_WRITEOFF_CASHBACK_APPROVE.addMessage(message22_1_1);
 
-                initialLevel.level_P2B_WRITEOFF_CASHBACK_DISMISS.updateLevel(Users, P2B_WRITEOFF_CASHBACK_DISMISS.name(), initialLevel.level_P2B, false);
 
+                initialLevel.level_P2B_WRITEOFF_CASHBACK_DISMISS.updateLevel(Users, P2B_WRITEOFF_CASHBACK_DISMISS.name(), initialLevel.level_P2B, false);
                 levelRepository.cache(initialLevel.level_P2B_WRITEOFF_CASHBACK_DISMISS);
                 Message message22_1_4 = new Message(initialLevel.level_P2B_WRITEOFF_CASHBACK_DISMISS, Map.of(RU, "Списание отклонено"));
                 messageRepository.cache(message22_1_4);
@@ -357,7 +234,6 @@ public class ShopLevelInitializer {
                 ///// ПОДТВЕРЖДЕНИЕ ПО КОРЗИНЕ
 
                 initialLevel.level_P2B_CHARGE_BASKET_CASHBACK.updateLevel(Users, P2B_CHARGE_BASKET_CASHBACK.name(), initialLevel.level_P2B, true);
-
                 levelRepository.cache(initialLevel.level_P2B_CHARGE_BASKET_CASHBACK);
                 Message message22_2_0 = new Message(initialLevel.level_P2B_CHARGE_BASKET_CASHBACK, Map.of(RU, "Сумма списания кэшбека по корзине X, сумма начисления кэшбека Y"));
                 messageRepository.cache(message22_2_0);
@@ -374,7 +250,6 @@ public class ShopLevelInitializer {
 
 
                 initialLevel.level_P2B_APPROVE_BASKET_CASHBACK.updateLevel(Users, P2B_APPROVE_BASKET_CASHBACK.name(), initialLevel.level_P2B, false);//true
-
                 levelRepository.cache(initialLevel.level_P2B_APPROVE_BASKET_CASHBACK);
                 Message message22_2_1 = new Message(initialLevel.level_P2B_APPROVE_BASKET_CASHBACK, Map.of(RU, "Сумма списания кэшбека по корзине X, сумма начисления кэшбека Y"));
                 messageRepository.cache(message22_2_1);

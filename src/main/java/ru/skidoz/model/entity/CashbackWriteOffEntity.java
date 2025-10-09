@@ -1,7 +1,7 @@
 package ru.skidoz.model.entity;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -17,7 +17,7 @@ import lombok.Data;
 @Entity
 public class CashbackWriteOffEntity extends AbstractEntity  implements Serializable {
 
-    private BigDecimal sum;
+    private Integer sum;
 
     private Integer numberCoupon;
 

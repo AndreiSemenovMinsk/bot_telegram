@@ -14,12 +14,14 @@ import ru.skidoz.model.pojo.telegram.PartnerGroup;
 public abstract class PartnerGroupMapper extends EntityMapper<PartnerGroup, PartnerGroupEntity> {
 
     @Override
-    @Mapping(source = "debtor.id", target = "debtor")
-    @Mapping(source = "creditor.id", target = "creditor")
+    @Mapping(source = "shopGroup.id", target = "shopGroup")//, qualifiedByName = "idBot")
+    @Mapping(source = "shop.id", target = "shop")
     public abstract PartnerGroup toDto(PartnerGroupEntity partnerGroup);
 
     @Override
-    @Mapping(source = "debtor", target = "debtor.id")//, qualifiedByName = "idShopGroup")
+//    @Mapping(source = "shopGroup", target = "shopGroup.id")//, qualifiedByName = "idShopGroup")
 //    @Mapping(source = "creditor", target = "creditor", qualifiedByName = "idShop")
+    @Mapping(source = "shopGroup", target = "shopGroup.id")//, qualifiedByName = "idBot")
+    @Mapping(source = "shop", target = "shop.id")//, qualifiedByName = "idBot")
     public abstract PartnerGroupEntity toEntity(PartnerGroup partnerGroup);
 }

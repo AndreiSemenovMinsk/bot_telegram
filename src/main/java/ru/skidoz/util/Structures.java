@@ -1,6 +1,6 @@
 package ru.skidoz.util;
 
-import java.math.BigDecimal;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +36,7 @@ public class Structures {
         }
     }
 
-    public static void sortTwoArrays(List<BigDecimal> orderList, List<Integer> targetList) {
+    public static void sortTwoArrays(List<Integer> orderList, List<Integer> targetList) {
         for (int left = 0; left < orderList.size(); left++) {
             int minInd = left;
             for (int i = left; i < orderList.size(); i++) {

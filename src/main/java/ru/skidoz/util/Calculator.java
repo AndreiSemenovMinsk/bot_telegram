@@ -1,10 +1,8 @@
 package ru.skidoz.util;
 
-import java.math.BigDecimal;
+
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -40,31 +38,32 @@ public class Calculator {
     @Autowired
     private ShopGroupCacheRepository shopGroupCacheRepository;
 
-    public BigDecimal purchaseSumByUserAndShopAndAction_Type(
+    public Integer purchaseSumByUserAndShopAndAction_Type(
             Integer buyerId,
             Integer shopId,
             ActionTypeEnum actionTypeEnum) {
 
         List<Cashback> cashbacks = cashbackCacheRepository
                 .findAllByShopAndBuyerAndAction_Type(shopId, buyerId, actionTypeEnum);
-        BigDecimal sum = BigDecimal.ZERO;
+        Integer sum = 0;
         for (Cashback cashback : cashbacks) {
 
             Purchase purchase = purchaseCacheRepository.findById(cashback.getId());
-            sum.add(purchase.getSum());
+            sum += purchase.getSum();
         }
         return sum;
     }
 
-    public void getMax(int shopId, int buyerId, int withdrawLimit) {
 
+    public int getMax(int shopId, int buyerId, int withdrawLimit, boolean finalWithdrawal) {
+
+        int freeLimit = withdrawLimit;
 
         final List<PurchaseShopGroup> purchaseShopGroups = purchaseShopGroupCacheRepository
                 .findAllByBuyerAndShop(shopId, buyerId);
 
-
-        List<Quatro> topInPurchase = new ArrayList<>();
-        List<Quatro> otherPurchase = new ArrayList<>();
+        List<Quattro> topInPurchase = new ArrayList<>();
+        List<Quattro> otherPurchase = new ArrayList<>();
         AtomicInteger index = new AtomicInteger();
         Set<Integer> shopGroupSet = new HashSet<>();
 
@@ -81,100 +80,85 @@ public class Calculator {
                                                     .reversed())
                                             .collect(Collectors.toList());
 
-                                    final PurchaseShopGroup purchaseShopGroup = sortedList.get(0);
+                                    final PurchaseShopGroup topPurchaseShopGroup = sortedList.get(0);
+                                    final int sum = topPurchaseShopGroup.getSum();
 
                                     topInPurchase.add(
-                                            new Quatro(
-                                                    purchaseShopGroup.getSum(),
+                                            new Quattro(
+                                                    sum,
                                                     0,
-                                                    index.get(),
-                                                    0));
+                                                    topPurchaseShopGroup.getPurchase(),
+                                                    topPurchaseShopGroup.getShopGroup()));
 
-                                    shopGroupSet.add(purchaseShopGroup.getShopGroup());
+                                    shopGroupSet.add(topPurchaseShopGroup.getShopGroup());
 
                                     for (int i = 1; i < sortedList.size() && i < 10; i++) {
-
                                         otherPurchase.add(
-                                                new Quatro(
+                                                new Quattro(
                                                         sortedList.get(i).getSum(),
-                                                        sortedList.get(i).getSum() / (sortedList
-                                                                .get(0)
-                                                                .getSum() - sortedList
-                                                                .get(i)
-                                                                .getSum()),
-                                                        index.get(),
-                                                        i)
+                                                        (sum - sortedList.get(i).getSum()) / sum,
+                                                        topPurchaseShopGroup.getPurchase(),
+                                                        topPurchaseShopGroup.getShopGroup()
+                                                )
                                         );
                                     }
-
                                     index.getAndIncrement();
                                     return sortedList;
                                 })));
 
-
-        List<ShopGroup> shopGroups = shopGroupCacheRepository.shopGroupByIds(new ArrayList<>(shopGroupSet));
-        Map<Integer, String> shopGroupLimits = shopGroups.stream()
+        List<ShopGroup> shopGroups = shopGroupCacheRepository.shopGroupByIds(new ArrayList<>(
+                shopGroupSet));
+        Map<Integer, Integer> shopGroupLimits = shopGroups.stream()
                 .collect(Collectors.toMap(ShopGroup::getId, ShopGroup::getLimit));
 
-        Arrays.sort(topInPurchase.toArray());
+        otherPurchase.sort(Comparator.comparingInt(p -> p.rate));
+        topInPurchase.addAll(otherPurchase);
 
-        topInPurchase.sort(Comparator.comparingInt(p -> p.rate));
-
+        List<Quattro> resultQuatros = new ArrayList<>();
 
         for (int i = 0; i < topInPurchase.size(); i++) {
+            final Quattro quattro = topInPurchase.get(i);
 
+            if (withdrawLimit > quattro.sum
+                    && shopGroupLimits.get(quattro.shopGroupId) > quattro.sum
+                    && shopGroupSet.remove(quattro.shopGroupId)) {
+                withdrawLimit -= quattro.sum;
+                resultQuatros.add(quattro);
+                shopGroupLimits.put(quattro.shopGroupId, shopGroupLimits.get(quattro.shopGroupId) - quattro.sum);
+            }
 
+            if (quattro.rate > 0.5) {
+                break;
+            }
         }
 
+        if (finalWithdrawal) {
+            for (Quattro quattro : resultQuatros) {
+                final int purchaseId = quattro.purchaseId;
 
-        List<List<Integer>> shopGroupSelection = new ArrayList<>();
-        Map<Integer, Integer> freeLimit = new HashMap<>();
-        int min = 0;
-        int minK = -1;
-        int k = 0;
-        while (withdrawLimit > 0) {
+                purchaseCacheRepository.deleteById(purchaseId);
 
-            int[] startPoint = new int[map.size()];
-
-            int i = 0;
-            for (List<PurchaseShopGroup> list : map.values()) {
-
-                for (int j = startPoint[i]; j < list.size(); j++) {
-                    final PurchaseShopGroup purchaseShopGroup = list.get(j);
-                    final Integer shopGroup = purchaseShopGroup.getShopGroup();
-                    if (freeLimit.get(shopGroup) > purchaseShopGroup.getSum()) {
-                        final int sum = purchaseShopGroup.getSum();
-                        freeLimit.put(shopGroup, freeLimit.get(shopGroup) - sum);
-                        withdrawLimit -= sum;
-                        startPoint[i] = j;
-                        break;
-                    }
-                }
-                i++;
+                shopGroupCacheRepository.deleteShopGroupByIds(
+                        map.get(purchaseId).stream()
+                                .map(PurchaseShopGroup::getShopGroup)
+                                .collect(Collectors.toList())
+                );
             }
-            if (min < withdrawLimit) {
-                min = withdrawLimit;
-                minK = k;
-            }
-            k++;
         }
-
-
+        return withdrawLimit - freeLimit;
     }
 
-
-    static class Quatro {
+    static class Quattro {
         int sum;
         int rate;
-        int purchaseIndex;
-        int purchaseShopGroupIndex;
+        int purchaseId;
+        int shopGroupId;
 
-        Quatro(int sum, int rate, int purchaseIndex, int purchaseShopGroupIndex) {
+        Quattro(int sum, int rate, int purchaseId, int shopGroupId) {
             this.sum = sum;
             this.rate = rate;
-            this.purchaseIndex = purchaseIndex;
-            this.purchaseShopGroupIndex = purchaseShopGroupIndex;
+            this.purchaseId = purchaseId;
+            this.shopGroupId = shopGroupId;
         }
     }
-
 }

@@ -1,7 +1,7 @@
 package ru.skidoz.service.command_impl.communication.manual.cashback;
 
 import java.io.IOException;
-import java.math.BigDecimal;
+
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +48,8 @@ public class P2BProposeCashbackResp implements Command {
     @Autowired
     private PurchaseCacheRepository purchaseCacheRepository;
     @Autowired
+    private ShopGroupCacheRepository shopGroupCacheRepository;
+    @Autowired
     private PartnerGroupCacheRepository partnerGroupCacheRepository;
     @Autowired
     private PurchaseShopGroupCacheRepository purchaseShopGroupCacheRepository;
@@ -69,8 +71,8 @@ public class P2BProposeCashbackResp implements Command {
         System.out.println();
 
         try {
-            BigDecimal proposedSum = BigDecimal.valueOf(Integer.parseInt(inputText));
-            if (proposedSum.intValue() > 0) {
+            Integer proposedSum = Integer.parseInt(inputText);
+            if (proposedSum > 0) {
                 Shop shopInitiator = shopCacheRepository.findBySellerChatId(shopChatId);
 //                Shop shopInitiatorEntity = new Shop(shopInitiator.getId());
                 User buyer = userCacheRepository.findByChatId(shopInitiator.getCurrentConversationShopUserChatId());
@@ -78,12 +80,37 @@ public class P2BProposeCashbackResp implements Command {
                 Action action = actionCacheRepository.findFirstByShopAndTypeAndActiveIsTrue(shopInitiator.getId(), ActionTypeEnum.BASIC_MANUAL);
                 buyerChatId = buyer.getChatId();
 
+                User friend = userCacheRepository.findFirstByShop_IdAndBuyer_Id(shopInitiator.getId(), buyer.getId());
+                if (friend == null) {
+                    friend = userCacheRepository.findFirstByShopNullAndBuyer_Id(buyer.getId());
+                }
+                System.out.println("recommendationRepository +++++++++++++++++++++++++ friend***" + friend);
+
                 Purchase purchase = new Purchase(e -> {
                     e.setUser(buyer.getId());
                     e.setShop(shopInitiator.getId());
+                    e.setSum(proposedSum);
                 });
-                purchase.setSum(proposedSum);
                 purchaseCacheRepository.save(purchase);
+
+
+                Integer friendProposedSum;
+                User finalFriend;
+                Purchase purchaseFriend;
+                if (friend != null) {
+                    friendProposedSum = proposedSum * shopInitiator.getSarafanShare() / 100;
+
+                    finalFriend = friend;
+                    purchaseFriend = new Purchase(e -> {
+                        e.setUser(finalFriend.getId());
+                        e.setShop(shopInitiator.getId());
+                    });
+                    purchaseFriend.setSum(friendProposedSum);
+                    purchaseCacheRepository.save(purchaseFriend);
+                } else {
+                    purchaseFriend = null;
+                    finalFriend = null;
+                }
 
                 System.out.println("P2BProposeCashbackResp---purchase********" + purchase);
 
@@ -93,42 +120,11 @@ public class P2BProposeCashbackResp implements Command {
                     e.setShop(shopInitiator.getId());
                     e.setPurchase(purchase.getId());
                 });
-                System.out.println(107);
+
                 cashbackCacheRepository.save(cashback);
 
-                partnerGroupCacheRepository.findAllByCreditor_Id(shopInitiator.getId()).forEach(partnerGroup -> {
-                    PurchaseShopGroup purchaseShopGroupDefault = new PurchaseShopGroup(e -> {
-                        e.setShopGroup(partnerGroup.getDebtor());
-                        e.setShop(shopInitiator.getId());
-                        e.setUser(buyer.getId());
-                        e.setPurchase(purchase.getId());
-                        e.setManual(true);
-                    });
-                    purchaseShopGroupCacheRepository.save(purchaseShopGroupDefault);
-                });
-
-
-//                Users friend = recommendationRepository.findFirstByBuyerAndShop(buyer, shopInitiator).getFriend();
-                User friend = userCacheRepository.findFirstByShop_IdAndBuyer_Id(shopInitiator.getId(), buyer.getId());
-                if (friend == null) {
-                    //friend = recommendationRepository.findFirstByBuyerAndShopIsNull(buyer).getFriend();
-                    friend = userCacheRepository.findFirstByShopNullAndBuyer_Id(buyer.getId());
-                }
-
-                System.out.println("recommendationRepository +++++++++++++++++++++++++ friend***" + friend);
 
                 if (friend != null) {
-                    BigDecimal friendProposedSum = proposedSum.multiply(shopInitiator.getSarafanShare()).divide(new BigDecimal(100), 4, RoundingMode.CEILING);
-
-//                    Users friendEntity = new Users(friend.getId());
-                    User finalFriend = friend;
-                    Purchase purchaseFriend = new Purchase(e -> {
-                        e.setUser(finalFriend.getId());
-                        e.setShop(shopInitiator.getId());
-                    });
-                    purchaseFriend.setSum(friendProposedSum);
-                    purchaseCacheRepository.save(purchaseFriend);
-
                     Cashback cashbackFriend = new Cashback(e -> {
                         e.setAction(action.getId());
                         e.setUser(finalFriend.getId());
@@ -137,31 +133,71 @@ public class P2BProposeCashbackResp implements Command {
                     });
                     System.out.println(149);
                     cashbackCacheRepository.save(cashbackFriend);
+                }
 
-                    partnerGroupCacheRepository.findAllByCreditor_Id(shopInitiator.getId()).forEach(partnerGroup -> {
-                        PurchaseShopGroup purchaseShopGroupDefault = new PurchaseShopGroup(e -> {
-                            e.setShopGroup(partnerGroup.getDebtor());
+
+                for (var partnerGroup : partnerGroupCacheRepository.findAllByShop_Id(shopInitiator.getId())) {
+
+                    final ShopGroup shopGroup = shopGroupCacheRepository.findById(partnerGroup.getShopGroup());
+                    final int freeLimit = shopGroup.getLimit() - partnerGroup.getSum();
+
+                    int sum;
+                    if (proposedSum > freeLimit) {
+                        sum = freeLimit;
+                    } else {
+                        sum = proposedSum;
+                    }
+
+                    int clientSum;
+                    if (finalFriend != null) {
+                        clientSum = sum * (100 - shopInitiator.getSarafanShare()) / 100;
+                    } else {
+                        clientSum = sum;
+                    }
+
+                    PurchaseShopGroup purchaseShopGroupDefault = new PurchaseShopGroup(e -> {
+                        e.setShopGroup(partnerGroup.getShopGroup());
+                        e.setShop(shopInitiator.getId());
+                        e.setUser(buyer.getId());
+                        e.setPurchase(purchase.getId());
+                        e.setSum(sum);
+                        e.setManual(true);
+                    });
+                    purchaseShopGroupCacheRepository.save(purchaseShopGroupDefault);
+
+
+                    if (finalFriend != null) {
+
+                        friendProposedSum = sum - clientSum;
+
+                        Integer finalFriendProposedSum = friendProposedSum;
+                        PurchaseShopGroup purchaseShopGroupDefaultFried = new PurchaseShopGroup(e -> {
+                            e.setShopGroup(partnerGroup.getShopGroup());
                             e.setShop(shopInitiator.getId());
                             e.setUser(buyer.getId());
                             e.setPurchase(purchase.getId());
-                            e.setSum(shopGroupMaxSum);
+                            e.setSum(finalFriendProposedSum);
                             e.setManual(true);
                         });
-                        purchaseShopGroupCacheRepository.save(purchaseShopGroupDefault);
-                    });
+                        purchaseShopGroupCacheRepository.save(purchaseShopGroupDefaultFried);
 
-                    LevelDTOWrapper friendResultLevel = initialLevel.convertToLevel(initialLevel.level_P2B_PROPOSE_CASHBACK_RESP,
-                            false,
-                            false);
 
-                    Message message = new Message(null, Map.of(LanguageEnum.RU,"Вам начислены " + friendProposedSum
-                            + " р. кешбека от партнера " + buyer.getName()
-                            + " от магазина " + shopInitiator.getName()));
-                    friendResultLevel.addMessage(message);
-                    levelChatDTOList.add(new LevelChat(e -> {
-                        e.setChatId(finalFriend.getChatId());
-                        e.setLevel(friendResultLevel);
-                    }));
+                        LevelDTOWrapper friendResultLevel = initialLevel.convertToLevel(
+                                initialLevel.level_P2B_PROPOSE_CASHBACK_RESP,
+                                false,
+                                false);
+
+                        Message message = new Message(
+                                null, Map.of(
+                                LanguageEnum.RU, "Вам начислены " + friendProposedSum
+                                        + " р. кешбека от партнера " + buyer.getName()
+                                        + " от магазина " + shopInitiator.getName()));
+                        friendResultLevel.addMessage(message);
+                        levelChatDTOList.add(new LevelChat(e -> {
+                            e.setChatId(finalFriend.getChatId());
+                            e.setLevel(friendResultLevel);
+                        }));
+                    }
                 }
 
                 //resultLevel = initialLevel.level_P2B_PROPOSE_CASHBACK_RESP;

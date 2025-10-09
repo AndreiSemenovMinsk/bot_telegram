@@ -1,6 +1,7 @@
 package ru.skidoz.model.entity;
 
 import java.io.Serializable;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -18,6 +19,9 @@ public class ShopGroupEntity extends AbstractEntity  implements Serializable {
     @NotNull
     private String name;
 
+    @NotNull
+    private Integer limit;
+
     @ManyToMany(mappedBy = "shopGroupSet")
     List<ShopEntity> shopSet = new ArrayList<>();
 
@@ -26,7 +30,7 @@ public class ShopGroupEntity extends AbstractEntity  implements Serializable {
 
 
     @OneToMany(mappedBy="shopGroup")
-    private List<PurchaseShopGroupEntity> cashbackShopGroupList = new ArrayList<>();
+    private List<PurchaseShopGroupEntity> purchaseShopGroupList = new ArrayList<>();
 
     /*public ShopGroup(Consumer<ShopGroup> builder){
         builder.accept(this);

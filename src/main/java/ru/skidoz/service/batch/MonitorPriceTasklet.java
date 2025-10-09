@@ -11,7 +11,6 @@ import ru.skidoz.aop.repo.ShopCacheRepository;
 import ru.skidoz.aop.repo.UserCacheRepository;
 import ru.skidoz.model.entity.category.LanguageEnum;
 
-import ru.skidoz.model.entity.telegram.UserEntity;
 import ru.skidoz.model.pojo.side.RemotedPrice;
 import ru.skidoz.model.pojo.telegram.LevelChat;
 import ru.skidoz.model.pojo.telegram.Level;
@@ -19,8 +18,6 @@ import ru.skidoz.model.pojo.telegram.LevelDTOWrapper;
 import ru.skidoz.model.pojo.telegram.LevelResponse;
 import ru.skidoz.model.pojo.telegram.Message;
 import ru.skidoz.model.pojo.telegram.User;
-import ru.skidoz.repository.telegram.UserRepository;
-import ru.skidoz.service.TelegramBot;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;

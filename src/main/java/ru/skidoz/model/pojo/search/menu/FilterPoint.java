@@ -1,6 +1,6 @@
 package ru.skidoz.model.pojo.search.menu;
 
-import java.math.BigDecimal;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -33,8 +33,8 @@ public class FilterPoint extends AbstractDTO {
     private String unitNameDE;
     private Integer categoryId;
     private Integer inputType;
-    private BigDecimal minValue;
-    private BigDecimal maxValue;
+    private Integer minValue;
+    private Integer maxValue;
     private List<FilterOption> filterOptionList = new ArrayList<>();
 
     public FilterPoint(Consumer<FilterPoint> builder) {

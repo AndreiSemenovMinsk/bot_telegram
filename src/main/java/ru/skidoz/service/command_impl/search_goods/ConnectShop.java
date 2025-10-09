@@ -1,7 +1,7 @@
 package ru.skidoz.service.command_impl.search_goods;
 
 import java.io.IOException;
-import java.math.BigDecimal;
+
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -51,8 +51,6 @@ public class ConnectShop implements Command {
     private ShopGroupCacheRepository shopGroupCacheRepository;
     @Autowired
     private ShopCacheRepository shopCacheRepository;
-    @Autowired
-    private PartnerCacheRepository partnerCacheRepository;
     @Autowired
     private PartnerGroupCacheRepository partnerGroupCacheRepository;
     @Autowired
@@ -191,7 +189,7 @@ public class ConnectShop implements Command {
         }
 //        List<Purchase> purchaseList = purchaseRepository.findAllByShopAndUser(shopGetter, friend);
 
-        BigDecimal manualSum = BigDecimal.ZERO;
+        Integer manualSum = 0;
 
 
 /////////////////////////////////////////////////////////////// CASHBACKS
@@ -229,7 +227,7 @@ public class ConnectShop implements Command {
 
             if (purchase.getSum() != null
                     && purchase.getSum().intValue() > 0) {
-                manualSum = manualSum.add(purchase.getSum());
+                manualSum = manualSum + purchase.getSum();
             }
         }
 
@@ -242,7 +240,7 @@ public class ConnectShop implements Command {
                 actionDefault.getLevelSumList(),
                 actionDefault.accessLevelRatePreviousPurchaseList());
 
-        manualSum = manualSum.multiply(BigDecimal.valueOf(rateDefault));
+        manualSum = manualSum * rateDefault;
 
 
 /////////////////////////////////////////////////////////////// CASHBACKS BASIC_MANUAL
@@ -252,14 +250,14 @@ public class ConnectShop implements Command {
             Purchase purchase = purchaseCacheRepository.findById(cashbackManual.getPurchase());
             if (purchase.getSum() != null
                     && purchase.getSum().intValue() > 0) {
-                manualSum = manualSum.add(purchase.getSum());
+                manualSum = manualSum + purchase.getSum();
             }
         }
 
         System.out.println("BASIC_MANUAL manualSum***" + manualSum);
 
         StringBuilder cashbackMessage = new StringBuilder(" скидка для списания вручную ")
-                .append(manualSum.divide(BigDecimal.valueOf(100), 4, RoundingMode.CEILING))
+                .append(manualSum / 100)
                 .append("р.\r\n");
 
 /////////////////////////////////////////////////////////////// CASHBACKS BASIC
@@ -334,7 +332,7 @@ public class ConnectShop implements Command {
 
 
 /////////////////////////////////////////////////////////////// PARTNER
-
+/*
         List<Partner> partnerList = partnerCacheRepository.findAllByCreditor_Id(shopGetter.getId());
         StringBuilder cashbackMessagePartner = new StringBuilder("\r\n");
         BigDecimal sumPartners = BigDecimal.ZERO;
@@ -461,70 +459,70 @@ public class ConnectShop implements Command {
         List<Shop> resultNonReachableSumList = new ArrayList<>();
         for (Map.Entry<Shop, BigDecimal> entry : list) {
             resultNonReachableSumList.add(entry.getKey());
-        }
+        }*/
 
 
 /////////////////////////////////////////////////////////////// PARTNER GROUP
 
-        List<PartnerGroup> partnerGroupList = partnerGroupCacheRepository.findAllByCreditor_Id(shopGetter.getId());
+//        List<PartnerGroup> partnerGroupList = partnerGroupCacheRepository.findAllByCreditor_Id(shopGetter.getId());
         StringBuilder cashbackMessagePartnerGroup = new StringBuilder("\r\n");
-        BigDecimal sumPartnerGroups = BigDecimal.ZERO;
-        /*
-        List<PurchaseShopGroup> cashbackShopGroupList = cashbackShopGroupRepository.findAllByUserAndManual(friend, false);
+        Integer sumPartnerGroups = 0;
+/*
+        List<PurchaseShopGroup> purchaseShopGroupList = purchaseShopGroupRepository.findAllByUserAndManual(friend, false);
         HashMap<ShopGroup, List<PurchaseShopGroup>> userShopGroup_CashbackMap = new HashMap<>();
         HashMap<ShopGroup, BigDecimal> userShopGroup_SumListHashMap = new HashMap<>();
         HashMap<Shop, Map<ShopGroup, BigDecimal>> userShop_ShopGroup_SumMap = new HashMap<>();
 
-        cashbackShopGroupList.forEach(cashbackShopGroup -> {
-            if (userShopGroup_CashbackMap.containsKey(cashbackShopGroup.getShopGroup())) {
-                userShopGroup_CashbackMap.get(cashbackShopGroup.getShopGroup()).add(cashbackShopGroup);
+        purchaseShopGroupList.forEach(purchaseShopGroup -> {
+            if (userShopGroup_CashbackMap.containsKey(purchaseShopGroup.getShopGroup())) {
+                userShopGroup_CashbackMap.get(purchaseShopGroup.getShopGroup()).add(purchaseShopGroup);
 
-                BigDecimal sum = userShopGroup_SumListHashMap.get(cashbackShopGroup.getShopGroup());
-                userShopGroup_SumListHashMap.put(cashbackShopGroup.getShopGroup(), sum.add(cashbackShopGroup.getPurchase().getSum()));
+                BigDecimal sum = userShopGroup_SumListHashMap.get(purchaseShopGroup.getShopGroup());
+                userShopGroup_SumListHashMap.put(purchaseShopGroup.getShopGroup(), sum.add(purchaseShopGroup.getPurchase().getSum()));
             } else {
-                userShopGroup_CashbackMap.put(cashbackShopGroup.getShopGroup(), new ArrayList<>(List.of(cashbackShopGroup)));
+                userShopGroup_CashbackMap.put(purchaseShopGroup.getShopGroup(), new ArrayList<>(List.of(purchaseShopGroup)));
 
-                userShopGroup_SumListHashMap.put(cashbackShopGroup.getShopGroup(), cashbackShopGroup.getPurchase().getSum());
+                userShopGroup_SumListHashMap.put(purchaseShopGroup.getShopGroup(), purchaseShopGroup.getPurchase().getSum());
             }
 
-            if (userShop_ShopGroup_SumMap.containsKey(cashbackShopGroup.getShop())) {
-                if (userShop_ShopGroup_SumMap.get(cashbackShopGroup.getShop()).containsKey(cashbackShopGroup.getShopGroup())) {
+            if (userShop_ShopGroup_SumMap.containsKey(purchaseShopGroup.getShop())) {
+                if (userShop_ShopGroup_SumMap.get(purchaseShopGroup.getShop()).containsKey(purchaseShopGroup.getShopGroup())) {
 
-                    BigDecimal sum = userShop_ShopGroup_SumMap.get(cashbackShopGroup.getShop()).get(cashbackShopGroup.getShopGroup());
-                    userShop_ShopGroup_SumMap.get(cashbackShopGroup.getShop()).put(cashbackShopGroup.getShopGroup(), sum.add(cashbackShopGroup.getPurchase().getSum()));
+                    BigDecimal sum = userShop_ShopGroup_SumMap.get(purchaseShopGroup.getShop()).get(purchaseShopGroup.getShopGroup());
+                    userShop_ShopGroup_SumMap.get(purchaseShopGroup.getShop()).put(purchaseShopGroup.getShopGroup(), sum.add(purchaseShopGroup.getPurchase().getSum()));
                 } else {
 
-                    userShop_ShopGroup_SumMap.get(cashbackShopGroup.getShop()).put(cashbackShopGroup.getShopGroup(), cashbackShopGroup.getPurchase().getSum());
+                    userShop_ShopGroup_SumMap.get(purchaseShopGroup.getShop()).put(purchaseShopGroup.getShopGroup(), purchaseShopGroup.getPurchase().getSum());
                 }
             } else {
                 Map<ShopGroup, BigDecimal> map = new HashMap<>();
-                map.put(cashbackShopGroup.getShopGroup(), cashbackShopGroup.getPurchase().getSum());
-                userShop_ShopGroup_SumMap.put(cashbackShopGroup.getShop(), map);
+                map.put(purchaseShopGroup.getShopGroup(), purchaseShopGroup.getPurchase().getSum());
+                userShop_ShopGroup_SumMap.put(purchaseShopGroup.getShop(), map);
             }
         });*/
 
-        for (PartnerGroup partnerGroup : partnerGroupList) {
+        /*for (PartnerGroup partnerGroup : partnerGroupList) {
 
 
             System.out.println("6 partnerGroup**************** " + partnerGroup);
 
 
-            ShopGroup partnerShopGroup = shopGroupCacheRepository.findById(partnerGroup.getDebtor());
-//            if (userShopGroup_SumListHashMap.containsKey(partnerShopGroup)) {
-            BigDecimal balance = partnerGroup.getSum();
-            BigDecimal limit = partnerGroup.getLim();
-            BigDecimal freeLimit = limit.subtract(balance);
+            ShopGroup shopGroup = shopGroupCacheRepository.findById(partnerGroup.getShopGroup());
+//            if (userShopGroup_SumListHashMap.containsKey(shopGroup)) {
+            int balance = partnerGroup.getSum();
+            partnerGroup.getShopGroup();
+            int limit = shopGroup.getLimit();
+            int freeLimit = limit - balance;
 
-            BigDecimal userSum = BigDecimal.ZERO;
-//                TODO-по идее, можно отказаться от PurchaseShopGroup вообще как от класса???
-//                List<PurchaseShopGroup> cashbackShopGroups = userShopGroup_CashbackMap.get(partnerShopGroup);
+            int userSum = 0;//BigDecimal.ZERO;
+//                List<PurchaseShopGroup> purchaseShopGroups = userShopGroup_CashbackMap.get(shopGroup);
             Map<Shop, Boolean> shopIsGroupMemberMap = new HashMap<>();
             partnerShopSet.forEach(shop -> shopIsGroupMemberMap.put(shop, false));
 
-            for (Shop shop : partnerShopGroup.getShopSet()) {
+            for (Shop shop : shopGroup.getShopSet()) {
                 if (shopUserSum.containsKey(shop)) {
 
-                    userSum = userSum.add(shopUserSum.get(shop));
+                    userSum += shopUserSum.get(shop);
                 } else {
 
                     BigDecimal sum = calculator.purchaseSumByUserAndShopAndAction_Type(friend.getId(), shop.getId(), ActionTypeEnum.BASIC_MANUAL);
@@ -561,11 +559,11 @@ public class ConnectShop implements Command {
                     shopIsGroupMemberMap.put(shop, true);
                 }
             }
-//            BigDecimal sum = cashbackShopGroupList.stream().map(cashback -> cashback.getPurchase().getSum()).reduce(BigDecimal.ZERO, BigDecimal::add);
-            //BigDecimal sum = cashbackShopGroupRepository.purchaseSumByUserAndShop(friend.getId(), partnerGroup.getDebtor().getId(), false);
-//sum = sum.add(cashbackShopGroupRepository.purchaseSumByUserAndShop(friend.getId(), partnerGroup.getDebtor().getId(), true));
-            BigDecimal basicGroupResultSum;
-            if (userSum.compareTo(freeLimit) > 0) {
+//            BigDecimal sum = purchaseShopGroupList.stream().map(cashback -> cashback.getPurchase().getSum()).reduce(BigDecimal.ZERO, BigDecimal::add);
+            //BigDecimal sum = purchaseShopGroupRepository.purchaseSumByUserAndShop(friend.getId(), partnerGroup.getDebtor().getId(), false);
+//sum = sum.add(purchaseShopGroupRepository.purchaseSumByUserAndShop(friend.getId(), partnerGroup.getDebtor().getId(), true));
+            int basicGroupResultSum;
+            if (userSum > freeLimit) {
                 basicGroupResultSum = freeLimit;
             } else {
                 basicGroupResultSum = userSum;
@@ -593,7 +591,7 @@ public class ConnectShop implements Command {
                 partnerShopSet.forEach(shop -> tryShopIsGroupMemberMap.put(shop, false));
 
                 BigDecimal tryUserSum = BigDecimal.ZERO;
-                for (Shop shop : partnerShopGroup.getShopSet()) {
+                for (Shop shop : shopGroup.getShopSet()) {
                     // что магазин из группы не содержится в списке замещаемых партнеров
                     if (!resultNonReachableSumTrySet.contains(shop)) {
                         if (shopUserSum.containsKey(shop)) {
@@ -605,9 +603,9 @@ public class ConnectShop implements Command {
                         }
                     }
                 }
-//            BigDecimal sum = cashbackShopGroupList.stream().map(cashback -> cashback.getPurchase().getSum()).reduce(BigDecimal.ZERO, BigDecimal::add);
-                //BigDecimal sum = cashbackShopGroupRepository.purchaseSumByUserAndShop(friend.getId(), partnerGroup.getDebtor().getId(), false);
-//sum = sum.add(cashbackShopGroupRepository.purchaseSumByUserAndShop(friend.getId(), partnerGroup.getDebtor().getId(), true));
+//            BigDecimal sum = purchaseShopGroupList.stream().map(cashback -> cashback.getPurchase().getSum()).reduce(BigDecimal.ZERO, BigDecimal::add);
+                //BigDecimal sum = purchaseShopGroupRepository.purchaseSumByUserAndShop(friend.getId(), partnerGroup.getDebtor().getId(), false);
+//sum = sum.add(purchaseShopGroupRepository.purchaseSumByUserAndShop(friend.getId(), partnerGroup.getDebtor().getId(), true));
                 BigDecimal tryResultSum;
                 if (tryUserSum.compareTo(freeLimit) > 0) {
                     tryResultSum = freeLimit;
@@ -628,9 +626,11 @@ public class ConnectShop implements Command {
                 }
             }
 //            }
-        }
+        }*/
 
-        if (maxPartnerGroup != null) {
+        int maxResultSum = calculator.getMax(shopGetter.getId(), friend.getId(), 1000_000, false);
+
+        if (maxResultSum > 0) {
             cashbackMessagePartnerGroup
                     .append(" всего сумма для списания от партнеров на ")
                     .append(maxResultSum)
@@ -670,7 +670,7 @@ public class ConnectShop implements Command {
         if (!actionActiveSet.contains(ActionTypeEnum.BASIC)
                 && !actionActiveSet.contains(ActionTypeEnum.BASIC_DEFAULT)
                 && !actionActiveSet.contains(ActionTypeEnum.BASIC_MANUAL)
-                && sumPartnerGroups.compareTo(BigDecimal.ZERO) < 1) {
+                && sumPartnerGroups  <= 0) {
 
             System.out.println();
             System.out.println("buttonDisabler Списать кэшбек");

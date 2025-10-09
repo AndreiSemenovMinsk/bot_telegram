@@ -1,0 +1,43 @@
+databaseChangeLog:
+  - changeSet:
+      id: 3-link_starter_keeper
+      author: a.semenov
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: shop_pk
+                    nullable: false
+              - column:
+                  name: time
+                  type: datetime
+                  constraints:
+                    nullable: false
+              - column:
+                  name: parameter1
+                  type: int
+              - column:
+                  name: name
+                  type: parameter2
+              - column:
+                  name: name
+                  type: parameter3
+              - column:
+                  name: name
+                  type: secret_code
+            tableName: link_starter_keeper
+        - createIndex:
+            #            clustered:  true
+            columns:
+              - column:
+                  descending:  true
+                  name:  secret_code
+            indexName:  IDX_LINK_STARTER_KEEPER_SECRET_CODE
+            schemaName:  public
+            tableName:  link_starter_keeper
+            unique:  true

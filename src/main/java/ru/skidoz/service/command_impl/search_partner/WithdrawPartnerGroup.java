@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import ru.skidoz.aop.repo.PartnerCacheRepository;
 import ru.skidoz.aop.repo.ShopGroupCacheRepository;
 import ru.skidoz.model.entity.category.LanguageEnum;
 import ru.skidoz.model.pojo.side.Shop;
@@ -31,8 +30,6 @@ public class WithdrawPartnerGroup implements Command {
     @Autowired
     private ShopCacheRepository shopCacheRepository;
     @Autowired
-    private PartnerCacheRepository partnerCacheRepository;
-    @Autowired
     private PartnerGroupCacheRepository partnerGroupRepository;
     @Autowired
     private MessageCacheRepository messageCacheRepository;
@@ -44,8 +41,7 @@ public class WithdrawPartnerGroup implements Command {
     @Override
     public LevelResponse runCommand(Update update, Level level, User users) throws IOException, WriterException {
 
-        //Level resultLevel = initialLevel.level_WITHDRAW_PARTNER;
-        LevelDTOWrapper resultLevel = initialLevel.convertToLevel(initialLevel.level_WITHDRAW_PARTNER_RESP,
+        LevelDTOWrapper resultLevel = initialLevel.convertToLevel(initialLevel.level_WITHDRAW_PARTNER,
                 false,
                 false);
         Long chatId = users.getChatId();
@@ -57,30 +53,28 @@ public class WithdrawPartnerGroup implements Command {
 
             String code = callback.substring(19);
             PartnerGroup partnerGroup = partnerGroupRepository.findById(Integer.valueOf(code));
+
             Shop shopInitiator = shopCacheRepository.findByChatId(chatId);
-            shopInitiator.setCurrentConversationShopGroup(partnerGroup.getDebtor());
+            shopInitiator.setCurrentConversationShopGroup(partnerGroup.getShopGroup());
             shopCacheRepository.save(shopInitiator);
 
+            final ShopGroup shopGroup = shopGroupCacheRepository.findById(partnerGroup.getShopGroup());
+            List<Integer> shopSet = shopGroup.getShopSet();
+            for (Integer shopPartnerId : shopSet) {
+                Shop shopPartner = shopCacheRepository.findById(shopPartnerId);
 
-            List<Shop> shopSet = shopGroupCacheRepository.findById(partnerGroup.getDebtor()).getShopSet();
-            for (Shop shopPartner : shopSet) {
+                PartnerGroup partnerPartnerGroup = partnerGroupRepository.findById(shopPartnerId);
+                final Integer sum = partnerPartnerGroup.getSum();
+                if (sum < 0) {
+                    Message messageCreditor = new Message(null, Map.of(LanguageEnum.RU, "Вы можете списать задолженность " + shopPartner.getName()
+                            + " " + sum + " при лимите " + shopGroup.getLimit()));
+                    resultLevel.addMessage(messageCreditor);
 
-                Partner debtor = partnerCacheRepository.findFirstByCreditor_IdAndDebtor_Id(shopInitiator.getId(), shopPartner.getId());
-                Shop shopDebtor = shopCacheRepository.findById(debtor.getDebtor());
-                Message messageDebtor = new Message(null, Map.of(LanguageEnum.RU, "Вы должны " + shopDebtor.getName() + " " + debtor.getSum() + " при лимите " + debtor.getLim()));
-//                messageCacheRepository.save(messageDebtor);
-                resultLevel.addMessage(messageDebtor);
-
-                Partner creditor = partnerCacheRepository.findFirstByCreditor_IdAndDebtor_Id(shopPartner.getId(), shopInitiator.getId());
-                Shop shopCreditor = shopCacheRepository.findById(creditor.getCreditor());
-                Message messageCreditor = new Message(null, Map.of(LanguageEnum.RU, "Вам должны " + shopCreditor.getName() + " " + creditor.getSum() + " при лимите " + creditor.getLim()));
-//                messageCacheRepository.save(messageCreditor);
-                resultLevel.addMessage(messageCreditor);
-
-                ButtonRow row = new ButtonRow();
-                Button button = new Button(row, Map.of(LanguageEnum.RU, "Списать"), initialLevel.level_WITHDRAW_PARTNER.getIdString() + creditor.getCreditor());
-                row.add(button);
-                resultLevel.addRow(row);
+                    ButtonRow row = new ButtonRow();
+                    Button button = new Button(row, Map.of(LanguageEnum.RU, "Списать"), initialLevel.level_WITHDRAW_PARTNER.getIdString() + shopPartnerId);
+                    row.add(button);
+                    resultLevel.addRow(row);
+                }
             }
         }
 
@@ -90,15 +84,4 @@ public class WithdrawPartnerGroup implements Command {
             e.setLevel(resultLevel);
         })), null, null);
     }
-
-/*
-    private BigDecimal getSum(Shop shopInitiator, PartnerGroup partnerGroup) {
-        Set<Shop> shopSet = partnerGroup.getDebtor().getShopSet();
-        BigDecimal resultSum = BigDecimal.ZERO;
-        for (Shop shopPartner : shopSet) {
-            Partner partner = partnerCacheRepository.findFirstByCreditor_IdAndDebtor_Id(shopInitiator, shopPartner);
-            resultSum = resultSum.add(partner.getSum());
-        }
-        return resultSum;
-    }*/
 }

@@ -37,9 +37,6 @@ databaseChangeLog:
       file: "changelogs/create_table_shop_group_shop_set.yaml"
   - include:
       relativeToChangelogFile: true
-      file: "changelogs/create_table_partner.yaml"
-  - include:
-      relativeToChangelogFile: true
       file: "changelogs/create_table_partner_group.yaml"
   - include:
       relativeToChangelogFile: true
@@ -92,3 +89,6 @@ databaseChangeLog:
   - include:
       relativeToChangelogFile: true
       file: "changelogs/create_table_category_filter_product.yaml"
+  - include:
+      relativeToChangelogFile: true
+      file: "changelogs/create_table_link_starter_keeper.yaml"

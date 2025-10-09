@@ -1,7 +1,7 @@
 package ru.skidoz.model.entity;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
+
 import java.util.Objects;
 import java.util.function.Consumer;
 
@@ -15,28 +15,25 @@ import lombok.Data;
 @Table(name = "partner_group",
         uniqueConstraints = @UniqueConstraint(
                 name = "partnerGroupConstraint",
-                columnNames = {"creditorId", "debtorId"}))
+                columnNames = {"shopGroupId", "shopId"}))
 public class PartnerGroupEntity extends AbstractEntity  implements Serializable {
 
     @NotNull
     @ManyToOne
-    @JoinColumn(name = "creditorId", nullable = false)
-    private ShopEntity creditor;
+    @JoinColumn(name = "shopId", nullable = false)
+    private ShopEntity shop;
 
     @NotNull
     @ManyToOne
-    @JoinColumn(name = "debtorId", nullable = false)
-    private ShopGroupEntity debtor;
-
-    @NotNull
-    private BigDecimal lim;
+    @JoinColumn(name = "shopGroupId", nullable = false)
+    private ShopGroupEntity shopGroup;
     // почему нет rate ставки на группу?
 
     @NotNull
     private String name;
 
     @NotNull
-    private BigDecimal sum;
+    private Integer sum;
 
     public PartnerGroupEntity(Consumer<PartnerGroupEntity> builder){
         builder.accept(this);
@@ -45,10 +42,6 @@ public class PartnerGroupEntity extends AbstractEntity  implements Serializable 
     public PartnerGroupEntity() {
 
     }
-
-//    public String getShopNames(){
-//        return this.debtor.getShopSet().stream().map(e -> e.getName().substring(0, 5)).collect(Collectors.joining(", "));
-//    }
 
     @Override
     public boolean equals(Object o) {
@@ -68,9 +61,8 @@ public class PartnerGroupEntity extends AbstractEntity  implements Serializable 
     public String toString() {
         return "PartnerGroup{" +
                 "id=" + id +
-                ", creditor=" + creditor.getId() +
-                ", debtor=" + debtor.getId() +
-                ", lim=" + lim +
+                ", shop=" + shop.getId() +
+                ", shopGroup=" + shopGroup.getId() +
                 ", name='" + name + '\'' +
                 ", sum=" + sum +
                 '}';

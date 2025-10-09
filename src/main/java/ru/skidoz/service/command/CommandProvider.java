@@ -16,6 +16,7 @@ import ru.skidoz.service.command_impl.Connect;
 import ru.skidoz.service.command_impl.Initialize;
 import ru.skidoz.service.command_impl.GoodsList;
 import ru.skidoz.service.command_impl.Languager;
+import ru.skidoz.service.command_impl.communication.manual.cashback.P2BWriteOffCashbackApprove;
 import ru.skidoz.service.command_impl.search_partner.Partners;
 import ru.skidoz.service.command_impl.action.AddActionSource;
 import ru.skidoz.service.command_impl.action.basic.*;
@@ -29,7 +30,6 @@ import ru.skidoz.service.command_impl.communication.basket.cashback.P2BChargeBas
 import ru.skidoz.service.command_impl.communication.basket.coupon.P2BChargeCouponBasket;
 import ru.skidoz.service.command_impl.communication.basket.coupon.P2BWriteOffCouponBasket;
 import ru.skidoz.service.command_impl.communication.manual.cashback.P2BProposeCashbackResp;
-import ru.skidoz.service.command_impl.communication.manual.cashback.P2BWriteOffCashbackProposedSum;
 import ru.skidoz.service.command_impl.communication.manual.cashback.P2BWriteOffCashbackRequest;
 import ru.skidoz.service.command_impl.communication.manual.coupon.*;
 import ru.skidoz.service.command_impl.construct_shop.AdminShop;
@@ -40,10 +40,8 @@ import ru.skidoz.service.command_impl.construct_shop.ConstructSetMinBillShare;
 import ru.skidoz.service.command_impl.monitor_price.MonitorPrice;
 import ru.skidoz.service.command_impl.monitor_price.MonitorResp;
 import ru.skidoz.service.command_impl.search_goods.*;
-import ru.skidoz.service.command_impl.search_group.SearchGroup0;
-import ru.skidoz.service.command_impl.search_group.SearchGroupLimit4;
-import ru.skidoz.service.command_impl.search_group.SearchGroupResp1;
-import ru.skidoz.service.command_impl.search_group.SearchGroupResp2;
+import ru.skidoz.service.command_impl.search_group.CreateGroupResp1;
+import ru.skidoz.service.command_impl.search_group.CreateGroupResp2;
 import ru.skidoz.service.command_impl.search_partner.*;
 import ru.skidoz.service.command_impl.sellers.*;
 import ru.skidoz.service.command_impl.shop_bot.*;
@@ -124,6 +122,10 @@ public class CommandProvider {
     @Autowired
     private Partners partners;
     @Autowired
+    private AddShopToShopGroup addShopToShopGroup;
+    @Autowired
+    private VoteAddShopGroup voteAddShopGroup;
+    @Autowired
     private Sellers sellers;
     @Autowired
     private SellersAdd sellersAdd;
@@ -134,39 +136,19 @@ public class CommandProvider {
     @Autowired
     private SellersRemoveApprove sellersRemoveApprove;
     @Autowired
-    private WithdrawPartner2_1 withdrawPartner2_1;
-    @Autowired
     private WithdrawPartnerResp3_1 withdrawPartnerResp3_1;
     @Autowired
     private WithdrawPartnerGroup withdrawPartnerGroup;
     @Autowired
-    private WithdrawPartnerEnd4 withdrawPartnerEnd4;
+    private CreateGroupResp1 createGroupResp1;
     @Autowired
-    private SearchPartner0 searchPartner0;
-    @Autowired
-    private EditPartner0 editPartner0;
-    @Autowired
-    private SearchPartnerResp1 searchPartnerResp1;
-    @Autowired
-    private SearchPartnerResp2 searchPartnerResp2;
-    @Autowired
-    private SearchPartnerRate3 searchPartnerRate3;
-    @Autowired
-    private SearchPartnerLimit4 searchPartnerLimit4;
-    @Autowired
-    private SearchGroup0 searchGroup0;
-    @Autowired
-    private SearchGroupResp1 searchGroupResp1;
-    @Autowired
-    private SearchGroupResp2 searchGroupResp2;
-    @Autowired
-    private SearchGroupLimit4 searchGroupLimit4;
+    private CreateGroupResp2 createGroupResp2;
     @Autowired
     private P2BProposeCashbackResp p2BProposeCashbackResp;
     @Autowired
     private P2BWriteOffCashbackRequest p2BWriteOffCashbackRequest;
     @Autowired
-    private P2BWriteOffCashbackProposedSum p2BWriteOffCashbackProposedSum;
+    private P2BWriteOffCashbackApprove p2BWriteOffCashbackApprove;
     @Autowired
     private P2BChargeBasketCashback p2BChargeBasketCashback;
     @Autowired
@@ -288,26 +270,17 @@ public class CommandProvider {
         commands.put(CommandName.BASKETS_FOR_SHOP.name(), basketsForShop);
         commands.put(CommandName.GOODS_LIST.name(), goodsList);
         commands.put(CommandName.PARTNERS.name(), partners);
-        commands.put(CommandName.WITHDRAW_PARTNER.name(), withdrawPartner2_1);
+        commands.put(CommandName.ADD_SHOP_TO_SHOP_GROUP.name(), addShopToShopGroup);
+        commands.put(CommandName.VOTE_ADD_SHOP_GROUP.name(), voteAddShopGroup);
         commands.put(CommandName.WITHDRAW_PARTNER_RESP.name(), withdrawPartnerResp3_1);
         commands.put(CommandName.WITHDRAW_PARTNER_GROUP.name(), withdrawPartnerGroup);
-        commands.put(CommandName.WITHDRAW_PARTNER_END.name(), withdrawPartnerEnd4);
 
-        commands.put(CommandName.SEARCH_PARTNER.name(), searchPartner0);
-        commands.put(CommandName.EDIT_PARTNER.name(), editPartner0);
-        commands.put(CommandName.SEARCH_PARTNER_RESP.name(), searchPartnerResp1);
-        commands.put(CommandName.SEARCH_PARTNER_RESP_BUTTON.name(), searchPartnerResp2);
-        commands.put(CommandName.SEARCH_PARTNER_LIMIT.name(), searchPartnerRate3);
-        commands.put(CommandName.SEARCH_PARTNER_END.name(), searchPartnerLimit4);
-
-        commands.put(CommandName.SEARCH_GROUP.name(), searchGroup0);
-        commands.put(CommandName.SEARCH_GROUP_RESP.name(), searchGroupResp1);
-        commands.put(CommandName.SEARCH_GROUP_LIMIT.name(), searchGroupResp2);
-        commands.put(CommandName.SEARCH_GROUP_END.name(), searchGroupLimit4);
+        commands.put(CommandName.CREATE_GROUP_RESP.name(), createGroupResp1);
+        commands.put(CommandName.CREATE_GROUP_LIMIT.name(), createGroupResp2);
 
         commands.put(CommandName.P2B_PROPOSE_CASHBACK_RESP.name(), p2BProposeCashbackResp);
         commands.put(CommandName.P2B_WRITEOFF_CASHBACK_REQUEST.name(), p2BWriteOffCashbackRequest);
-        commands.put(CommandName.P2B_WRITEOFF_CASHBACK_APPROVE.name(), p2BWriteOffCashbackProposedSum);
+        commands.put(CommandName.P2B_WRITEOFF_CASHBACK_APPROVE.name(), p2BWriteOffCashbackApprove);
         commands.put(CommandName.P2B_CHARGE_BASKET_CASHBACK.name(), p2BChargeBasketCashback);
         commands.put(CommandName.P2B_APPROVE_BASKET_CASHBACK.name(), p2BApproveBasketCashback);
 

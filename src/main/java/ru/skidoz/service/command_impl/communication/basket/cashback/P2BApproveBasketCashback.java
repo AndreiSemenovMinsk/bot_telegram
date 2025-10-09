@@ -1,7 +1,7 @@
 package ru.skidoz.service.command_impl.communication.basket.cashback;
 
 import java.io.IOException;
-import java.math.BigDecimal;
+
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -140,7 +140,7 @@ public class P2BApproveBasketCashback implements Command {
 
                 partnerGroupCacheRepository.findAllByCreditor_Id(shopInitiator.getId()).forEach(partnerGroup -> {
                     PurchaseShopGroup purchaseShopGroupDefault = new PurchaseShopGroup(e -> {
-                        e.setShopGroup(partnerGroup.getDebtor());
+                        e.setShopGroup(partnerGroup.getShopGroup());
                         e.setShop(shopInitiator.getId());
                         e.setUser(usersCurrentConversation.getId());
                         e.setPurchase(purchase.getId());
@@ -181,7 +181,7 @@ public class P2BApproveBasketCashback implements Command {
 
                     partnerGroupCacheRepository.findAllByCreditor_Id(shopInitiator.getId()).forEach(partnerGroup -> {
                         PurchaseShopGroup purchaseShopGroupDefault = new PurchaseShopGroup(e -> {
-                            e.setShopGroup(partnerGroup.getDebtor());
+                            e.setShopGroup(partnerGroup.getShopGroup());
                             e.setShop(shopInitiator.getId());
                             e.setUser(usersCurrentConversation.getId());
                             e.setPurchase(purchase.getId());

@@ -8,7 +8,9 @@ import ru.skidoz.model.pojo.telegram.User;
 import ru.skidoz.service.ScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import ru.skidoz.service.TelegramBot;
+import org.telegram.telegrambots.meta.generics.TelegramBot;
+
+import ru.skidoz.service.TelegramBotWebhook;
 import ru.skidoz.util.Exceler;
 
 /**
@@ -22,7 +24,7 @@ public class ProductExcelsTasklet implements Tasklet {
     @Autowired
     private Exceler exceler;
     @Autowired
-    private TelegramBot telegramBot;
+    private TelegramBotWebhook telegramBot;
 
     @Override
     public void execute() {

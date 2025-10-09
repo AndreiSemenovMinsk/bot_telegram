@@ -1,6 +1,7 @@
 package ru.skidoz.model.pojo.telegram;
 
 import java.io.Serializable;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -20,7 +21,10 @@ public class ShopGroup extends AbstractDTO implements Serializable {
     @NotNull
     private String name;
 
-    List<Shop> shopSet = new ArrayList<>();
+    @NotNull
+    private Integer limit;
+
+    List<Integer> shopSet = new ArrayList<>();
 
     public ShopGroup(Consumer<ShopGroup> builder){
         super();

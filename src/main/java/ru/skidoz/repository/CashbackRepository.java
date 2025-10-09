@@ -1,6 +1,6 @@
 package ru.skidoz.repository;
 
-import java.math.BigDecimal;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -40,7 +40,7 @@ public interface CashbackRepository extends JpaRepository<CashbackEntity, Intege
             " purhase.user_id=:buyerId " +
             "AND action.type=:actionType",
             nativeQuery = true)
-    BigDecimal purchaseSumByUserAndShopAndAction_Type(@Param("buyerId") Integer buyerId, @Param("shopId") Integer shopId, @Param("actionType") String actionTypeEnum);
+    Integer purchaseSumByUserAndShopAndAction_Type(@Param("buyerId") Integer buyerId, @Param("shopId") Integer shopId, @Param("actionType") String actionTypeEnum);
 
 
     List<CashbackEntity> findAllByUser_IdAndShop_Id(Integer buyerId, Integer shopId);

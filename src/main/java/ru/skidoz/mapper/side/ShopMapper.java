@@ -35,7 +35,7 @@ public abstract class ShopMapper extends EntityMapper<Shop, ShopEntity> {
     @Mapping(target = "creditorList", ignore = true)
     @Mapping(source = "sellerSet", target = "sellerSet", qualifiedByName = "idUserDtoList")
 //    @Mapping(target = "currentConversationShopShopList", ignore = true)
-    @Mapping(target = "cashbackShopGroupList", ignore = true)
+    @Mapping(target = "purchaseShopGroupList", ignore = true)
 //    @Mapping(source = "currentConversationShop.id", target = "currentConversationShop")
 //    @Mapping(source = "currentConversationShopGroup.id", target = "currentConversationShopGroup")
 //    @Mapping(source = "currentCreatingProduct.id", target = "currentCreatingProduct")
@@ -51,15 +51,8 @@ public abstract class ShopMapper extends EntityMapper<Shop, ShopEntity> {
     @Mapping(target = "cashbackList", ignore = true)
     @Mapping(target = "purchaseList", ignore = true)
     @Mapping(target = "cashbackWriteOffList", ignore = true)
-    @Mapping(target = "debtorList", ignore = true)
-    @Mapping(target = "creditorList", ignore = true)
-    @Mapping(source = "sellerSet", target = "sellerSet")//, qualifiedByName = "idUserList")
-//    @Mapping(target = "currentConversationShopShopList", ignore = true)
-    @Mapping(target = "cashbackShopGroupList", ignore = true)
-//    @Mapping(source = "currentConversationShop", target = "currentConversationShop.id"/*, qualifiedByName = "idShop"*/)
-//    @Mapping(source = "currentConversationShopGroup", target = "currentConversationShopGroup.id")//, qualifiedByName = "idShopGroup")
-//    @Mapping(source = "currentCreatingProduct", target = "currentCreatingProduct.id")//, qualifiedByName = "idPrd")
-//    @Mapping(source = "currentCreatingAction", target = "currentCreatingAction.id"/*, qualifiedByName = "idAction"*/)
+    @Mapping(source = "sellerSet", target = "sellerSet")
+    @Mapping(target = "purchaseShopGroupList", ignore = true)
     @Mapping(source = "adminUser", target = "adminUser.id")//, qualifiedByName = "idUser")
     @Mapping(source = "bot", target = "bot.id")//, qualifiedByName = "idBot")
     public abstract ShopEntity toEntity(Shop shop);
@@ -79,12 +72,4 @@ public abstract class ShopMapper extends EntityMapper<Shop, ShopEntity> {
         return  sellerSet;
     }
 
-//    @Named("idUserList")
-//    public List<Users> idUser(List<Integer> ids) {
-//        List<Users> usersList = new ArrayList<>();
-//        for (Iterator<Integer> it = ids.iterator(); it.hasNext(); ) {
-//            usersList.add(idUser(it.next()));
-//        }
-//        return  usersList;
-//    }
 }

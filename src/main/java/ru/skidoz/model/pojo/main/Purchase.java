@@ -1,6 +1,6 @@
 package ru.skidoz.model.pojo.main;
 
-import java.math.BigDecimal;
+
 import java.time.Instant;
 import java.util.function.Consumer;
 
@@ -23,8 +23,8 @@ public class Purchase extends AbstractSideDTO {
     private Integer/*ShopDTO*/ shop;
     private Instant time;
     private Integer/*User*/ buyer;
-    private BigDecimal sum;
-    private BigDecimal initialSum;
+    private Integer sum;
+    private Integer initialSum;
     private Integer numberCoupon;
 //    private List<Cashback> cashbackList = new ArrayList<>();
 
@@ -37,7 +37,4 @@ public class Purchase extends AbstractSideDTO {
         super();
     }
 
-    public void decreaseSum(BigDecimal decreaseSum){
-        this.sum.subtract(decreaseSum);
-    }
 }

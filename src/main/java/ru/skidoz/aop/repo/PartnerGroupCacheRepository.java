@@ -11,11 +11,11 @@ import org.springframework.stereotype.Service;
 @Service
 public interface PartnerGroupCacheRepository extends JpaRepositoryTest<PartnerGroup, Integer> {
 
-    PartnerGroup findFirstByCreditor_IdAndDebtor_Id(Integer /*Shop*/ creditor, Integer/*ShopGroup*/ debtor);
+    PartnerGroup findFirstByShop_IdAndShopGroup_Id(Integer /*Shop*/ creditor, Integer/*ShopGroup*/ debtor);
 
-    List<PartnerGroup> findAllByCreditor_Id(Integer /*Shop*/ creditor);
+    List<PartnerGroup> findAllByShop_Id(Integer /*Shop*/ creditor);
 
-    List<PartnerGroup> findAllByCreditorAndDebtorInGroup(Integer  creditorId, Integer debtorId);
+    List<PartnerGroup> findAllByShopAndShopGroupInGroup(Integer  creditorId, Integer debtorId);
 
     List<PartnerGroup> findAll();
 

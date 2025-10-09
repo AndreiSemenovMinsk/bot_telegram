@@ -11,7 +11,6 @@ import ru.skidoz.model.pojo.telegram.User;
 import ru.skidoz.aop.repo.LevelCacheRepository;
 import ru.skidoz.service.initializers.InitialLevel;
 import ru.skidoz.service.command.Command;
-import ru.skidoz.util.ConnectComparator;
 import com.google.zxing.WriterException;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -28,8 +27,7 @@ import static ru.skidoz.service.command.CommandName.CASHBACKS;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Cashbacks implements Command {
-    @Autowired
-    ConnectComparator connectComparator;
+
     @Autowired
     private LevelCacheRepository levelCacheRepository;
     @Autowired
@@ -51,18 +49,6 @@ public class Cashbacks implements Command {
                         true,
                         true);
 
-                return new LevelResponse(Collections.singletonList(new LevelChat(e -> {
-                    e.setChatId(users.getChatId());
-                    e.setUser(users);
-                    e.setLevel(resultLevel);
-                })), null, null);
-            } else {
-
-                //TODO - это не срабатывает, так как нет такой кнопки на BOOKMARKS + id
-                Level finalNewLevel = connectComparator.compare(update.getCallbackQuery().getData(), level, users);
-                LevelDTOWrapper resultLevel = initialLevel.convertToLevel(finalNewLevel,
-                        true,
-                        true);
                 return new LevelResponse(Collections.singletonList(new LevelChat(e -> {
                     e.setChatId(users.getChatId());
                     e.setUser(users);

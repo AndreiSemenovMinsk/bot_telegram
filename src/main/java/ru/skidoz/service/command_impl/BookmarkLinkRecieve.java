@@ -10,7 +10,6 @@ import ru.skidoz.model.pojo.telegram.LevelResponse;
 import ru.skidoz.model.pojo.telegram.User;
 import ru.skidoz.service.initializers.InitialLevel;
 import ru.skidoz.service.command.Command;
-import ru.skidoz.util.ConnectComparator;
 import com.google.zxing.WriterException;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +20,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
  */
 @Data
 public class BookmarkLinkRecieve implements Command {
-    @Autowired
-    ConnectComparator connectComparator;
+
     @Autowired
     private InitialLevel initialLevel;
 

@@ -57,7 +57,7 @@ public class Construct implements Command {
         String inputText = update.getMessage().getText();
         System.out.println();
         System.out.println();
-        System.out.println("*****************************Construct**********"+ inputText);
+        System.out.println("*****************************Construct**********");
         System.out.println();
         System.out.println();
 
@@ -83,7 +83,8 @@ public class Construct implements Command {
 
         Unirest.setTimeouts(0, 0);
         String responseString = Unirest.post(
-                "https://api.telegram.org/bot646773878:AAEk1xQi-YbqxXB9PZ8scR8pyDrLccrkLqk"
+                "https://api.telegram.org/bot"
+                        + inputText
                         + "/setWebhook?url=https%3A%2F%2Fwww.skidozona.by%2Ftelegram")
                 .asString().getBody();
         ObjectMapper mapper = new ObjectMapper();

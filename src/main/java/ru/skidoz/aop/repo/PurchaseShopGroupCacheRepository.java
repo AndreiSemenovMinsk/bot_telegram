@@ -1,6 +1,6 @@
 package ru.skidoz.aop.repo;
 
-import java.math.BigDecimal;
+
 import java.util.List;
 
 import ru.skidoz.model.pojo.telegram.PurchaseShopGroup;
@@ -17,7 +17,7 @@ public interface PurchaseShopGroupCacheRepository extends JpaRepositoryTest<Purc
 
     public List<PurchaseShopGroup> findAllByUserAndManual(Integer  user, Boolean manual);
 
-    BigDecimal purchaseSumByUserAndShop(Integer  buyerId, Integer shopGroupId, Boolean manual);
+    Integer purchaseSumByUserAndShop(Integer  buyerId, Integer shopGroupId, Boolean manual);
 
     @Query(value = "select * from purchase_shop_group \n" +
             "inner join purchase on (purchase_shop_group.purchase_id=purchase.id) \n" +

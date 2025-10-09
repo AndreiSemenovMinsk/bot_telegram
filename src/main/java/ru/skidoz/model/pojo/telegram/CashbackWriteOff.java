@@ -1,7 +1,7 @@
 package ru.skidoz.model.pojo.telegram;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -20,7 +20,7 @@ public class CashbackWriteOff extends AbstractDTO implements Serializable {
 //    private ShopRepository shopRepository;
 //    @Autowired
 //    private ActionRepository actionRepository;
-    private BigDecimal sum;
+    private Integer sum;
 
     private Integer numberCoupon;
 

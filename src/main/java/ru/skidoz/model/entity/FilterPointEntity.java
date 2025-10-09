@@ -1,7 +1,7 @@
 package ru.skidoz.model.entity;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -59,9 +59,9 @@ public class FilterPointEntity extends AbstractEntity  implements Serializable {
 //    @Size(max=30)
 //    private String name;
 
-    private BigDecimal minValue;
+    private Integer minValue;
 
-    private BigDecimal maxValue;
+    private Integer maxValue;
 /*
     @ManyToMany(mappedBy = "filterPointSet")
     private Set<Cat> categorySet = new HashSet<>();

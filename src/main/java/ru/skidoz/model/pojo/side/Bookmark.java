@@ -1,6 +1,6 @@
 package ru.skidoz.model.pojo.side;
 
-import java.math.BigDecimal;
+
 import java.time.Instant;
 import java.util.function.Consumer;
 
@@ -20,7 +20,7 @@ public class Bookmark extends AbstractSideDTO {
     private Integer/*ShopDTO*/ user;
     private Instant lastNotification;
     private boolean priceUpdated = false;
-    private BigDecimal bidPrice;
+    private Integer bidPrice;
     private Instant notification;
     private boolean priceStrike = false;
 

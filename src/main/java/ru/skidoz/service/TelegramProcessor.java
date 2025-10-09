@@ -110,6 +110,16 @@ public class TelegramProcessor {
         //тот, от кого пришло сообщение - значит, тот, кто прочитал qr или перешел по ссылке
         List<LevelChat> levelChatDTOList = new ArrayList<>();
 
+        if (bearingCommand.equals("SG")) {
+
+            b2BLinkStarter.getLevel(user, bearingId);
+        }
+
+
+
+
+
+        // ЧТО ИЗ ЭТОГО НАМ НАДО?
         if (bearingCommand.equals("PP")) {
 
             User yourSelf = userCacheRepository.findBySessionId(bearingId);

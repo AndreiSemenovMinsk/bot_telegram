@@ -11,7 +11,6 @@ import ru.skidoz.model.pojo.telegram.User;
 import ru.skidoz.aop.repo.LevelCacheRepository;
 import ru.skidoz.service.initializers.InitialLevel;
 import ru.skidoz.service.command.Command;
-import ru.skidoz.util.ConnectComparator;
 import com.google.zxing.WriterException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -24,8 +23,7 @@ import static ru.skidoz.service.command.CommandName.BASKETS_FOR_SHOP;
  */
 @Component
 public class BasketsForShop implements Command {
-    @Autowired
-    private ConnectComparator connectComparator;
+
     @Autowired
     private LevelCacheRepository levelRepository;
     @Autowired

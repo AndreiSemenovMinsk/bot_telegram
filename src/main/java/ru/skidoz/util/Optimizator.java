@@ -1,6 +1,6 @@
 package ru.skidoz.util;
 
-import java.math.BigDecimal;
+
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,26 +46,14 @@ public class Optimizator {
     private PurchaseCacheRepository purchaseRepository;
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-    public static Integer getRate(BigDecimal sum,
-                                  List<BigDecimal> levelSum,
+    public static Integer getRate(Integer sum,
+                                  List<Integer> levelSum,
                                   List<Integer> levelRatePreviousPurchase) {
         if (levelRatePreviousPurchase.size() > 0) {
             int i = 0;
-            for (BigDecimal level : levelSum) {
+            for (Integer level : levelSum) {
 
-                if (level.compareTo(sum) >= 0) {
+                if (level >= sum) {
                     return levelRatePreviousPurchase.get(i);
                 }
                 i++;
@@ -79,12 +67,12 @@ public class Optimizator {
     public Action getOptimal(Integer userId,
                              Integer shopId,
                              List<Product>  productDTOS,
-                             Map<Integer, BigDecimal> actionProductInitialSum,
+                             Map<Integer, Integer> actionProductInitialSum,
                              List<Action>  suitableActions,
-                             Map<Integer, List<BigDecimal>> actionProductSumByProducts,
-                             BigDecimal max) {
+                             Map<Integer, List<Integer>> actionProductSumByProducts,
+                             Integer max) {
 
-        Map<Integer, BigDecimal> actionProductSum = new HashMap<>();
+        Map<Integer, Integer> actionProductSum = new HashMap<>();
 
         List<Basket>  basketList = basketRepository.findAllByUserIdAndShopIdAndTemp(
                 userId, shopId, true);
@@ -109,8 +97,7 @@ public class Optimizator {
         for (BasketProduct basketProduct : basketProducts) {
 
             Product product = productRepository.findById(basketProduct.getProduct());
-            BigDecimal sumAdd = product.getPrice()
-                    .multiply(BigDecimal.valueOf(basketProduct.getProductAmount()));
+            Integer sumAdd = product.getPrice()* basketProduct.getProductAmount();
             productDTOS.add(product);
 
             for (Action action : allActions) {
@@ -125,14 +112,14 @@ public class Optimizator {
                         final List<Cashback>  cashbacks = cashbackRepository
                                 .findAllByUser_IdAndAction_Id(userId, action.getId());
 
-                        purchaseByActionInitialSum = BigDecimal.ZERO;
-                        BigDecimal purchaseByActionSum = BigDecimal.ZERO;
+                        purchaseByActionInitialSum = 0;
+                        int purchaseByActionSum = 0;
                         for (Cashback cashback : cashbacks) {
 
                             final Purchase purchaseByAction = purchaseRepository.findById(cashback.getPurchase());
 
-                            purchaseByActionSum = purchaseByActionSum.add(purchaseByAction.getSum());
-                            purchaseByActionInitialSum = purchaseByActionInitialSum.add(purchaseByAction.getInitialSum());
+                            purchaseByActionSum = purchaseByActionSum+purchaseByAction.getSum();
+                            purchaseByActionInitialSum = purchaseByActionInitialSum + purchaseByAction.getInitialSum();
                         }
 
                         actionProductInitialSum.put(action.getId(), purchaseByActionInitialSum);
@@ -143,7 +130,7 @@ public class Optimizator {
                         suitableActions.add(action);
                     }
                     actionProductSumByProducts.get(action.getId()).set(basketProductInd, sumAdd);
-                    purchaseByActionInitialSum = purchaseByActionInitialSum.add(sumAdd);
+                    purchaseByActionInitialSum = purchaseByActionInitialSum + sumAdd;
                 }
             }
             basketProductInd++;
@@ -158,9 +145,7 @@ public class Optimizator {
                     actionAccumSum,
                     action.getLevelSumList(),
                     action.accessLevelRatePreviousPurchaseList());
-            BigDecimal chargedSum = actionAccumSum
-                    .multiply(BigDecimal.valueOf(rate))
-                    .divide(new BigDecimal(100), 4, RoundingMode.CEILING);
+            Integer chargedSum = actionAccumSum * rate / 100;
 
 
             if (chargedSum.compareTo(actionSum) < 0) {
@@ -170,7 +155,6 @@ public class Optimizator {
 //            chargedSum = chargedSum.multiply(BigDecimal.valueOf(action.getRateFuturePurchase())
 //                    .divide(BigDecimal.valueOf(100), 4, RoundingMode.CEILING));
 
-
             if (chargedSum.compareTo(max) > 0) {
                 bestAction = action;
                 max = chargedSum;
@@ -179,15 +163,6 @@ public class Optimizator {
 
         return bestAction;
     }
-
-
-
-
-
-
-
-
-
 
 
 

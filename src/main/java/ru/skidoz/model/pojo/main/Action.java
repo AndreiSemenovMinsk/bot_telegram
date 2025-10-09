@@ -1,6 +1,6 @@
 package ru.skidoz.model.pojo.main;
 
-import java.math.BigDecimal;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -31,9 +31,9 @@ public class Action extends AbstractDTO {
 //    private List<AbstractGroup> productTargetList = new ArrayList<>();
     private Integer/*AbstractGroupDTO*/ productTarget;
 
-    private BigDecimal accucmulatedSum = BigDecimal.ZERO;
+    private Integer accucmulatedSum = 0;
 
-    private List<BigDecimal> levelSumList = new ArrayList<>();
+    private List<Integer> levelSumList = new ArrayList<>();
 
     private List<Integer> levelRatePreviousPurchaseList = new ArrayList<>();
 
@@ -46,7 +46,7 @@ public class Action extends AbstractDTO {
         super();
     }
 
-    public List<BigDecimal> accessLevelSumList(){
+    public List<Integer> accessLevelSumList(){
         return levelSumList;
     }
 
@@ -65,7 +65,7 @@ public class Action extends AbstractDTO {
     public void addLevelSum(Integer sum){
         if (levelSumList.size() < 15) {
             System.out.println("addLevelSum+" + sum);
-            levelSumList.add(new BigDecimal(sum));
+            levelSumList.add(new Integer(sum));
         } else  {
             System.out.println("Too many levels");
         }

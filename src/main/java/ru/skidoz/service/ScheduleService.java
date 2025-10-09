@@ -27,9 +27,9 @@ import ru.skidoz.aop.repo.FilterOptionCacheRepository;
 import ru.skidoz.aop.repo.FilterPointCacheRepository;
 import ru.skidoz.aop.repo.JpaRepositoryTest;
 import ru.skidoz.aop.repo.LevelCacheRepository;
+import ru.skidoz.aop.repo.LinkStarterKeeperCacheRepository;
 import ru.skidoz.aop.repo.MessageCacheRepository;
 import ru.skidoz.aop.repo.NameWordProductCacheRepository;
-import ru.skidoz.aop.repo.PartnerCacheRepository;
 import ru.skidoz.aop.repo.PartnerGroupCacheRepository;
 import ru.skidoz.aop.repo.ProductCacheRepository;
 import ru.skidoz.aop.repo.PurchaseCacheRepository;
@@ -50,7 +50,6 @@ import ru.skidoz.mapper.side.BookmarkMapper;
 import ru.skidoz.mapper.side.CashbackMapper;
 import ru.skidoz.mapper.side.NameWordProductMapper;
 import ru.skidoz.mapper.side.PartnerGroupMapper;
-import ru.skidoz.mapper.side.PartnerMapper;
 import ru.skidoz.mapper.side.ProductMapper;
 import ru.skidoz.mapper.side.PurchaseMapper;
 import ru.skidoz.mapper.side.ShopGroupMapper;
@@ -72,6 +71,7 @@ import ru.skidoz.model.pojo.telegram.Level;
 import ru.skidoz.model.pojo.telegram.LevelChat;
 import ru.skidoz.model.pojo.telegram.LevelDTOWrapper;
 import ru.skidoz.model.pojo.telegram.LevelResponse;
+import ru.skidoz.model.pojo.telegram.LinkStarterKeeper;
 import ru.skidoz.model.pojo.telegram.Message;
 import ru.skidoz.model.pojo.telegram.ScheduleBuyer;
 import ru.skidoz.model.pojo.telegram.User;
@@ -89,7 +89,6 @@ import ru.skidoz.repository.FilterOptionRepository;
 import ru.skidoz.repository.FilterPointRepository;
 import ru.skidoz.repository.NameWordProductRepository;
 import ru.skidoz.repository.PartnerGroupRepository;
-import ru.skidoz.repository.PartnerRepository;
 import ru.skidoz.repository.ProductRepository;
 import ru.skidoz.repository.PurchaseRepository;
 import ru.skidoz.repository.RecommendationRepository;
@@ -179,13 +178,11 @@ public class ScheduleService {
     @Autowired
     private RecommendationCacheRepository recommendationCacheRepository;
     @Autowired
-    private PartnerRepository partnerRepository;
-    @Autowired
-    private PartnerCacheRepository partnerCacheRepository;
-    @Autowired
     private PartnerGroupRepository partnerGroupRepository;
     @Autowired
     private PartnerGroupCacheRepository partnerGroupCacheRepository;
+    @Autowired
+    private LinkStarterKeeperCacheRepository linkStarterKeeperCacheRepository;
     @Autowired
     private ShopGroupRepository shopGroupRepository;
     @Autowired
@@ -256,8 +253,6 @@ public class ScheduleService {
     private BasketProductMapper basketProductMapper;
     @Autowired
     private ProductMapper productMapper;
-    @Autowired
-    private PartnerMapper partnerMapper;
     @Autowired
     private PartnerGroupMapper partnerGroupMapper;
     @Autowired
@@ -395,8 +390,6 @@ public class ScheduleService {
 
         storeNew(shopGroupCacheRepository, shopGroupRepository, shopGroupMapper);
 
-        storeNew(partnerCacheRepository, partnerRepository, partnerMapper);
-
         storeNew(partnerGroupCacheRepository, partnerGroupRepository, partnerGroupMapper);
 
         storeNew(actionCacheRepository, actionRepository, actionMapper);
@@ -450,8 +443,6 @@ public class ScheduleService {
         secondStore(shopCacheRepository, shopRepository, shopMapper);
 
         secondStore(shopGroupCacheRepository, shopGroupRepository, shopGroupMapper);
-
-        secondStore(partnerCacheRepository, partnerRepository, partnerMapper);
 
         secondStore(partnerGroupCacheRepository, partnerGroupRepository, partnerGroupMapper);
 

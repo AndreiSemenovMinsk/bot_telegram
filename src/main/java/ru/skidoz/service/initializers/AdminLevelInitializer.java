@@ -5,7 +5,6 @@ import static ru.skidoz.model.entity.category.LanguageEnum.RU;
 import static ru.skidoz.service.command.CommandName.ACTIONS;
 import static ru.skidoz.service.command.CommandName.ACTION_RATE_PARTNER;
 import static ru.skidoz.service.command.CommandName.ACTION_RATE_WITHDRAW;
-import static ru.skidoz.service.command.CommandName.ACTION_RATE_WITHDRAW_BASIC;
 import static ru.skidoz.service.command.CommandName.ACTION_TYPE;
 import static ru.skidoz.service.command.CommandName.ADD_ACTION_COUPON_SOURCE;
 import static ru.skidoz.service.command.CommandName.ADD_ACTION_COUPON_TARGET;
@@ -21,8 +20,8 @@ import static ru.skidoz.service.command.CommandName.ADD_GOODS_NAME;
 import static ru.skidoz.service.command.CommandName.ADD_GOODS_PHOTO;
 import static ru.skidoz.service.command.CommandName.ADD_GOODS_PRICE;
 import static ru.skidoz.service.command.CommandName.ADD_PARTNER;
+import static ru.skidoz.service.command.CommandName.ADD_SHOP_TO_SHOP_GROUP;
 import static ru.skidoz.service.command.CommandName.ADD_TAXI_BOT;
-import static ru.skidoz.service.command.CommandName.ADMIN;
 import static ru.skidoz.service.command.CommandName.ADMIN_ADMIN;
 import static ru.skidoz.service.command.CommandName.ADMIN_SHOPS;
 import static ru.skidoz.service.command.CommandName.APPROVE_NEW_GRUPP;
@@ -30,10 +29,6 @@ import static ru.skidoz.service.command.CommandName.APPROVE_NEW_PARTNER;
 import static ru.skidoz.service.command.CommandName.B2B;
 import static ru.skidoz.service.command.CommandName.B2NOB;
 import static ru.skidoz.service.command.CommandName.BASIC;
-import static ru.skidoz.service.command.CommandName.CONSTRUCT;
-import static ru.skidoz.service.command.CommandName.CONSTRUCT_ADD;
-import static ru.skidoz.service.command.CommandName.CONSTRUCT_MIN_BILL_SHARE;
-import static ru.skidoz.service.command.CommandName.CONSTRUCT_SARAFAN_SHARE;
 import static ru.skidoz.service.command.CommandName.COUPON;
 import static ru.skidoz.service.command.CommandName.COUPON_NUMBER;
 import static ru.skidoz.service.command.CommandName.COUPON_RATE_WITHDRAW;
@@ -41,17 +36,13 @@ import static ru.skidoz.service.command.CommandName.DISCARD_NEW_GRUPP;
 import static ru.skidoz.service.command.CommandName.DISCARD_NEW_PARTNER;
 import static ru.skidoz.service.command.CommandName.EDIT_BUTTON_NAME;
 import static ru.skidoz.service.command.CommandName.EDIT_MESSAGE;
-import static ru.skidoz.service.command.CommandName.EDIT_PARTNER;
 import static ru.skidoz.service.command.CommandName.GEOMAP;
 import static ru.skidoz.service.command.CommandName.GOODS_LIST;
 import static ru.skidoz.service.command.CommandName.LINK_TO_PRODUCT;
 import static ru.skidoz.service.command.CommandName.LINK_TO_PRODUCT_NUMBER;
 import static ru.skidoz.service.command.CommandName.MULTI_ACTION_LEVEL;
-import static ru.skidoz.service.command.CommandName.MULTI_ACTION_LEVEL_BASIC;
 import static ru.skidoz.service.command.CommandName.MULTI_LEVEL_QUESTION;
-import static ru.skidoz.service.command.CommandName.MULTI_LEVEL_QUESTION_BASIC;
 import static ru.skidoz.service.command.CommandName.MULTI_LEVEL_RATE;
-import static ru.skidoz.service.command.CommandName.MULTI_LEVEL_RATE_BASIC;
 import static ru.skidoz.service.command.CommandName.NEGATIVE_COUNT;
 import static ru.skidoz.service.command.CommandName.NEGATIVE_SUM;
 import static ru.skidoz.service.command.CommandName.NEW_GRUPP;
@@ -60,46 +51,17 @@ import static ru.skidoz.service.command.CommandName.NEW_LEVEL_END_BUTTON;
 import static ru.skidoz.service.command.CommandName.NEW_LEVEL_INPUT_BUTTON;
 import static ru.skidoz.service.command.CommandName.NON_RESPONSE;
 import static ru.skidoz.service.command.CommandName.ONE_LEVEL_RATE;
-import static ru.skidoz.service.command.CommandName.ONE_LEVEL_RATE_BASIC;
-import static ru.skidoz.service.command.CommandName.P2B;
-import static ru.skidoz.service.command.CommandName.P2B_APPROVE_BASKET_CASHBACK;
-import static ru.skidoz.service.command.CommandName.P2B_CHARGE_BASKET_CASHBACK;
-import static ru.skidoz.service.command.CommandName.P2B_CHARGE_COUPON;
-import static ru.skidoz.service.command.CommandName.P2B_CHARGE_COUPON_BASKET;
-import static ru.skidoz.service.command.CommandName.P2B_CHARGE_COUPON_REQUEST;
-import static ru.skidoz.service.command.CommandName.P2B_CHARGE_COUPON_RESP;
-import static ru.skidoz.service.command.CommandName.P2B_PROPOSE_CASHBACK;
-import static ru.skidoz.service.command.CommandName.P2B_PROPOSE_CASHBACK_RESP;
-import static ru.skidoz.service.command.CommandName.P2B_RESP;
-import static ru.skidoz.service.command.CommandName.P2B_WRITEOFF_CASHBACK;
-import static ru.skidoz.service.command.CommandName.P2B_WRITEOFF_CASHBACK_APPROVE;
-import static ru.skidoz.service.command.CommandName.P2B_WRITEOFF_CASHBACK_DISMISS;
-import static ru.skidoz.service.command.CommandName.P2B_WRITEOFF_CASHBACK_REQUEST;
-import static ru.skidoz.service.command.CommandName.P2B_WRITEOFF_CASHBACK_RESP;
-import static ru.skidoz.service.command.CommandName.P2B_WRITEOFF_COUPON;
-import static ru.skidoz.service.command.CommandName.P2B_WRITEOFF_COUPON_APPROVE;
-import static ru.skidoz.service.command.CommandName.P2B_WRITEOFF_COUPON_BASKET;
-import static ru.skidoz.service.command.CommandName.P2B_WRITEOFF_COUPON_REQUEST;
-import static ru.skidoz.service.command.CommandName.P2B_WRITEOFF_COUPON_RESP;
-import static ru.skidoz.service.command.CommandName.P2B_WRITEOFF_COUPON_SELECT_ACTION;
-import static ru.skidoz.service.command.CommandName.P2NOP;
-import static ru.skidoz.service.command.CommandName.P2NOP_RESP;
-import static ru.skidoz.service.command.CommandName.P2P;
-import static ru.skidoz.service.command.CommandName.P2P_RESP;
 import static ru.skidoz.service.command.CommandName.PARTNERS;
-import static ru.skidoz.service.command.CommandName.PSHARE2P;
 import static ru.skidoz.service.command.CommandName.RESPONSE_BUYER_MESSAGE;
 import static ru.skidoz.service.command.CommandName.RESPONSE_SHOP_MESSAGE;
-import static ru.skidoz.service.command.CommandName.SEARCH_GROUP;
-import static ru.skidoz.service.command.CommandName.SEARCH_GROUP_END;
-import static ru.skidoz.service.command.CommandName.SEARCH_GROUP_LIMIT;
-import static ru.skidoz.service.command.CommandName.SEARCH_GROUP_RESP;
+import static ru.skidoz.service.command.CommandName.CREATE_GROUP;
+import static ru.skidoz.service.command.CommandName.CREATE_GROUP_LIMIT;
+import static ru.skidoz.service.command.CommandName.CREATE_GROUP_RESP;
 import static ru.skidoz.service.command.CommandName.SEARCH_PARTNER;
 import static ru.skidoz.service.command.CommandName.SEARCH_PARTNER_END;
 import static ru.skidoz.service.command.CommandName.SEARCH_PARTNER_LIMIT;
 import static ru.skidoz.service.command.CommandName.SEARCH_PARTNER_RATE;
 import static ru.skidoz.service.command.CommandName.SEARCH_PARTNER_RESP;
-import static ru.skidoz.service.command.CommandName.SEARCH_PARTNER_RESP_BUTTON;
 import static ru.skidoz.service.command.CommandName.SELECT_LEVEL_TYPE;
 import static ru.skidoz.service.command.CommandName.SELLERS;
 import static ru.skidoz.service.command.CommandName.SELLERS_ADD;
@@ -113,36 +75,25 @@ import static ru.skidoz.service.command.CommandName.SEND_SHOP_MESSAGE;
 import static ru.skidoz.service.command.CommandName.SHOP_BOTS;
 import static ru.skidoz.service.command.CommandName.TAXI_LOCATION;
 import static ru.skidoz.service.command.CommandName.TAXI_SUBMIT;
+import static ru.skidoz.service.command.CommandName.VOTE_ADD_SHOP_GROUP;
 import static ru.skidoz.service.command.CommandName.WITHDRAW_PARTNER;
 import static ru.skidoz.service.command.CommandName.WITHDRAW_PARTNER_END;
 import static ru.skidoz.service.command.CommandName.WITHDRAW_PARTNER_GROUP;
 import static ru.skidoz.service.command.CommandName.WITHDRAW_PARTNER_RESP;
 
-import com.google.zxing.WriterException;
 import ru.skidoz.aop.repo.ButtonCacheRepository;
 import ru.skidoz.aop.repo.ButtonRowCacheRepository;
-import ru.skidoz.aop.repo.CategoryCacheRepository;
-import ru.skidoz.aop.repo.CategoryGroupCacheRepository;
-import ru.skidoz.aop.repo.CategorySuperGroupCacheRepository;
 import ru.skidoz.aop.repo.LevelCacheRepository;
 import ru.skidoz.aop.repo.MessageCacheRepository;
-import ru.skidoz.aop.repo.ShopCacheRepository;
-import ru.skidoz.aop.repo.UserCacheRepository;
 import ru.skidoz.model.entity.ActionTypeEnum;
-import ru.skidoz.model.pojo.category.Category;
-import ru.skidoz.model.pojo.category.CategoryGroup;
-import ru.skidoz.model.pojo.category.CategorySuperGroup;
-import ru.skidoz.model.pojo.side.Shop;
 import ru.skidoz.model.pojo.telegram.Button;
 import ru.skidoz.model.pojo.telegram.ButtonRow;
-import ru.skidoz.model.pojo.telegram.Level;
 import ru.skidoz.model.pojo.telegram.Message;
 import ru.skidoz.model.pojo.telegram.User;
 import ru.skidoz.service.MenuCreator;
 import ru.skidoz.util.MenuTypeEnum;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
@@ -162,21 +113,11 @@ public class AdminLevelInitializer {
     @Autowired
     private LevelCacheRepository levelRepository;
     @Autowired
-    private ShopCacheRepository shopRepository;
-    @Autowired
     private ButtonRowCacheRepository buttonRowRepository;
-    @Autowired
-    private UserCacheRepository userRepository;
     @Autowired
     private ButtonCacheRepository buttonRepository;
     @Autowired
     private MessageCacheRepository messageRepository;
-    @Autowired
-    private CategorySuperGroupCacheRepository categorySuperGroupRepository;
-    @Autowired
-    private CategoryGroupCacheRepository categoryGroupRepository;
-    @Autowired
-    private CategoryCacheRepository categoryRepository;
     @Autowired
     private InitialLevel initialLevel;
 
@@ -221,22 +162,22 @@ public class AdminLevelInitializer {
                 ButtonRow row0_3_admin0 = new ButtonRow(initialLevel.level_ADMIN_ADMIN);
                 buttonRowRepository.cache(row0_3_admin0);
                 initialLevel.level_ADMIN_ADMIN.addRow(row0_3_admin0);
-                Button button0_3_1_shop0 = new Button(row0_3_admin0, Map.of(RU, "Geo-карта"), initialLevel.level_MAP.getIdString(), "https://t.me/Skido_bot/geomapper");
+                Button button0_3_1_shop0 = new Button(row0_3_admin0, Map.of(RU, "Geo-карта"), initialLevel.level_GEOMAP.getIdString(), "https://t.me/Skido_bot/geomapper");
                 buttonRepository.cache(button0_3_1_shop0);
                 row0_3_admin0.add(button0_3_1_shop0);
 
 
 
                 //////////КАРТА
-                initialLevel.level_MAP.updateLevel(Users, GEOMAP.name(), initialLevel.level_ADMIN_ADMIN, false);
+                initialLevel.level_GEOMAP.updateLevel(Users, GEOMAP.name(), initialLevel.level_ADMIN_ADMIN, false);
 
-                levelRepository.cache(initialLevel.level_MAP);
-                Message message00_1__ = new Message(initialLevel.level_MAP, Map.of(RU, "Перейдите на страницу редактрирования местоположения вашего объекта https://skidozona.by/geomapper"));
+                levelRepository.cache(initialLevel.level_GEOMAP);
+                Message message00_1__ = new Message(initialLevel.level_GEOMAP, Map.of(RU, "Перейдите на страницу редактрирования местоположения вашего объекта https://skidozona.by/geomapper"));
                 messageRepository.cache(message00_1__);
-                initialLevel.level_MAP.addMessage(message00_1__);
-                ButtonRow row0_0_geo = new ButtonRow(initialLevel.level_MAP);
+                initialLevel.level_GEOMAP.addMessage(message00_1__);
+                ButtonRow row0_0_geo = new ButtonRow(initialLevel.level_GEOMAP);
                 buttonRowRepository.cache(row0_0_geo);
-                initialLevel.level_MAP.addRow(row0_0_geo);
+                initialLevel.level_GEOMAP.addRow(row0_0_geo);
                 Button button0_geo = new Button(row0_0_geo, Map.of(RU, "Акции"), "123");
                 button0_geo.setWebApp("https://t.me/Skido_bot/geomapper");
                 buttonRepository.cache(button0_geo);
@@ -299,13 +240,13 @@ public class AdminLevelInitializer {
 
                 initialLevel.level_SELLERS_REMOVE_APPROVE.updateLevel(Users, SELLERS_REMOVE_APPROVE.name(), initialLevel.level_SELLERS_REMOVE, false);
                 levelRepository.cache(initialLevel.level_SELLERS_REMOVE_APPROVE);
-                Message message4603_1 = new Message(initialLevel.level_SELLERS_REMOVE_APPROVE, Map.of(RU, "Удаление отменено"));
+                Message message4603_1 = new Message(initialLevel.level_SELLERS_REMOVE_APPROVE, Map.of(RU, "Продавец удален"));
                 messageRepository.cache(message4603_1);
                 initialLevel.level_SELLERS_REMOVE_APPROVE.addMessage(message4603_1);
 
                 initialLevel.level_SELLERS_REMOVE_DISMISS.updateLevel(Users, SELLERS_REMOVE_DISMISS.name(), initialLevel.level_SELLERS_REMOVE, false);
                 levelRepository.cache(initialLevel.level_SELLERS_REMOVE_DISMISS);
-                Message message4604_1 = new Message(initialLevel.level_SELLERS_REMOVE_DISMISS, Map.of(RU, "Продавец удален"));
+                Message message4604_1 = new Message(initialLevel.level_SELLERS_REMOVE_DISMISS, Map.of(RU, "Удаление отменено"));
                 messageRepository.cache(message4604_1);
                 initialLevel.level_SELLERS_REMOVE_DISMISS.addMessage(message4604_1);
 
@@ -315,36 +256,36 @@ public class AdminLevelInitializer {
                 initialLevel.level_PARTNERS.updateLevel(Users, PARTNERS.name(), initialLevel.level_ADMIN_ADMIN, false);
 
                 levelRepository.cache(initialLevel.level_PARTNERS);
-                Message message46_1 = new Message(initialLevel.level_PARTNERS, Map.of(RU, "Список моих партнеров: "));
+                Message message46_1 = new Message(initialLevel.level_PARTNERS, Map.of(RU, "Список моих групп партнеров: "));
                 messageRepository.cache(message46_1);
                 initialLevel.level_PARTNERS.addMessage(message46_1);
+
                 ButtonRow row46_0 = new ButtonRow(initialLevel.level_PARTNERS);
                 buttonRowRepository.cache(row46_0);
-                Button button46_0_0 = new Button(row46_0, Map.of(RU, "Найти нового партнера"), initialLevel.level_SEARCH_PARTNER.getIdString());
+                Button button46_0_0 = new Button(row46_0, Map.of(RU, "Создать новую группу"), initialLevel.level_CREATE_GROUP.getIdString());
                 buttonRepository.cache(button46_0_0);
                 row46_0.add(button46_0_0);
                 initialLevel.level_PARTNERS.addRow(row46_0);
 
-                ButtonRow row46_1 = new ButtonRow(initialLevel.level_PARTNERS);
-                buttonRowRepository.cache(row46_1);
-                Button button46_0_1 = new Button(row46_1, Map.of(RU, "Редактировать партнеров"), initialLevel.level_EDIT_PARTNER.getIdString());
-                buttonRepository.cache(button46_0_1);
-                row46_1.add(button46_0_1);
-                initialLevel.level_PARTNERS.addRow(row46_1);
-
-                ButtonRow row46_2 = new ButtonRow(initialLevel.level_PARTNERS);
-                buttonRowRepository.cache(row46_2);
-                Button button46_0_2 = new Button(row46_2, Map.of(RU, "Войти в новую группу кэшбеков"), initialLevel.level_SEARCH_GROUP.getIdString());
-                buttonRepository.cache(button46_0_2);
-                row46_2.add(button46_0_2);
-                initialLevel.level_PARTNERS.addRow(row46_2);
 
 
-                initialLevel.level_WITHDRAW_PARTNER.updateLevel(Users, WITHDRAW_PARTNER.name(), initialLevel.level_PARTNERS, false);
-                levelRepository.cache(initialLevel.level_WITHDRAW_PARTNER);
+                initialLevel.level_ADD_SHOP_TO_SHOP_GROUP.updateLevel(Users, ADD_SHOP_TO_SHOP_GROUP.name(), initialLevel.level_PARTNERS, false);
+                levelRepository.cache(initialLevel.level_VOTE_ADD_SHOP_GROUP);
+
+                initialLevel.level_VOTE_ADD_SHOP_GROUP.updateLevel(Users, VOTE_ADD_SHOP_GROUP.name(), initialLevel.level_ADD_SHOP_TO_SHOP_GROUP, false);
+                levelRepository.cache(initialLevel.level_VOTE_ADD_SHOP_GROUP);
+
+
+
 
                 initialLevel.level_WITHDRAW_PARTNER_GROUP.updateLevel(Users, WITHDRAW_PARTNER_GROUP.name(), initialLevel.level_PARTNERS, false);
                 levelRepository.cache(initialLevel.level_WITHDRAW_PARTNER_GROUP);
+
+
+                initialLevel.level_WITHDRAW_PARTNER.updateLevel(Users, WITHDRAW_PARTNER.name(), initialLevel.level_WITHDRAW_PARTNER_GROUP, false);
+                levelRepository.cache(initialLevel.level_WITHDRAW_PARTNER);
+
+
 
                 initialLevel.level_WITHDRAW_PARTNER_RESP.updateLevel(Users, WITHDRAW_PARTNER_RESP.name(), initialLevel.level_WITHDRAW_PARTNER, false);
                 levelRepository.cache(initialLevel.level_WITHDRAW_PARTNER_RESP);
@@ -358,30 +299,13 @@ public class AdminLevelInitializer {
                 messageRepository.cache(message472_3_1);
                 initialLevel.level_WITHDRAW_PARTNER_END.addMessage(message472_3_1);
 
-///это я проверил 12.05.2021 отсюда
+
+                /*//SEARCH PARTNER нам незачем искать партнеров - они и так подключаются ссылкой, а не поиском?
                 initialLevel.level_SEARCH_PARTNER.updateLevel(Users, SEARCH_PARTNER.name(), initialLevel.level_PARTNERS, false);
-
                 levelRepository.cache(initialLevel.level_SEARCH_PARTNER);
-                Message message47_1 = new Message(initialLevel.level_SEARCH_PARTNER, Map.of(RU, "Найдите нужный магазин. Введите название "));
-                messageRepository.cache(message47_1);
-                initialLevel.level_SEARCH_PARTNER.addMessage(message47_1);
-
-
-
-                initialLevel.level_EDIT_PARTNER.updateLevel(Users, EDIT_PARTNER.name(), initialLevel.level_PARTNERS, false);
-                levelRepository.cache(initialLevel.level_EDIT_PARTNER);
-                Message message47_1_1_01 = new Message(initialLevel.level_EDIT_PARTNER, Map.of(RU, "Редактировать партнеров"));
-                messageRepository.cache(message47_1_1_01);
-                initialLevel.level_EDIT_PARTNER.addMessage(message47_1_1_01);
-
-
-
-                initialLevel.level_SEARCH_PARTNER_RESP_BUTTON.updateLevel(Users, SEARCH_PARTNER_RESP_BUTTON.name(), initialLevel.level_SEARCH_PARTNER, true);
-                levelRepository.cache(initialLevel.level_SEARCH_PARTNER_RESP_BUTTON);
-                Message message47_1_1_1 = new Message(initialLevel.level_SEARCH_PARTNER_RESP_BUTTON, Map.of(RU, "Результаты поиска новых партнеров"));
-                messageRepository.cache(message47_1_1_1);
-                initialLevel.level_SEARCH_PARTNER_RESP_BUTTON.addMessage(message47_1_1_1);
-
+                Message message47_g_1 = new Message(initialLevel.level_SEARCH_PARTNER, Map.of(RU, "Введите название группы"));
+                messageRepository.cache(message47_g_1);
+                initialLevel.level_SEARCH_PARTNER.addMessage(message47_g_1);
 
                 initialLevel.level_SEARCH_PARTNER_RESP.updateLevel(Users, SEARCH_PARTNER_RESP.name(), initialLevel.level_SEARCH_PARTNER, true);
                 levelRepository.cache(initialLevel.level_SEARCH_PARTNER_RESP);
@@ -406,31 +330,7 @@ public class AdminLevelInitializer {
                 Message message471_3_1 = new Message(initialLevel.level_SEARCH_PARTNER_END, Map.of(RU, "Вы установили лимит WW для  EE"));
                 messageRepository.cache(message471_3_1);
                 initialLevel.level_SEARCH_PARTNER_END.addMessage(message471_3_1);
-/// 12.05.2021 досюда
-
-                initialLevel.level_SEARCH_GROUP.updateLevel(Users, SEARCH_GROUP.name(), initialLevel.level_PARTNERS, false);
-                levelRepository.cache(initialLevel.level_SEARCH_GROUP);
-                Message message47_g_1 = new Message(initialLevel.level_SEARCH_GROUP, Map.of(RU, "Введите название группы"));
-                messageRepository.cache(message47_g_1);
-                initialLevel.level_SEARCH_GROUP.addMessage(message47_g_1);
-
-                initialLevel.level_SEARCH_GROUP_RESP.updateLevel(Users, SEARCH_GROUP_RESP.name(), initialLevel.level_SEARCH_GROUP, true);
-                levelRepository.cache(initialLevel.level_SEARCH_GROUP_RESP);
-                Message message47_1_g_1 = new Message(initialLevel.level_SEARCH_GROUP_RESP, Map.of(RU, "Результаты поиска групп"));
-                messageRepository.cache(message47_1_g_1);
-                initialLevel.level_SEARCH_GROUP_RESP.addMessage(message47_1_g_1);
-
-                initialLevel.level_SEARCH_GROUP_LIMIT.updateLevel(Users, SEARCH_GROUP_LIMIT.name(), initialLevel.level_SEARCH_GROUP_RESP, true);
-                levelRepository.cache(initialLevel.level_SEARCH_GROUP_LIMIT);
-                Message message47_2_g_1 = new Message(initialLevel.level_SEARCH_GROUP_LIMIT, Map.of(RU, "Введите размер лимита кэшбека по группе"));
-                messageRepository.cache(message47_2_g_1);
-                initialLevel.level_SEARCH_GROUP_LIMIT.addMessage(message47_2_g_1);
-
-                initialLevel.level_SEARCH_GROUP_END.updateLevel(Users, SEARCH_GROUP_END.name(), initialLevel.level_SEARCH_GROUP_LIMIT, true);
-                levelRepository.cache(initialLevel.level_SEARCH_GROUP_END);
-                Message message4700_3_1 = new Message(initialLevel.level_SEARCH_GROUP_END, Map.of(RU, "Вы установили лимит WW для  EE"));
-                messageRepository.cache(message4700_3_1);
-                initialLevel.level_SEARCH_GROUP_END.addMessage(message4700_3_1);
+*/
 
                 ///////выводится в цикле как результат поиска
                 initialLevel.level_ADD_PARTNER.updateLevel(Users, ADD_PARTNER.name(), initialLevel.level_SEARCH_PARTNER_END, false);
@@ -443,13 +343,26 @@ public class AdminLevelInitializer {
                 row48_0.add(button48_0_0);
 
 
-                ///////выводится в цикле как результат поиска
-//                    initialLevel.level_ADD_GROUP.updateLevel(CHAT, ADD_GROUP.name(), initialLevel.level_SEARCH_GROUP_LIMIT, false);
-//                    levelRepository.cache(initialLevel.level_ADD_GROUP);
-//                    ButtonRow row48_g_0 = new ButtonRow();
-//                    Button button48_g_0_0 = new Button(initialLevel.level_ADD_GROUP, "Добавить групппу", initialLevel.level_NEW_GRUPP.getIdString());
-//                    buttonRepository.cache(button48_g_0_0);
-//                    initialLevel.level_ADD_GROUP.addRow(row48_g_0);
+                //CREATE GROUP
+                initialLevel.level_CREATE_GROUP.updateLevel(Users, CREATE_GROUP.name(), initialLevel.level_PARTNERS, false);
+                levelRepository.cache(initialLevel.level_CREATE_GROUP);
+                Message message47_g_1 = new Message(initialLevel.level_CREATE_GROUP, Map.of(RU, "Введите название группы"));
+                messageRepository.cache(message47_g_1);
+                initialLevel.level_CREATE_GROUP.addMessage(message47_g_1);
+
+                initialLevel.level_CREATE_GROUP_RESP.updateLevel(Users, CREATE_GROUP_RESP.name(), initialLevel.level_CREATE_GROUP, true);
+                levelRepository.cache(initialLevel.level_CREATE_GROUP_RESP);
+                Message message47_1_g_1 = new Message(initialLevel.level_CREATE_GROUP_RESP, Map.of(RU, "Введите размер лимита кэшбека по группе"));
+                messageRepository.cache(message47_1_g_1);
+                initialLevel.level_CREATE_GROUP_RESP.addMessage(message47_1_g_1);
+
+                initialLevel.level_CREATE_GROUP_LIMIT.updateLevel(Users, CREATE_GROUP_LIMIT.name(), initialLevel.level_CREATE_GROUP_RESP, true);
+                levelRepository.cache(initialLevel.level_CREATE_GROUP_LIMIT);
+                Message message47_2_g_1 = new Message(initialLevel.level_CREATE_GROUP_LIMIT, Map.of(RU, "Вы создали группу магазинов"));
+                messageRepository.cache(message47_2_g_1);
+                initialLevel.level_CREATE_GROUP_LIMIT.addMessage(message47_2_g_1);
+
+
 
 
 
@@ -754,7 +667,7 @@ public class AdminLevelInitializer {
 
                 //////////СОЗДАНИЕ ВВОДА ТОВАРОВ
 // проверил 12.05 отсюда
-                initialLevel.level_ADD_GOODS.updateLevel(Users, ADD_GOODS.name(), initialLevel.level_CONSTRUCT_ADD, false);
+                initialLevel.level_ADD_GOODS.updateLevel(Users, ADD_GOODS.name(), initialLevel.level_GOODS_LIST, false);
 
                 levelRepository.cache(initialLevel.level_ADD_GOODS);
                 Message message7_0 = new Message(initialLevel.level_ADD_GOODS, 0,

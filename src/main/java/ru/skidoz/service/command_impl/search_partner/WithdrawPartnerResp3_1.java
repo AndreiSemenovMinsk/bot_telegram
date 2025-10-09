@@ -1,11 +1,12 @@
 package ru.skidoz.service.command_impl.search_partner;
 
-import java.math.BigDecimal;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import ru.skidoz.aop.repo.PartnerCacheRepository;
+import ru.skidoz.aop.repo.PartnerGroupCacheRepository;
+import ru.skidoz.aop.repo.ShopGroupCacheRepository;
 import ru.skidoz.model.entity.category.LanguageEnum;
 import ru.skidoz.model.pojo.side.Shop;
 import ru.skidoz.model.pojo.telegram.*;
@@ -25,9 +26,11 @@ public class WithdrawPartnerResp3_1 implements Command {
     @Autowired
     private ShopCacheRepository shopCacheRepository;
     @Autowired
-    private PartnerCacheRepository partnerCacheRepository;
-    @Autowired
     private InitialLevel initialLevel;
+    @Autowired
+    private ShopGroupCacheRepository shopGroupCacheRepository;
+    @Autowired
+    private PartnerGroupCacheRepository partnerGroupCacheRepository;
 
     @Override
     public LevelResponse runCommand(Update update, Level level, User users) throws CloneNotSupportedException {
@@ -49,11 +52,24 @@ public class WithdrawPartnerResp3_1 implements Command {
         Shop shopPartner = shopCacheRepository.findById(shopInitiator.getCurrentConversationShop());
         Long friendChatId = shopPartner.getChatId();//.getAdminUser().getChatId();
         try {
-            BigDecimal withdrawal = BigDecimal.valueOf(Integer.parseInt(inputText));
+            int withdrawal = Integer.parseInt(inputText);
 
-            Partner partner = partnerCacheRepository.findFirstByCreditor_IdAndDebtor_Id(shopInitiator.getId(), shopPartner.getId());
-            partner.setSum(partner.getSum().subtract(withdrawal));
-            partnerCacheRepository.save(partner);
+            final List<ShopGroup> shopGroups = shopGroupCacheRepository.shopGroupByShopAndPartner(
+                    shopInitiator.getId(),
+                    shopInitiator.getCurrentConversationShop());
+
+            for (int i = 0; i < shopGroups.size(); i++) {
+
+                final ShopGroup shopGroup = shopGroups.get(i);
+                final int shopGroupId = shopGroup.getId();
+
+                final PartnerGroup firstByShopIdAndShopGroupId = partnerGroupCacheRepository.findFirstByShop_IdAndShopGroup_Id(
+                        shopInitiator.getCurrentConversationShop(),
+                        shopGroupId);
+
+                firstByShopIdAndShopGroupId.setSum(firstByShopIdAndShopGroupId.getSum() - withdrawal);
+            }
+
 
             buyerLevel = initialLevel.convertToLevel(initialLevel.level_WITHDRAW_PARTNER_RESP,
                     false,

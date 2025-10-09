@@ -1,7 +1,7 @@
 package ru.skidoz.service.command_impl.communication.manual.cashback;
 
 import java.io.IOException;
-import java.math.BigDecimal;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -67,7 +67,7 @@ public class P2BWriteOffCashbackRequest implements Command {
         System.out.println(level.getCallName());
         System.out.println(level.getCallName().equals(P2B_WRITEOFF_CASHBACK_APPROVE.name()));
 
-// сюда похоже вообще не доходит - потому что команда идет на P2BWriteOffCashbackProposedSum
+// сюда похоже вообще не доходит - потому что команда идет на P2BWriteOffCashbackApprove
         if (level.getCallName().equals(P2B_WRITEOFF_CASHBACK_APPROVE.name())) {
 
             String code = update.getCallbackQuery().getData().substring(19);
@@ -82,11 +82,11 @@ public class P2BWriteOffCashbackRequest implements Command {
             System.out.println();
             System.out.println();
 
-            BigDecimal substructed = null;
+            Integer substructed = null;
 
             try {
                 CashbackWriteOff cashbackWriteOff = cashbackWriteOffCacheRepository.findById(Integer.valueOf(code));
-                BigDecimal proposedSum = cashbackWriteOff.getSum();
+                Integer proposedSum = cashbackWriteOff.getSum();
                 buyerChatId = userCacheRepository.findById(cashbackWriteOff.getUser()).getChatId();
 
                 System.out.println("buyerChatId" + buyerChatId);
@@ -94,14 +94,14 @@ public class P2BWriteOffCashbackRequest implements Command {
                 System.out.println("proposedSum***" + proposedSum);
 
 //TODO - тут что то не то proposedSum = cashbackWriteOff.getSum() - может  BigDecimal.valueByCode(Integer.parseInt(inputText)) ??
-                if (cashbackWriteOff.getSum().compareTo(proposedSum) > 0) {
-                    cashbackWriteOff.setSum(cashbackWriteOff.getSum().subtract(proposedSum));
+                if (cashbackWriteOff.getSum() > proposedSum) {
+                    cashbackWriteOff.setSum(cashbackWriteOff.getSum() - proposedSum);
                     substructed = proposedSum;
                     cashbackWriteOffCacheRepository.delete(cashbackWriteOff);
                 } else {
                     substructed = cashbackWriteOff.getSum();
-                    cashbackWriteOff.setSum(BigDecimal.valueOf(0));
-                    cashbackWriteOff.setSum(cashbackWriteOff.getSum().subtract(substructed));
+                    cashbackWriteOff.setSum(0);
+                    cashbackWriteOff.setSum(cashbackWriteOff.getSum() - substructed);
                     cashbackWriteOffCacheRepository.save(cashbackWriteOff);
                 }
 
@@ -133,7 +133,7 @@ e.printStackTrace();
             System.out.println("P2B inputText*" + inputText);
 
             try {
-                BigDecimal proposedSum = BigDecimal.valueOf(Integer.parseInt(inputText));
+                Integer proposedSum = Integer.parseInt(inputText);
 
                 System.out.println("proposedSum.intValue()***" + proposedSum.intValue());
 

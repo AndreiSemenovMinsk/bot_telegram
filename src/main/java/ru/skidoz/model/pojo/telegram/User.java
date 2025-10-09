@@ -64,6 +64,8 @@ public class User extends AbstractDTO {
     private Integer currentAdminShop;
 
     private Integer currentConstructShop;
+    private Integer currentConstructShopGroup;
+    private Integer currentAddingShopGroup;
 
     private Long currentConversationShop;
     private Integer currentConversationShopId;

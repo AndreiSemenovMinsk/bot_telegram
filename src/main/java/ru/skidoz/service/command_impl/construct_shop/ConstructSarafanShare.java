@@ -1,7 +1,7 @@
 package ru.skidoz.service.command_impl.construct_shop;
 
 import java.io.IOException;
-import java.math.BigDecimal;
+
 import java.util.Collections;
 import java.util.Map;
 
@@ -54,7 +54,7 @@ public class ConstructSarafanShare implements Command {
 
             System.out.println("shop+++" + shop);
 
-            shop.setMinBillShare(BigDecimal.valueOf(Math.min(value, 100)));
+            shop.setMinBillShare(Math.min(value, 100));
             shopCacheRepository.save(shop);
 
         } catch (NumberFormatException formatException){

@@ -86,21 +86,21 @@ public class ActionEntity extends AbstractEntity implements Serializable {
         super();
     }
 
-//    public void setLevelSumList(List<BigDecimal> levelSumList) {
+//    public void setLevelSumList(List<Integer> levelSumList) {
 //        List<String> strings = new ArrayList<>(levelSumList.size());
-//        for (BigDecimal levelSum : levelSumList) {
+//        for (Integer levelSum : levelSumList) {
 //            strings.add(levelSum.toString());
 //        }
 //        levelSumString = String.join(":", strings);
 //    }
 
-//    public List<BigDecimal> getLevelSumList() {
+//    public List<Integer> getLevelSumList() {
 //
-//        List<BigDecimal> result = new ArrayList<>();
+//        List<Integer> result = new ArrayList<>();
 //        if (levelSumString != null) {
 //            String[] arr = levelSumString.split(":");
 //            for (String str : arr) {
-//                result.add(BigDecimal.valueOf(Structures.parseLong(str)));
+//                result.add(Integer.valueOf(Structures.parseLong(str)));
 //            }
 //        }
 //        return result;

@@ -1,7 +1,7 @@
 package ru.skidoz.model.entity;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -108,16 +108,16 @@ public class ShopEntity extends AbstractEntity  implements Serializable {
     private String geo;
 
     //@NotNull
-    private BigDecimal sarafanShare;
+    private Integer sarafanShare;
 
     //@NotNull
-    private BigDecimal minBillShare;
+    private Integer minBillShare;
 
     //@NotNull
-    private BigDecimal paymentBalance;
+    private Integer paymentBalance;
 
     //@NotNull
-    private BigDecimal cashbackBalance;
+    private Integer cashbackBalance;
 
     @OneToOne
     private BotEntity bot;
@@ -142,19 +142,13 @@ public class ShopEntity extends AbstractEntity  implements Serializable {
     @OneToMany(mappedBy="shop")
     private List<CashbackWriteOffEntity> cashbackWriteOffList = new ArrayList<>();
 
-    @OneToMany(mappedBy="debtor")//@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private List<PartnerEntity> debtorList = new ArrayList<>();
-
-    @OneToMany(mappedBy="creditor")//@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private List<PartnerEntity> creditorList = new ArrayList<>();
-
 //    @OneToMany(mappedBy="currentConversationShop")
 //    private List<ShopEntity> currentConversationShopShopList = new ArrayList<>();
 
 
 
     @OneToMany(mappedBy="shop")
-    private List<PurchaseShopGroupEntity> cashbackShopGroupList = new ArrayList<>();
+    private List<PurchaseShopGroupEntity> purchaseShopGroupList = new ArrayList<>();
 
 
 
@@ -212,14 +206,6 @@ public class ShopEntity extends AbstractEntity  implements Serializable {
 
     public void addCashbackWriteOff(CashbackWriteOffEntity cashbackWriteOff) {
         this.cashbackWriteOffList.add(cashbackWriteOff);
-    }
-
-    public void addDebtor(PartnerEntity debtor) {
-        this.debtorList.add(debtor);
-    }
-
-    public void addCreditor(PartnerEntity creditor) {
-        this.creditorList.add(creditor);
     }
 
     public void addRecomendation(RecommendationEntity recommendation) {

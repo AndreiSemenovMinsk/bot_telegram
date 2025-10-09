@@ -1,6 +1,6 @@
 package ru.skidoz.model.pojo.search.menu;
 
-import java.math.BigDecimal;
+
 import java.util.function.Consumer;
 
 import ru.skidoz.model.pojo.AbstractDTO;
@@ -15,7 +15,7 @@ public class CategoryFilterProduct extends AbstractDTO {
 
     //from 0 to 1000
     private Integer value;
-    private BigDecimal rawValue;
+    private Integer rawValue;
     //    private Product product;
     private Integer product;
     private FilterPoint filterPoint;

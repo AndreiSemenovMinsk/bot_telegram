@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -78,6 +79,7 @@ public class TelegramBotWebhook {
     private InitialLevel initialLevel;
     @Autowired
     private MessageCacheRepository messageCacheRepository;
+    public Map<User, byte[]> excels = new HashMap<>();
 
     private List<Runner> runners = new ArrayList<>();
 
@@ -85,7 +87,6 @@ public class TelegramBotWebhook {
             Runtime
                     .getRuntime()
                     .availableProcessors(), Executors.defaultThreadFactory());
-    @Autowired private ThemeResolver themeResolver;
 
     @PostConstruct
     public void onStart() {

@@ -23,6 +23,10 @@ public class LinkStarter {
     @Autowired
     private InitialLevel initialLevel;
 
+    public List<LevelChat> getLevel(User user, String callback) throws CloneNotSupportedException {
+        return null;
+    }
+
     public List<LevelChat> getLevel(Long chatId, User buyer, User friend, Shop shopPartner) throws CloneNotSupportedException {
         return null;
     }

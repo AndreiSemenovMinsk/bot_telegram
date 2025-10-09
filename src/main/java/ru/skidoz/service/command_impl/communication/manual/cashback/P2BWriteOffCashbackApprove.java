@@ -1,7 +1,7 @@
 package ru.skidoz.service.command_impl.communication.manual.cashback;
 
 import java.io.IOException;
-import java.math.BigDecimal;
+
 import java.math.MathContext;
 import java.math.RoundingMode;
 import java.util.ArrayList;
@@ -40,15 +40,13 @@ import static ru.skidoz.util.Optimizator.getRate;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class P2BWriteOffCashbackProposedSum implements Command {
+public class P2BWriteOffCashbackApprove implements Command {
     @Autowired
     private LevelCacheRepository levelCacheRepository;
     @Autowired
     private MessageCacheRepository messageCacheRepository;
     @Autowired
     private ShopCacheRepository shopCacheRepository;
-    @Autowired
-    private PartnerCacheRepository partnerCacheRepository;
     @Autowired
     private PartnerGroupCacheRepository partnerGroupCacheRepository;
     @Autowired
@@ -77,7 +75,7 @@ public class P2BWriteOffCashbackProposedSum implements Command {
 
         System.out.println();
         System.out.println();
-        System.out.println("----------------------------------P2BWriteOffCashbackProposedSum-----------------------------");
+        System.out.println("----------------------------------P2BWriteOffCashbackApprove-----------------------------");
         System.out.println();
 
         String code = update.getCallbackQuery().getData().substring(19);
@@ -87,7 +85,7 @@ public class P2BWriteOffCashbackProposedSum implements Command {
 
         try {
             CashbackWriteOff cashbackWriteOff = cashbackWriteOffCacheRepository.findById(Integer.valueOf(code));
-            BigDecimal proposedSum = cashbackWriteOff.getSum();
+            Integer proposedSum = cashbackWriteOff.getSum();
 
             System.out.println("0 proposedSum********" + proposedSum);
 
@@ -111,20 +109,20 @@ public class P2BWriteOffCashbackProposedSum implements Command {
             System.out.println("BASIC_MANUAL  " + cashbackManualList);
 
 
-            if (proposedSum.compareTo(BigDecimal.ZERO) > 0) {
+            if (proposedSum > 0) {
                 for (Cashback cashbackManual : cashbackManualList) {
                     Purchase purchase = purchaseCacheRepository.findById(cashbackManual.getPurchase());
 
-                    System.out.println(purchase.getSum() + "+++ purchase.getSum() " + proposedSum + " " + purchase.getSum().compareTo(proposedSum));
+                    System.out.println(purchase.getSum() + "+++ purchase.getSum() " + proposedSum);
 
-                    if (purchase.getSum().compareTo(proposedSum) > 0) {
+                    if (purchase.getSum() > proposedSum) {
 
-                        purchase.setSum(purchase.getSum().subtract(proposedSum));
+                        purchase.setSum(purchase.getSum() - proposedSum);
                         purchaseCacheRepository.save(purchase);
-                        proposedSum = BigDecimal.ZERO;
+                        proposedSum = 0;
                         break;
                     } else {
-                        proposedSum = proposedSum.subtract(purchase.getSum());
+                        proposedSum = proposedSum - purchase.getSum();
                         purchaseCacheRepository.delete(purchase);
 
                         System.out.println("1 proposedSum********" + proposedSum);
@@ -134,15 +132,15 @@ public class P2BWriteOffCashbackProposedSum implements Command {
 
             System.out.println("2 proposedSum********" + proposedSum);
 
-            if (proposedSum.compareTo(BigDecimal.ZERO) > 0) {
+            if (proposedSum > 0) {
 
-                BigDecimal sumBasicDefault = BigDecimal.ZERO;
+                Integer sumBasicDefault = 0;
 
                 for (Cashback cashbackBasicDefault : cashbackBasicDefaultList) {
                     Purchase purchase = purchaseCacheRepository.findById(cashbackBasicDefault.getPurchase());
                     if (purchase.getSum() != null
                             && purchase.getSum().intValue() > 0) {
-                        sumBasicDefault = sumBasicDefault.add(purchase.getSum());
+                        sumBasicDefault = sumBasicDefault + purchase.getSum();
                     }
                 }
 
@@ -154,7 +152,7 @@ public class P2BWriteOffCashbackProposedSum implements Command {
                         actionDefault.getLevelSumList(),
                         actionDefault.accessLevelRatePreviousPurchaseList());
 
-                sumBasicDefault = sumBasicDefault.multiply(BigDecimal.valueOf(rateDefault));
+                sumBasicDefault = sumBasicDefault * rateDefault;
 
                 System.out.println("rateDefault********" + rateDefault);
                 System.out.println("sumBasicDefault********" + sumBasicDefault);
@@ -162,19 +160,14 @@ public class P2BWriteOffCashbackProposedSum implements Command {
 
                 if (sumBasicDefault.compareTo(proposedSum) > 0) {
 
-                    BigDecimal ratio = BigDecimal.ONE.subtract(
-                            proposedSum
-                                    .multiply(BigDecimal.valueOf(100))
-                                    .divide(sumBasicDefault, 4, RoundingMode.CEILING));
+                    Integer ratio = 100 - proposedSum * 100 / sumBasicDefault;
 
                     System.out.println("ratio********" + ratio);
 
                     for (Cashback cashbackBasicDefault : cashbackBasicDefaultList) {
                         Purchase purchase = purchaseCacheRepository.findById(cashbackBasicDefault.getPurchase());
 
-                        final BigDecimal multiply = purchase.getSum()
-                                .multiply(ratio)
-                                .round(new MathContext(2, RoundingMode.HALF_UP));
+                        final Integer multiply = purchase.getSum() * ratio;
 
                         System.out.println("ratio********" + ratio);
                         System.out.println("multiply********" + multiply);
@@ -183,10 +176,10 @@ public class P2BWriteOffCashbackProposedSum implements Command {
                         purchaseCacheRepository.save(purchase);
                     }
 
-                    proposedSum = BigDecimal.ZERO;
+                    proposedSum = 0;
                 } else {
 
-                    proposedSum = proposedSum.subtract(sumBasicDefault);
+                    proposedSum = proposedSum - sumBasicDefault;
 
                     System.out.println("3 proposedSum********" + proposedSum);
 
@@ -200,26 +193,27 @@ public class P2BWriteOffCashbackProposedSum implements Command {
 
             System.out.println("4 proposedSum********" + proposedSum);
 
-            if (proposedSum.compareTo(BigDecimal.ZERO) > 0) {
+            if (proposedSum > 0) {
 
 
-                List<Partner> partnerList = partnerCacheRepository.findAllByCreditor_Id(shopInitial.getId());
+                List<PartnerGroup> partnerList = partnerGroupCacheRepository.findAllByShop_Id(shopInitial.getId());
                 StringBuilder cashbackMessagePartner = new StringBuilder("\r\n");
-                BigDecimal sumPartners = BigDecimal.ZERO;
+                Integer sumPartners = 0;
 
-                Map<Integer, BigDecimal> shopNonReachableSum = new HashMap<>();
-                Map<Integer, BigDecimal> shopResultSum = new HashMap<>();
-                Map<Integer, BigDecimal> shopUserSum = new HashMap<>();
-                Set<Integer> partnerShopSet = new HashSet<>();
-                Map<Integer, Partner> shopPartners = new HashMap<>();
-                Map<Integer, BigDecimal> shopFreeLimit = new HashMap<>();
-                BigDecimal maxFreeLimitGroup = BigDecimal.ZERO;
+                Map<Integer, Integer> shopNonReachableSum = new HashMap<>();
+                Map<Integer, Integer> shopResultSum = new HashMap<>();
+                Map<Integer, Integer> shopUserSum = new HashMap<>();
+//                Set<Integer> partnerShopSet = new HashSet<>();
+//                Map<Integer, PartnerGroup> shopPartners = new HashMap<>();
+//                Map<Integer, Integer> shopFreeLimit = new HashMap<>();
+                Integer maxFreeLimitGroup = 0;
 
-                for (Partner partner : partnerList) {
-                    BigDecimal limit = partner.getLim();
-                    Integer partnerShop = partner.getDebtor();
-                    partnerShopSet.add(partnerShop);
-                    shopPartners.put(partnerShop, partner);
+                for (PartnerGroup partnerGroup : partnerList) {
+
+                    final ShopGroup shopGroup = shopGroupCacheRepository.findById(partnerGroup.getShopGroup());
+
+
+                    int limit = shopGroup.getLimit();
 
                     System.out.println("2 partner **********" + partner);
 
@@ -277,13 +271,13 @@ public class P2BWriteOffCashbackProposedSum implements Command {
 //                    sum = sum.add(purchase.getSum());
 //                }
 //            }
-                        BigDecimal resultSum;
+                        Integer resultSum;
                         if (sum.compareTo(freeLimit) > 0) {
                             resultSum = freeLimit;
                             shopNonReachableSum.put(partnerShop, sum.subtract(freeLimit));
                         } else {
                             resultSum = sum;
-                            shopNonReachableSum.put(partnerShop, BigDecimal.ZERO);
+                            shopNonReachableSum.put(partnerShop, 0);
                         }
                         shopResultSum.put(partnerShop, resultSum);
 
@@ -295,47 +289,47 @@ public class P2BWriteOffCashbackProposedSum implements Command {
 
                 System.out.println("cashbackMessagePartner***" + cashbackMessagePartner);
 
-                List<Map.Entry<Integer, BigDecimal>> list = new ArrayList<>(shopNonReachableSum.entrySet());
+                List<Map.Entry<Integer, Integer>> list = new ArrayList<>(shopNonReachableSum.entrySet());
                 list.sort(Map.Entry.comparingByValue());
 
                 List<Integer> resultNonReachableSumMap = new ArrayList<>();
-                for (Map.Entry<Integer, BigDecimal> entry : list) {
+                for (Map.Entry<Integer, Integer> entry : list) {
                     resultNonReachableSumMap.add(entry.getKey());
                 }
 
                 PartnerGroup maxPartnerGroup = null;
-                BigDecimal maxResultSum = sumPartners;
-//                Map<Integer, BigDecimal> maxPartnerShops = shopResultSum;
+                Integer maxResultSum = sumPartners;
+//                Map<Integer, Integer> maxPartnerShops = shopResultSum;
                 Set<Integer> maxPartners = new HashSet<>();
 /////////////////////////////////////////////////////////////// PARTNER GROUP
 
                 List<PartnerGroup> partnerGroupList = partnerGroupCacheRepository.findAllByCreditor_Id(shopInitial.getId());
                 for (PartnerGroup partnerGroup : partnerGroupList) {
 
-                    ShopGroup partnerShopGroup = shopGroupCacheRepository.findById(partnerGroup.getDebtor());
+                    ShopGroup partnerShopGroup = shopGroupCacheRepository.findById(partnerGroup.getShopGroup());
 //            if (userShopGroup_SumListHashMap.containsKey(partnerShopGroup)) {
-                    BigDecimal balance = partnerGroup.getSum();
-                    BigDecimal limit = partnerGroup.getLim();
-                    BigDecimal freeLimitGroup = limit.subtract(balance);
-                    BigDecimal userSum = BigDecimal.ZERO;
+                    Integer balance = partnerGroup.getSum();
+                    Integer limit = partnerGroup.getLim();
+                    Integer freeLimitGroup = limit - balance;
+                    Integer userSum = 0;
 
 
                     System.out.println("6 partnerGroup**************** " + partnerGroup);
 
 //                TODO-по идее, можно отказаться от PurchaseShopGroup вообще как от класса???
-//                List<PurchaseShopGroup> cashbackShopGroups = userShopGroup_CashbackMap.get(partnerShopGroup);
+//                List<PurchaseShopGroup> purchaseShopGroups = userShopGroup_CashbackMap.get(partnerShopGroup);
                     Map<Integer, Boolean> shopIsGroupMemberMap = new HashMap<>();
                     partnerShopSet.forEach(shopPartner -> shopIsGroupMemberMap.put(shopPartner, false));
 
                     for (Shop shop : partnerShopGroup.getShopSet()) {
 
-                        if (proposedSum.compareTo(userSum) > 0) {
+                        if (proposedSum > userSum) {
 
                             if (shopUserSum.containsKey(shop.getId())) {
 
-                                userSum = userSum.add(shopUserSum.get(shop));
+                                userSum = userSum + shopUserSum.get(shop);
                             } else {
-                                BigDecimal sum = calculator.purchaseSumByUserAndShopAndAction_Type(users.getId(), shop.getId(), ActionTypeEnum.BASIC_MANUAL);
+                                int sum = calculator.purchaseSumByUserAndShopAndAction_Type(users.getId(), shop.getId(), ActionTypeEnum.BASIC_MANUAL);
 
 
                                 System.out.println("7 BASIC_MANUAL********" + sum);
@@ -356,8 +350,7 @@ public class P2BWriteOffCashbackProposedSum implements Command {
                                             actionPartnerBasicDefault.getLevelSumList(),
                                             actionPartnerBasicDefault.accessLevelRatePreviousPurchaseList());
 
-                                    sum = sum.multiply(BigDecimal.valueOf(ratePartnerDefault))
-                                            .divide(new BigDecimal(100), 4, RoundingMode.CEILING);
+                                    sum = sum * ratePartnerDefault / 100;
                                 }
 
                                 shopUserSum.put(shop.getId(), sum);
@@ -373,9 +366,9 @@ public class P2BWriteOffCashbackProposedSum implements Command {
                             break;
                         }
                     }
-//            BigDecimal sum = cashbackShopGroupList.stream().map(cashback -> cashback.getPurchase().getSum()).reduce(BigDecimal.ZERO, BigDecimal::add);
-                    //BigDecimal sum = cashbackShopGroupRepository.purchaseSumByUserAndShop(friend.getId(), partnerGroup.getDebtor().getId(), false);
-//sum = sum.add(cashbackShopGroupRepository.purchaseSumByUserAndShop(friend.getId(), partnerGroup.getDebtor().getId(), true));
+//            BigDecimal sum = purchaseShopGroupList.stream().map(cashback -> cashback.getPurchase().getSum()).reduce(BigDecimal.ZERO, BigDecimal::add);
+                    //BigDecimal sum = purchaseShopGroupRepository.purchaseSumByUserAndShop(friend.getId(), partnerGroup.getDebtor().getId(), false);
+//sum = sum.add(purchaseShopGroupRepository.purchaseSumByUserAndShop(friend.getId(), partnerGroup.getDebtor().getId(), true));
                     BigDecimal basicGroupResultSum;
                     if (userSum.compareTo(freeLimitGroup) > 0) {
                         basicGroupResultSum = freeLimitGroup;
@@ -420,9 +413,9 @@ public class P2BWriteOffCashbackProposedSum implements Command {
                                 }
                             }
                         }
-//            BigDecimal sum = cashbackShopGroupList.stream().map(cashback -> cashback.getPurchase().getSum()).reduce(BigDecimal.ZERO, BigDecimal::add);
-                        //BigDecimal sum = cashbackShopGroupRepository.purchaseSumByUserAndShop(friend.getId(), partnerGroup.getDebtor().getId(), false);
-//sum = sum.add(cashbackShopGroupRepository.purchaseSumByUserAndShop(friend.getId(), partnerGroup.getDebtor().getId(), true));
+//            BigDecimal sum = purchaseShopGroupList.stream().map(cashback -> cashback.getPurchase().getSum()).reduce(BigDecimal.ZERO, BigDecimal::add);
+                        //BigDecimal sum = purchaseShopGroupRepository.purchaseSumByUserAndShop(friend.getId(), partnerGroup.getDebtor().getId(), false);
+//sum = sum.add(purchaseShopGroupRepository.purchaseSumByUserAndShop(friend.getId(), partnerGroup.getDebtor().getId(), true));
                         BigDecimal tryResultSum;
                         if (tryUserSum.compareTo(freeLimitGroup) > 0) {
                             tryResultSum = freeLimitGroup;
@@ -545,7 +538,7 @@ public class P2BWriteOffCashbackProposedSum implements Command {
                 }
                 proposedSum = proposedSum.subtract(withdrawSum);
 
-                ShopGroup partnerShopGroup = shopGroupCacheRepository.findById(maxPartnerGroup.getDebtor());
+                ShopGroup partnerShopGroup = shopGroupCacheRepository.findById(maxPartnerGroup.getShopGroup());
                 for (Shop groupShop : partnerShopGroup.getShopSet()) {
 
                     if (withdrawSum.compareTo(BigDecimal.ZERO) > 0) {

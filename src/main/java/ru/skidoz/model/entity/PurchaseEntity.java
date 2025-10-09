@@ -4,7 +4,7 @@ import ru.skidoz.model.entity.telegram.UserEntity;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -24,7 +24,7 @@ import jakarta.validation.constraints.NotNull;
 public class PurchaseEntity extends AbstractEntity  implements Serializable {
 
     @NotNull
-    private BigDecimal sum;
+    private Integer sum;
 
     private Integer numberCoupon;
 
@@ -42,7 +42,7 @@ public class PurchaseEntity extends AbstractEntity  implements Serializable {
 
     // OneToOne - потому что может быть только одна дефолтовая акция
     @OneToOne(mappedBy="purchase")
-    private PurchaseShopGroupEntity cashbackShopGroup;
+    private PurchaseShopGroupEntity purchaseShopGroup;
 
     public PurchaseEntity(Consumer<PurchaseEntity> builder){
         builder.accept(this);
@@ -60,8 +60,8 @@ public class PurchaseEntity extends AbstractEntity  implements Serializable {
         numberCoupon += addNumberCoupon;
     }
 
-    public void decreaseSum(BigDecimal decreaseSum){
-        this.sum = this.sum.subtract(decreaseSum);
+    public void decreaseSum(Integer decreaseSum){
+        this.sum = this.sum - decreaseSum;
     }
 
     @Override

@@ -14,5 +14,11 @@ import org.springframework.stereotype.Service;
 @Service
 public interface ShopGroupCacheRepository extends JpaRepositoryTest<ShopGroup, Integer> {
 
+    ShopGroup findByName(String name);
+
     List<ShopGroup> shopGroupByIds(List<Integer> shopGroupId);
+
+    void deleteShopGroupByIds(List<Integer> shopGroupId);
+
+    List<ShopGroup> shopGroupByShopAndPartner(Integer shop1Id, Integer shop2Id);
 }

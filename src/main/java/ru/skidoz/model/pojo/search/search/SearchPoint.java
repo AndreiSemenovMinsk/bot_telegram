@@ -14,8 +14,8 @@ import lombok.ToString;
 public class SearchPoint extends AbstractDTO {
 
     // для селекта берется optionId, а для диапазона - minValue-maxValue
-//    private BigDecimal minValue;
-//    private BigDecimal maxValue;
+//    private Integer minValue;
+//    private Integer maxValue;
     private Integer minValue;
     private Integer maxValue;
     private List<Integer> optionIdList = new ArrayList<>();

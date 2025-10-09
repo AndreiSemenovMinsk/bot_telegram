@@ -8,7 +8,7 @@ import lombok.Setter;
 import lombok.ToString;
 import ru.skidoz.model.pojo.AbstractDTO;
 
-import java.math.BigDecimal;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;

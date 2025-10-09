@@ -22,7 +22,6 @@ import ru.skidoz.aop.repo.ProductCacheRepository;
 import ru.skidoz.aop.repo.ShopCacheRepository;
 import ru.skidoz.service.initializers.InitialLevel;
 import ru.skidoz.service.command.Command;
-import ru.skidoz.util.ConnectComparator;
 import com.google.zxing.WriterException;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -42,8 +41,7 @@ import static ru.skidoz.util.Structures.stringBeautifier;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BasketCommand implements Command {
-    @Autowired
-    private ConnectComparator connectComparator;
+
     @Autowired
     private LevelCacheRepository levelCacheRepository;
     @Autowired
@@ -83,17 +81,6 @@ public class BasketCommand implements Command {
 
                 userLevel.getButtonRows().stream().peek(row -> System.out.println("row.getId()***" + row.getId()))
                         .forEach(row-> row.getButtonList().forEach(button -> System.out.println(button.getId()+"+++" + button.getNameRU())));
-
-                return new LevelResponse(Collections.singletonList(new LevelChat(e -> {
-                    e.setChatId(users.getChatId());
-                    e.setUser(users);
-                    e.setLevel(userLevel);
-                })), null, null);
-            } else {
-
-                LevelDTOWrapper userLevel = initialLevel.convertToLevel(connectComparator.compare(update.getCallbackQuery().getData(), level, users),
-                        true,
-                        true);
 
                 return new LevelResponse(Collections.singletonList(new LevelChat(e -> {
                     e.setChatId(users.getChatId());

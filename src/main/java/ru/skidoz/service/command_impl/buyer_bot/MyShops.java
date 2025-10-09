@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import com.mashape.unirest.http.exceptions.UnirestException;
 import ru.skidoz.model.entity.category.LanguageEnum;
 import ru.skidoz.model.pojo.side.Shop;
 import ru.skidoz.model.pojo.telegram.*;
@@ -15,7 +16,6 @@ import ru.skidoz.service.command.Command;
 import ru.skidoz.service.command_impl.shop_bot.ShopBots;
 import ru.skidoz.util.Structures;
 import com.google.zxing.WriterException;
-import com.mashape.unirest.http.exceptions.UnirestException;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,7 +100,8 @@ public class MyShops implements Command {
     }
 
     @Override
-    public LevelResponse runCommand(Update update, Level buyerLevel, User users) throws IOException, WriterException, UnirestException, CloneNotSupportedException {
+    public LevelResponse runCommand(Update update, Level buyerLevel, User users)
+            throws IOException, WriterException, CloneNotSupportedException, UnirestException {
 
         System.out.println();
         System.out.println("++++++++++++++++++++++++++++++++++MyShops+++++++++++++++++++++++++++++++++++++++++");

@@ -1,7 +1,7 @@
 package ru.skidoz.service;
 
 import java.io.IOException;
-import java.math.BigDecimal;
+
 import java.util.Iterator;
 import java.util.Objects;
 
@@ -261,10 +261,10 @@ public class InitialExcelMenu {
 //                                            e.addName(sheet.getRow(finalI).getCell(finalJ + 5).toString());
 //                                        });
 //                                        filterOptionRepository.save(filterOptionMax);
-                                            BigDecimal min = BigDecimal.valueOf(Double.parseDouble(sheet.getRow(i).getCell(j + 4).toString()));
+                                            Integer min = (int) (Double.parseDouble(sheet.getRow(i).getCell(j + 4).toString()) * 100);
                                             filterPoint.setMinValue(min);
 
-                                            BigDecimal max = BigDecimal.valueOf(Double.parseDouble(sheet.getRow(i).getCell(j + 5).toString()));
+                                            Integer max = (int) (Double.parseDouble(sheet.getRow(i).getCell(j + 5).toString()));
                                             filterPoint.setMaxValue(max);
                                         }
 

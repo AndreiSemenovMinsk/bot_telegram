@@ -1,7 +1,7 @@
 package ru.skidoz.service.command_impl.communication.basket.cashback;
 
 import java.io.IOException;
-import java.math.BigDecimal;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

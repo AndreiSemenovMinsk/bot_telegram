@@ -3,35 +3,17 @@ package ru.skidoz.service.initializers;
 
 import static ru.skidoz.model.entity.category.LanguageEnum.RU;
 import static ru.skidoz.service.command.CommandName.ACTION_RATE_WITHDRAW_BASIC;
-import static ru.skidoz.service.command.CommandName.ADD_BOT;
-import static ru.skidoz.service.command.CommandName.ADD_GOODS;
-import static ru.skidoz.service.command.CommandName.ADD_GOODS_DESCRIPTION;
-import static ru.skidoz.service.command.CommandName.ADD_GOODS_END;
-import static ru.skidoz.service.command.CommandName.ADD_GOODS_NAME;
-import static ru.skidoz.service.command.CommandName.ADD_GOODS_PHOTO;
-import static ru.skidoz.service.command.CommandName.ADD_GOODS_PRICE;
-import static ru.skidoz.service.command.CommandName.ADD_TAXI_BOT;
 import static ru.skidoz.service.command.CommandName.ADMIN;
 import static ru.skidoz.service.command.CommandName.CONSTRUCT;
 import static ru.skidoz.service.command.CommandName.CONSTRUCT_ADD;
 import static ru.skidoz.service.command.CommandName.CONSTRUCT_MIN_BILL_SHARE;
 import static ru.skidoz.service.command.CommandName.CONSTRUCT_SARAFAN_SHARE;
-import static ru.skidoz.service.command.CommandName.EDIT_BUTTON_NAME;
-import static ru.skidoz.service.command.CommandName.EDIT_MESSAGE;
-import static ru.skidoz.service.command.CommandName.INITIALIZE;
-import static ru.skidoz.service.command.CommandName.INITIALIZE_CENTRAL;
 import static ru.skidoz.service.command.CommandName.MULTI_ACTION_LEVEL_BASIC;
 import static ru.skidoz.service.command.CommandName.MULTI_LEVEL_QUESTION_BASIC;
 import static ru.skidoz.service.command.CommandName.MULTI_LEVEL_RATE_BASIC;
-import static ru.skidoz.service.command.CommandName.NEW_LEVEL_BUTTON;
-import static ru.skidoz.service.command.CommandName.NEW_LEVEL_END_BUTTON;
-import static ru.skidoz.service.command.CommandName.NEW_LEVEL_INPUT_BUTTON;
 import static ru.skidoz.service.command.CommandName.ONE_LEVEL_RATE_BASIC;
-import static ru.skidoz.service.command.CommandName.TAXI_LOCATION;
-import static ru.skidoz.service.command.CommandName.TAXI_SUBMIT;
 import static ru.skidoz.service.command.CommandName.TOKEN_REQUEST;
 
-import com.google.zxing.WriterException;
 import ru.skidoz.aop.repo.ButtonCacheRepository;
 import ru.skidoz.aop.repo.ButtonRowCacheRepository;
 import ru.skidoz.aop.repo.CategoryCacheRepository;
@@ -47,17 +29,10 @@ import ru.skidoz.model.pojo.category.CategorySuperGroup;
 import ru.skidoz.model.pojo.side.Shop;
 import ru.skidoz.model.pojo.telegram.Button;
 import ru.skidoz.model.pojo.telegram.ButtonRow;
-import ru.skidoz.model.pojo.telegram.Level;
 import ru.skidoz.model.pojo.telegram.Message;
 import ru.skidoz.model.pojo.telegram.User;
-import ru.skidoz.service.MenuCreator;
-import ru.skidoz.util.MenuTypeEnum;
-
-import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -181,7 +156,7 @@ public class SkidozonaStartLevelInitializer {
             ButtonRow row0_2_admin = new ButtonRow(initialLevel.level_ADMIN);
             buttonRowRepository.cache(row0_2_admin);
             initialLevel.level_ADMIN.addRow(row0_2_admin);
-            Button button0_2_0_admin = new Button(row0_2_admin, Map.of(RU, "Создать магазин/сервис"), initialLevel.level_CONSTRUCT.getIdString());
+            Button button0_2_0_admin = new Button(row0_2_admin, Map.of(RU, "Создать магазин/сервис"), initialLevel.level_TOKEN_REQUEST.getIdString());
             buttonRepository.cache(button0_2_0_admin);
             row0_2_admin.add(button0_2_0_admin);
             Button button0_2_1_admin = new Button(row0_2_admin, Map.of(RU, "Админить магазины/сервисы"), initialLevel.level_ADMIN_SHOPS.getIdString());
@@ -204,20 +179,12 @@ public class SkidozonaStartLevelInitializer {
             initialLevel.level_TOKEN_REQUEST.addMessage(message076_1);
 
 
-            initialLevel.level_INITIALIZE_CENTRAL.updateLevel(Users, INITIALIZE_CENTRAL.name(), initialLevel.level_TOKEN_REQUEST, true);
-            levelRepository.cache(initialLevel.level_INITIALIZE_CENTRAL);
-            Message message06_1 = new Message(initialLevel.level_INITIALIZE_CENTRAL, Map.of(RU, "Введите название магазина/сервиса"));
-            messageRepository.cache(message06_1);
-            initialLevel.level_INITIALIZE_CENTRAL.addMessage(message06_1);
-
-
-
 
 
 
             //////////СОЗДАНИЕ МАГАЗИНА С ТОВАРАМИ
 
-            initialLevel.level_CONSTRUCT.updateLevel(Users, CONSTRUCT.name(), initialLevel.level_INITIALIZE_CENTRAL, false);
+            initialLevel.level_CONSTRUCT.updateLevel(Users, CONSTRUCT.name(), initialLevel.level_TOKEN_REQUEST, false);
             levelRepository.cache(initialLevel.level_CONSTRUCT);
             Message message6_1 = new Message(initialLevel.level_CONSTRUCT, Map.of(RU, "Введите название магазина/сервиса"));
             messageRepository.cache(message6_1);
@@ -320,7 +287,7 @@ public class SkidozonaStartLevelInitializer {
 
             System.out.println("PRE addFinalButton");
 
-                initialLevel.addFinalButton(initialLevel.level_INITIALIZE_CENTRAL, initialLevel.level_INITIALIZE_CENTRAL);
+                initialLevel.addFinalButton(initialLevel.level_ADMIN, initialLevel.level_ADMIN);
 
                 System.out.println("POST addFinalButton");
 

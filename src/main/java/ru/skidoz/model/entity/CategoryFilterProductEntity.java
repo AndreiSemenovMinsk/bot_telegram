@@ -1,7 +1,7 @@
 package ru.skidoz.model.entity;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
+
 import java.util.Objects;
 import java.util.function.Consumer;
 
@@ -24,7 +24,7 @@ public class CategoryFilterProductEntity extends AbstractEntity  implements Seri
 
     private Integer value;
 
-    private BigDecimal rawValue;
+    private Integer rawValue;
 
     @NotNull
     @ManyToOne
@@ -44,20 +44,20 @@ public class CategoryFilterProductEntity extends AbstractEntity  implements Seri
 
     }
 
-    public void setRawValue(BigDecimal rawValue) {
+    public void setRawValue(Integer rawValue) {
         this.rawValue = rawValue;
 
-        BigDecimal resultValue;
-        if (rawValue.compareTo(filterPoint.getMinValue()) < 0) {
+        Integer resultValue;
+        if (rawValue < filterPoint.getMinValue()) {
             resultValue = filterPoint.getMinValue();
-        } else if (rawValue.compareTo(filterPoint.getMaxValue()) > 0) {
+        } else if (rawValue > filterPoint.getMaxValue()) {
             resultValue = filterPoint.getMaxValue();
         } else {
             resultValue = rawValue;
         }
 
-        this.value = resultValue.subtract(filterPoint.getMinValue())
-                .multiply(BigDecimal.valueOf(1000)).divide(filterPoint.getMaxValue().subtract(filterPoint.getMinValue())).intValue();
+        this.value = (resultValue - filterPoint.getMinValue()) *
+                1000 / filterPoint.getMaxValue() - filterPoint.getMinValue();
 //        this.hashCode = this.value * 2_000_000 + this.id.intValue();
     }
 

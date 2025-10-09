@@ -1,7 +1,7 @@
 package ru.skidoz.model.entity;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -44,7 +44,7 @@ public class ProductEntity extends AbstractGroupEntity  implements Serializable 
     private String bigText;
 
     //@NotNull
-    private BigDecimal price;
+    private Integer price;
 
     private Integer priceHash;
 
@@ -54,7 +54,7 @@ public class ProductEntity extends AbstractGroupEntity  implements Serializable 
     private byte[] image;
 
     //@NotNull
-    private BigDecimal discount;
+    private Integer discount;
 
     //@NotNull
     private boolean productService;
@@ -134,7 +134,7 @@ public class ProductEntity extends AbstractGroupEntity  implements Serializable 
         super();
     }
 
-    public void setPrice(BigDecimal price){
+    public void setPrice(Integer price){
         if (price != null) {
             this.priceHash = price.intValue();
             this.price = price;

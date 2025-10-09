@@ -1,7 +1,7 @@
 package ru.skidoz.service.command_impl.construct_shop;
 
 import java.io.IOException;
-import java.math.BigDecimal;
+
 import java.util.Collections;
 import java.util.Map;
 
@@ -50,7 +50,7 @@ public class ConstructAdd implements Command {
         System.out.println();
 
         try {
-            long value = Structures.parseLong(inputText);
+            int value = Structures.parseInt(inputText);
 
             resultLevel = initialLevel.convertToLevel(level,
                     true,
@@ -59,7 +59,7 @@ public class ConstructAdd implements Command {
             System.out.println();
 
             Shop shop = shopCacheRepository.findById(users.getCurrentConstructShop());
-            shop.setSarafanShare(BigDecimal.valueOf(value > 100 ? 100 : value));
+            shop.setSarafanShare(value > 100 ? 100 : value);
             shop.setActive(true);
             shopCacheRepository.save(shop);
 

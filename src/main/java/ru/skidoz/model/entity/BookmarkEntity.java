@@ -1,7 +1,7 @@
 package ru.skidoz.model.entity;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
+
 import java.time.Instant;
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -27,7 +27,7 @@ public class BookmarkEntity extends AbstractEntity  implements Serializable {
     @NotNull
     private boolean priceUpdated = true;
 
-    private BigDecimal bidPrice;
+    private Integer bidPrice;
 
     @NotNull
     @ManyToOne

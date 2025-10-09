@@ -1,7 +1,7 @@
 package ru.skidoz.model.pojo.side;
 
 
-import java.math.BigDecimal;
+
 import java.util.function.Consumer;
 
 import ru.skidoz.model.entity.category.LanguageEnum;
@@ -35,12 +35,12 @@ public class Product extends AbstractDTO {
     private boolean active = false;
     private String shortText;
     private String bigText;
-    private BigDecimal price;
+    private Integer price;
 
     private Integer priceHash;
     @JsonIgnore
     private byte[] image;
-    private BigDecimal discount;
+    private Integer discount;
     private boolean productService;
     private Long duration;
     private Shop shop;

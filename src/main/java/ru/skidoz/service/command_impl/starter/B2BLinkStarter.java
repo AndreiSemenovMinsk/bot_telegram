@@ -46,7 +46,7 @@ public class B2BLinkStarter extends LinkStarter {
         final int secretId = Integer.parseInt(callback);
         final int addingShopId = user.getCurrentAdminShop();
 
-        LinkStarterKeeper linkStarterKeeper = linkStarterKeeperCacheRepository.findBySecretIdAndAddingShop_Id(secretId, addingShopId);
+        LinkStarterKeeper linkStarterKeeper = linkStarterKeeperCacheRepository.findBySecretCode(secretId);
 
         final Integer shopGroupId = linkStarterKeeper.getParameter1();
         final Integer initiatorShopId = linkStarterKeeper.getParameter2();

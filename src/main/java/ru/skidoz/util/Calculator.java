@@ -7,7 +7,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,7 +54,7 @@ public class Calculator {
     }
 
 
-    public int getMax(int shopId, int buyerId, int withdrawLimit, boolean finalWithdrawal) {
+    public int getMaxFromPartners(int shopId, int buyerId, int withdrawLimit, boolean finalWithdrawal) {
 
         int freeLimit = withdrawLimit;
 
@@ -64,7 +63,6 @@ public class Calculator {
 
         List<Quattro> topInPurchase = new ArrayList<>();
         List<Quattro> otherPurchase = new ArrayList<>();
-        AtomicInteger index = new AtomicInteger();
         Set<Integer> shopGroupSet = new HashSet<>();
 
         final Map<Integer, List<PurchaseShopGroup>> map = purchaseShopGroups.stream().collect(
@@ -73,14 +71,14 @@ public class Calculator {
                         Collectors.collectingAndThen(
                                 Collectors.toList(), list -> {
 
-                                    var sortedList = list
+                                    var purchaseShopGroupSum = list
                                             .stream()
                                             .sorted(Comparator
                                                     .comparingInt(PurchaseShopGroup::getSum)
                                                     .reversed())
                                             .collect(Collectors.toList());
 
-                                    final PurchaseShopGroup topPurchaseShopGroup = sortedList.get(0);
+                                    final PurchaseShopGroup topPurchaseShopGroup = purchaseShopGroupSum.get(0);
                                     final int sum = topPurchaseShopGroup.getSum();
 
                                     topInPurchase.add(
@@ -92,18 +90,18 @@ public class Calculator {
 
                                     shopGroupSet.add(topPurchaseShopGroup.getShopGroup());
 
-                                    for (int i = 1; i < sortedList.size() && i < 10; i++) {
+                                    for (int i = 1; i < purchaseShopGroupSum.size() && i < 10; i++) {
                                         otherPurchase.add(
                                                 new Quattro(
-                                                        sortedList.get(i).getSum(),
-                                                        (sum - sortedList.get(i).getSum()) / sum,
+                                                        purchaseShopGroupSum.get(i).getSum(),
+                                                        // убывание ценности этого варианта - по размеру возможного списания
+                                                        (sum - purchaseShopGroupSum.get(i).getSum()) / sum,
                                                         topPurchaseShopGroup.getPurchase(),
                                                         topPurchaseShopGroup.getShopGroup()
                                                 )
                                         );
                                     }
-                                    index.getAndIncrement();
-                                    return sortedList;
+                                    return purchaseShopGroupSum;
                                 })));
 
         List<ShopGroup> shopGroups = shopGroupCacheRepository.shopGroupByIds(new ArrayList<>(
@@ -126,7 +124,7 @@ public class Calculator {
                 resultQuatros.add(quattro);
                 shopGroupLimits.put(quattro.shopGroupId, shopGroupLimits.get(quattro.shopGroupId) - quattro.sum);
             }
-
+            // если неиспользованный - выброшенный - остаток больше половины
             if (quattro.rate > 0.5) {
                 break;
             }

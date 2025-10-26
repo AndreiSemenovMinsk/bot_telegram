@@ -64,7 +64,6 @@ import static ru.skidoz.util.TelegramElementsUtil.qrInputStream;
 @Component
 @RequiredArgsConstructor
 public class TelegramBotWebhook {
-
     @Autowired
     private TelegramProcessor telegramProcessor;
     @Autowired
@@ -79,21 +78,15 @@ public class TelegramBotWebhook {
     private InitialLevel initialLevel;
     @Autowired
     private MessageCacheRepository messageCacheRepository;
-    public Map<User, byte[]> excels = new HashMap<>();
+    @Autowired
+    private Sender sender;
 
-    private List<Runner> runners = new ArrayList<>();
+    public Map<User, byte[]> excels = new HashMap<>();
 
     private final ThreadPoolExecutor service = new MyThreadPoolExecutor(
             Runtime
                     .getRuntime()
                     .availableProcessors(), Executors.defaultThreadFactory());
-
-    @PostConstruct
-    public void onStart() {
-        for (int i = 0; i < 16; i++) {
-            runners.add(new Runner());
-        }
-    }
 
     @SneakyThrows
     public BotApiMethod onUpdateReceived(Update update, String id) {
@@ -182,10 +175,10 @@ public class TelegramBotWebhook {
 
         long timeNowNewLevelDrawer = System.currentTimeMillis();
 
-        addAsync(levelResponse);
+        sender.addAsync(levelResponse);
 
         if (newLevelAfterSave != null) {
-            addAfterSave(levelResponse);
+            sender.addAfterSave(levelResponse);
         }
 
         System.out.println("END full time---*" + (System.currentTimeMillis() - timeNow)
@@ -261,221 +254,6 @@ public class TelegramBotWebhook {
         return users;
     }
 
-    private static SendPhoto sendPhoto(Long chatId, InputStream inputStream, String subText) {
-        SendPhoto messagePhoto2 = new SendPhoto();
-        messagePhoto2.setChatId(chatId.toString());
-        messagePhoto2.setPhoto(new InputFile(inputStream, subText));
-        messagePhoto2.setCaption(subText);
 
-        return messagePhoto2;
-    }
-
-
-    private final BasicThreadFactory factory = new BasicThreadFactory.Builder()
-            .namingPattern("%d")
-            .priority(Thread.MAX_PRIORITY)
-            .build();
-    private final ThreadPoolExecutor executorService = new MyThreadPoolExecutor(16, factory);
-    private ConcurrentLinkedQueue<LevelResponse> WRITE_QUEUE = new ConcurrentLinkedQueue<>();
-    private ConcurrentLinkedQueue<LevelResponse> WRITE_AFTER_SAVE_QUEUE = new ConcurrentLinkedQueue<>();
-
-    void initExecutionAsync() {
-        executorService.submit(() -> {
-            LevelResponse levelChatList = null;
-            while ((levelChatList = WRITE_QUEUE.poll()) != null) {
-                try {
-                    final int threadInd = Integer.parseInt(Thread.currentThread().getName());
-                    Runner r = runners.get(threadInd);
-                    r.processSend(levelChatList.getLevelChats(), levelChatList.getKey());
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    java.lang.System.out.println(e);
-                }
-            }
-        });
-    }
-
-    public void initExecutionAfterSave() {
-        executorService.submit(() -> {
-            LevelResponse levelChatList = null;
-            while ((levelChatList = WRITE_AFTER_SAVE_QUEUE.poll()) != null) {
-                try {
-                    final int threadInd = Integer.parseInt(Thread.currentThread().getName());
-                    Runner r = runners.get(threadInd);
-                    r.processSend(levelChatList.getLevelChatsAfterSave(), levelChatList.getKey());
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    java.lang.System.out.println(e);
-                }
-            }
-        });
-    }
-
-    public void addAsync(LevelResponse levelResponse) {
-        WRITE_QUEUE.offer(levelResponse);
-        initExecutionAsync();
-    }
-
-    private void addAfterSave(LevelResponse levelResponse) {
-        WRITE_AFTER_SAVE_QUEUE.offer(levelResponse);
-    }
-
-
-    public class Runner extends TelegramWebhookBot {
-
-        private String key;
-
-        @Override
-        public String getBotUsername() {
-            return "Skido_Bot";
-        }
-
-        @Override
-        public String getBotToken() {
-            return this.key;
-        }
-
-        @Override
-        public BotApiMethod onWebhookUpdateReceived(Update update) {
-            return null;
-        }
-
-        @Override
-        public String getBotPath() {
-            return null;
-        }
-
-        public void processSend(List<LevelChat> levelChatList, String secretId) {
-
-                for (LevelChat levelChat : levelChatList) {
-                    try {
-                        this.key = secretId;
-
-                        Long chatId = levelChat.getChatId();
-                        LevelDTOWrapper newLevel = levelChat.getLevel();
-                        List<ButtonRow> buttonRows = newLevel.getButtonRows();
-                        List<Message> levelMessages = newLevel.getMessages();
-
-                        LanguageEnum language;
-                        if (levelChat.getUser() != null) {
-                            language = Objects.requireNonNullElse(
-                                    levelChat.getUser().getLanguage(),
-                                    RU);
-                        } else {
-                            language = RU;
-                        }
-
-                        boolean buttonsExist = buttonRows.size() > 0;
-                        int levelMessagesSize = levelMessages.size();
-
-                        String messageText = null;
-
-                        if (buttonsExist && levelMessages.size() > 0) {
-                            messageText = levelMessages
-                                    .get(levelMessages.size() - 1)
-                                    .getName(language);
-                        }
-
-                        if (messageText != null) {
-                            levelMessagesSize--;
-                        }
-
-                        for (int i = 0; i < levelMessagesSize; i++) {
-
-                            Message message = levelMessages.get(i);
-
-                            if (message.getImage() != null) {
-
-                                SendPhoto sendPhoto = sendPhoto(
-                                        chatId,
-                                        new ByteArrayInputStream(message.getImage()),
-                                        message.getImageDescription());
-                                execute(sendPhoto);
-                            }
-
-                            if (message.getText(language) != null) {
-                                SendMessage messageSend = new SendMessage();
-                                messageSend.setChatId(chatId.toString());
-                                messageSend.setText(message.getText(language));
-
-                                long timeNow = System.currentTimeMillis();
-                                execute(messageSend);
-
-                                System.out.println();
-                                System.out.println("********messageSend time*******"
-                                        + (System.currentTimeMillis() - timeNow));
-                            }
-
-                            if (message.getLatitude() != null) {
-                                SendLocation location = new SendLocation();
-                                location.setChatId(chatId.toString());
-                                location.setLongitude(message.getLongitude());
-                                location.setLatitude(message.getLatitude());
-                                execute(location);
-                            }
-                        }
-
-                        if (buttonsExist) {
-                            SendMessage buttonMessage = new SendMessage();
-                            InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
-                            List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
-
-                            System.out.println("buttonRows.size()" + buttonRows.size());
-
-                            for (ButtonRow buttonRow : buttonRows) {
-
-                                System.out.println("buttonRow-------" + buttonRow);
-
-                                List<InlineKeyboardButton> keyboardButtonsRow = new ArrayList<>();
-                                for (int j = 0; j < buttonRow.getButtonList().size(); j++) {
-
-                                    Button javaButton = buttonRow.getButtonList().get(j);
-
-                                    System.out.println(javaButton);
-
-                                    if (javaButton.getDisplay()) {
-
-                                        InlineKeyboardButton keyboardButton = new InlineKeyboardButton();
-                                        keyboardButton.setText(javaButton.getName(language));
-
-                                        if (javaButton.getWebApp() != null) {
-                                            keyboardButton.setWebApp(new WebAppInfo(javaButton.getWebApp()));
-                                            keyboardButton.setUrl(javaButton.getWebApp());
-                                        } else {
-                                            keyboardButton.setCallbackData(javaButton.getCallback());
-                                        }
-
-                                        keyboardButtonsRow.add(keyboardButton);
-                                    } else {
-                                        javaButton.setDisplay(true);
-                                    }
-                                }
-                                rowList.add(keyboardButtonsRow);
-                            }
-                            inlineKeyboardMarkup.setKeyboard(rowList);
-
-                            buttonMessage.setReplyMarkup(inlineKeyboardMarkup);
-                            buttonMessage.setChatId(chatId.toString());
-
-                            buttonMessage.setText(StringUtils.defaultIfEmpty(
-                                    messageText,
-                                    "Опции: "));
-
-                            execute(buttonMessage);
-                        }
-                    } catch (TelegramApiException e) {
-                        System.out.println(e);
-                        e.printStackTrace();
-                    } catch (Exception e) {
-                        System.out.println(e);
-                        e.printStackTrace();
-                    }
-                }
-
-                System.out.println(System.currentTimeMillis());
-        }
-    }
 
 }

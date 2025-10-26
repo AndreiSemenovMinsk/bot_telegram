@@ -80,6 +80,7 @@ import static ru.skidoz.service.command.CommandName.WITHDRAW_PARTNER;
 import static ru.skidoz.service.command.CommandName.WITHDRAW_PARTNER_END;
 import static ru.skidoz.service.command.CommandName.WITHDRAW_PARTNER_GROUP;
 import static ru.skidoz.service.command.CommandName.WITHDRAW_PARTNER_RESP;
+import static ru.skidoz.service.initializers.InitialLevel.Users;
 
 import ru.skidoz.aop.repo.ButtonCacheRepository;
 import ru.skidoz.aop.repo.ButtonRowCacheRepository;
@@ -105,8 +106,6 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class AdminLevelInitializer {
-
-    public static User Users = null;
 
     @Autowired
     private MenuCreator menuCreator;

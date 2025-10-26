@@ -14,15 +14,15 @@ public interface PartnerGroupRepository extends JpaRepository<PartnerGroupEntity
 /*
 if there is no such a link - we should not change anything
  */
-    PartnerGroupEntity findFirstByCreditor_IdAndDebtor_Id(Integer/*Shop*/ creditor, Integer/*ShopGroup*/ debtor);
+//    PartnerGroupEntity findFirstByCreditor_IdAndDebtor_Id(Integer/*Shop*/ creditor, Integer/*ShopGroup*/ debtor);
 
-    List<PartnerGroupEntity> findAllByCreditor_Id(Integer/*Shop*/ creditor);
+//    List<PartnerGroupEntity> findAllByCreditor_Id(Integer/*Shop*/ creditor);
 
-    @Query(value = "SELECT * FROM partner_group " +
-            " INNER JOIN shop_group_shop_set ON (partner_group.debtor_id=shop_group_shop_set.shop_group_id) " +
-            " WHERE partner_group.creditor_id = :creditorId AND shop_group_shop_set.shop_id = :debtorId ",
-            nativeQuery = true)
-    List<PartnerGroupEntity> findAllByCreditorAndDebtorInGroup(Integer creditorId, Integer debtorId);
+//    @Query(value = "SELECT * FROM partner_group " +
+//            " INNER JOIN shop_group_shop_set ON (partner_group.debtor_id=shop_group_shop_set.shop_group_id) " +
+//            " WHERE partner_group.creditor_id = :creditorId AND shop_group_shop_set.shop_id = :debtorId ",
+//            nativeQuery = true)
+//    List<PartnerGroupEntity> findAllByCreditorAndDebtorInGroup(Integer creditorId, Integer debtorId);
 
     List<PartnerGroupEntity> findAll();
 

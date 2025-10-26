@@ -25,7 +25,7 @@ public interface CashbackCacheRepository extends JpaRepositoryTest<Cashback, Int
 
     List<Cashback> findAllByUser_IdAndShop_IdAndAction_Type(Integer  buyerId, Integer  shopId, ActionTypeEnum actionTypeEnum);
 
-    Integer purchaseSumByUserAndShopAndAction_Type(Integer  buyerId, Integer  shopId, ActionTypeEnum actionTypeEnum);
+//    Integer purchaseSumByUserAndShopAndAction_Type(Integer  buyerId, Integer  shopId, ActionTypeEnum actionTypeEnum);
 
     void deleteById(Integer id, Integer purchaseId, Integer actionId, ActionTypeEnum actionTypeEnum);
 

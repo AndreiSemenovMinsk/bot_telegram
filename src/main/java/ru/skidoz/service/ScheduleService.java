@@ -115,7 +115,7 @@ public class ScheduleService {
 
     public static Integer timePoint = 0;
     @Autowired
-    public TelegramBotWebhook telegramBot;
+    public Sender sender;
     @Autowired
     private CacheAspect cacheAspect;
 
@@ -509,7 +509,7 @@ public class ScheduleService {
         levelWrapper.setLevel(level);
 
         final String runner = shopCacheRepository.findById(user.getFirstRunnerShop()).getSecretId();
-        telegramBot.addAsync(
+        sender.addAsync(
                 new LevelResponse(
                         new ArrayList<>(Collections.singletonList(new LevelChat(e -> {
             e.setLevel(levelWrapper);

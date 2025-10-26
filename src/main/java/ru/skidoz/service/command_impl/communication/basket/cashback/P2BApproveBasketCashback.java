@@ -96,12 +96,12 @@ public class P2BApproveBasketCashback implements Command {
             //мы разбиваем все товары по акциям
 
             List<Product> productDTOS = new ArrayList<>();
-            Map<Integer, List<BigDecimal>> actionProductSumByProducts = new HashMap<>();
-            Map<Integer, BigDecimal> actionProductSumVariant = new HashMap<>();
-            BigDecimal max = BigDecimal.ZERO;
+            Map<Integer, List<Integer>> actionProductSumByProducts = new HashMap<>();
+            Map<Integer, Integer> actionProductSumVariant = new HashMap<>();
+            Integer max = 0;
 
 
-            Action bestAction = optimizator.getOptimal(
+            Action bestAction = optimizator.getOptimalFromBasket(
                     usersCurrentConversation.getId(),
                     shopInitiator.getId(),
                     productDTOS,
@@ -111,10 +111,10 @@ public class P2BApproveBasketCashback implements Command {
                     max);
 
 
-            List<BigDecimal> sums = actionProductSumByProducts.get(bestAction.getId());
-            BigDecimal sum = actionProductSumVariant.get(bestAction.getId());
+            List<Integer> sums = actionProductSumByProducts.get(bestAction.getId());
+            Integer sum = actionProductSumVariant.get(bestAction.getId());
             User finalFriend = null;
-            BigDecimal accumulatedFriendSum = BigDecimal.ZERO.stripTrailingZeros();
+            Integer accumulatedFriendSum = 0;
 
             for (int i = 0; i < productDTOS.size(); i++) {
                 System.out.println();
@@ -138,7 +138,7 @@ public class P2BApproveBasketCashback implements Command {
 
                 cashbackCacheRepository.save(cashbackDefault);
 
-                partnerGroupCacheRepository.findAllByCreditor_Id(shopInitiator.getId()).forEach(partnerGroup -> {
+                partnerGroupCacheRepository.findAllByShop_Id(shopInitiator.getId()).forEach(partnerGroup -> {
                     PurchaseShopGroup purchaseShopGroupDefault = new PurchaseShopGroup(e -> {
                         e.setShopGroup(partnerGroup.getShopGroup());
                         e.setShop(shopInitiator.getId());
@@ -157,9 +157,9 @@ public class P2BApproveBasketCashback implements Command {
                 final User friend = friendA;
 
                 if (friend != null) {
-                    BigDecimal friendSum = sum.multiply(shopInitiator.getSarafanShare()).divide(new BigDecimal(100), 4, RoundingMode.CEILING);
+                    int friendSum = sum * shopInitiator.getSarafanShare() / 100;
 
-                    accumulatedFriendSum = accumulatedFriendSum.add(friendSum);
+                    accumulatedFriendSum += friendSum;
 
                     finalFriend = friend;
 //                    Users friendEntity = new Users(friend.getId());
@@ -179,7 +179,7 @@ public class P2BApproveBasketCashback implements Command {
 
                     cashbackCacheRepository.save(cashbackFriend);
 
-                    partnerGroupCacheRepository.findAllByCreditor_Id(shopInitiator.getId()).forEach(partnerGroup -> {
+                    partnerGroupCacheRepository.findAllByShop_Id(shopInitiator.getId()).forEach(partnerGroup -> {
                         PurchaseShopGroup purchaseShopGroupDefault = new PurchaseShopGroup(e -> {
                             e.setShopGroup(partnerGroup.getShopGroup());
                             e.setShop(shopInitiator.getId());
@@ -237,7 +237,7 @@ public class P2BApproveBasketCashback implements Command {
 
                 CashbackWriteOff cashbackWriteOff = cashbackWriteOffCacheRepository.findById(Integer.valueOf(code));
 
-                BigDecimal sum1 = cashbackWriteOff.getSum();
+                int sum1 = cashbackWriteOff.getSum();
 
                 final List<Cashback> cashbacks = cashbackCacheRepository
                         .findAllByUser_IdAndAction_Id(usersCurrentConversation.getId(), cashbackWriteOff.getBestAction());
@@ -247,12 +247,12 @@ public class P2BApproveBasketCashback implements Command {
 
                     final Purchase purchaseByAction = purchaseCacheRepository.findById(cashback.getPurchase());
 
-                    if (sum1.compareTo(purchaseByAction.getSum()) > 0) {
+                    if (sum1 > purchaseByAction.getSum()) {
 
                         purchaseCacheRepository.delete(purchaseByAction);
-                        sum1 = sum1.subtract(purchaseByAction.getSum());
+                        sum1 -=purchaseByAction.getSum();
                     } else {
-                        purchaseByAction.setSum(purchaseByAction.getSum().subtract(sum1));
+                        purchaseByAction.setSum(purchaseByAction.getSum() - sum1);
                         break;
                     }
                     purchaseCacheRepository.save(purchaseByAction);

@@ -22,25 +22,25 @@ public interface CashbackRepository extends JpaRepository<CashbackEntity, Intege
     List<CashbackEntity> findAllByBuyerAndShopBuyer(@Param("buyer") UserEntity buyer, @Param("shopBuyer") UserEntity shopBuyer);
 
 
-    @Query(value = "select * from cashback \n" +
-            "inner join action on (cashback.action_id=action.id) \n" +
-            "inner join shop on (cashback.shop_id=shop.id) \n" +
-            "inner join partner on (partner.debtor_id=shop.id) \n" +
-            "where partner.creditor_id=:shopId " +
-            "and cashback.user_id=:buyerId " +
-            "and action.type=:actionType",
-            nativeQuery = true)
-    List<CashbackEntity> findAllByBuyerAndShopPartners(@Param("buyerId") Integer buyerId, @Param("shopId") Integer shopId, @Param("actionType") String actionType);
+//    @Query(value = "select * from cashback \n" +
+//            "inner join action on (cashback.action_id=action.id) \n" +
+//            "inner join shop on (cashback.shop_id=shop.id) \n" +
+//            "inner join partner on (partner.debtor_id=shop.id) \n" +
+//            "where partner.creditor_id=:shopId " +
+//            "and cashback.user_id=:buyerId " +
+//            "and action.type=:actionType",
+//            nativeQuery = true)
+//    List<CashbackEntity> findAllByBuyerAndShopPartners(@Param("buyerId") Integer buyerId, @Param("shopId") Integer shopId, @Param("actionType") String actionType);
 
 
-    @Query(value = "select SUM(purhase.sum) FROM purhase \n" +
-            "inner join cashback on (purhase.id=cashback.purсhase_id) \n" +
-            "inner join action on (cashback.action_id=action.id) \n" +
-            "WHERE  purhase.shop_id=:shopId AND " +
-            " purhase.user_id=:buyerId " +
-            "AND action.type=:actionType",
-            nativeQuery = true)
-    Integer purchaseSumByUserAndShopAndAction_Type(@Param("buyerId") Integer buyerId, @Param("shopId") Integer shopId, @Param("actionType") String actionTypeEnum);
+//    @Query(value = "select SUM(purhase.sum) FROM purhase \n" +
+//            "inner join cashback on (purhase.id=cashback.purсhase_id) \n" +
+//            "inner join action on (cashback.action_id=action.id) \n" +
+//            "WHERE  purhase.shop_id=:shopId AND " +
+//            " purhase.user_id=:buyerId " +
+//            "AND action.type=:actionType",
+//            nativeQuery = true)
+//    Integer purchaseSumByUserAndShopAndAction_Type(@Param("buyerId") Integer buyerId, @Param("shopId") Integer shopId, @Param("actionType") String actionTypeEnum);
 
 
     List<CashbackEntity> findAllByUser_IdAndShop_Id(Integer buyerId, Integer shopId);

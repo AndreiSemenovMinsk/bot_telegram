@@ -79,7 +79,7 @@ public class P2BWriteOffCouponApprove implements Command {
 
             Purchase purchase = new Purchase(e -> {
                 e.setUser(users.getId());
-                e.setSum(BigDecimal.ZERO);
+                e.setSum(0);
                 e.setShop(shopInitiator.getId());
                 e.setNumberCoupon(-number);
             });

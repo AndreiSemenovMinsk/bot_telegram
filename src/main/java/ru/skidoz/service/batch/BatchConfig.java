@@ -2,6 +2,7 @@ package ru.skidoz.service.batch;
 
 import com.google.zxing.WriterException;
 import ru.skidoz.service.ScheduleService;
+import ru.skidoz.service.Sender;
 import ru.skidoz.service.TelegramBotWebhook;
 
 import java.io.IOException;
@@ -34,7 +35,7 @@ public class BatchConfig {
     @Autowired
     private ScheduleService scheduleService;
     @Autowired
-    private TelegramBotWebhook telegramBotWebhook;
+    private Sender sender;
 
     private static boolean systemInitialize = false;
     private static boolean systemRefresh = false;
@@ -80,7 +81,7 @@ public class BatchConfig {
 
         scheduleService.save();
 
-        telegramBotWebhook.initExecutionAfterSave();
+        sender.initExecutionAfterSave();
 
         if (reminder) {
             scheduleService.reminder();

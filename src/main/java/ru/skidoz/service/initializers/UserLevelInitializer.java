@@ -37,6 +37,7 @@ import static ru.skidoz.service.command.CommandName.INITIALIZE;
 import static ru.skidoz.service.command.CommandName.INITIALIZE0;
 import static ru.skidoz.service.command.CommandName.LANGUAGER;
 import static ru.skidoz.service.command.CommandName.LANGUAGES;
+import static ru.skidoz.service.initializers.InitialLevel.Users;
 import static ru.skidoz.util.TelegramElementsUtil.qrInputStream;
 import static ru.skidoz.service.command.CommandName.ADD_BASKET;
 import static ru.skidoz.service.command.CommandName.ADD_BOOKMARK;
@@ -64,8 +65,6 @@ import static ru.skidoz.service.command.CommandName.SEARCH_RESULT_PRODUCT;
  */
 @Component
 public class UserLevelInitializer {
-
-    public static User Users = null;
 
     @Autowired
     private MenuCreator menuCreator;

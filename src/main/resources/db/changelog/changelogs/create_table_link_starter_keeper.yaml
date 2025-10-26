@@ -11,7 +11,7 @@ databaseChangeLog:
                   autoIncrement: true
                   constraints:
                     primaryKey: true
-                    primaryKeyName: shop_pk
+                    primaryKeyName: link_starter_keeper_pk
                     nullable: false
               - column:
                   name: time
@@ -22,14 +22,14 @@ databaseChangeLog:
                   name: parameter1
                   type: int
               - column:
-                  name: name
-                  type: parameter2
+                  name: parameter2
+                  type: int
               - column:
-                  name: name
-                  type: parameter3
+                  name: parameter3
+                  type: int
               - column:
-                  name: name
-                  type: secret_code
+                  name: secret_code
+                  type: int
             tableName: link_starter_keeper
         - createIndex:
             #            clustered:  true

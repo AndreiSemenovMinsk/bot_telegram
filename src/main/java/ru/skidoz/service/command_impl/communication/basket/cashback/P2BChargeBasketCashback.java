@@ -82,11 +82,11 @@ public class P2BChargeBasketCashback implements Command {
 
             List<Action> suitableActions = new ArrayList<>();
             List<Product> productDTOS = new ArrayList<>();
-            Map<Integer, List<BigDecimal>> actionProductSumByProducts = new HashMap<>();
-            Map<Integer, BigDecimal> actionProductSumVariant = new HashMap<>();
-            BigDecimal max = BigDecimal.ZERO;
+            Map<Integer, List<Integer>> actionProductSumByProducts = new HashMap<>();
+            Map<Integer, Integer> actionProductSumVariant = new HashMap<>();
+            Integer max = 0;
 
-            Action bestAction = optimizator.getOptimal(
+            Action bestAction = optimizator.getOptimalFromBasket(
                     buyer.getId(),
                     shopInitiator.getId(),
                     productDTOS,

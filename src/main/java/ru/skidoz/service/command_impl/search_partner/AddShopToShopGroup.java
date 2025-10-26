@@ -18,7 +18,7 @@ import ru.skidoz.model.pojo.telegram.Message;
 import ru.skidoz.model.pojo.telegram.ShopGroup;
 import ru.skidoz.model.pojo.telegram.ShopGroupAddVote;
 import ru.skidoz.model.pojo.telegram.User;
-import ru.skidoz.service.TelegramBotWebhook;
+import ru.skidoz.service.Sender;
 import ru.skidoz.service.command.Command;
 import ru.skidoz.service.initializers.InitialLevel;
 
@@ -50,7 +50,7 @@ public class AddShopToShopGroup implements Command {
     @Autowired
     private InitialLevel initialLevel;
     @Autowired
-    public TelegramBotWebhook telegramBot;
+    public Sender sender;
 
     @Override
     public LevelResponse runCommand(Update update, Level level, User users)
@@ -126,7 +126,7 @@ public class AddShopToShopGroup implements Command {
                     levelWrapper.setLevel(levelPartner);
 
                     final String runner = shopCacheRepository.findById(userPartner.getFirstRunnerShop()).getSecretId();
-                    telegramBot.addAsync(
+                    sender.addAsync(
                             new LevelResponse(
                                     new ArrayList<>(Collections.singletonList(new LevelChat(e -> {
                                         e.setLevel(levelWrapper);

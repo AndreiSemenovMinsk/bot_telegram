@@ -78,7 +78,7 @@ public class MonitorResp implements Command {
                 product.setCategory(bigCategory.getId());
                 product.setCategoryGroup(bigCategoryGroup.getId());
                 product.setCategorySuperGroup(bigCategorySuperGroup.getId());
-                product.setPrice(BigDecimal.valueOf(rm.getBidPrice()));
+                product.setPrice(rm.getBidPrice());
                 productCacheRepository.save(product);
 
                 Bookmark newBookmark = new Bookmark(e -> {

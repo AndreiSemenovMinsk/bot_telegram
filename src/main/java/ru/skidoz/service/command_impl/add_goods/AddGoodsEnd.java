@@ -46,7 +46,7 @@ public class AddGoodsEnd implements Command {
 
         try {
             Product product = productCacheRepository.findById(shopInitiator.getCurrentCreatingProduct());
-            product.setPrice(BigDecimal.valueOf(Structures.parseLong(inputText)));
+            product.setPrice(Structures.parseInt(inputText));
             product.setActive(true);
             productCacheRepository.save(product);
         } catch (NumberFormatException formatException){

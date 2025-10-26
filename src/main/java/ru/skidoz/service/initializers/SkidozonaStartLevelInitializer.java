@@ -13,6 +13,7 @@ import static ru.skidoz.service.command.CommandName.MULTI_LEVEL_QUESTION_BASIC;
 import static ru.skidoz.service.command.CommandName.MULTI_LEVEL_RATE_BASIC;
 import static ru.skidoz.service.command.CommandName.ONE_LEVEL_RATE_BASIC;
 import static ru.skidoz.service.command.CommandName.TOKEN_REQUEST;
+import static ru.skidoz.service.initializers.InitialLevel.Users;
 
 import ru.skidoz.aop.repo.ButtonCacheRepository;
 import ru.skidoz.aop.repo.ButtonRowCacheRepository;
@@ -42,110 +43,22 @@ import org.springframework.stereotype.Component;
 @Component
 public class SkidozonaStartLevelInitializer {
 
-    public static User Users = null;
-
-    public static CategorySuperGroup bigCategorySuperGroup = null;
-
-    public static CategoryGroup bigCategoryGroup = null;
-
-    public static Category bigCategory = null;
-
     @Autowired
     private LevelCacheRepository levelRepository;
-    @Autowired
-    private ShopCacheRepository shopRepository;
+
     @Autowired
     private ButtonRowCacheRepository buttonRowRepository;
-    @Autowired
-    private UserCacheRepository userRepository;
+
     @Autowired
     private ButtonCacheRepository buttonRepository;
     @Autowired
     private MessageCacheRepository messageRepository;
-    @Autowired
-    private CategorySuperGroupCacheRepository categorySuperGroupRepository;
-    @Autowired
-    private CategoryGroupCacheRepository categoryGroupRepository;
-    @Autowired
-    private CategoryCacheRepository categoryRepository;
+
     @Autowired
     private InitialLevel initialLevel;
 
     public void initLevels() {
 
-        try {
-            Users = userRepository.findByChatId(1L);
-            if (Users == null) {
-                Users = new User(e -> {
-                    e.setChatId(1L);
-                    e.setName("SkidoBOT");
-                    e.setSessionId("1");
-                    e.setShopOwner(true);
-                    e.setLanguage(RU);
-                });
-                userRepository.save(Users);
-            }
-
-            Shop SHOP = shopRepository.findById(1);
-            if (SHOP == null) {
-                SHOP = new Shop();
-                SHOP.setName("DEFAULT");
-                SHOP.setAdminUser(Users.getId());
-                SHOP.setChatId(1L);
-                shopRepository.save(SHOP);
-
-                System.out.println("SHOP----------" + SHOP);
-
-                SHOP.getSellerSet().add(Users.getId());
-
-                shopRepository.save(SHOP);
-
-                bigCategorySuperGroup = new CategorySuperGroup();
-                bigCategorySuperGroup.setAlias("big");
-                categorySuperGroupRepository.save(bigCategorySuperGroup);
-
-
-                System.out.println("bigCategorySuperGroupDTO+++++++++++++++++++++++" + bigCategorySuperGroup);
-
-                bigCategoryGroup = new CategoryGroup();
-                bigCategoryGroup.setCategorySuperGroup(bigCategorySuperGroup.getId());
-                bigCategoryGroup.setAlias("big");
-                categoryGroupRepository.save(bigCategoryGroup);
-
-                bigCategory = new Category();
-                bigCategory.setCategorySuperGroup(bigCategorySuperGroup.getId());
-                bigCategory.setCategoryGroup(bigCategoryGroup.getId());
-                bigCategory.setActual(true);
-                bigCategory.setAlias("big");
-                categoryRepository.save(bigCategory);
-
-                Shop lamoda = new Shop();
-                lamoda.setName("lamoda");
-                lamoda.setAdminUser(Users.getId());
-                lamoda.setChatId(1L);
-                shopRepository.save(lamoda);
-                System.out.println("lamoda----------" + lamoda);
-                lamoda.getSellerSet().add(Users.getId());
-                shopRepository.save(lamoda);
-
-                Shop wildberries = new Shop();
-                wildberries.setName("wildberries");
-                wildberries.setAdminUser(Users.getId());
-                wildberries.setChatId(1L);
-                shopRepository.save(wildberries);
-                System.out.println("wildberries----------" + wildberries);
-                wildberries.getSellerSet().add(Users.getId());
-                shopRepository.save(wildberries);
-
-                Shop ozon = new Shop();
-                ozon.setName("ozon");
-                ozon.setAdminUser(Users.getId());
-                ozon.setChatId(1L);
-                shopRepository.save(ozon);
-                System.out.println("ozon----------" + ozon);
-                ozon.getSellerSet().add(Users.getId());
-                shopRepository.save(ozon);
-            }
 
 //////////ДОБАВОЧНОЕ СТАРТОВОЕ МЕНЮ ДЛЯ МАГАЗИНА
 
@@ -283,17 +196,11 @@ public class SkidozonaStartLevelInitializer {
             initialLevel.level_CONSTRUCT_ADD.addRow(row5_0);
 
 
-
-
             System.out.println("PRE addFinalButton");
 
                 initialLevel.addFinalButton(initialLevel.level_ADMIN, initialLevel.level_ADMIN);
 
                 System.out.println("POST addFinalButton");
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
     }
 
 }

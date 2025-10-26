@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 3-partner_group
+      id: 3-purchase_shop_group
       author: a.semenov
       changes:
         - createTable:
@@ -11,18 +11,18 @@ databaseChangeLog:
                   autoIncrement: true
                   constraints:
                     primaryKey: true
-                    primaryKeyName: partner_group_pk
+                    primaryKeyName: purchase_shop_group_pk
                     nullable: false
+              - column:
+                  name: manual
+                  type: bit(1)
               - column:
                   name: time
                   type: datetime
                   constraints:
                     nullable: false
               - column:
-                  name: name
-                  type: varchar(255)
-              - column:
-                  name: sum
+                  name: number_coupon
                   type: int(11)
               - column:
                   name: shop_id
@@ -32,23 +32,37 @@ databaseChangeLog:
                     foreignKeyName: fk_shop_id
                     references: shop(id)
               - column:
+                  name: purchase_id
+                  type: int(11)
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_purchase_id
+                    references: purchase(id)
+              - column:
                   name: shop_group_id
                   type: int(11)
                   constraints:
                     nullable: false
                     foreignKeyName: fk_shop_group_id
                     references: shop_group(id)
-            tableName: partner_group
+              - column:
+                  name: user_id
+                  type: int(11)
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_user_id
+                    references: users(id)
+            tableName: purchase_shop_group
         - createIndex:
             #            clustered:  true
             columns:
               - column:
                   descending:  true
-                  name:  shop_id
+                  name:  user_id
               - column:
                   descending:  true
-                  name:  shop_group_id
-            indexName:  partnerGroupConstraint
+                  name:  shop_id
+            indexName:  IDX_PURCHASE_SHOP_GROUP_COL
             schemaName:  public
-            tableName:  partner_group
+            tableName:  purchase_shop_group
             unique:  true

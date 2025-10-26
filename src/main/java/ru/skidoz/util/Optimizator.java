@@ -1,7 +1,6 @@
 package ru.skidoz.util;
 
 
-import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -64,23 +63,20 @@ public class Optimizator {
     }
 
 
-    public Action getOptimal(Integer userId,
-                             Integer shopId,
-                             List<Product>  productDTOS,
-                             Map<Integer, Integer> actionProductInitialSum,
-                             List<Action>  suitableActions,
-                             Map<Integer, List<Integer>> actionProductSumByProducts,
-                             Integer max) {
-
+    public Action getOptimalFromBasket(Integer userId,
+                                       Integer shopId,
+                                       List<Product>  productDTOS,
+                                       Map<Integer, Integer> actionProductInitialSum,
+                                       List<Action>  suitableActions,
+                                       Map<Integer, List<Integer>> actionProductSumByProducts,
+                                       Integer max) {
         Map<Integer, Integer> actionProductSum = new HashMap<>();
 
         List<Basket>  basketList = basketRepository.findAllByUserIdAndShopIdAndTemp(
                 userId, shopId, true);
         List<BasketProduct>  basketProducts = new ArrayList<>();
         basketList.forEach(basket -> {
-
             basketProducts.addAll(basketProductRepository.findAllByBasketId(basket.getId()));
-
             basket.setTemp(false);
             basketRepository.save(basket);
         });
@@ -106,7 +102,6 @@ public class Optimizator {
                         || checkProductSource(action, product)) {
 
                     var purchaseByActionInitialSum = actionProductInitialSum.get(action.getId());
-
                     if (purchaseByActionInitialSum == null) {
 
                         final List<Cashback>  cashbacks = cashbackRepository
@@ -117,9 +112,8 @@ public class Optimizator {
                         for (Cashback cashback : cashbacks) {
 
                             final Purchase purchaseByAction = purchaseRepository.findById(cashback.getPurchase());
-
-                            purchaseByActionSum = purchaseByActionSum+purchaseByAction.getSum();
-                            purchaseByActionInitialSum = purchaseByActionInitialSum + purchaseByAction.getInitialSum();
+                            purchaseByActionSum += purchaseByAction.getSum();
+                            purchaseByActionInitialSum += purchaseByAction.getInitialSum();
                         }
 
                         actionProductInitialSum.put(action.getId(), purchaseByActionInitialSum);

@@ -25,6 +25,7 @@ import static ru.skidoz.service.command.CommandName.P2B_WRITEOFF_COUPON_BASKET;
 import static ru.skidoz.service.command.CommandName.P2B_WRITEOFF_COUPON_REQUEST;
 import static ru.skidoz.service.command.CommandName.P2B_WRITEOFF_COUPON_RESP;
 import static ru.skidoz.service.command.CommandName.P2B_WRITEOFF_COUPON_SELECT_ACTION;
+import static ru.skidoz.service.initializers.InitialLevel.Users;
 
 import ru.skidoz.aop.repo.ButtonCacheRepository;
 import ru.skidoz.aop.repo.ButtonRowCacheRepository;
@@ -51,8 +52,6 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class ShopLevelInitializer {
-
-    public static User Users = null;
     
     @Autowired
     private MenuCreator menuCreator;

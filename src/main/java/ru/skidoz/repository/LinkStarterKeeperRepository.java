@@ -12,7 +12,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface LinkStarterKeeperRepository extends JpaRepository<PurchaseShopGroupEntity, Integer> {
+public interface LinkStarterKeeperRepository extends JpaRepository<LinkStarterKeeperEntity, Integer> {
 
     LinkStarterKeeperEntity findBySecretCode(Integer secretId);
 }

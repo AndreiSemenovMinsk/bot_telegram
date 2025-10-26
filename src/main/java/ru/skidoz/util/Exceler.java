@@ -201,8 +201,8 @@ public class Exceler {
                                 product.addName(sheet.getRow(i).getCell(9).getStringCellValue(), language);
                                 product.setShortText(sheet.getRow(i).getCell(10).getStringCellValue());
                                 product.setBigText(sheet.getRow(i).getCell(11).getStringCellValue());
-                                product.setPrice(BigDecimal.valueOf(sheet.getRow(i).getCell(12).getNumericCellValue()));
-                                product.setDiscount(BigDecimal.valueOf(sheet.getRow(i).getCell(13).getNumericCellValue()));
+                                product.setPrice((int) (sheet.getRow(i).getCell(12).getNumericCellValue() * 100));
+                                product.setDiscount((int) (sheet.getRow(i).getCell(13).getNumericCellValue() * 100));
                                 product.setProductService(sheet.getRow(i).getCell(14).getBooleanCellValue());
 
 
@@ -316,7 +316,7 @@ public class Exceler {
                                                 }
                                             } else if (filterPoint.getInputType() == 1) {
 
-                                                BigDecimal value = BigDecimal.valueOf(Double.parseDouble(optionValue));
+                                                int value = (int) (Double.parseDouble(optionValue) * 100);
 
                                                 CategoryFilterProduct categoryFilterProduct = categoryFilterProductRepository.findByFilterPoint_IdAndProduct_Id(filterPoint.getId(), finalProductId);
 

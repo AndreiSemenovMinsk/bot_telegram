@@ -21,6 +21,7 @@ import ru.skidoz.model.pojo.telegram.User;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import ru.skidoz.service.Sender;
 import ru.skidoz.service.TelegramBotWebhook;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,7 @@ import org.springframework.stereotype.Component;
 public class MonitorPriceTasklet implements Tasklet {
 
     @Autowired
-    public TelegramBotWebhook telegramBot;
+    public Sender sender;
     @Autowired
     public RemotedPriceCacheRepository remotedPriceRepository;
     @Autowired
@@ -131,7 +132,7 @@ public class MonitorPriceTasklet implements Tasklet {
 
 
                     final String runner = shopRepository.findById(byChatId.getFirstRunnerShop()).getSecretId();
-                    telegramBot.addAsync(
+                    sender.addAsync(
                             new LevelResponse(new ArrayList<>(Collections.singletonList(new LevelChat (e -> {
                         e.setLevel(levelDTOWrapper); //убрать так же в оригинальном методе
                         e.setChatId(bookmark.getChatId());

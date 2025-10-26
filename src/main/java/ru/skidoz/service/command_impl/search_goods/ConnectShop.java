@@ -2,7 +2,6 @@ package ru.skidoz.service.command_impl.search_goods;
 
 import java.io.IOException;
 
-import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -628,7 +627,7 @@ public class ConnectShop implements Command {
 //            }
         }*/
 
-        int maxResultSum = calculator.getMax(shopGetter.getId(), friend.getId(), 1000_000, false);
+        int maxResultSum = calculator.getMaxFromPartners(shopGetter.getId(), friend.getId(), 1000_000, false);
 
         if (maxResultSum > 0) {
             cashbackMessagePartnerGroup

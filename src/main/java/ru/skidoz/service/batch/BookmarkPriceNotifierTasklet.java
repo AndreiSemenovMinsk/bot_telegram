@@ -17,6 +17,7 @@ import ru.skidoz.model.pojo.telegram.LevelDTOWrapper;
 import ru.skidoz.model.pojo.telegram.LevelResponse;
 import ru.skidoz.model.pojo.telegram.Message;
 import ru.skidoz.model.pojo.telegram.User;
+import ru.skidoz.service.Sender;
 import ru.skidoz.service.TelegramBotWebhook;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ import org.springframework.stereotype.Component;
 public class BookmarkPriceNotifierTasklet implements Tasklet {
 
     @Autowired
-    public TelegramBotWebhook telegramBot;
+    public Sender sender;
     @Autowired
     public BookmarkCacheRepository bookmarkRepository;
     @Autowired
@@ -63,7 +64,7 @@ public class BookmarkPriceNotifierTasklet implements Tasklet {
             User user = userRepository.findById(bookmark.getUser());
 
             final String runner = shopRepository.findById(user.getFirstRunnerShop()).getSecretId();
-            telegramBot.addAsync(
+            sender.addAsync(
                     new LevelResponse(
                             new ArrayList<>(Collections.singletonList(new LevelChat(e -> {
                                 e.setLevel(levelDTOWrapper); //убрать так же в оригинальном методе
@@ -73,7 +74,6 @@ public class BookmarkPriceNotifierTasklet implements Tasklet {
             bookmark.setPriceUpdated(true);
             bookmarkRepository.save(bookmark);
         });
-
 
         System.out.println(
                 "+++++++++++++++++++++++++++++++++++++++++++BookmarkPriceNotifierTasklet finish+++++++++++++++++++++++++++++++++++");

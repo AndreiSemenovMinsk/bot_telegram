@@ -78,7 +78,7 @@ public class P2BChargeCouponResp implements Command {
                 Purchase purchase = new Purchase(e -> {
                     e.setUser(buyer.getId());
                     e.setNumberCoupon(proposedNumber);
-                    e.setSum(BigDecimal.ZERO);
+                    e.setSum(0);
                     e.setShop(shopInitiator.getId());
                 });
                 purchaseCacheRepository.save(purchase);

@@ -27,8 +27,8 @@ import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
 @ActiveProfiles("test")
-@Transactional
-class LocalersApplicationIntegrationTests {
+//@Transactional
+class LocalersApplicationIntegrationTests extends AbstractIntegrationTest {
 
     @Autowired
     CacheAspect cacheAspect;

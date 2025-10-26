@@ -1,5 +1,7 @@
 package ru.skidoz;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import ru.skidoz.aop.CacheAspect;
 import ru.skidoz.aop.repo.ActionCacheRepository;
 import ru.skidoz.aop.repo.CashbackCacheRepository;
@@ -84,6 +86,8 @@ class ExcelMenuTaskletTests extends AbstractIntegrationTest {
     void small() {
 
         initialExcelMenu.execute();
+
+        assertEquals(12, 12);
 
         System.out.println("77777");
     }

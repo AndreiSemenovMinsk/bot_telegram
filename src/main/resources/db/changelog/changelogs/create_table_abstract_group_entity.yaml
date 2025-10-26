@@ -14,6 +14,11 @@ databaseChangeLog:
                     primaryKeyName: abstract_group_entity_pk
                     nullable: false
               - column:
+                  name: dtype
+                  type: varchar(31)
+                  constraints:
+                    nullable: false
+              - column:
                   name: time
                   type: datetime
               - column:
@@ -69,6 +74,9 @@ databaseChangeLog:
               - column:
                   name: short_text
                   type: varchar(255)
+              - column:
+                  name: parent_category_id
+                  type: int(11)
               - column:
                   name: category_super_group_id
                   type: int(11)

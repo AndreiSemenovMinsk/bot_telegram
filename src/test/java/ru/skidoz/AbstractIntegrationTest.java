@@ -3,9 +3,13 @@ package ru.skidoz;
 import liquibase.Contexts;
 import liquibase.LabelExpression;
 import liquibase.Liquibase;
+import liquibase.database.Database;
 import liquibase.database.DatabaseFactory;
 import liquibase.database.jvm.JdbcConnection;
 import liquibase.resource.ClassLoaderResourceAccessor;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.springframework.boot.jdbc.DatabaseDriver;
@@ -35,23 +39,29 @@ public abstract class AbstractIntegrationTest {
         registry.add("spring.datasource.password", postgres::getPassword);
     }
 
-    @BeforeAll
-    static void runLiquibase() throws Exception {
-        try (Liquibase liquibase = new Liquibase(
-                "db/changelog/db.changelog-master.yaml",
-                new ClassLoaderResourceAccessor(),
-                DatabaseFactory.getInstance().openDatabase(
-                        postgres.getJdbcUrl(),
-                        postgres.getUsername(),
-                        postgres.getPassword(),
-                        "org.postgresql.Driver",
-                        null,
-                        null,
-                        null,
-                        new JdbcConnection(DatabaseDriver.POSTGRESQL.)
-                )
-        )) {
-            liquibase.update(new Contexts(), new LabelExpression());
-        }
-    }
+//    @BeforeAll
+//    static void runLiquibase() throws Exception {
+//        // Создаём обычное JDBC-подключение
+//        try (Connection connection = DriverManager.getConnection(
+//                postgres.getJdbcUrl(),
+//                postgres.getUsername(),
+//                postgres.getPassword());
+//             // Оборачиваем JDBC-подключение для Liquibase
+//        ) {
+//
+//            Database database = DatabaseFactory.getInstance()
+//                    .findCorrectDatabaseImplementation(new JdbcConnection(connection));
+//
+//            // Создаём Liquibase и выполняем обновление
+//            try (Liquibase liquibase = new Liquibase(
+//                    "changelog/db.changelog-master.yaml",
+//                    new ClassLoaderResourceAccessor(),
+//                    database)) {
+//
+//                liquibase.update(new Contexts(), new LabelExpression());
+//            }
+//        }
+//
+//        System.out.println(postgres.getJdbcUrl());
+//    }
 }

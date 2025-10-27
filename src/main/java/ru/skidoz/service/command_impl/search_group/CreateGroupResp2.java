@@ -1,13 +1,11 @@
 package ru.skidoz.service.command_impl.search_group;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Map;
 
 import ru.skidoz.aop.repo.PartnerGroupCacheRepository;
 import ru.skidoz.aop.repo.ShopGroupCacheRepository;
 import ru.skidoz.model.entity.category.LanguageEnum;
-import ru.skidoz.model.pojo.side.Shop;
 import ru.skidoz.model.pojo.telegram.*;
 import ru.skidoz.aop.repo.ShopCacheRepository;
 import ru.skidoz.service.initializers.InitialLevel;
@@ -16,8 +14,6 @@ import ru.skidoz.service.command.Command;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;
-
-import static ru.skidoz.model.entity.category.LanguageEnum.RU;
 
 
 /**
@@ -54,7 +50,7 @@ public class CreateGroupResp2 implements Command {
             final ShopGroup shopGroup = shopGroupCacheRepository.findById(currentConstructShopGroup);
 
             int limit = Integer.parseInt(inputText);
-            shopGroup.setLimit(Integer.parseInt(inputText));
+            shopGroup.setLimitSum(Integer.parseInt(inputText));
 
             resultLevel.addMessage(new Message(
                     null,

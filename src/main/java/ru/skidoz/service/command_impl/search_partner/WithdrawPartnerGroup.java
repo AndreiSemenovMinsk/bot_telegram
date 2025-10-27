@@ -67,7 +67,7 @@ public class WithdrawPartnerGroup implements Command {
                 final Integer sum = partnerPartnerGroup.getSum();
                 if (sum < 0) {
                     Message messageCreditor = new Message(null, Map.of(LanguageEnum.RU, "Вы можете списать задолженность " + shopPartner.getName()
-                            + " " + sum + " при лимите " + shopGroup.getLimit()));
+                            + " " + sum + " при лимите " + shopGroup.getLimitSum()));
                     resultLevel.addMessage(messageCreditor);
 
                     ButtonRow row = new ButtonRow();

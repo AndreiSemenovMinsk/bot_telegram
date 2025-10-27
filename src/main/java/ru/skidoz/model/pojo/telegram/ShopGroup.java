@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import ru.skidoz.model.pojo.AbstractDTO;
-import ru.skidoz.model.pojo.side.Shop;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,7 +21,7 @@ public class ShopGroup extends AbstractDTO implements Serializable {
     private String name;
 
     @NotNull
-    private Integer limit;
+    private Integer limitSum;
 
     List<Integer> shopSet = new ArrayList<>();
 

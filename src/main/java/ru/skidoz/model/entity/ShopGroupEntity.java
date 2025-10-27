@@ -7,20 +7,28 @@ import java.util.List;
 import java.util.Objects;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.Index;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
 @Entity
+@Table(name = "shop_group",
+        uniqueConstraints = {
+                @UniqueConstraint(name = "UC_SHOP_GROUP_NAME", columnNames = {"name"})},
+        indexes = {
+                @Index(name = "IDX_SHOP_GROUP_NAME", columnList = "name")})
 public class ShopGroupEntity extends AbstractEntity  implements Serializable {
 
     @NotNull
     private String name;
 
     @NotNull
-    private Integer limit;
+    private Integer limitSum;
 
     @ManyToMany(mappedBy = "shopGroupSet")
     List<ShopEntity> shopSet = new ArrayList<>();

@@ -82,7 +82,7 @@ public class CacheAspect {
     List<Map<String, Integer>> dtoFieldsMap = new ArrayList<>();
     //List<List<Integer>> dtoFieldNames = new ArrayList<>();
 
-    List<List<Integer>> parentDTOChildDTOIndex = new ArrayList<>();
+//    List<List<Integer>> parentDTOChildDTOIndex = new ArrayList<>();
     List<List<Boolean>> parentDTOBlockDTOIndex = new ArrayList<>();
     List<List<Integer>> parentDTOBlockArrIndex = new ArrayList<>();
 
@@ -472,7 +472,7 @@ public class CacheAspect {
             //dtoFieldNames.add(a);
             dtoFieldNames.add(a.toArray(new String[0]));
 
-            parentDTOChildDTOIndex.add(parentDTOFieldChildDTO);
+//            parentDTOChildDTOIndex.add(parentDTOFieldChildDTO);
             parentDTOChildDTOFieldIndex.add(parentDTOFieldChildField);
 
             childDTOFieldParentDTOIndex.add(childDTOFieldParentDTO);
@@ -1606,28 +1606,33 @@ public class CacheAspect {
                         continue;
                     }
 
-                    //int childOrder = parentDTOChildDTOIndex.get(repoIndex).indexOf(childInd);
-                    int childRepoIndex = parentDTOChildDTOIndex.get(repoIndex).get(childInd);
+
+//                    System.out.println("saveToCache repoIndex@@@ " + repoIndex + " " + parentDTOChildDTOIndex.get(repoIndex));
+//                    System.out.println("dependentIds " + dependentIds + " childInd " + childInd);
+//                    System.out.println("parentChildren " + parentChildren);
+//                    System.out.println("saveToCache childInd@@@ " + childInd + " " + parentDTOChildDTOIndex.get(repoIndex).get(childInd));
+
+                    //int childRepoIndex = parentDTOChildDTOIndex.get(repoIndex).get(childInd);
                     int fieldIndex = parentDTOChildDTOFieldIndex.get(repoIndex).get(childInd);
-                    String fieldName = dtoFieldNames.get(childRepoIndex)[fieldIndex];
+                    String fieldName = dtoFieldNames.get(childInd)[fieldIndex];
 
                     for (var dependentId : dependentIds) {
-                        DTO childDto = idMap.get(childRepoIndex).get(dependentId);
+                        DTO childDto = idMap.get(childInd).get(dependentId);
 
 //                        System.out.println(" @@dependentId " + dependentId + " childId " + dtoNames.get(childRepoIndex) + " " + childDto);
 
-                        Field field = getField(childDto, childRepoIndex, fieldIndex, fieldName);
+                        Field field = getField(childDto, childInd, fieldIndex, fieldName);
 
                         field.set(childDto, newFieldIdValue);
                     }
 
                     List<Integer> methodList = parentDTOChildMethodIndex
                             .get(repoIndex)
-                            .get(childRepoIndex);
-                    List<Integer> paramList = parentDTOChildParamIndex.get(repoIndex).get(childRepoIndex);
-                    var paramField = parameterDTOFieldInds.get(childRepoIndex);
+                            .get(childInd);
+                    List<Integer> paramList = parentDTOChildParamIndex.get(repoIndex).get(childInd);
+                    var paramField = parameterDTOFieldInds.get(childInd);
 
-                    var childMap = mapRepos.get(childRepoIndex);
+                    var childMap = mapRepos.get(childInd);
 
                     for (int methodI = 0; methodI < methodList.size(); methodI++) {
 
@@ -1657,11 +1662,11 @@ public class CacheAspect {
                         String[] newKeyArr = new String[parameter.length];
                         String[] oldKeyArr = new String[parameter.length];
 
-                        int childRepoMethodType = collectionType.get(childRepoIndex).get(methodInd);
+                        int childRepoMethodType = collectionType.get(childInd).get(methodInd);
 
                         for (var dependentId : dependentIds) {
 
-                            DTO childDto = idMap.get(childRepoIndex).get(dependentId);
+                            DTO childDto = idMap.get(childInd).get(dependentId);
 
                             //метод поиска find
                             for (int j = 0; j < parameter.length; j++) {
@@ -1914,7 +1919,10 @@ public class CacheAspect {
 
             Set<String> childDTOAndField = new HashSet<>();
             for (int childDTOInd = 0; childDTOInd < dtoFieldNames.size(); childDTOInd++) {
-                for (int childFieldInd = 0; childFieldInd < dtoFieldNames.get(childDTOInd).length; childFieldInd++) {
+
+                int fieldSize = dtoFieldNames.get(childDTOInd).length;
+
+                for (int childFieldInd = 0; childFieldInd < fieldSize; childFieldInd++) {
 
                     var childFieldName = cleanId(dtoFieldNames.get(childDTOInd)[childFieldInd]);
 
@@ -1986,8 +1994,9 @@ public class CacheAspect {
         parentDTOBlockArrIndex.get(parentDTOInd).add(childDTOInd);
 
 
-        parentDTOChildDTOIndex.get(parentDTOInd).add(childDTOInd);
-        parentDTOChildDTOFieldIndex.get(parentDTOInd).add(childFieldInd);
+//        parentDTOChildDTOIndex.get(parentDTOInd).add(childDTOInd);
+        setList(parentDTOChildDTOFieldIndex.get(parentDTOInd), childDTOInd, childFieldInd);
+//        parentDTOChildDTOFieldIndex.get(parentDTOInd).add(childFieldInd);
 
         childDTOFieldParentDTOIndex
                 .get(childDTOInd)
@@ -2008,22 +2017,6 @@ public class CacheAspect {
                     .get(childDTOInd)
                     .get(childFieldInd)
                     .get(y);
-/*
-            Integer shortMethodInd = DTOMethodDependentToIndependent.get(childDTOInd).get(childMethod);
-            if (shortMethodInd != null) {
-                childMethod = shortMethodInd;
-
-                int shortY = DTOFieldMethodIndex
-                        .get(childDTOInd)
-                        .get(childFieldInd)
-                        .indexOf(shortMethodInd);
-
-                childParam = DTOFieldParamIndex
-                        .get(childDTOInd)
-                        .get(childFieldInd)
-                        .get(shortY);
-            }*/
-
 
             //а это список методов для дочернего dto, где используется ссылка на поле
             parentDTOChildMethodIndex.get(parentDTOInd).get(childDTOInd)
@@ -2042,6 +2035,16 @@ public class CacheAspect {
             return childFieldName.substring(0, childFieldName.length() - 2);
         }
         return childFieldName;
+    }
+
+    private <T> List<T> setList(List<T> list, int pos, T t) {
+
+        int initialSize = list.size();
+        for (int i = 0; i < pos - initialSize + 1; i++) {
+            list.add(null);
+        }
+        list.set(pos, t);
+        return list;
     }
 
     public static void main(String[] args) {

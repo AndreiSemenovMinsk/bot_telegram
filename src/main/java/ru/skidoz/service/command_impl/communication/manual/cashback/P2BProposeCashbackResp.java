@@ -2,7 +2,6 @@ package ru.skidoz.service.command_impl.communication.manual.cashback;
 
 import java.io.IOException;
 
-import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -139,7 +138,7 @@ public class P2BProposeCashbackResp implements Command {
                 for (var partnerGroup : partnerGroupCacheRepository.findAllByShop_Id(shopInitiator.getId())) {
 
                     final ShopGroup shopGroup = shopGroupCacheRepository.findById(partnerGroup.getShopGroup());
-                    final int freeLimit = shopGroup.getLimit() - partnerGroup.getSum();
+                    final int freeLimit = shopGroup.getLimitSum() - partnerGroup.getSum();
 
                     int sum;
                     if (proposedSum > freeLimit) {

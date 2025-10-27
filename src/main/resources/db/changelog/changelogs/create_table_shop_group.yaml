@@ -16,6 +16,9 @@ databaseChangeLog:
               - column:
                   name: name
                   type: varchar(30)
+              - column:
+                  name: limit_sum
+                  type: int(11)
             tableName: shop_group
         - createIndex:
             #            clustered:  true

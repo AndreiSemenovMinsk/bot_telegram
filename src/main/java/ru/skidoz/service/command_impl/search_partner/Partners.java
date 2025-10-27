@@ -79,7 +79,7 @@ public class Partners implements Command {
                 resultLevel.addMessage(message2_3);
 
                 Message message = new Message(null, Map.of(LanguageEnum.RU,
-                        "Вам должена группа " + partnerGroup.getName() + " " + partnerGroup.getSum() + " при лимите " + shopGroup.getLimit()));
+                        "Вам должена группа " + partnerGroup.getName() + " " + partnerGroup.getSum() + " при лимите " + shopGroup.getLimitSum()));
                 //messageRepository.save(message);
                 resultLevel.addMessage(message);
 
@@ -93,7 +93,7 @@ public class Partners implements Command {
 
             } else {
                 Message message = new Message(null, Map.of(LanguageEnum.RU,
-                        "Вы должены группе " + partnerGroup.getName() + " " + partnerGroup.getSum() + " при лимите " + shopGroup.getLimit()));
+                        "Вы должены группе " + partnerGroup.getName() + " " + partnerGroup.getSum() + " при лимите " + shopGroup.getLimitSum()));
                 //messageRepository.save(message);
                 resultLevel.addMessage(message);
             }

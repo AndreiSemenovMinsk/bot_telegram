@@ -107,7 +107,7 @@ public class Calculator {
         List<ShopGroup> shopGroups = shopGroupCacheRepository.shopGroupByIds(new ArrayList<>(
                 shopGroupSet));
         Map<Integer, Integer> shopGroupLimits = shopGroups.stream()
-                .collect(Collectors.toMap(ShopGroup::getId, ShopGroup::getLimit));
+                .collect(Collectors.toMap(ShopGroup::getId, ShopGroup::getLimitSum));
 
         otherPurchase.sort(Comparator.comparingInt(p -> p.rate));
         topInPurchase.addAll(otherPurchase);

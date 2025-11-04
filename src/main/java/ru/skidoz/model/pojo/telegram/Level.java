@@ -32,6 +32,7 @@ public class Level extends AbstractDTO implements Cloneable {
 //    private List<User> usersWithCurrentLevelBeforeInterruptionList = new ArrayList<>();
     private List<Message> messages = new ArrayList<>();
     private List<ButtonRow> buttonRows = new ArrayList<>();
+//    private List<Button> buttons = new ArrayList<>();
 
     public Level() {
         super();

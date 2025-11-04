@@ -37,7 +37,7 @@ public class Shop extends AbstractDTO {
 
     @ToString.Exclude
     @JsonIgnore
-    private String secretId;
+    private String secretHash;
     private Integer initialLevelId;
 
     private Integer currentConstructShopUser;
@@ -85,6 +85,8 @@ public class Shop extends AbstractDTO {
 //    private List<Integer>/*Shop*/ currentConversationShopShopList = new ArrayList<>();
 
     private List<Integer>/*PurchaseShopGroup*/ purchaseShopGroupList = new ArrayList<>();
+
+    private List<ShopUser>/*ShopUser*/ shopUserList = new ArrayList<>();
 
     public Shop(Consumer<Shop> builder) {
         super();

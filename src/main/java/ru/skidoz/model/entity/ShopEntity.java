@@ -74,7 +74,7 @@ public class ShopEntity extends AbstractEntity  implements Serializable {
     private List<UserEntity> sellerSet = new ArrayList<>();
 
     @JsonIgnore
-    private String secretId;
+    private String secretHash;
 
     @Lob
     @JsonIgnore
@@ -176,12 +176,12 @@ public class ShopEntity extends AbstractEntity  implements Serializable {
     }
 
 
-    public String getSecretId() {
-        return secretId;
+    public String getSecretHash() {
+        return secretHash;
     }
 
-    public void setSecretId(String secretId) {
-        this.secretId = secretId;
+    public void setSecretHash(String secretHash) {
+        this.secretHash = secretHash;
     }
 
     //private Shablon shablon;

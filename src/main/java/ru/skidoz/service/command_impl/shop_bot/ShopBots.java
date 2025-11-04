@@ -387,9 +387,9 @@ public class ShopBots implements Command {
 
             System.out.println("level+++" + level);
 
-            System.out.println(levelCacheRepository.findFirstBySourceIsMessageIsTrueAndParentLevel_Id(level.getId()));
+            System.out.println(levelCacheRepository.findBySourceIsMessageAndParentLevelId(true, level.getId()));
 
-            Level messageLevel = levelCacheRepository.findFirstBySourceIsMessageIsTrueAndParentLevel_Id(level.getId());
+            Level messageLevel = levelCacheRepository.findBySourceIsMessageAndParentLevelId(true, level.getId());
 
             resultLevel = initialLevel.convertToLevel(messageLevel,
                     true,

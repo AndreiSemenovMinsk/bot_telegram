@@ -80,7 +80,7 @@ public class AddGoodsDescription implements Command {
             Unirest.setTimeouts(0, 0);
             InputStream responseProjectArray = null;
 
-            final String runner = shopCacheRepository.findById(users.getFirstRunnerShop()).getSecretId();
+            final String runner = shopCacheRepository.findById(users.getFirstRunnerShop()).getSecretHash();
             responseProjectArray = Unirest.get("https://api.telegram.org/bot"
                     + runner +"/getFile?file_id="+f_id)
                     .asString().getRawBody();

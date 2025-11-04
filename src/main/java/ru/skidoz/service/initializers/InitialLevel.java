@@ -46,16 +46,6 @@ public class InitialLevel {
     public static Category bigCategory = null;
 
     @Autowired
-    private CategorySuperGroupCacheRepository categorySuperGroupRepository;
-    @Autowired
-    private CategoryGroupCacheRepository categoryGroupRepository;
-    @Autowired
-    private CategoryCacheRepository categoryRepository;
-    @Autowired
-    private UserCacheRepository userRepository;
-    @Autowired
-    private ShopCacheRepository shopRepository;
-    @Autowired
     private LevelCacheRepository levelRepository;
     @Autowired
     private ButtonRowCacheRepository buttonRowRepository;
@@ -63,6 +53,8 @@ public class InitialLevel {
     private ButtonCacheRepository buttonRepository;
     @Autowired
     private MessageCacheRepository messageRepository;
+    @Autowired
+    private UserCacheRepository userRepository;
 
     public Level level_INITIALIZE222;
     public Level level_INITIALIZE0;
@@ -208,84 +200,6 @@ public class InitialLevel {
     
     public void initLevels() {
 
-        try {
-            Users = userRepository.findByChatId(1L);
-            if (Users == null) {
-                Users = new User(e -> {
-                    e.setChatId(1L);
-                    e.setName("SkidoBOT");
-                    e.setSessionId("1");
-                    e.setShopOwner(true);
-                    e.setLanguage(RU);
-                });
-                userRepository.save(Users);
-            }
-
-            Shop SHOP = shopRepository.findById(1);
-            if (SHOP == null) {
-                SHOP = new Shop();
-                SHOP.setName("DEFAULT");
-                SHOP.setAdminUser(Users.getId());
-                SHOP.setChatId(1L);
-                shopRepository.save(SHOP);
-
-                System.out.println("SHOP----------" + SHOP);
-
-                SHOP.getSellerSet().add(Users.getId());
-
-                shopRepository.save(SHOP);
-
-                bigCategorySuperGroup = new CategorySuperGroup();
-                bigCategorySuperGroup.setAlias("big");
-                categorySuperGroupRepository.save(bigCategorySuperGroup);
-
-
-                System.out.println("bigCategorySuperGroupDTO+++++++++++++++++++++++"
-                        + bigCategorySuperGroup);
-
-                bigCategoryGroup = new CategoryGroup();
-                bigCategoryGroup.setCategorySuperGroup(bigCategorySuperGroup.getId());
-                bigCategoryGroup.setAlias("big");
-                categoryGroupRepository.save(bigCategoryGroup);
-
-                bigCategory = new Category();
-                bigCategory.setCategorySuperGroup(bigCategorySuperGroup.getId());
-                bigCategory.setCategoryGroup(bigCategoryGroup.getId());
-                bigCategory.setActual(true);
-                bigCategory.setAlias("big");
-                categoryRepository.save(bigCategory);
-
-                Shop lamoda = new Shop();
-                lamoda.setName("lamoda");
-                lamoda.setAdminUser(Users.getId());
-                lamoda.setChatId(1L);
-                shopRepository.save(lamoda);
-                System.out.println("lamoda----------" + lamoda);
-                lamoda.getSellerSet().add(Users.getId());
-                shopRepository.save(lamoda);
-
-                Shop wildberries = new Shop();
-                wildberries.setName("wildberries");
-                wildberries.setAdminUser(Users.getId());
-                wildberries.setChatId(1L);
-                shopRepository.save(wildberries);
-                System.out.println("wildberries----------" + wildberries);
-                wildberries.getSellerSet().add(Users.getId());
-                shopRepository.save(wildberries);
-
-                Shop ozon = new Shop();
-                ozon.setName("ozon");
-                ozon.setAdminUser(Users.getId());
-                ozon.setChatId(1L);
-                shopRepository.save(ozon);
-                System.out.println("ozon----------" + ozon);
-                ozon.getSellerSet().add(Users.getId());
-                shopRepository.save(ozon);
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
         level_INITIALIZE222 = levelRepository.cache(new Level());
         level_INITIALIZE0 = levelRepository.cache(new Level());
         level_INITIALIZE = levelRepository.cache(new Level());
@@ -429,6 +343,18 @@ public class InitialLevel {
         level_NEW_LEVEL_INPUT_BUTTON = levelRepository.cache(new Level());
         level_NEW_LEVEL_BUTTON = levelRepository.cache(new Level());
 
+
+        Users = userRepository.findByChatId(1L);
+        if (Users == null) {
+            Users = new User(e -> {
+                e.setChatId(1L);
+                e.setName("SkidoBOT");
+                e.setSessionId("1");
+                e.setShopOwner(true);
+                e.setLanguage(RU);
+            });
+            userRepository.save(Users);
+        }
     }
 
 

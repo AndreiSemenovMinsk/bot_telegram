@@ -53,13 +53,6 @@ databaseChangeLog:
 #                    foreignKeyName: fk_current_level_before_config_id
 #                    references: level(id)
               - column:
-                  name: current_level_id
-                  type: int(11)
-#                  constraints:
-#                    nullable: true
-#                    foreignKeyName: fk_current_level_id
-#                    references: level(id)
-              - column:
                   name: current_search_abstract_group_entity
                   type: int(11)
                   constraints:

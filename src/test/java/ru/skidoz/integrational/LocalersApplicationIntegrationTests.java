@@ -1,6 +1,5 @@
-package ru.skidoz;
+package ru.skidoz.integrational;
 
-import jakarta.transaction.Transactional;
 import ru.skidoz.aop.CacheAspect;
 import ru.skidoz.aop.repo.ActionCacheRepository;
 import ru.skidoz.aop.repo.CashbackCacheRepository;
@@ -11,14 +10,12 @@ import ru.skidoz.model.pojo.main.Action;
 import ru.skidoz.model.pojo.side.Cashback;
 import ru.skidoz.model.pojo.side.Shop;
 import ru.skidoz.model.pojo.telegram.User;
-import ru.skidoz.repository.telegram.UserRepository;
 
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

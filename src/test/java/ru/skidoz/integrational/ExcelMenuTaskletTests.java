@@ -1,23 +1,9 @@
-package ru.skidoz;
+package ru.skidoz.integrational;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import ru.skidoz.aop.CacheAspect;
-import ru.skidoz.aop.repo.ActionCacheRepository;
-import ru.skidoz.aop.repo.CashbackCacheRepository;
-import ru.skidoz.aop.repo.ShopCacheRepository;
-import ru.skidoz.aop.repo.UserCacheRepository;
-import ru.skidoz.model.entity.ActionTypeEnum;
-import ru.skidoz.model.pojo.main.Action;
-import ru.skidoz.model.pojo.side.Cashback;
-import ru.skidoz.model.pojo.side.Shop;
-import ru.skidoz.model.pojo.telegram.User;
 import ru.skidoz.service.InitialExcelMenu;
-
-import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadPoolExecutor;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -37,10 +23,7 @@ class ExcelMenuTaskletTests extends AbstractIntegrationTest {
     InitialExcelMenu initialExcelMenu;
 //    @Autowired
 //    private ActionCacheRepository actionRepository;
-//    @Autowired
-//    private ShopCacheRepository shopRepository;
-//    @Autowired
-//    private UserCacheRepository userRepository;
+
 //    @Autowired
 //    private CashbackCacheRepository cashbackRepository;
 

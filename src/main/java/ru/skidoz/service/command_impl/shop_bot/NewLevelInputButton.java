@@ -50,7 +50,7 @@ public class NewLevelInputButton implements Command {
 
 
         //просто проверить гипотезу 12/7/2023
-//        Level previousInputLevel = levelCacheRepository.findFirstBySourceIsMessageIsTrueAndParentLevel_Id(users.getCurrentLevelBeforeConfigId());
+//        Level previousInputLevel = levelCacheRepository.findBySourceIsMessageAndParentLevelId(users.getCurrentLevelBeforeConfigId());
 //
 //        System.out.println("previousInputLevel***" + previousInputLevel);
 //

@@ -1,33 +1,24 @@
 package ru.skidoz.service;
 
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 
-import jakarta.annotation.PostConstruct;
 import ru.skidoz.aop.repo.LevelCacheRepository;
 import ru.skidoz.aop.repo.MessageCacheRepository;
 import ru.skidoz.aop.repo.ShopCacheRepository;
 import ru.skidoz.aop.repo.ShopUserCacheRepository;
 import ru.skidoz.aop.repo.UserCacheRepository;
-import ru.skidoz.model.entity.category.LanguageEnum;
 import ru.skidoz.model.pojo.side.Shop;
 import ru.skidoz.model.pojo.side.ShopUser;
-import ru.skidoz.model.pojo.telegram.Button;
-import ru.skidoz.model.pojo.telegram.ButtonRow;
 import ru.skidoz.model.pojo.telegram.Level;
 import ru.skidoz.model.pojo.telegram.LevelChat;
-import ru.skidoz.model.pojo.telegram.LevelDTOWrapper;
 import ru.skidoz.model.pojo.telegram.LevelResponse;
 import ru.skidoz.model.pojo.telegram.Message;
 import ru.skidoz.model.pojo.telegram.User;
@@ -37,22 +28,10 @@ import lombok.SneakyThrows;
 import ru.skidoz.service.initializers.InitialLevel;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.servlet.ThemeResolver;
-import org.telegram.telegrambots.bots.TelegramWebhookBot;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
-import org.telegram.telegrambots.meta.api.methods.send.SendLocation;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
-import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
-import org.telegram.telegrambots.meta.api.objects.webapp.WebAppInfo;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import static ru.skidoz.model.entity.category.LanguageEnum.RU;
 import static ru.skidoz.util.TelegramElementsUtil.qrInputStream;
@@ -102,7 +81,7 @@ public class TelegramBotWebhook {
     }
 
     @SneakyThrows
-    private void asynchronicUpdateReceive(Update update, String secretId) {
+    private void asynchronicUpdateReceive(Update update, String secretHash) {
 
         long timeNow = System.currentTimeMillis();
 
@@ -116,17 +95,31 @@ public class TelegramBotWebhook {
         }
 
         User user = userCacheRepository.findByChatId(chatId);
-        Shop shop = shopCacheRepository.findBySecretId(secretId);
+        Shop shop = shopCacheRepository.findBySecretHash(secretHash);
+
+
+        System.out.println("secretHash--------" + secretHash + " shop* " + shop);
 
         boolean newUser = false;
+        ShopUser shopUser = null;
 
         if (user == null) {
-            user = createUser(user, chatId, update, shop);
-            //user.setRunner(id.getBytes());
+            user = createUser(chatId, update);
+
             newUser = true;
+        } else {
+            shopUser = shopUserCacheRepository.findByUserAndShop(user.getId(), shop.getId());
+
+            System.out.println("shopUser: " + shopUser + "\n user.getId(): " + user.getId() + " shop.getId(): " + shop.getId());
         }
 
-        Integer currentLevelId = shopUserCacheRepository.findByUserAndShop(user.getId(), shop.getId()).getCurrentLevelId();
+        if (shopUser == null) {
+            shopUser = createShopUser(user, shop);
+        }
+
+        Integer currentLevelId = shopUser.getCurrentLevelId();
+
+        System.out.println("shopUser-----" + shopUser);
 
         LevelResponse levelResponse = telegramProcessor.plainLevelChoicer(
                 currentLevelId,
@@ -134,7 +127,11 @@ public class TelegramBotWebhook {
                 user,
                 chatId,
                 newUser,
-                secretId);
+                secretHash);
+
+        if (levelResponse.getKey() == null) {
+            levelResponse.setKey(secretHash);
+        }
 
         List<LevelChat> newLevel = levelResponse.getLevelChats();
         List<LevelChat> newLevelAfterSave = levelResponse.getLevelChatsAfterSave();
@@ -190,46 +187,41 @@ public class TelegramBotWebhook {
         System.out.println();
     }
 
-    public User createUser(User users, Long chatId, Update update, Shop shop)
+    private User createUser(Long chatId, Update update)
             throws IOException, WriterException {
-        System.out.println(
-                "-----------------------------------createUser--------------------------------------------");
+        System.out.println("-----------------------------------createUser--------------------------------------------");
+
+        User user = null;
         if (update.getMessage() != null) {
             System.out.println(update.getMessage().getFrom().getFirstName());
 
-            users = new User(
+            user = new User(
                     chatId,
                     update.getMessage().getFrom().getFirstName());
         } else if (update.getCallbackQuery() != null) {
 
             System.out.println(update.getCallbackQuery().getFrom().getFirstName());
 
-            users = new User(
+            user = new User(
                     chatId,
                     update.getCallbackQuery().getFrom().getFirstName());
         }
-        users.setLanguage(RU);
-//        users.setSessionId(Long.toString((long) (Math.random() * 1000000000000L)));
+        user.setLanguage(RU);
+//        user.setSessionId(Long.toString((long) (Math.random() * 1000000000000L)));
 
+        userCacheRepository.save(user);
 
-
-        shopUserCacheRepository.save(new ShopUser(shop.getId(), users.getId(), shop.getInitialLevelId()));
-
-        //Level currentLevel = initialLevel.level_INITIALIZE;
-
-
-        userCacheRepository.save(users);
 
         Level newConnectLevel = initialLevel.cloneLevel(
                 initialLevel.level_CONNECT,
-                users,
+                user,
                 false,
-                false);//levelRepository.findFirstByUserAndCallName(Users, initialLevel.level_CONNECT.getCallName()).clone(users);
+                false);//levelRepository.findFirstByUserAndCallName(Users, initialLevel.level_CONNECT.getCallName()).clone(user);
 
         Message qr = new Message(
                 newConnectLevel, 0,
-                Map.of(RU, "https://t.me/Skido_Bot?start=" + "PI" + users.getId().toString()),
-                IOUtils.toByteArray(qrInputStream(users.getId().toString())),
+                Map.of(RU, "https://t.me/Skido_Bot?start=" + "PI" + user.getId().toString()),
+                IOUtils.toByteArray(qrInputStream(user.getId().toString())),
                 "Покажите QR партнеру");//newConnectLevel.getMessages().get(0);
         messageCacheRepository.save(qr);
         Message link = new Message(
@@ -238,22 +230,30 @@ public class TelegramBotWebhook {
                         RU,
                         "или перешлите ссылку https://t.me/Skido_Bot?start="
                                 + "PI"
-                                + users.getId()));
+                                + user.getId()));
         messageCacheRepository.save(link);
         Message linkSkidozona = new Message(
                 newConnectLevel, 2,
-                Map.of(RU, "Свяжите с сайтом https://skidozona.by?tm=" + users.getId()));
+                Map.of(RU, "Свяжите с сайтом https://skidozona.by?tm=" + user.getId()));
         messageCacheRepository.save(linkSkidozona);
 
-        newConnectLevel.setUserId(users.getId());
+        newConnectLevel.setUserId(user.getId());
         levelCacheRepository.save(newConnectLevel);
-//        userCacheRepository.save(users);
 
-        System.out.println();
-
-        return users;
+        return user;
     }
 
 
+    private ShopUser createShopUser(User user, Shop shop) {
+
+        System.out.println("shop.getInitialLevelId()*****" + shop.getInitialLevelId());
+
+        var shopUser = new ShopUser(shop.getId(), user.getId(), shop.getInitialLevelId());
+
+
+        System.out.println("shopUser++++" + shopUser);
+
+        return shopUserCacheRepository.save(shopUser);
+    }
 
 }

@@ -90,7 +90,7 @@ public class TelegramElementsUtil {
                 Unirest.setTimeouts(0, 0);
                 InputStream responseProjectArray = null;
 
-                final String runner = shopRepository.findById(users.getFirstRunnerShop()).getSecretId();
+                final String runner = shopRepository.findById(users.getFirstRunnerShop()).getSecretHash();
 
                 responseProjectArray = Unirest.get("https://api.telegram.org/bot" + runner + "/getFile?file_id=" + f_id)
                         .asString().getRawBody();

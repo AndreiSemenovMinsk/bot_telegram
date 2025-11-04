@@ -1,11 +1,13 @@
 package ru.skidoz.service.batch;
 
+import static ru.skidoz.service.initializers.InitialLevel.SHOP;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import ru.skidoz.model.pojo.side.Shop;
 import ru.skidoz.service.initializers.AdminLevelInitializer;
 import ru.skidoz.service.initializers.InitialLevel;
+import ru.skidoz.service.initializers.InitializeEntries;
 import ru.skidoz.service.initializers.ShopLevelInitializer;
 import ru.skidoz.service.initializers.SkidozonaStartLevelInitializer;
 import ru.skidoz.service.initializers.UserLevelInitializer;
@@ -26,12 +28,20 @@ public class InitialLevelCashbackTasklet implements Tasklet {
     SkidozonaStartLevelInitializer skidozonaStartLevelInitializer;
     @Autowired
     ShopLevelInitializer shopLevelInitializer;
+    @Autowired
+    InitializeEntries initializeEntries;
 
 
     @Override
     public void execute() {
 
-        if (InitialLevel.SHOP == null) {
+        System.out.println();
+        System.out.println();
+        System.out.println("execute----" + SHOP);
+        System.out.println();
+        System.out.println();
+
+        if (SHOP == null) {
 
             System.out.println("@**@*@**@*@****@*@*@@@");
 
@@ -40,6 +50,7 @@ public class InitialLevelCashbackTasklet implements Tasklet {
             adminLevelInitializer.initLevels();
             shopLevelInitializer.initLevels();
             userLevelInitializer.initLevels();
+            initializeEntries.initLevels();
         }
 
     }

@@ -1,18 +1,5 @@
-package ru.skidoz;
+package ru.skidoz.integrational;
 
-import liquibase.Contexts;
-import liquibase.LabelExpression;
-import liquibase.Liquibase;
-import liquibase.database.Database;
-import liquibase.database.DatabaseFactory;
-import liquibase.database.jvm.JdbcConnection;
-import liquibase.resource.ClassLoaderResourceAccessor;
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-
-import org.junit.jupiter.api.BeforeAll;
-import org.springframework.boot.jdbc.DatabaseDriver;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;

@@ -26,7 +26,7 @@ import ru.skidoz.model.pojo.telegram.ShopGroup;
 
 @Slf4j
 @Component
-public class Calculator {
+public class CalculatorPartners {
 
     @Autowired
     private CashbackCacheRepository cashbackCacheRepository;

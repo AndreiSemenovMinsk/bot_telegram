@@ -43,24 +43,36 @@ public class BatchConfig {
 
     @Scheduled(cron = "${systemInitializeCron}")
     public void systemInitializeJob() {
-
+        System.out.println();
+        System.out.println("systemInitializeJob------------------------------");
+        System.out.println();
         systemInitialize = true;
     }
 
     @Scheduled(cron = "${systemRefreshCron}")
     public void systemRefreshJob() {
-
+        System.out.println();
+        System.out.println("systemRefreshJob------------------------------");
+        System.out.println();
         systemRefresh = true;
     }
 
     @Scheduled(cron = "${remindTimer}")
     public void reminderJob() {
+
+        System.out.println();
+        System.out.println("reminderJob-------------------------------");
+        System.out.println();
         reminder = true;
     }
 
 
     @Scheduled(cron = "${saveToRepoTimer}")
     public void heartbeatJob() throws IOException, WriterException {
+
+        System.out.println();
+        System.out.println("heartbeatJob-------------------------------");
+        System.out.println();
 
         if (systemInitialize) {
             CompletableFuture.runAsync(() -> excelMenuTasklet.execute())

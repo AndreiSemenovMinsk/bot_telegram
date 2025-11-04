@@ -115,7 +115,7 @@ public class MenuCreator {
                 callback1 = levelGroup.getIdString();
             }
 
-            Button button_super = new Button(row_super, Map.of(LanguageEnum.RU, categorySuperGroup.getAlias()), callback1);// + "@" +
+            Button button_super = new Button(row_super, Map.of(LanguageEnum.RU, categorySuperGroup.getAlias()), callback1);
             buttonCacheRepository.save(button_super);
             row_super.add(button_super);
             buttonRowCacheRepository.save(row_super);
@@ -166,13 +166,11 @@ public class MenuCreator {
                     callback2 = levelCategory.getIdString();
                 }
 
-                Button button_group = new Button(row_group, Map.of(LanguageEnum.RU, categoryGroup.getAlias()), callback2);  //+ "@" +
+                Button button_group = new Button(row_group, Map.of(LanguageEnum.RU, categoryGroup.getAlias()), callback2);
                 buttonCacheRepository.save(button_group);
                 row_group.add(button_group);
                 buttonRowCacheRepository.save(row_group);
                 levelGroup.addRow(row_group);
-
-//                System.out.println("categorGroup***" + categoryGroup.getName(LanguageEnum.RU) + levelCategory.getIdString());
 
                 if (menuTypeEnum.equals(MenuTypeEnum.LEVEL_CHOICER) /*|| menuTypeEnum.equals(MenuTypeEnum.SEARCH_LEVEL_CHOICER)*/) {
                     ButtonRow row = new ButtonRow(levelCategory);

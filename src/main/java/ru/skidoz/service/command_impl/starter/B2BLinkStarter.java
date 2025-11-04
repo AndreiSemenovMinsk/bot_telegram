@@ -43,10 +43,10 @@ public class B2BLinkStarter extends LinkStarter {
     @Override
     public List<LevelChat> getLevel(User user, String callback) {
 
-        final int secretId = Integer.parseInt(callback);
+        final int secretCode = Integer.parseInt(callback);
         final int addingShopId = user.getCurrentAdminShop();
 
-        LinkStarterKeeper linkStarterKeeper = linkStarterKeeperCacheRepository.findBySecretCode(secretId);
+        LinkStarterKeeper linkStarterKeeper = linkStarterKeeperCacheRepository.findBySecretCode(secretCode);
 
         final Integer shopGroupId = linkStarterKeeper.getParameter1();
         final Integer initiatorShopId = linkStarterKeeper.getParameter2();

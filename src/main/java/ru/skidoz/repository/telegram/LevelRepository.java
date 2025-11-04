@@ -5,6 +5,8 @@ import java.util.Optional;
 import java.util.Set;
 
 import ru.skidoz.model.entity.telegram.LevelEntity;
+import ru.skidoz.model.pojo.telegram.Level;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -18,7 +20,7 @@ public interface LevelRepository extends JpaRepository<LevelEntity, Integer> {
 
     List<LevelEntity> findAllByParentLevelId(Integer parentLevelId);
 
-    LevelEntity findFirstBySourceIsMessageIsTrueAndParentLevelId(Integer parentLevelId);
+    LevelEntity findBySourceIsMessageAndParentLevelId(boolean isMessage, Integer parentLevelId);
 
     LevelEntity findFirstByUser_ChatIdAndCallName(long chatId, String callName);
 

@@ -20,5 +20,5 @@ public interface ShopGroupAddVoteCacheRepository extends JpaRepositoryTest<ShopG
             Integer /*VoterShop*/ voterShop,
             Integer/*ShopGroup*/ addingShop);
 
-    ShopGroupAddVote findBySecretIdAndAddingShop_Id(Integer secretId, Integer addingShop);
+    ShopGroupAddVote findBySecretCodeAndAddingShop_Id(Integer secretCode, Integer addingShop);
 }

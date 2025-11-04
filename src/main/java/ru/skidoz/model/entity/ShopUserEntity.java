@@ -26,6 +26,8 @@ public class ShopUserEntity extends AbstractEntity  implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     private ShopEntity shop;
 
+    private Integer currentLevelId;
+
     public ShopUserEntity() {
         super();
     }
@@ -50,6 +52,7 @@ public class ShopUserEntity extends AbstractEntity  implements Serializable {
                 "id=" + id +
                 ", user=" + user +
                 ", shop=" + shop +
+                ", currentLevelId=" + currentLevelId +
                 '}';
     }
 }

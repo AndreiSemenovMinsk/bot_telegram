@@ -116,9 +116,6 @@ public class TelegramProcessor {
         }
 
 
-
-
-
         // ЧТО ИЗ ЭТОГО НАМ НАДО?
         if (bearingCommand.equals("PP")) {
 
@@ -278,13 +275,13 @@ public class TelegramProcessor {
                     return null;
                 }
 
-                System.out.println("inputText*" + inputText);
+                System.out.println("inputText*" + inputText + " @@@ " + currentLevelId);
 
-                newLevel = levelCacheRepository.findFirstBySourceIsMessageIsTrueAndParentLevel_Id(currentLevelId);
+                newLevel = levelCacheRepository.findBySourceIsMessageAndParentLevelId(true, currentLevelId);
 
-                System.out.println("newLevel   findFirstBySourceIsMessageIsTrueAndParentLevelId***" + newLevel);
+                System.out.println("newLevel   findBySourceIsMessageAndParentLevelId***" + newLevel);
 
-                System.out.println("all child levels " + levelCacheRepository.findAllByParentLevelId(currentLevelId));
+//                System.out.println("all child levels " + levelCacheRepository.findAllByParentLevelId(currentLevelId));
 
                 if (newLevel == null) {
                     final Level currentLevel = levelCacheRepository.findById(currentLevelId);

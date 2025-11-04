@@ -14,5 +14,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface LinkStarterKeeperRepository extends JpaRepository<LinkStarterKeeperEntity, Integer> {
 
-    LinkStarterKeeperEntity findBySecretCode(Integer secretId);
+    LinkStarterKeeperEntity findBySecretCode(Integer secretCode);
 }

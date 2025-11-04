@@ -18,9 +18,13 @@ import org.springframework.stereotype.Component;
 public abstract class ShopUserMapper extends EntityMapper<ShopUser, ShopUserEntity> {
 
     @Override
+    @Mapping(source = "shop.id", target = "shop")
+    @Mapping(source = "user.id", target = "user")
     public abstract ShopUser toDto(ShopUserEntity entity);
 
     @Override
+    @Mapping(source = "shop", target = "shop.id")
+    @Mapping(source = "user", target = "user.id")
     public abstract ShopUserEntity toEntity(ShopUser entity);
 
 }

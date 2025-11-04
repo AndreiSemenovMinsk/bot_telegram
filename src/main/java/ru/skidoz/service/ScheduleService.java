@@ -71,7 +71,6 @@ import ru.skidoz.model.pojo.telegram.Level;
 import ru.skidoz.model.pojo.telegram.LevelChat;
 import ru.skidoz.model.pojo.telegram.LevelDTOWrapper;
 import ru.skidoz.model.pojo.telegram.LevelResponse;
-import ru.skidoz.model.pojo.telegram.LinkStarterKeeper;
 import ru.skidoz.model.pojo.telegram.Message;
 import ru.skidoz.model.pojo.telegram.ScheduleBuyer;
 import ru.skidoz.model.pojo.telegram.User;
@@ -472,6 +471,9 @@ public class ScheduleService {
         System.out.println();
         System.out.println("-----------------ScheduleService---------------");
         System.out.println((System.currentTimeMillis() - start) + "ms");
+
+        System.out.println();
+        System.out.println();
         System.out.println();
     }
 
@@ -508,7 +510,7 @@ public class ScheduleService {
         final LevelDTOWrapper levelWrapper = new LevelDTOWrapper();
         levelWrapper.setLevel(level);
 
-        final String runner = shopCacheRepository.findById(user.getFirstRunnerShop()).getSecretId();
+        final String runner = shopCacheRepository.findById(user.getFirstRunnerShop()).getSecretHash();
         sender.addAsync(
                 new LevelResponse(
                         new ArrayList<>(Collections.singletonList(new LevelChat(e -> {

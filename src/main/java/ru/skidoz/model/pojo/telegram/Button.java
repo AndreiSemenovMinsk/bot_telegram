@@ -18,7 +18,7 @@ import lombok.Setter;
 public class Button extends AbstractDTO {
 
     private Integer/*ButtonRowDTO*/ buttonRow;
-    private Integer/*ButtonRow.Level*/ level;
+//    private Integer/*ButtonRow.Level*/ level;
     private String nameEN;
     private String nameRU;
     private String nameDE;
@@ -42,7 +42,7 @@ public class Button extends AbstractDTO {
     public Button(ButtonRow buttonRow, Map<LanguageEnum, String> nameLanguages, String callback) {
         super();
         this.buttonRow = buttonRow.getId();
-        this.level = buttonRow.getLevel();
+//        this.level = buttonRow.getLevel();
         nameLanguages.forEach((k, v) -> {
             addName(v, k);
         });
@@ -62,7 +62,7 @@ public class Button extends AbstractDTO {
         Button button = new Button();//(Button) super.clone();
         button.setId(-(int) (Math.random() * 1_000_000_000));
         button.callback = this.callback;
-        button.level = this.level;
+//        button.level = this.level;
         button.nameEN = this.nameEN;
         button.nameRU = this.nameRU;
         button.nameDE = this.nameDE;

@@ -119,14 +119,14 @@ public class CategoryOptionsTasklet implements Tasklet {
                             categorySuperGroup = categorySuperGroupCacheRepository.findByAlias(categorySuperGroupAlias);
 
 
-                            System.out.println(categorySuperGroup + " @categorySuperGroupAlias--- " + categorySuperGroupAlias);
+//                            System.out.println(categorySuperGroup + " @categorySuperGroupAlias--- " + categorySuperGroupAlias);
 
                         } else if (sheet.getRow(i).getCell(2) != null
                                 && !sheet.getRow(i).getCell(2).toString().isEmpty()) {
 
                             String categoryGroupAlias = sheet.getRow(i).getCell(2).toString();
 
-                            System.out.println("categoryGroupAlias--- " + categoryGroupAlias);
+//                            System.out.println("categoryGroupAlias--- " + categoryGroupAlias);
 
                             categoryGroup = categoryGroupCacheRepository.findByAliasAndCategorySuperGroup(categoryGroupAlias, categorySuperGroup.getId());
 
@@ -140,9 +140,9 @@ public class CategoryOptionsTasklet implements Tasklet {
 
                             Category categoryEntry = categoryCacheRepository.findByAliasAndCategoryGroup(categoryAlias, categoryGroup.getId());
 
-                            if (categoryEntry == null) {
-                                System.out.println(categoryAlias + "@*****categoryAlias+++++++" + categoryGroup.getId());
-                            }
+//                            if (categoryEntry == null) {
+//                                System.out.println(categoryAlias + "@*****categoryAlias+++++++" + categoryGroup.getId());
+//                            }
 
                             Map<String, Set<String>> optionsSetMap = categoryOptionsMapMap.get(categoryEntry.getAlias());
 

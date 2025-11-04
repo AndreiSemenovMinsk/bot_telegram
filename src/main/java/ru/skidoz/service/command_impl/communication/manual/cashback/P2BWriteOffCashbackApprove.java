@@ -23,7 +23,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import ru.skidoz.util.Calculator;
+import ru.skidoz.util.CalculatorPartners;
 
 import static ru.skidoz.util.Optimizator.getRate;
 
@@ -50,7 +50,7 @@ public class P2BWriteOffCashbackApprove implements Command {
     @Autowired
     private CashbackCacheRepository cashbackCacheRepository;
     @Autowired
-    private Calculator calculator;
+    private CalculatorPartners calculatorPartners;
     @Autowired
     private ActionCacheRepository actionCacheRepository;
     @Autowired
@@ -189,7 +189,7 @@ public class P2BWriteOffCashbackApprove implements Command {
 
             if (proposedSum > 0) {
 
-                final int subtracted = calculator.getMaxFromPartners(
+                final int subtracted = calculatorPartners.getMaxFromPartners(
                         shopInitial.getId(),
                         users.getId(),
                         proposedSum,

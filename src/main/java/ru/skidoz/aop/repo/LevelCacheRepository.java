@@ -1,7 +1,6 @@
 package ru.skidoz.aop.repo;
 
 import java.util.List;
-import java.util.Set;
 
 import ru.skidoz.model.pojo.telegram.Level;
 import org.springframework.stereotype.Service;
@@ -13,7 +12,7 @@ public interface LevelCacheRepository extends JpaRepositoryTest<Level, Integer> 
 
     List<Level> findAllByParentLevel_Id(Integer parentLevelId);
 
-    Level findFirstBySourceIsMessageIsTrueAndParentLevel_Id(Integer parentLevelId);
+    Level findBySourceIsMessageAndParentLevelId(boolean isMessage, Integer parentLevelId);
 
     Level findFirstByUser_ChatIdAndCallName(Long chatId, String callName);
 

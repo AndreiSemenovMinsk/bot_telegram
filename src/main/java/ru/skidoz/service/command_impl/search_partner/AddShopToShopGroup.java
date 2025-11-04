@@ -75,17 +75,15 @@ public class AddShopToShopGroup implements Command {
         try {
             final int secretCode = Integer.parseInt(inputText);
 
-
             final Integer currentAdminShop = users.getCurrentAdminShop();
 
-            final ShopGroupAddVote shopGroupAddVote = shopGroupAddVoteCacheRepository.findBySecretIdAndAddingShop_Id(
+            final ShopGroupAddVote shopGroupAddVote = shopGroupAddVoteCacheRepository.findBySecretCodeAndAddingShop_Id(
                     secretCode,
                     currentAdminShop);
             final Integer shopGroupId = shopGroupAddVote.getShopGroup();
             final ShopGroup shopGroup = shopGroupCacheRepository.findById(shopGroupId);
 
             if (shopGroupAddVote != null) {
-
 
                 final Shop shop = shopCacheRepository.findById(currentAdminShop);
 
@@ -125,7 +123,7 @@ public class AddShopToShopGroup implements Command {
                     final LevelDTOWrapper levelWrapper = new LevelDTOWrapper();
                     levelWrapper.setLevel(levelPartner);
 
-                    final String runner = shopCacheRepository.findById(userPartner.getFirstRunnerShop()).getSecretId();
+                    final String runner = shopCacheRepository.findById(userPartner.getFirstRunnerShop()).getSecretHash();
                     sender.addAsync(
                             new LevelResponse(
                                     new ArrayList<>(Collections.singletonList(new LevelChat(e -> {

@@ -70,7 +70,7 @@ public class VoteAddShopGroup implements Command {
 
             final Integer currentAdminShop = users.getCurrentAdminShop();
 
-            final ShopGroupAddVote shopGroupAddVote = shopGroupAddVoteCacheRepository.findBySecretIdAndAddingShop_Id(
+            final ShopGroupAddVote shopGroupAddVote = shopGroupAddVoteCacheRepository.findBySecretCodeAndAddingShop_Id(
                     secretCode,
                     currentAdminShop);
             final Integer shopGroupId = shopGroupAddVote.getShopGroup();

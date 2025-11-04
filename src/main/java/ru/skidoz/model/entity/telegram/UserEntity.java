@@ -147,7 +147,6 @@ public class UserEntity extends AbstractEntity {
 
     private Long chatId;
     //@ManyToOne(fetch = FetchType.LAZY)
-    private Integer currentLevelId;
     private Integer currentLevelBeforeConfigId;
 //    @ManyToOne
 //    private LevelEntity currentLevelBeforeInterruption;
@@ -244,7 +243,6 @@ public class UserEntity extends AbstractEntity {
                 ", login=" + login +
                 ", password=" + Arrays.toString(password) +
                 ", sessionId='" + sessionId + '\'' +
-                ", currentLevelId=" + currentLevelId +
                 ", currentAdminShop=" + currentAdminShop +
                 ", currentConstructShop=" + currentConstructShop +
                 ", currentConversationShop=" + currentConversationShop +

@@ -14,6 +14,6 @@ import org.springframework.stereotype.Service;
 @Service
 public interface LinkStarterKeeperCacheRepository extends JpaRepositoryTest<LinkStarterKeeper, Integer> {
 
-    LinkStarterKeeper findBySecretCode(Integer secretId);
+    LinkStarterKeeper findBySecretCode(Integer secretCode);
 
 }

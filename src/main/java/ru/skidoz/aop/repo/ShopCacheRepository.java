@@ -1,7 +1,6 @@
 package ru.skidoz.aop.repo;
 
 import java.util.List;
-import java.util.Set;
 
 import ru.skidoz.model.pojo.side.Shop;
 import org.springframework.stereotype.Service;
@@ -16,7 +15,7 @@ public interface ShopCacheRepository extends JpaRepositoryTest<Shop, Integer> {
 
     List<Shop> findAllByActiveIsTrue();
 
-    Shop findBySecretId(String secretId);
+    Shop findBySecretHash(String secretHash);
 
 //    Shop findById(Integer shopId);
 

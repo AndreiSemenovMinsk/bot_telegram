@@ -4,7 +4,6 @@ import static ru.skidoz.service.command.CommandName.ADMIN_SHOPS;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.zxing.WriterException;
-import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import ru.skidoz.aop.repo.ActionCacheRepository;
@@ -61,9 +60,9 @@ public class Construct implements Command {
         System.out.println();
         System.out.println();
 
-        System.out.println(shopCacheRepository.findBySecretId(inputText) != null);
+        System.out.println(shopCacheRepository.findBySecretHash(inputText) != null);
 
-        if (shopCacheRepository.findBySecretId(inputText) != null) {
+        if (shopCacheRepository.findBySecretHash(inputText) != null) {
             LevelDTOWrapper resultLevel = initialLevel.convertToLevel(initialLevel.level_CONSTRUCT,
                     false,
                     false);
@@ -85,7 +84,7 @@ public class Construct implements Command {
         String responseString = Unirest.post(
                 "https://api.telegram.org/bot"
                         + inputText
-                        + "/setWebhook?url=https%3A%2F%2Fwww.skidozona.by%2Ftelegram")
+                        + "/setWebhook?url=https://skidozona.by/telegram/" + inputText + "/")
                 .asString().getBody();
         ObjectMapper mapper = new ObjectMapper();
         Response response = mapper.readValue(responseString, Response.class);
@@ -111,7 +110,7 @@ public class Construct implements Command {
                 true);
 
         Shop shop = new Shop();
-        shop.setSecretId(inputText);
+        shop.setSecretHash(inputText);
         shop.setAdminUser(users.getId());
         shop.setSellerSet(List.of(users.getId()));
         shop.setChatId(users.getChatId());
@@ -206,4 +205,5 @@ public class Construct implements Command {
         int error_code;
         String description;
     }
+
 }

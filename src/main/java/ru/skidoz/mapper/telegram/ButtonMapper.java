@@ -15,7 +15,7 @@ public abstract class ButtonMapper extends EntityMapper<Button, ButtonEntity> {
 
 //    @Mapping(target = "usersWithCurrentChangingButtonList", ignore = true)
     @Mapping(source = "buttonRow.id", target = "buttonRow")
-    @Mapping(source = "buttonRow.level.id", target = "level")
+//    @Mapping(source = "buttonRow.level.id", target = "level")
     public abstract Button toDto(ButtonEntity entity);
 
 //    @Mapping(target = "usersWithCurrentChangingButtonList", ignore = true)

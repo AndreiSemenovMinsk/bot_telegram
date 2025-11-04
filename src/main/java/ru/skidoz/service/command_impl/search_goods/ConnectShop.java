@@ -23,7 +23,7 @@ import com.google.zxing.WriterException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import ru.skidoz.util.Calculator;
+import ru.skidoz.util.CalculatorPartners;
 import ru.skidoz.util.TelegramElementsUtil;
 
 import static ru.skidoz.util.Optimizator.getRate;
@@ -35,7 +35,7 @@ import static ru.skidoz.util.Optimizator.getRate;
 public class ConnectShop implements Command {
 
     @Autowired
-    private Calculator calculator;
+    private CalculatorPartners calculatorPartners;
     @Autowired
     private BasketCacheRepository basketCacheRepository;
     @Autowired
@@ -627,7 +627,7 @@ public class ConnectShop implements Command {
 //            }
         }*/
 
-        int maxResultSum = calculator.getMaxFromPartners(shopGetter.getId(), friend.getId(), 1000_000, false);
+        int maxResultSum = calculatorPartners.getMaxFromPartners(shopGetter.getId(), friend.getId(), 1000_000, false);
 
         if (maxResultSum > 0) {
             cashbackMessagePartnerGroup

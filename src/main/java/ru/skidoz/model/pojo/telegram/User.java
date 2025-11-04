@@ -18,6 +18,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
+import ru.skidoz.model.pojo.side.ShopUser;
 
 /**
  * @author andrey.semenov
@@ -115,6 +116,8 @@ public class User extends AbstractDTO {
     private List<ScheduleBuyer> scheduleBuyerList = new ArrayList<>();
 
     private List<Level> levels = new ArrayList<>();
+
+    private List<ShopUser>/*ShopUser*/ shopUserList = new ArrayList<>();
 
     public User(Long chatId, String name) {
         super();

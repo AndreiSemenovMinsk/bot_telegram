@@ -27,7 +27,6 @@ public class Sender {
         }
     }
 
-
     private final BasicThreadFactory factory = new BasicThreadFactory.Builder()
             .namingPattern("%d")
             .priority(Thread.MAX_PRIORITY)

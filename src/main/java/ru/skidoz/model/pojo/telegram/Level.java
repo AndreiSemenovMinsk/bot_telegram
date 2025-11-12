@@ -123,6 +123,18 @@ public class Level extends AbstractDTO implements Cloneable {
         return level;
     }
 
+    public Level clone(User user) throws CloneNotSupportedException {
+
+        Level level = (Level) super.clone();
+
+        level.userId = user.getId();
+        level.chatId = user.getChatId();
+        level.callName = this.callName;
+        level.sourceIsMessage = this.sourceIsMessage;
+        level.parentLevelId = this.parentLevelId;
+        return level;
+    }
+
     public String getIdString(){
         return getIdString(getId());
     }

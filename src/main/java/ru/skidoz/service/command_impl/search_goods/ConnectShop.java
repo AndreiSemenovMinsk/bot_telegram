@@ -117,7 +117,7 @@ public class ConnectShop implements Command {
 
         Long shopChatId = shopUsers.getChatId();
 
-//levelCacheRepository.findFirstByUser_ChatIdAndCallName(shopChatId, P2B.name()
+//levelCacheRepository.findByUser_ChatIdAndCallName(shopChatId, P2B.name()
         LevelDTOWrapper shopLevel = initialLevel.convertToLevel(initialLevel.level_P2B,
                 false,
                 true);
@@ -648,7 +648,7 @@ public class ConnectShop implements Command {
         Long friendChatId = friend.getChatId();
 
         LevelDTOWrapper friendLevel = initialLevel.convertToLevel(initialLevel.level_P2B_RESP,
-//                levelCacheRepository.findFirstByUser_ChatIdAndCallName(friendChatId, P2B_RESP.name()),
+//                levelCacheRepository.findByUser_ChatIdAndCallName(friendChatId, P2B_RESP.name()),
                 false,
                 false);
 

@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Optional;
 
 import ru.skidoz.model.entity.ShopEntity;
+import ru.skidoz.model.pojo.side.Shop;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -18,11 +20,13 @@ public interface ShopRepository extends JpaRepository<ShopEntity, Integer> {
 
     //@Query(value = "select * from shop shp inner join chat cht on (cht.) where shp.session_id=:session_id", nativeQuery = true)
     @Query(value = "SELECT shp FROM ShopEntity shp JOIN shp.adminUser usr WHERE usr.chatId = :chatId AND shp.id=usr.currentAdminShop")
-    ShopEntity getByChatId(@Param("chatId") Integer chatId);
+    ShopEntity findByChatId(@Param("chatId") Integer chatId);
 
 
     @Query(value = "SELECT distinct shp FROM ShopEntity shp JOIN shp.sellerSet sellers WHERE sellers.chatId = :chatId AND shp.id=sellers.currentAdminShop ")
-    ShopEntity getBySellerChatId(@Param("chatId") Long chatId);
+    ShopEntity findBySellerChatId(@Param("chatId") Long chatId);
+
+
 
 
     ShopEntity findBySecretHash(String secretHash);
@@ -45,5 +49,9 @@ public interface ShopRepository extends JpaRepository<ShopEntity, Integer> {
 
     ShopEntity findByNameAndAdminUser_Id(String name, Integer userId);
 
+    List<ShopEntity> findAllByAdminUser_Id(Integer userId);
+
     ShopEntity save(ShopEntity shop);
+
+    ShopEntity findByName(String name);
 }

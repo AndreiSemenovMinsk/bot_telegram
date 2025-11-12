@@ -15,7 +15,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ShopGroupRepository extends JpaRepository<ShopGroupEntity, Integer> {
 
-    List<ShopGroupEntity> findAllByName(String name);
+    ShopGroupEntity findByName(String name);
 
     Optional<ShopGroupEntity> findById(Integer id);
 

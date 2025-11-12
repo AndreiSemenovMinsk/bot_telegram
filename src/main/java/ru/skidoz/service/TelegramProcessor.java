@@ -205,7 +205,7 @@ public class TelegramProcessor {
         return levelChatDTOList;
     }
 
-    public void mergeUser(User targetUsersDTO, User duplicateUsersDTO) {
+    private void mergeUser(User targetUsersDTO, User duplicateUsersDTO) {
 
 
 //        Users targetUsers = new Users(targetUsersDTO.getId());
@@ -264,10 +264,19 @@ public class TelegramProcessor {
             String inputText = update.getMessage().getText();
             Location location = update.getMessage().getLocation();
 
-            if (inputText != null && inputText.startsWith("/start ")) {
-                levelChats = startProcessor(users, chatId, update, newUser);
-                return new LevelResponse(levelChats, null, key);
+            if (inputText != null) {
+                if (inputText.startsWith("/start")) {
+                    levelChats = startProcessor(users, chatId, update, newUser);
+                    return new LevelResponse(levelChats, null, key);
+                }
+
+                if (inputText.startsWith("/admin")) {
+                    Command command = commandProvider.getCommand(initialLevel.level_ADMIN.getCallName());
+                    return command.runCommand(update, newLevel, users);
+                }
             }
+
+
             //TODO - make refactoring, may not be null, but empty...
             if (inputText != null || update.getMessage().hasPhoto()) {
 
@@ -277,9 +286,11 @@ public class TelegramProcessor {
 
                 System.out.println("inputText*" + inputText + " @@@ " + currentLevelId);
 
+
                 newLevel = levelCacheRepository.findBySourceIsMessageAndParentLevelId(true, currentLevelId);
 
                 System.out.println("newLevel   findBySourceIsMessageAndParentLevelId***" + newLevel);
+
 
 //                System.out.println("all child levels " + levelCacheRepository.findAllByParentLevelId(currentLevelId));
 
@@ -312,10 +323,19 @@ public class TelegramProcessor {
 
             System.out.println("callback*****" + callback);
 
+            String callName;
+
             if (callback.startsWith("@")) {
                 newLevel = levelCacheRepository.findById(currentLevelId);
+                final String[] split = newLevel.getCallName().split("\\*");
+                if (split.length > 1) {
+                    callName = split[0];
+                } else {
+                    throw new RuntimeException("Название уровня некорректно " + newLevel.getCallName());
+                }
             } else {
                 newLevel = levelCacheRepository.findById(parseInt(callback.substring(0, 19)));
+                callName = newLevel.getCallName();
             }
 
             if (newLevel != null) {
@@ -323,28 +343,16 @@ public class TelegramProcessor {
             }
 
             System.out.println(newLevel != null);
-            System.out.println("commandExists+++" + commandProvider.commandExists(newLevel.getCallName()));
+            System.out.println("commandExists+++" + commandProvider.commandExists(callName));
             // работает на новый level
-
-            String levelCallName = newLevel.getCallName();
-
             System.out.println("newLevel.getIsBotLevel()+++" + newLevel.isBotLevel());
 
-            if (commandProvider.commandExists(levelCallName)) {
-                Command command = commandProvider.getCommand(levelCallName);
+            if (commandProvider.commandExists(callName)) {
+                Command command = commandProvider.getCommand(callName);
                 return command.runCommand(update, newLevel, users);
             } else {
 
-                LevelDTOWrapper levelDTOWrapper = initialLevel.convertToLevel(newLevel,
-                        true,
-                        true);
-
-                levelChats =  new ArrayList<>(Collections.singletonList(new LevelChat(e -> {
-                    e.setChatId(chatId);
-                    e.setUser(users);
-                    e.setLevel(levelDTOWrapper);
-                })));
-                return new LevelResponse(levelChats, null, key);
+                return getLevelResponse(chatId, newLevel, key, users);
             }
         }
 
@@ -353,17 +361,36 @@ public class TelegramProcessor {
             return null;
         }
 
+//        LevelDTOWrapper levelDTOWrapper = initialLevel.convertToLevel(newLevel,
+//                true,
+//                true);
+//
+//        levelChats = new ArrayList<>(Collections.singletonList(new LevelChat(
+//                e -> {
+//                    e.setChatId(chatId);
+//                    e.setUser(users);
+//                    e.setLevel(levelDTOWrapper);
+//                })));
+//        return new LevelResponse(levelChats, null, key);
+
+        return getLevelResponse(chatId, newLevel, key, users);
+    }
+
+
+
+    private LevelResponse getLevelResponse(long chatId, Level newLevel, String key, User user) throws Exception {
         LevelDTOWrapper levelDTOWrapper = initialLevel.convertToLevel(newLevel,
                 true,
                 true);
 
-        levelChats = new ArrayList<>(Collections.singletonList(new LevelChat(
+        final List<LevelChat> levelChats = new ArrayList<>(Collections.singletonList(new LevelChat(
                 e -> {
                     e.setChatId(chatId);
-                    e.setUser(users);
+                    e.setUser(user);
                     e.setLevel(levelDTOWrapper);
                 })));
         return new LevelResponse(levelChats, null, key);
     }
+
 
 }

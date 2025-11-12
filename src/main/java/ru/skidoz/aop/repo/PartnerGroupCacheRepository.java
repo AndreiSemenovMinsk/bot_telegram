@@ -15,7 +15,7 @@ public interface PartnerGroupCacheRepository extends JpaRepositoryTest<PartnerGr
 
     List<PartnerGroup> findAllByShop_Id(Integer /*Shop*/ creditor);
 
-    List<PartnerGroup> findAllByShopAndShopGroupInGroup(Integer  creditorId, Integer debtorId);
+//    List<PartnerGroup> findAllByShopAndShopGroupInGroup(Integer  creditorId, Integer debtorId);
 
     List<PartnerGroup> findAll();
 

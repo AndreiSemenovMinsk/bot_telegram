@@ -149,9 +149,6 @@ public class CacheSearchTasklet implements Tasklet {
 
     private void setFilterPointTreeHashCodeProduct() {
 
-
-        System.out.println("setFilterPointTreeHashCodeProduct--------");
-
         Set<Integer> categorySuperGroupProductIds = new HashSet<>();
 
         List<CategorySuperGroup>  catSGList = categorySuperGroupRepository.findAll();

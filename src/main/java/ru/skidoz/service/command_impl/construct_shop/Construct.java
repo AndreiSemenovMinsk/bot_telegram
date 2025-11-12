@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.zxing.WriterException;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import lombok.Data;
 import ru.skidoz.aop.repo.ActionCacheRepository;
 import ru.skidoz.aop.repo.LevelCacheRepository;
 import ru.skidoz.aop.repo.ShopCacheRepository;
@@ -87,8 +88,13 @@ public class Construct implements Command {
                         + "/setWebhook?url=https://skidozona.by/telegram/" + inputText + "/")
                 .asString().getBody();
         ObjectMapper mapper = new ObjectMapper();
+
+        System.out.println("responseString+++++" + responseString);
+
+
         Response response = mapper.readValue(responseString, Response.class);
-        if (!response.ok) {
+
+        if (!response.isOk()) {
             LevelDTOWrapper resultLevel = initialLevel.convertToLevel(initialLevel.level_CONSTRUCT,
                     false,
                     false);
@@ -96,7 +102,7 @@ public class Construct implements Command {
             Message message = new Message(null, Map.of(LanguageEnum.RU, "Ошибка при регистрации токена "));
             resultLevel.addMessage(message);
 
-            System.out.println("++++++++-+-+-+-+-+-+++-+" + response.description);
+            System.out.println("++++++++-+-+-+-+-+-+++-+" + response.getDescription());
 
             return new LevelResponse(Collections.singletonList(new LevelChat(e -> {
                 e.setChatId(users.getChatId());
@@ -200,10 +206,12 @@ public class Construct implements Command {
         })), null, null);
     }
 
-    private class Response {
-        boolean ok;
-        int error_code;
-        String description;
+    @Data
+    private static class Response {
+        private boolean ok;
+        private int error_code;
+        private String description;
+        private String result;
     }
 
 }

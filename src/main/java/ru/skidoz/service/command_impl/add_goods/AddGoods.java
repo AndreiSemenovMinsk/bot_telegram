@@ -81,6 +81,9 @@ public class AddGoods implements Command {
 //            CatSG categorySuperGroup = category.getCategorySuperGroupId();
             product.setCategorySuperGroup(category.getCategorySuperGroup());
 
+
+            System.out.println("product------ " + product);
+
             productCacheRepository.save(product);
 
             shopInitiator.setCurrentCreatingProduct(product.getId());

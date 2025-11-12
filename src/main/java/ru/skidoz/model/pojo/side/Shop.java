@@ -14,7 +14,7 @@ import lombok.ToString;
 
 @Setter
 @Getter
-@ToString
+//@ToString
 public class Shop extends AbstractDTO {
 
     //TODO - use only Jackson MAPPERS!!!
@@ -22,7 +22,7 @@ public class Shop extends AbstractDTO {
     @JsonIgnore
     private Long chatId;
 
-    @ToString.Exclude
+//    @ToString.Exclude
     @JsonIgnore
     private byte[] excel;
 
@@ -35,7 +35,7 @@ public class Shop extends AbstractDTO {
     private String geo;
     private boolean active;
 
-    @ToString.Exclude
+//    @ToString.Exclude
     @JsonIgnore
     private String secretHash;
     private Integer initialLevelId;
@@ -102,6 +102,35 @@ public class Shop extends AbstractDTO {
         super.setId(id);
     }
 
+    @Override
+    public String toString() {
+        return "Shop{" +
+                "chatId=" + chatId +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", contacts='" + contacts + '\'' +
+                ", telSms='" + telSms + '\'' +
+                ", lat=" + lat +
+                ", lng=" + lng +
+                ", geo='" + geo + '\'' +
+                ", active=" + active +
+                ", secretHash='" + secretHash + '\'' +
+                ", initialLevelId=" + initialLevelId +
+                ", currentConstructShopUser=" + currentConstructShopUser +
+                ", currentConversationShopUserChatId=" + currentConversationShopUserChatId +
+                ", currentChargeAction=" + currentChargeAction +
+                ", currentConversationShop=" + currentConversationShop +
+                ", currentConversationShopGroup=" + currentConversationShopGroup +
+                ", currentCreatingProduct=" + currentCreatingProduct +
+                ", currentCreatingAction=" + currentCreatingAction +
+                ", adminUser=" + adminUser +
+                ", bot=" + bot +
+                ", sarafanShare=" + sarafanShare +
+                ", minBillShare=" + minBillShare +
+                ", paymentBalance=" + paymentBalance +
+                ", cashbackBalance=" + cashbackBalance +
+                '}';
+    }
 //    public Product getCurrentCreatingProduct() {
 //        return productRepository.findById(currentCreatingProduct).orElse(null);
 //    }

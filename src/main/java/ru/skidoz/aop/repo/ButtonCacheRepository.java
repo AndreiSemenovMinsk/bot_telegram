@@ -13,7 +13,7 @@ public interface ButtonCacheRepository extends JpaRepositoryTest<Button, Integer
 
     Button findByButtonRow_LevelAndCallback(Level level, String callback);
 
-    List<Button> findByButtonRowId(Integer id);
+    //List<Button> findByButtonRowId(Integer id);
 
     void deleteButtonByButtonRowId(Integer buttonRowId);
 
@@ -21,5 +21,5 @@ public interface ButtonCacheRepository extends JpaRepositoryTest<Button, Integer
 
     void delete(Button button);
 
-    List<Button> findAllByLevel_CallName(String callName);
+//    List<Button> findAllByLevel_CallName(String callName);
 }

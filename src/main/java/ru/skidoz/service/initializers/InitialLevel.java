@@ -445,21 +445,24 @@ public class InitialLevel {
 
                 System.out.println("oldButtonRow**" + oldButtonRow.getId() + "   at level " + newLevel);
 
-                List<Button> buttonList = oldButtonRow.getButtonList().stream().map(oldButton -> {
+//                List<Button> buttonList =
+                        oldButtonRow.getButtonList().forEach(oldButton -> {
                     try {
-                        System.out.println("oldButton**" + oldButton.getId() + "+++++callback-" + oldButton.getCallback());
+//                        System.out.println("oldButton**" + oldButton.getId() + "+++++callback-" + oldButton.getCallback());
 
                         Button newButton = oldButton.clone(newButtonRow);
 
-                        System.out.println("newButton**" + oldButton.getId() + "+++++callback-" + oldButton.getCallback());
-
+//                        System.out.println("newButton**" + oldButton.getId() + "+++++callback-" + oldButton.getCallback());
+//
                         buttonRepository.cache(newButton);
-                        return newButton;
+                        //return newButton;
                     } catch (CloneNotSupportedException e) {
                         e.printStackTrace();
                     }
-                    return oldButton;
-                }).collect(Collectors.toList());
+                    //return oldButton;
+                });
+
+                        //.collect(Collectors.toList());
 
                 return newButtonRow;
             }).collect(Collectors.toList()));

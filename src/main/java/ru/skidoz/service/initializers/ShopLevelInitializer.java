@@ -103,7 +103,7 @@ public class ShopLevelInitializer {
                 initialLevel.level_P2B.addRow(row22_0);
                 Button button22_0_0 = new Button(row22_0, Map.of(RU, "Предложить кэшбек вручную"), initialLevel.level_P2B_PROPOSE_CASHBACK.getIdString());
                 buttonRepository.cache(button22_0_0);
-                row22_0.add(button22_0_0);
+//                row22_0.add(button22_0_0);
                 initialLevel.level_P2B.addRow(row22_0);
 
                 ButtonRow row22_01 = new ButtonRow(initialLevel.level_P2B);
@@ -111,7 +111,7 @@ public class ShopLevelInitializer {
                 initialLevel.level_P2B.addRow(row22_01);
                 Button button22_0_1 = new Button(row22_01, Map.of(RU, "Списать кэшбек вручную"), initialLevel.level_P2B_WRITEOFF_CASHBACK.getIdString());
                 buttonRepository.cache(button22_0_1);
-                row22_01.add(button22_0_1);
+//                row22_01.add(button22_0_1);
                 initialLevel.level_P2B.addRow(row22_01);
 
                 ButtonRow row22_1 = new ButtonRow(initialLevel.level_P2B);
@@ -119,7 +119,7 @@ public class ShopLevelInitializer {
                 initialLevel.level_P2B.addRow(row22_1);
                 Button button22_1_1 = new Button(row22_1, Map.of(RU, "Начислить купон вручную"), initialLevel.level_P2B_CHARGE_COUPON.getIdString());
                 buttonRepository.cache(button22_1_1);
-                row22_1.add(button22_1_1);
+//                row22_1.add(button22_1_1);
                 initialLevel.level_P2B.addRow(row22_1);
 
                 ButtonRow row22_2 = new ButtonRow(initialLevel.level_P2B);
@@ -127,7 +127,7 @@ public class ShopLevelInitializer {
                 initialLevel.level_P2B.addRow(row22_2);
                 Button button22_2_0 = new Button(row22_2, Map.of(RU, "Списать купон вручную"), initialLevel.level_P2B_WRITEOFF_COUPON.getIdString());
                 buttonRepository.cache(button22_2_0);
-                row22_2.add(button22_2_0);
+//                row22_2.add(button22_2_0);
                 initialLevel.level_P2B.addRow(row22_2);
 
                 ButtonRow row22_4 = new ButtonRow(initialLevel.level_P2B);
@@ -135,7 +135,7 @@ public class ShopLevelInitializer {
                 initialLevel.level_P2B.addRow(row22_4);
                 Button button22_4_0 = new Button(row22_4, Map.of(RU, "Начислить купон по корзине"), initialLevel.level_P2B_CHARGE_COUPON_BASKET.getIdString());
                 buttonRepository.cache(button22_4_0);
-                row22_4.add(button22_4_0);
+//                row22_4.add(button22_4_0);
                 initialLevel.level_P2B.addRow(row22_4);
 
                 ButtonRow row22_3 = new ButtonRow(initialLevel.level_P2B);
@@ -143,14 +143,14 @@ public class ShopLevelInitializer {
                 initialLevel.level_P2B.addRow(row22_3);
                 Button button22_3_0 = new Button(row22_3, Map.of(RU, "Списать купон по корзине"), initialLevel.level_P2B_WRITEOFF_COUPON_BASKET.getIdString());
                 buttonRepository.cache(button22_3_0);
-                row22_3.add(button22_3_0);
+//                row22_3.add(button22_3_0);
                 initialLevel.level_P2B.addRow(row22_3);
 
                 ButtonRow row22_5 = new ButtonRow(initialLevel.level_P2B);
                 buttonRowRepository.cache(row22_5);
                 Button button22_1_0 = new Button(row22_5, Map.of(RU, "Подтвердить кэшбек по корзине"), initialLevel.level_P2B_CHARGE_BASKET_CASHBACK.getIdString());
                 buttonRepository.cache(button22_1_0);
-                row22_5.add(button22_1_0);
+//                row22_5.add(button22_1_0);
                 initialLevel.level_P2B.addRow(row22_5);
 
 
@@ -210,10 +210,10 @@ public class ShopLevelInitializer {
                 buttonRowRepository.cache(row22_0_0);
                 Button button22_0_0_0 = new Button(row22_0_0, Map.of(RU, "Списать"), initialLevel.level_P2B_WRITEOFF_CASHBACK_APPROVE.getIdString());
                 buttonRepository.cache(button22_0_0_0);
-                row22_0_0.add(button22_0_0_0);
+//                row22_0_0.add(button22_0_0_0);
                 Button button22_0_0_1 = new Button(row22_0_0, Map.of(RU, "Отклонить"), initialLevel.level_P2B_WRITEOFF_CASHBACK_DISMISS.getIdString());
                 buttonRepository.cache(button22_0_0_1);
-                row22_0_0.add(button22_0_0_1);
+//                row22_0_0.add(button22_0_0_1);
                 initialLevel.level_P2B_WRITEOFF_CASHBACK_REQUEST.addRow(row22_0_0);
 
 
@@ -241,10 +241,10 @@ public class ShopLevelInitializer {
                 buttonRowRepository.cache(row22_2_0);
                 Button button22_2_0_0 = new Button(row22_2_0, Map.of(RU, "Подтвердить!"), initialLevel.level_P2B_APPROVE_BASKET_CASHBACK.getIdString());
                 buttonRepository.cache(button22_2_0_0);
-                row22_2_0.add(button22_2_0_0);
+//                row22_2_0.add(button22_2_0_0);
                 Button button22_2_0_1 = new Button(row22_2_0, Map.of(RU, "Начислить вручную"), initialLevel.level_P2B_PROPOSE_CASHBACK.getIdString());
                 buttonRepository.cache(button22_2_0_1);
-                row22_2_0.add(button22_2_0_1);
+//                row22_2_0.add(button22_2_0_1);
                 initialLevel.level_P2B_CHARGE_BASKET_CASHBACK.addRow(row22_2_0);
 
 
@@ -325,10 +325,10 @@ public class ShopLevelInitializer {
                 buttonRowRepository.cache(row22_4_0);
                 Button button22_4_0_0 = new Button(row22_4_0, Map.of(RU, "Списать"), initialLevel.level_P2B_PROPOSE_CASHBACK.getIdString());
                 buttonRepository.cache(button22_4_0_0);
-                row22_4_0.add(button22_4_0_0);
+//                row22_4_0.add(button22_4_0_0);
                 Button button22_4_0_1 = new Button(row22_4_0, Map.of(RU, "Отклонить"), initialLevel.level_P2B_WRITEOFF_CASHBACK_DISMISS.getIdString());
                 buttonRepository.cache(button22_4_0_1);
-                row22_4_0.add(button22_4_0_1);
+//                row22_4_0.add(button22_4_0_1);
                 initialLevel.level_P2B_WRITEOFF_COUPON_REQUEST.addRow(row22_4_0);
 
                 initialLevel.level_P2B_WRITEOFF_COUPON_RESP.updateLevel(Users, P2B_WRITEOFF_COUPON_RESP.name(), initialLevel.level_P2B_WRITEOFF_COUPON_REQUEST, true);

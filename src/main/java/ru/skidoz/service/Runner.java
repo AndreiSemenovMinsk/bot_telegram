@@ -61,9 +61,12 @@ public class Runner extends TelegramWebhookBot {
 
     public void processSend(List<LevelChat> levelChatList, String secretHash) {
 
-        System.out.println(" *****-------processSend secretHash " + secretHash);
+//        System.out.println(" *****-------processSend secretHash " + secretHash);
 
         for (LevelChat levelChat : levelChatList) {
+
+//            System.out.println("levelChat-----" + levelChat);
+
             try {
                 this.key = secretHash;
 
@@ -139,12 +142,14 @@ public class Runner extends TelegramWebhookBot {
 
                     for (ButtonRow buttonRow : buttonRows) {
 
+//                        System.out.println("buttonRow---" + buttonRow);
+
                         List<InlineKeyboardButton> keyboardButtonsRow = new ArrayList<>();
                         for (int j = 0; j < buttonRow.getButtonList().size(); j++) {
 
                             Button javaButton = buttonRow.getButtonList().get(j);
 
-                            System.out.println(javaButton);
+//                            System.out.println(javaButton);
 
                             if (javaButton.getDisplay()) {
 

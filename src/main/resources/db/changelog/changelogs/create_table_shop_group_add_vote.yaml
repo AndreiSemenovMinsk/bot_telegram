@@ -1,0 +1,70 @@
+databaseChangeLog:
+  - changeSet:
+      id: 3-shop_group_add_vote
+      author: a.semenov
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: shop_group_add_vote_pk
+                    nullable: false
+              - column:
+                  name: adding_initiator_shop_id
+                  type: int(11)
+                  constraints:
+                    nullable: true
+                    foreignKeyName: fk_shop
+                    references: shop(id)
+              - column:
+                  name: adding_shop_id
+                  type: int(11)
+                  constraints:
+                    nullable: true
+                    foreignKeyName: fk_shop
+                    references: shop(id)
+              - column:
+                  name: voter_shop_id
+                  type: int(11)
+                  constraints:
+                    nullable: true
+                    foreignKeyName: fk_shop
+                    references: shop(id)
+              - column:
+                  name: shop_group_id
+                  type: int(11)
+                  constraints:
+                    nullable: true
+                    foreignKeyName: fk_shop_group
+                    references: shop_group(id)
+            tableName: shop_group_add_vote
+        - createIndex:
+            #            clustered:  true
+            columns:
+              - column:
+                  descending:  true
+                  name:  adding_shop_id
+              - column:
+                  descending: true
+                  name: shop_group_id
+            indexName:  UC_SHOP_GROUP_ADDING_SHOP_1
+            schemaName:  public
+            tableName:  shop_group_add_vote
+            unique:  true
+        - createIndex:
+            #            clustered:  true
+            columns:
+              - column:
+                  descending:  true
+                  name:  adding_shop_id
+              - column:
+                  descending: true
+                  name: voter_shop_id
+            indexName:  UC_SHOP_GROUP_ADDING_SHOP_2
+            schemaName:  public
+            tableName:  shop_group_add_vote
+            unique:  true

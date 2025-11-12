@@ -73,7 +73,7 @@ public class BasketCommand implements Command {
 
             if (update.getCallbackQuery().getData().length() == 19) {
 
-                /*LevelDTOWrapper userLevel = initialLevel.convertToLevel(levelCacheRepository.findFirstByUser_ChatIdAndCallName(users.getChatId(), BASKET.name()),
+                /*LevelDTOWrapper userLevel = initialLevel.convertToLevel(levelCacheRepository.findByUser_ChatIdAndCallName(users.getChatId(), BASKET.name()),
                         true,
                         true);*/
 

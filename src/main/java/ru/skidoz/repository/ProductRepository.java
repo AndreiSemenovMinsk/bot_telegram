@@ -18,13 +18,13 @@ public interface ProductRepository extends JpaRepository<ProductEntity, Integer>
 
     List<ProductEntity> findAllByShop_Id(Integer shopId);
 
+    List<ProductEntity> findAllByShop_IdAndAlias(Integer  shopId, String alias);
+
 //    List<Prd> findAllByNameInAndActiveIsTrue(List<String> names);
 //
 //    List<Prd> findAllByCategorySuperGroupAndActiveIsTrue(CatSG categorySuperGroup);
 //
 //    List<Prd> findAllByCategoryGroupAndActiveIsTrue(CatG categoryGroup);
-
-    List<ProductEntity> findAllByCategoryAndActive(CategoryEntity category, Boolean active);
 
     List<ProductEntity> findAllByCategory_IdAndActive(Integer categoryId, Boolean active);
 

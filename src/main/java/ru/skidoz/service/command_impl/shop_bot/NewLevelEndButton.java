@@ -70,7 +70,7 @@ public class NewLevelEndButton implements Command {
         //*saveNew*//changingLevel.addRow(row);
         Button button = new Button(row, Map.of(LanguageEnum.RU, "Подтвердить"), newLevel.getIdString());
         buttonRepository.save(button);
-        /*****/row.add(button);
+//        /*****/row.add(button);
         buttonRowCacheRepository.save(row);
         //*saveNew*//levelRepository.save(changingLevel);
 

@@ -98,7 +98,7 @@ public class TelegramBotWebhook {
         Shop shop = shopCacheRepository.findBySecretHash(secretHash);
 
 
-        System.out.println("secretHash--------" + secretHash + " shop* " + shop);
+        System.out.println("secretHash--------" + secretHash);
 
         boolean newUser = false;
         ShopUser shopUser = null;
@@ -137,7 +137,7 @@ public class TelegramBotWebhook {
         List<LevelChat> newLevelAfterSave = levelResponse.getLevelChatsAfterSave();
 
         //если ничего не нашли - вернемся к текущему уровню
-        if (newLevel == null) {
+        if (newLevel == null || newLevel.isEmpty()) {
 
             System.out.println("AAAAAAAAAAAAAA не найден уровень!!!!!!!!");
 
@@ -150,33 +150,47 @@ public class TelegramBotWebhook {
                 e.setUser(finalUsers);
                 e.setChatId(chatId);
             }))));
-        }
+        } else {
 
-        for (LevelChat levelChat : newLevel) {
-            User users1 = levelChat.getUser();
+            for (LevelChat levelChat : newLevel) {
+                User users1 = levelChat.getUser();
 
-            System.out.println(users1 + "users1********" + levelChat.getLevel().getLevel());
+                if (users1 != null) {
 
-            if (users1 != null) {
-                System.out.println("CurrentLevelId*******" + levelChat
-                        .getLevel()
-                        .getLevel()
-                        .getId());
+                    System.out.println(users1 + "users1********" + levelChat.getLevel().getLevel());
 
-                shopUserCacheRepository.save(new ShopUser(shop.getId(), user.getId(), levelChat.getLevel().getLevel().getId()));
-                userCacheRepository.save(users1);
+                    ShopUser shopUser1 = null;
+                    if (shopUser.getUser() == users1.getId()) {
+                        shopUser1 = shopUser;
+                    } else {
+                        shopUser1 = shopUserCacheRepository.findByUserAndShop(users1.getId(), shop.getId());
+                    }
 
-                System.out.println("users1***********" + users1);
+
+                    System.out.println("CurrentLevelId*******" + levelChat
+                            .getLevel()
+                            .getLevel()
+                            .getId());
+
+                    shopUser1.setCurrentLevelId(levelChat.getLevel().getLevel().getId());
+
+                    levelCacheRepository.cache(levelChat.getLevel().getLevel());
+
+                    shopUserCacheRepository.save(shopUser1);
+                    userCacheRepository.save(users1);
+
+                    System.out.println("users1***********" + users1);
+                }
             }
         }
 
-        long timeNowNewLevelDrawer = System.currentTimeMillis();
-
         sender.addAsync(levelResponse);
 
-        if (newLevelAfterSave != null) {
+        if (newLevelAfterSave != null && !newLevelAfterSave.isEmpty()) {
             sender.addAfterSave(levelResponse);
         }
+
+        long timeNowNewLevelDrawer = System.currentTimeMillis();
 
         System.out.println("END full time---*" + (System.currentTimeMillis() - timeNow)
                 + "*--------------------------------------------------------------------"
@@ -250,6 +264,8 @@ public class TelegramBotWebhook {
 
         var shopUser = new ShopUser(shop.getId(), user.getId(), shop.getInitialLevelId());
 
+        user.setFirstRunnerShop(shop.getId());
+        userCacheRepository.save(user);
 
         System.out.println("shopUser++++" + shopUser);
 

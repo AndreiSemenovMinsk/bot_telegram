@@ -64,7 +64,7 @@ public class InitializeEntries {
             SHOP = shopRepository.findById(1);
             if (SHOP == null) {
 
-                var cloneLevel = initialLevel.level_INITIALIZE.clone();
+                var cloneLevel = initialLevel.level_INITIALIZE.clone(Users);
                 levelRepository.save(cloneLevel);
 
 

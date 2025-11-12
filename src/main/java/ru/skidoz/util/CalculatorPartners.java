@@ -43,7 +43,7 @@ public class CalculatorPartners {
             ActionTypeEnum actionTypeEnum) {
 
         List<Cashback> cashbacks = cashbackCacheRepository
-                .findAllByShopAndBuyerAndAction_Type(shopId, buyerId, actionTypeEnum);
+                .findAllByShopAndUserAndAction_Type(shopId, buyerId, actionTypeEnum);
         Integer sum = 0;
         for (Cashback cashback : cashbacks) {
 

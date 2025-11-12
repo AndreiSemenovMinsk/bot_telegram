@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 @Service
 public interface ScheduleBuyerCacheRepository extends JpaRepositoryTest<ScheduleBuyer, Integer> {
 
-    List<ScheduleBuyer> findAllByDayAndMonthAndYearAndTimeStart(Integer day, Integer month, Integer year, Integer timeStart);
+//    List<ScheduleBuyer> findAllByDayAndMonthAndYearAndTimeStart(Integer day, Integer month, Integer year, Integer timeStart);
 
     public void addByDayAndMonthAndYearAndTimeStart(Integer day, Integer month, Integer year, Integer timeStart, ScheduleBuyer scheduleBuyer);
 

@@ -17,6 +17,7 @@ import ru.skidoz.service.command_impl.Initialize;
 import ru.skidoz.service.command_impl.GoodsList;
 import ru.skidoz.service.command_impl.Languager;
 import ru.skidoz.service.command_impl.communication.manual.cashback.P2BWriteOffCashbackApprove;
+import ru.skidoz.service.command_impl.construct_shop.Admin;
 import ru.skidoz.service.command_impl.search_partner.Partners;
 import ru.skidoz.service.command_impl.action.AddActionSource;
 import ru.skidoz.service.command_impl.action.basic.*;
@@ -107,6 +108,8 @@ public class CommandProvider {
     private Actions actions;
     @Autowired
     private AdminShop adminShop;
+    @Autowired
+    private Admin admin;
     @Autowired
     private ConstructSetMinBillShare constructSetMinBillShare;
     @Autowired
@@ -231,6 +234,8 @@ public class CommandProvider {
         commands.put(CommandName.RESPONSE_BUYER_MESSAGE.name(), responseBuyerMessage);
         commands.put(CommandName.CONNECT.name(), connect);
 
+//        commands.put(CommandName.TOKEN_REQUEST.name(), construct);
+
         commands.put(CommandName.LANGUAGER.name(), languager);
 
         commands.put(CommandName.CONNECT_SHOP.name(), connectShop);
@@ -249,7 +254,7 @@ public class CommandProvider {
         commands.put(CommandName.SEND_SHOP_MESSAGE.name(), sendShopMessage);
         commands.put(CommandName.RESPONSE_SHOP_MESSAGE.name(), responseShopMessage);
         commands.put(CommandName.NON_RESPONSE.name(), nonResponse);
-        //commands.put(CommandName.ADMIN, new Admin());
+        commands.put(CommandName.ADMIN.name(), admin);
         commands.put(CommandName.ADMIN_SHOPS.name(), adminShop);
         commands.put(CommandName.CONSTRUCT_MIN_BILL_SHARE.name(), constructSetMinBillShare);
 

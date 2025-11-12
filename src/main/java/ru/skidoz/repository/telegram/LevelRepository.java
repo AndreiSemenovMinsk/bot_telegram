@@ -2,10 +2,8 @@ package ru.skidoz.repository.telegram;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import ru.skidoz.model.entity.telegram.LevelEntity;
-import ru.skidoz.model.pojo.telegram.Level;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

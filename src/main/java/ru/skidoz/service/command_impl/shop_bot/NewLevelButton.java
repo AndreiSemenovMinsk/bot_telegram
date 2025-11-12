@@ -73,7 +73,7 @@ public class NewLevelButton implements Command {
         //*saveNew*//changingLevel.addRow(row);
         Button button = new Button(row, Map.of(users.getLanguage(), inputText), newLevel.getIdString());
         buttonCacheRepository.save(button);
-        /*****/row.add(button);
+//        /*****/row.add(button);
         buttonRowCacheRepository.save(row);
         //*saveNew*//levelRepository.save(changingLevel);
 

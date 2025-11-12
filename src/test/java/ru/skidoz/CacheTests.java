@@ -1,11 +1,16 @@
 package ru.skidoz;
 
+import static ru.skidoz.service.command.CommandName.ADMIN;
+import static ru.skidoz.service.command.CommandName.ADMIN_SHOPS;
+
+import ru.skidoz.aop.repo.LevelCacheRepository;
 import ru.skidoz.aop.repo.ShopCacheRepository;
 import ru.skidoz.aop.repo.ShopUserCacheRepository;
 import ru.skidoz.aop.repo.UserCacheRepository;
 import ru.skidoz.integrational.AbstractIntegrationTest;
 import ru.skidoz.model.pojo.side.Shop;
 import ru.skidoz.model.pojo.side.ShopUser;
+import ru.skidoz.model.pojo.telegram.Level;
 import ru.skidoz.model.pojo.telegram.User;
 
 import org.junit.jupiter.api.Test;
@@ -26,6 +31,8 @@ public class CacheTests extends AbstractIntegrationTest {
     private UserCacheRepository userRepository;
     @Autowired
     private ShopUserCacheRepository shopUserCacheRepository;
+    @Autowired
+    private LevelCacheRepository levelCacheRepository;
 
     @Test
     void shopUserTest() {
@@ -43,6 +50,36 @@ public class CacheTests extends AbstractIntegrationTest {
         shopUserCacheRepository.save(shopUser);
 
         System.out.println(shopUserCacheRepository.findByUserAndShop(user.getId(), shop.getId()));
+    }
+
+    @Test
+    void userTest() {
+
+        var user = new User(123L, "name");
+        userRepository.save(user);
+
+        var level = new Level();
+        level.setUserId(user.getId());
+        level.setCallName( ADMIN_SHOPS.name());
+        levelCacheRepository.save(level);
+
+        System.out.println(levelCacheRepository.findFirstByUser_ChatIdAndCallName(user.getChatId(), ADMIN_SHOPS.name()));
+    }
+
+    @Test
+    void adminTest() {
+
+        var user = new User(123L, "name");
+        userRepository.save(user);
+
+        var level = new Level();
+        level.setUserId(user.getId());
+        level.setCallName(ADMIN_SHOPS.name());
+        levelCacheRepository.save(level);
+
+        System.out.println(levelCacheRepository.findFirstByUser_ChatIdAndCallName(
+                user.getChatId(),
+                ADMIN.name()));
     }
 
 }

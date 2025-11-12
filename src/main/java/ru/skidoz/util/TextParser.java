@@ -168,6 +168,10 @@ public class TextParser {
 
         //String[] filterPart = filter.split(" ");
 
+        System.out.println("FILTER: " + filter);
+        System.out.println(" parts " + parts);
+        System.out.println("wordPhraseList: " + wordPhraseList);
+
         List<String> filterPart = textParser(filter);
 
         int[] counterPhrase = new int[pairsSize];
@@ -182,6 +186,9 @@ public class TextParser {
 
             List<Integer> sortRes;
             if (res[100] != null) {
+
+                System.out.println("A");
+
                 sortRes = res[100];
                 if (selectedWordsPhraseList.size() == 0) {
                     int countRes = 0;
@@ -200,8 +207,15 @@ public class TextParser {
                 }
                 break;
             } else {
+
+                System.out.println("B " + max_result);
+
                 sortRes = sortWithIndexes(res, max_result);
             }
+
+            System.out.println(wordPhraseList);
+            System.out.println(sortRes);
+
             sortRes.forEach(wordInd -> selectedWordsPhraseList.add(wordPhraseList.get(wordInd)));
 
             counterPhrase = phaser(selectedWordsPhraseList, counterPhrase, 1);

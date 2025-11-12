@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import ru.skidoz.model.entity.PartnerGroupEntity;
+import ru.skidoz.model.pojo.telegram.PartnerGroup;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -24,9 +26,13 @@ if there is no such a link - we should not change anything
 //            nativeQuery = true)
 //    List<PartnerGroupEntity> findAllByCreditorAndDebtorInGroup(Integer creditorId, Integer debtorId);
 
+    PartnerGroupEntity findFirstByShop_IdAndShopGroup_Id(Integer /*Shop*/ creditor, Integer/*ShopGroup*/ debtor);
+
     List<PartnerGroupEntity> findAll();
 
     Optional<PartnerGroupEntity> findById(Integer id);
+
+    List<PartnerGroupEntity> findAllByShop_Id(Integer /*Shop*/ creditor);
 
     PartnerGroupEntity save(PartnerGroupEntity partnerGroup);
 }

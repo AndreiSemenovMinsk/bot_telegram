@@ -41,7 +41,7 @@ public class Sender {
             while ((levelChatList = WRITE_QUEUE.poll()) != null) {
                 try {
                     final int threadInd = Integer.parseInt(Thread.currentThread().getName());
-                    Runner r = runners.get(threadInd);
+                    Runner r = runners.get(threadInd - 1);
                     r.processSend(levelChatList.getLevelChats(), levelChatList.getKey());
 
                 } catch (Exception e) {

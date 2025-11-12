@@ -26,7 +26,6 @@ import static ru.skidoz.service.command.CommandName.ADMIN_SHOPS;
 @Component
 public class AdminShop implements Command {
 
-
     @Autowired
     ShopCacheRepository shopCacheRepository;
     @Autowired

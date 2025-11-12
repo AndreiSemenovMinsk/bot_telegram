@@ -12,9 +12,9 @@ import org.springframework.stereotype.Service;
 @Service
 public interface ShopGroupAddVoteCacheRepository extends JpaRepositoryTest<ShopGroupAddVote, Integer> {
 
-    ShopGroupAddVote findByVoterShop_IdAndAddingShop_Id(
-            Integer /*VoterShop*/ voterShop,
-            Integer/*AddingShop*/ addingShop);
+//    ShopGroupAddVote findByVoterShop_IdAndAddingShop_Id(
+//            Integer /*VoterShop*/ voterShop,
+//            Integer/*AddingShop*/ addingShop);
 
     List<ShopGroupAddVote> findAllByShopGroupAndAddingShop(
             Integer /*VoterShop*/ voterShop,

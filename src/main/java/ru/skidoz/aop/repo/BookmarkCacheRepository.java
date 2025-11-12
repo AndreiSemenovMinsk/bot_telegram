@@ -10,7 +10,7 @@ public interface BookmarkCacheRepository extends JpaRepositoryTest<Bookmark, Int
 
     List<Bookmark> findAllByUserId(Integer id);
 
-    Bookmark findByIdAndUserId(Integer id, Integer  buyerId);
+//    Bookmark findByIdAndUserId(Integer id, Integer  buyerId);
 
     List<Bookmark> findAllByUserIdAndShopId(Integer userId, Integer  shopId);
 

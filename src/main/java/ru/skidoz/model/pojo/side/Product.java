@@ -85,6 +85,11 @@ public class Product extends AbstractDTO {
         return null;
     }
 
+    public void setPrice(int price){
+        this.priceHash = price;
+        this.price = price;
+    }
+
     @Override
     public String toString() {
         return "ProductDTO{" +

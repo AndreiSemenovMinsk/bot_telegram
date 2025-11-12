@@ -13,7 +13,7 @@ import ru.skidoz.util.TextParser;
 @Service
 public interface ShopCacheRepository extends JpaRepositoryTest<Shop, Integer> {
 
-    List<Shop> findAllByActiveIsTrue();
+//    List<Shop> findAllByActiveIsTrue();
 
     Shop findBySecretHash(String secretHash);
 
@@ -25,6 +25,8 @@ public interface ShopCacheRepository extends JpaRepositoryTest<Shop, Integer> {
 
     Shop findByNameAndAdminUser_Id(String name, Integer userId);
 
+    List<Shop> findAllByAdminUser_Id(Integer userId);
+
     Shop findByName(String name);
 
     List<Shop> findAllBySellerIdAndActiveIsTrue(Integer userId);
@@ -33,9 +35,9 @@ public interface ShopCacheRepository extends JpaRepositoryTest<Shop, Integer> {
 
     void replaceAfterStoreFromRepo();
 
-    default List<Shop> findAllByNameLikeAndActiveIsTrue(String name) {
-        List<Integer> searchIndxList = TextParser.search(name, ShopSearchHandler.parts, ShopSearchHandler.wordPhraseList);
-
-        return searchIndxList.stream().map(index -> findByName(ShopSearchHandler.pairs.get(index))).toList();
-    }
+//    default List<Shop> findAllByNameLikeAndActiveIsTrue(String name) {
+//        List<Integer> searchIndxList = TextParser.search(name, ShopSearchHandler.parts, ShopSearchHandler.wordPhraseList);
+//
+//        return searchIndxList.stream().map(index -> findByName(ShopSearchHandler.pairs.get(index))).toList();
+//    }
 }

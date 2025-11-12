@@ -17,21 +17,11 @@ import static ru.skidoz.service.initializers.InitialLevel.Users;
 
 import ru.skidoz.aop.repo.ButtonCacheRepository;
 import ru.skidoz.aop.repo.ButtonRowCacheRepository;
-import ru.skidoz.aop.repo.CategoryCacheRepository;
-import ru.skidoz.aop.repo.CategoryGroupCacheRepository;
-import ru.skidoz.aop.repo.CategorySuperGroupCacheRepository;
 import ru.skidoz.aop.repo.LevelCacheRepository;
 import ru.skidoz.aop.repo.MessageCacheRepository;
-import ru.skidoz.aop.repo.ShopCacheRepository;
-import ru.skidoz.aop.repo.UserCacheRepository;
-import ru.skidoz.model.pojo.category.Category;
-import ru.skidoz.model.pojo.category.CategoryGroup;
-import ru.skidoz.model.pojo.category.CategorySuperGroup;
-import ru.skidoz.model.pojo.side.Shop;
 import ru.skidoz.model.pojo.telegram.Button;
 import ru.skidoz.model.pojo.telegram.ButtonRow;
 import ru.skidoz.model.pojo.telegram.Message;
-import ru.skidoz.model.pojo.telegram.User;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,14 +61,10 @@ public class SkidozonaStartLevelInitializer {
             initialLevel.level_ADMIN.addRow(row0_2_admin);
             Button button0_2_0_admin = new Button(row0_2_admin, Map.of(RU, "Создать магазин/сервис"), initialLevel.level_TOKEN_REQUEST.getIdString());
             buttonRepository.cache(button0_2_0_admin);
-            row0_2_admin.add(button0_2_0_admin);
+//            row0_2_admin.add(button0_2_0_admin);
             Button button0_2_1_admin = new Button(row0_2_admin, Map.of(RU, "Админить магазины/сервисы"), initialLevel.level_ADMIN_SHOPS.getIdString());
             buttonRepository.cache(button0_2_1_admin);
-            row0_2_admin.add(button0_2_1_admin);
-
-
-
-
+//            row0_2_admin.add(button0_2_1_admin);
 
 
             //////////СОЗДАНИЕ МАГАЗИНА С ТОВАРАМИ
@@ -97,7 +83,7 @@ public class SkidozonaStartLevelInitializer {
 
             //////////СОЗДАНИЕ МАГАЗИНА С ТОВАРАМИ
 
-            initialLevel.level_CONSTRUCT.updateLevel(Users, CONSTRUCT.name(), initialLevel.level_TOKEN_REQUEST, false);
+            initialLevel.level_CONSTRUCT.updateLevel(Users, CONSTRUCT.name(), initialLevel.level_TOKEN_REQUEST, true);
             levelRepository.cache(initialLevel.level_CONSTRUCT);
             Message message6_1 = new Message(initialLevel.level_CONSTRUCT, Map.of(RU, "Введите название магазина/сервиса"));
             messageRepository.cache(message6_1);
@@ -114,13 +100,13 @@ public class SkidozonaStartLevelInitializer {
             buttonRowRepository.cache(row3100_0);
             Button button3100_0_0 = new Button(row3100_0, Map.of(RU, "Нет"), initialLevel.level_ONE_LEVEL_RATE_BASIC.getIdString());
             buttonRepository.cache(button3100_0_0);
-            row3100_0.add(button3100_0_0);
+//            row3100_0.add(button3100_0_0);
             initialLevel.level_CONSTRUCT_MIN_BILL_SHARE.addRow(row3100_0);
             ButtonRow row3100_1 = new ButtonRow(initialLevel.level_CONSTRUCT_MIN_BILL_SHARE);
             buttonRowRepository.cache(row3100_1);
             Button button3100_1_0 = new Button(row3100_0, Map.of(RU, "Да, добавить уровень"), initialLevel.level_MULTI_ACTION_LEVEL_BASIC.getIdString());
             buttonRepository.cache(button3100_1_0);
-            row3100_1.add(button3100_1_0);
+//            row3100_1.add(button3100_1_0);
             initialLevel.level_CONSTRUCT_MIN_BILL_SHARE.addRow(row3100_1);
 
             initialLevel.level_MULTI_ACTION_LEVEL_BASIC.updateLevel(Users, MULTI_ACTION_LEVEL_BASIC.name(), initialLevel.level_CONSTRUCT_MIN_BILL_SHARE, true);
@@ -147,13 +133,13 @@ public class SkidozonaStartLevelInitializer {
             buttonRowRepository.cache(row3100_2_0);
             Button button3100_2_0_0 = new Button(row3100_2_0, Map.of(RU, "Нет"), initialLevel.level_ACTION_RATE_WITHDRAW_BASIC.getIdString());
             buttonRepository.cache(button3100_2_0_0);
-            row3100_2_0.add(button3100_2_0_0);
+//            row3100_2_0.add(button3100_2_0_0);
             initialLevel.level_MULTI_LEVEL_QUESTION_BASIC.addRow(row3100_2_0);
             ButtonRow row3100_2_1 = new ButtonRow(initialLevel.level_MULTI_LEVEL_QUESTION_BASIC);
             buttonRowRepository.cache(row3100_2_1);
             Button button31_200_1_0 = new Button(row3100_2_0, Map.of(RU, "Да"), initialLevel.level_MULTI_ACTION_LEVEL_BASIC.getIdString());
             buttonRepository.cache(button31_200_1_0);
-            row3100_2_1.add(button31_200_1_0);
+//            row3100_2_1.add(button31_200_1_0);
             initialLevel.level_MULTI_LEVEL_QUESTION_BASIC.addRow(row3100_2_1);
 
             initialLevel.level_ONE_LEVEL_RATE_BASIC.updateLevel(Users, ONE_LEVEL_RATE_BASIC.name(), initialLevel.level_CONSTRUCT_MIN_BILL_SHARE, true);
@@ -189,10 +175,10 @@ public class SkidozonaStartLevelInitializer {
             buttonRowRepository.cache(row5_0);
             Button button5_0_0 = new Button(row5_0, Map.of(RU, "Добавить товары через бот"), initialLevel.level_ADD_GOODS.getIdString());
             buttonRepository.cache(button5_0_0);
-            row5_0.add(button5_0_0);
+//            row5_0.add(button5_0_0);
             Button button5_0_1 = new Button(row5_0, Map.of(RU, "Добавить бот"), initialLevel.level_ADD_BOT.getIdString());
             buttonRepository.cache(button5_0_1);
-            row5_0.add(button5_0_1);
+//            row5_0.add(button5_0_1);
             initialLevel.level_CONSTRUCT_ADD.addRow(row5_0);
 
 

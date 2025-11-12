@@ -11,9 +11,9 @@ import org.springframework.stereotype.Service;
 @Service
 public interface PurchaseCacheRepository extends JpaRepositoryTest<Purchase, Integer> {
 
-    List<Purchase> findAllByShopAndBuyer(Integer /*Shop*/ shop, Integer/*Users*/ buyer);
+//    List<Purchase> findAllByShopAndBuyer(Integer /*Shop*/ shop, Integer/*Users*/ buyer);
 
-    List<Purchase> findAllByIdIsIn(List<Integer> ids);
+//    List<Purchase> findAllByIdIsIn(List<Integer> ids);
 
     List<Purchase> findAllByBuyer_Id(Integer /*Users*/ buyer);
 

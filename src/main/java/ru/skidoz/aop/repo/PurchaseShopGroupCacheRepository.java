@@ -15,9 +15,9 @@ import org.springframework.stereotype.Service;
 @Service
 public interface PurchaseShopGroupCacheRepository extends JpaRepositoryTest<PurchaseShopGroup, Integer> {
 
-    public List<PurchaseShopGroup> findAllByUserAndManual(Integer  user, Boolean manual);
+//    public List<PurchaseShopGroup> findAllByUserAndManual(Integer  user, Boolean manual);
 
-    Integer purchaseSumByUserAndShop(Integer  buyerId, Integer shopGroupId, Boolean manual);
+//    Integer purchaseSumByUserAndShop(Integer  buyerId, Integer shopGroupId, Boolean manual);
 
     @Query(value = "select * from purchase_shop_group \n" +
             "inner join purchase on (purchase_shop_group.purchase_id=purchase.id) \n" +

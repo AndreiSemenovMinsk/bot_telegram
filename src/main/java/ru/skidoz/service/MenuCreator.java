@@ -75,9 +75,11 @@ public class MenuCreator {
                 buttonName = "Поиск по всем товарам группы";
             }*/
 
-            Button button_super = new Button(row_super, Map.of(LanguageEnum.RU, buttonName), "@" + MenuTypeEnum.LEVEL_CHOICER + levelSuper.getIdString() + "@" + CATEGORY_SUPER_GROUP.name());
+            Button button_super = new Button(row_super, Map.of(LanguageEnum.RU, buttonName),
+                    "@" + MenuTypeEnum.LEVEL_CHOICER + levelSuper.getIdString() + "@" + CATEGORY_SUPER_GROUP.name());
             buttonCacheRepository.save(button_super);
-            row_super.add(button_super);
+
+//            row_super.add(button_super);
             buttonRowCacheRepository.save(row_super);
             levelSuper.addRow(row_super);
         }
@@ -117,7 +119,7 @@ public class MenuCreator {
 
             Button button_super = new Button(row_super, Map.of(LanguageEnum.RU, categorySuperGroup.getAlias()), callback1);
             buttonCacheRepository.save(button_super);
-            row_super.add(button_super);
+//            row_super.add(button_super);
             buttonRowCacheRepository.save(row_super);
             levelSuper.addRow(row_super);
 
@@ -134,7 +136,7 @@ public class MenuCreator {
 
                 Button button_group = new Button(row_group, Map.of(LanguageEnum.RU, buttonName), "@" + MenuTypeEnum.LEVEL_CHOICER + levelSuper.getIdString() + "@" + categorySuperGroup.getId());
                 buttonCacheRepository.save(button_group);
-                row_group.add(button_group);
+//                row_group.add(button_group);
                 buttonRowCacheRepository.save(row_group);
                 levelGroup.addRow(row_group);
             }
@@ -168,7 +170,7 @@ public class MenuCreator {
 
                 Button button_group = new Button(row_group, Map.of(LanguageEnum.RU, categoryGroup.getAlias()), callback2);
                 buttonCacheRepository.save(button_group);
-                row_group.add(button_group);
+//                row_group.add(button_group);
                 buttonRowCacheRepository.save(row_group);
                 levelGroup.addRow(row_group);
 
@@ -183,7 +185,7 @@ public class MenuCreator {
 
                     Button button = new Button(row, Map.of(LanguageEnum.RU, buttonName), "@" + MenuTypeEnum.LEVEL_CHOICER + levelSuper.getIdString() + "@" + categoryGroup.getId());
                     buttonCacheRepository.save(button);
-                    row.add(button);
+//                    row.add(button);
                     buttonRowCacheRepository.save(row);
                     levelCategory.addRow(row);
                 }
@@ -191,13 +193,14 @@ public class MenuCreator {
                 Message message13_1 = new Message(levelCategory, Map.of(LanguageEnum.RU, "Выберите подкатегорию"));
                 messageCacheRepository.save(message13_1);
                 levelCategory.addMessage(message13_1);
+
                 for (Category category : categoryList) {
 
                     ButtonRow row = new ButtonRow(levelCategory);
                     buttonRowCacheRepository.save(row);
                     Button button = new Button(row, Map.of(LanguageEnum.RU, category.getAlias()), "@" + MenuTypeEnum.LEVEL_CHOICER + levelSuper.getIdString() + "@" + category.getId());
                     buttonCacheRepository.save(button);
-                    row.add(button);
+//                    row.add(button);
                     buttonRowCacheRepository.save(row);
                     levelCategory.addRow(row);
                 }

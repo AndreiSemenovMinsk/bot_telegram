@@ -2,7 +2,6 @@ package ru.skidoz.service.initializers;
 
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
 import com.google.zxing.WriterException;
@@ -11,22 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.skidoz.aop.repo.ButtonCacheRepository;
 import ru.skidoz.aop.repo.ButtonRowCacheRepository;
-import ru.skidoz.aop.repo.CategoryCacheRepository;
-import ru.skidoz.aop.repo.CategoryGroupCacheRepository;
-import ru.skidoz.aop.repo.CategorySuperGroupCacheRepository;
 import ru.skidoz.aop.repo.LevelCacheRepository;
 import ru.skidoz.aop.repo.MessageCacheRepository;
-import ru.skidoz.aop.repo.ShopCacheRepository;
-import ru.skidoz.aop.repo.UserCacheRepository;
-import ru.skidoz.model.pojo.category.Category;
-import ru.skidoz.model.pojo.category.CategoryGroup;
-import ru.skidoz.model.pojo.category.CategorySuperGroup;
-import ru.skidoz.model.pojo.side.Shop;
 import ru.skidoz.model.pojo.telegram.Button;
 import ru.skidoz.model.pojo.telegram.ButtonRow;
-import ru.skidoz.model.pojo.telegram.Level;
 import ru.skidoz.model.pojo.telegram.Message;
-import ru.skidoz.model.pojo.telegram.User;
 import ru.skidoz.service.MenuCreator;
 import ru.skidoz.util.MenuTypeEnum;
 
@@ -34,7 +22,6 @@ import static ru.skidoz.model.entity.category.LanguageEnum.DE;
 import static ru.skidoz.model.entity.category.LanguageEnum.EN;
 import static ru.skidoz.model.entity.category.LanguageEnum.RU;
 import static ru.skidoz.service.command.CommandName.INITIALIZE;
-import static ru.skidoz.service.command.CommandName.INITIALIZE0;
 import static ru.skidoz.service.command.CommandName.LANGUAGER;
 import static ru.skidoz.service.command.CommandName.LANGUAGES;
 import static ru.skidoz.service.initializers.InitialLevel.Users;
@@ -96,47 +83,49 @@ public class UserLevelInitializer {
                 initialLevel.level_INITIALIZE.addRow(row0_00);
                 Button button0_0_00 = new Button(row0_00, Map.of(RU, "Мониторить цену в WB, Ozone, LaModa.."), initialLevel.level_MONITOR.getIdString());
                 buttonRepository.cache(button0_0_00);
-                row0_00.add(button0_0_00);
+//                row0_00.add(button0_0_00);
 
                 ButtonRow row0_0 = new ButtonRow(initialLevel.level_INITIALIZE);
                 buttonRowRepository.cache(row0_0);
                 initialLevel.level_INITIALIZE.addRow(row0_0);
                 Button button0_0_0 = new Button(row0_0, Map.of(RU, "Кешбеки"), initialLevel.level_CASHBACKS.getIdString());
                 buttonRepository.cache(button0_0_0);
-                row0_0.add(button0_0_0);
+//                row0_0.add(button0_0_0);
                 Button button0_0_1 = new Button(row0_0, Map.of(RU, "Закладки"), initialLevel.level_BOOKMARKS.getIdString());
                 buttonRepository.cache(button0_0_1);
-                row0_0.add(button0_0_1);
+//                row0_0.add(button0_0_1);
                 System.out.println("D+++" + row0_0);
-//                buttonRowRepository.cache(row0_0);
+                buttonRowRepository.cache(row0_0);
                 System.out.println("E+++" + row0_0);
                 ButtonRow row0_1 = new ButtonRow(initialLevel.level_INITIALIZE);
                 buttonRowRepository.cache(row0_1);
                 initialLevel.level_INITIALIZE.addRow(row0_1);
                 Button button0_1_0 = new Button(row0_1, Map.of(RU, "Корзина"), initialLevel.level_BASKET.getIdString());
                 buttonRepository.cache(button0_1_0);
-                row0_1.add(button0_1_0);
+//                row0_1.add(button0_1_0);
                 Button button0_1_1 = new Button(row0_1, Map.of(RU, "Поиск"), initialLevel.level_SEARCH.getIdString());
                 buttonRepository.cache(button0_1_1);
-                row0_1.add(button0_1_1);
-//                buttonRowRepository.cache(row0_1);
+//                row0_1.add(button0_1_1);
+                buttonRowRepository.cache(row0_1);
                 ButtonRow row0_2 = new ButtonRow(initialLevel.level_INITIALIZE);
                 buttonRowRepository.cache(row0_2);
                 initialLevel.level_INITIALIZE.addRow(row0_2);
                 Button button0_2_0 = new Button(row0_2, Map.of(RU, "Соединить"), initialLevel.level_CONNECT.getIdString());
                 buttonRepository.cache(button0_2_0);
-                row0_2.add(button0_2_0);
-                Button button0_2_1 = new Button(row0_2, Map.of(RU, "Админка"), initialLevel.level_ADMIN.getIdString());
-                buttonRepository.cache(button0_2_1);
-                row0_2.add(button0_2_1);
+//                row0_2.add(button0_2_0);
+
+               // пойдем через  inputText.startsWith("/admin")
+//                Button button0_2_1 = new Button(row0_2, Map.of(RU, "Админка"), initialLevel.level_ADMIN.getIdString());
+//                buttonRepository.cache(button0_2_1);
+//                row0_2.add(button0_2_1);
                 ButtonRow row0_3 = new ButtonRow(initialLevel.level_INITIALIZE);
                 buttonRowRepository.cache(row0_3);
                 Button button0_3_1 = new Button(row0_3, Map.of(RU, "EN/DE/RU"), initialLevel.level_LANGUAGES.getIdString());
                 buttonRepository.cache(button0_3_1);
-                row0_3.add(button0_3_1);
+//                row0_3.add(button0_3_1);
                 Button button0_1_0_11 = new Button(row0_3, Map.of(RU, "Архив Корзин"), initialLevel.level_BASKET_ARCHIVE.getIdString());
                 buttonRepository.cache(button0_1_0_11);
-                row0_3.add(button0_1_0_11);
+//                row0_3.add(button0_1_0_11);
 
 
 
@@ -153,13 +142,13 @@ public class UserLevelInitializer {
                 initialLevel.level_LANGUAGES.addRow(row0_2_lang);
                 Button button0_2_0_lang = new Button(row0_2_lang, Map.of(RU, "RU", EN,  "RU", DE,  "RU"),  initialLevel.level_LANGUAGER.getIdString() + "RU");
                 buttonRepository.cache(button0_2_0_lang);
-                row0_2_lang.add(button0_2_0_lang);
+//                row0_2_lang.add(button0_2_0_lang);
                 Button button0_2_1_lang = new Button(row0_2_lang, Map.of(RU, "EN", EN,  "EN", DE,  "EN"),  initialLevel.level_LANGUAGER.getIdString() + "EN");
                 buttonRepository.cache(button0_2_1_lang);
-                row0_2_lang.add(button0_2_1_lang);
+//                row0_2_lang.add(button0_2_1_lang);
                 Button button0_2_2_lang = new Button(row0_2_lang, Map.of(RU, "DE", EN,  "DE", DE,  "DE"),  initialLevel.level_LANGUAGER.getIdString() + "DE");
                 buttonRepository.cache(button0_2_2_lang);
-                row0_2_lang.add(button0_2_2_lang);
+//                row0_2_lang.add(button0_2_2_lang);
 
                 //////////ОБРАБОТЧИК ВЫБОРА ЯЗЫКОВ
                 initialLevel.level_LANGUAGER.updateLevel(Users, LANGUAGER.name(), initialLevel.level_LANGUAGES, false);
@@ -211,7 +200,7 @@ public class UserLevelInitializer {
                 buttonRowRepository.cache(row01_0);
                 Button button01_0_0 = new Button(row01_0, Map.of(RU, "Рекомендовать/ запрос кэшбека"), initialLevel.level_CONNECT.getIdString());
                 buttonRepository.cache(button01_0_0);
-                row01_0.add(button01_0_0);
+//                row01_0.add(button01_0_0);
 
                 initialLevel.level_CASHBACKS.addRow(row01_0);
 
@@ -249,7 +238,7 @@ public class UserLevelInitializer {
                 buttonRowRepository.cache(row3_0);
                 Button button3_0_0 = new Button(row3_0, Map.of(RU, "Показать магазину"), initialLevel.level_CONNECT.getIdString());
                 buttonRepository.cache(button3_0_0);
-                row3_0.add(button3_0_0);
+//                row3_0.add(button3_0_0);
                 initialLevel.level_BOOKMARKS.addRow(row3_0);
 
 
@@ -263,7 +252,7 @@ public class UserLevelInitializer {
                 buttonRowRepository.cache(row3_1);
                 Button button3_1_1 = new Button(row3_1, Map.of(RU, "К поиску"), initialLevel.level_SEARCH.getIdString());
                 buttonRepository.cache(button3_1_1);
-                row3_1.add(button3_1_1);
+//                row3_1.add(button3_1_1);
                 initialLevel.level_ADD_BOOKMARK.addRow(row3_1);
 
 
@@ -279,7 +268,7 @@ public class UserLevelInitializer {
                 buttonRowRepository.cache(row4_0);
                 Button button4_0_0 = new Button(row4_0, Map.of(RU, "Показать магазину"), initialLevel.level_CONNECT.getIdString());
                 buttonRepository.cache(button4_0_0);
-                row4_0.add(button4_0_0);
+//                row4_0.add(button4_0_0);
                 initialLevel.level_BASKET.addRow(row4_0);
 
 
@@ -295,7 +284,7 @@ public class UserLevelInitializer {
                 buttonRowRepository.cache(row400_0);
                 Button button400_0_0 = new Button(row400_0, Map.of(RU, "Показать магазину"), initialLevel.level_CONNECT.getIdString());
                 buttonRepository.cache(button400_0_0);
-                row400_0.add(button400_0_0);
+//                row400_0.add(button400_0_0);
                 initialLevel.level_BASKET_ARCHIVE.addRow(row400_0);
 
 
@@ -311,7 +300,7 @@ public class UserLevelInitializer {
                 buttonRowRepository.cache(row4_1);
                 Button button4_1_1 = new Button(row4_1, Map.of(RU, "К поиску"), initialLevel.level_SEARCH.getIdString());
                 buttonRepository.cache(button4_1_1);
-                row4_1.add(button4_1_1);
+//                row4_1.add(button4_1_1);
                 initialLevel.level_ADD_BASKET.addRow(row4_1);
 
 
@@ -327,7 +316,7 @@ public class UserLevelInitializer {
                 buttonRowRepository.cache(row001_0);
                 Button button001_0_0 = new Button(row001_0, Map.of(RU, "Рекомендовать/ запрос кэшбека"), initialLevel.level_CONNECT.getIdString());
                 buttonRepository.cache(button001_0_0);
-                row001_0.add(button001_0_0);
+//                row001_0.add(button001_0_0);
 //                Button button001_0_1 = new Button(initialLevel.level_CONSTRUCT_ADD, "Мои боты", initialLevel.level_SHOP_BOTS.getIdString());
 //                buttonRepository.cache(button001_0_1);
 //                row001_0.add(button001_0_1);

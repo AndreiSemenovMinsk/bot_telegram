@@ -16,6 +16,6 @@ public interface ActionCacheRepository extends JpaRepositoryTest<Action, Integer
 
     List<Action> findAllByShopAndActiveIsTrue(Integer/*Shop*/ shopId);
 
-    List<Action> findAllByShopAndTypeAndActiveIsTrue(Integer shopId, ActionTypeEnum type, boolean active);
+//    List<Action> findAllByShopAndTypeAndActiveIsTrue(Integer shopId, ActionTypeEnum type, boolean active);
 
 }

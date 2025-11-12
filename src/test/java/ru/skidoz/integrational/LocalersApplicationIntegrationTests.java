@@ -87,7 +87,7 @@ class LocalersApplicationIntegrationTests extends AbstractIntegrationTest {
 
         System.out.println("BASIC-*-*-*-*-*-*-0 " +
                 cashbackRepository
-                        .findAllByShopAndBuyerAndAction_Type(shopId, user.getId(), ActionTypeEnum.BASIC));
+                        .findAllByShopAndUserAndAction_Type(shopId, user.getId(), ActionTypeEnum.BASIC));
 
         final Action action = actionRepository.findById(actionId);
         System.out.println("@@@" + action);
@@ -96,11 +96,11 @@ class LocalersApplicationIntegrationTests extends AbstractIntegrationTest {
 
         System.out.println("BASIC-*-*-*-*-*-*-1 " +
                 cashbackRepository
-                        .findAllByShopAndBuyerAndAction_Type(shopId, user.getId(), ActionTypeEnum.BASIC));
+                        .findAllByShopAndUserAndAction_Type(shopId, user.getId(), ActionTypeEnum.BASIC));
 
         System.out.println("COUPON-*-*-*-*-*-*-0 " +
                 cashbackRepository
-                        .findAllByShopAndBuyerAndAction_Type(shopId, user.getId(), ActionTypeEnum.COUPON));
+                        .findAllByShopAndUserAndAction_Type(shopId, user.getId(), ActionTypeEnum.COUPON));
     }
 
     @Test
@@ -147,7 +147,4 @@ class LocalersApplicationIntegrationTests extends AbstractIntegrationTest {
         System.out.println(s);
         System.out.println(System.currentTimeMillis() - start);
     }
-
-
-
 }

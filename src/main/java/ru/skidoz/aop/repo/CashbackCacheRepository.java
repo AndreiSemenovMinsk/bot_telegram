@@ -13,17 +13,17 @@ public interface CashbackCacheRepository extends JpaRepositoryTest<Cashback, Int
 
 //    public Cashback findById(Integer id);
 
-    public Cashback findByIdAndUserId(Integer id, Integer  buyerId);
+//    public Cashback findByIdAndUserId(Integer id, Integer  buyerId);
 
-    public List<Cashback> findAllByPurchase_Id(Integer  purchaseId);
+//    public List<Cashback> findAllByPurchase_Id(Integer  purchaseId);
 
     List<Cashback> findAllByUser_IdAndAction_Id(Integer  buyerId, Integer actionId);
 
     List<Cashback> findAllByUser_IdAndShop_Id(Integer  buyerId, Integer  shopId);
 
-    List<Cashback> findAllByShopAndBuyerAndAction_Type(Integer  buyerId, Integer  shopId, ActionTypeEnum actionTypeEnum);
+    List<Cashback> findAllByShopAndUserAndAction_Type(Integer shopId, Integer  buyerId, ActionTypeEnum actionTypeEnum);
 
-    List<Cashback> findAllByUser_IdAndShop_IdAndAction_Type(Integer  buyerId, Integer  shopId, ActionTypeEnum actionTypeEnum);
+//    List<Cashback> findAllByUser_IdAndShop_IdAndAction_Type(Integer  buyerId, Integer  shopId, ActionTypeEnum actionTypeEnum);
 
 //    Integer purchaseSumByUserAndShopAndAction_Type(Integer  buyerId, Integer  shopId, ActionTypeEnum actionTypeEnum);
 

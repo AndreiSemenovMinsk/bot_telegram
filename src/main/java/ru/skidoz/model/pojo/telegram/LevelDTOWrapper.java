@@ -41,8 +41,8 @@ public class LevelDTOWrapper extends AbstractDTO {
 
     public void addRow(ButtonRow buttonRow){
 
-        System.out.println("LevelDTOWrapper addRow***********" + buttonRow.getId());
-        System.out.println("buttonRow.getLevel()******" + buttonRow.getLevel());
+//        System.out.println("LevelDTOWrapper addRow***********" + buttonRow.getId());
+//        System.out.println("buttonRow.getLevel()******" + buttonRow.getLevel());
 
         buttonRow.setLevel(super.getId());
         buttonRows.add(buttonRow);

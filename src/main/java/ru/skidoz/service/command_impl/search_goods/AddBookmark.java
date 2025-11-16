@@ -61,6 +61,8 @@ public class AddBookmark implements Command {
                 e.setViberNotify(false);
             });
 
+           System.out.println(newBookmark);
+
             bookmarkCacheRepository.save(newBookmark);
             //sideService.inBookmark(newBookmark, users);
         };

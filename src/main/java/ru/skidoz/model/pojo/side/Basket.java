@@ -17,7 +17,7 @@ public class Basket extends AbstractSideDTO {
 
     private String note;
     private Integer shopId;
-    private Integer userId;
+//    private Integer userId;
     @NotNull
     private Boolean temp = false;
     private List<BasketProduct> basketProductList = new ArrayList<>();

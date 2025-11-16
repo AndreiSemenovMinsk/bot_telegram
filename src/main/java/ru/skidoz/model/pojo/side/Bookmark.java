@@ -17,7 +17,7 @@ public class Bookmark extends AbstractSideDTO {
     private boolean viberNotify;
     private Integer/*ProductDTO*/ product;
     private Integer/*ShopDTO*/ shop;
-    private Integer/*ShopDTO*/ user;
+//    private Integer/*ShopDTO*/ user;
     private Instant lastNotification;
     private boolean priceUpdated = false;
     private Integer bidPrice;
@@ -42,6 +42,10 @@ public class Bookmark extends AbstractSideDTO {
                 ", time=" + super.getTime() +
                 ", product=" + product +
                 ", shop=" + shop +
+                ", user=" + super.getUser() +
+                ", lastNotification=" + lastNotification +
+                ", notification=" + notification +
+                ", bidPrice=" + bidPrice +
                 '}';
     }
 }

@@ -323,19 +323,26 @@ public class TelegramProcessor {
 
             System.out.println("callback*****" + callback);
 
-            String callName;
+            String commandName;
 
             if (callback.startsWith("@")) {
+
+
+                System.out.println("callback*****" + callback + "---" + currentLevelId);
+
                 newLevel = levelCacheRepository.findById(currentLevelId);
+
+                System.out.println("newLevel   findBySourceIsMessageAndParentLevelId***" + newLevel + " *** " + currentLevelId);
+
                 final String[] split = newLevel.getCallName().split("\\*");
                 if (split.length > 1) {
-                    callName = split[0];
+                    commandName = split[0];
                 } else {
                     throw new RuntimeException("Название уровня некорректно " + newLevel.getCallName());
                 }
             } else {
                 newLevel = levelCacheRepository.findById(parseInt(callback.substring(0, 19)));
-                callName = newLevel.getCallName();
+                commandName = newLevel.getCallName();
             }
 
             if (newLevel != null) {
@@ -343,12 +350,12 @@ public class TelegramProcessor {
             }
 
             System.out.println(newLevel != null);
-            System.out.println("commandExists+++" + commandProvider.commandExists(callName));
+            System.out.println("commandExists+++" + commandProvider.commandExists(commandName));
             // работает на новый level
             System.out.println("newLevel.getIsBotLevel()+++" + newLevel.isBotLevel());
 
-            if (commandProvider.commandExists(callName)) {
-                Command command = commandProvider.getCommand(callName);
+            if (commandProvider.commandExists(commandName)) {
+                Command command = commandProvider.getCommand(commandName);
                 return command.runCommand(update, newLevel, users);
             } else {
 

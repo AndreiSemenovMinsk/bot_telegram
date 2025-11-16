@@ -86,8 +86,14 @@ public class CacheSearchTasklet implements Tasklet {
 
         setNameWordProductSet();
 
+
+        System.out.println("nameWordText*** " + nameWordText);
+        System.out.println("GoodsSearchHandler.parts " + GoodsSearchHandler.parts);
+
         GoodsSearchHandler.pairs = nameWordText;
         GoodsSearchHandler.wordPhraseList = TextParser.init(GoodsSearchHandler.pairs, GoodsSearchHandler.parts);
+
+        System.out.println("GoodsSearchHandler.wordPhraseList " + GoodsSearchHandler.wordPhraseList);
 
         setPriceProductSet();
 
@@ -121,7 +127,13 @@ public class CacheSearchTasklet implements Tasklet {
     private void setPriceProductSet() {
 
         List<Product> products = productRepository.findAll();
-        products.forEach(product -> productPrice.put(product.getPriceHash(), product.getId()));
+        products.forEach(product -> {
+
+            System.out.println("126++ " + product.getPriceHash() + " --- " + product.getId());
+            System.out.println("127++ " + productPrice);
+
+                    productPrice.put(product.getPriceHash(), product.getId());
+                });
     }
 
     private void setNameWordProductSet() {

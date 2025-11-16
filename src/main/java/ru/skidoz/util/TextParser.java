@@ -74,6 +74,9 @@ public class TextParser {
         for (int i = 0; i < 100; i++) {
             score[i] = new ArrayList<>();
         }
+
+        System.out.println("nameStringsLength + max_result " + (nameStringsLength + max_result));
+
         int[] counter = new int[nameStringsLength + max_result];
 //    List<Integer> indexes = new ArrayList<>();
         for (int j = size_len - 1; j > -1; j--) {
@@ -101,6 +104,9 @@ public class TextParser {
         }
 //    indexes.forEach(ind -> score[counter[ind]].add(ind));
         for (int ind = 0; ind < counter.length; ind++) {
+
+            System.out.println(score.length + " counter " + counter[ind]);
+
             score[counter[ind]].add(ind);
         }
         return score;
@@ -118,7 +124,7 @@ public class TextParser {
                     result.addAll(integers);
                     max_result -= size;
                 } else {
-//          System.out.println(i + " --- " + integers.subList(0, max_result));
+          System.out.println(i + " --- " + integers.subList(0, max_result));
                     result.addAll(integers.subList(0, max_result));
                     break;
                 }
@@ -166,23 +172,27 @@ public class TextParser {
                                        List<Map<String, List<Integer>>> parts,
                                        List<List<Integer>> wordPhraseList) {
 
-        //String[] filterPart = filter.split(" ");
+        //String[] filterParts = filter.split(" ");
 
         System.out.println("FILTER: " + filter);
         System.out.println(" parts " + parts);
         System.out.println("wordPhraseList: " + wordPhraseList);
 
-        List<String> filterPart = textParser(filter);
+        List<String> filterParts = textParser(filter);
 
         int[] counterPhrase = new int[pairsSize];
         List<List<Integer>> selectedWordsPhraseList = new ArrayList<>();
 
         int max_result = 3;
 
-        for (int i = 0; i < filterPart.size(); i++) {
-            final List<List<String>> look = get_look(filter);
+        for (String filterPart : filterParts) {
+            final List<List<String>> look = get_look(filterPart);
+
+            System.out.println("filterPart " + filterPart + " look " + look);
 
             List<Integer>[] res = getRes(look, parts, max_result);
+
+            System.out.println("res---" + Arrays.toString(res));
 
             List<Integer> sortRes;
             if (res[100] != null) {
@@ -216,7 +226,14 @@ public class TextParser {
             System.out.println(wordPhraseList);
             System.out.println(sortRes);
 
-            sortRes.forEach(wordInd -> selectedWordsPhraseList.add(wordPhraseList.get(wordInd)));
+            sortRes.forEach(wordInd -> {
+
+                System.out.println("wordInd "+wordInd+"< wordPhraseList.size() "+wordPhraseList.size()+" " + (wordInd < wordPhraseList.size()));
+
+                if (wordInd < wordPhraseList.size()) {
+                    selectedWordsPhraseList.add(wordPhraseList.get(wordInd));
+                }
+            });
 
             counterPhrase = phaser(selectedWordsPhraseList, counterPhrase, 1);
         }

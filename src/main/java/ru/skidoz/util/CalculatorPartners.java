@@ -59,7 +59,7 @@ public class CalculatorPartners {
         int freeLimit = withdrawLimit;
 
         final List<PurchaseShopGroup> purchaseShopGroups = purchaseShopGroupCacheRepository
-                .findAllByBuyerAndShop(shopId, buyerId);
+                .findAllByUserAndShop(shopId, buyerId);
 
         List<Quattro> topInPurchase = new ArrayList<>();
         List<Quattro> otherPurchase = new ArrayList<>();
@@ -104,9 +104,8 @@ public class CalculatorPartners {
                                     return purchaseShopGroupSum;
                                 })));
 
-        List<ShopGroup> shopGroups = shopGroupCacheRepository.shopGroupByIds(new ArrayList<>(
-                shopGroupSet));
-        Map<Integer, Integer> shopGroupLimits = shopGroups.stream()
+        Map<Integer, Integer> shopGroupLimits = shopGroupSet.stream()
+                .map(id -> shopGroupCacheRepository.findById(id))
                 .collect(Collectors.toMap(ShopGroup::getId, ShopGroup::getLimitSum));
 
         otherPurchase.sort(Comparator.comparingInt(p -> p.rate));

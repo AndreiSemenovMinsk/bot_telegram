@@ -16,6 +16,8 @@ public interface ShopGroupCacheRepository extends JpaRepositoryTest<ShopGroup, I
 
     ShopGroup findByName(String name);
 
+    ShopGroup findById(Integer shopGroupId);
+
     List<ShopGroup> shopGroupByIds(List<Integer> shopGroupId);
 
     void deleteShopGroupByIds(List<Integer> shopGroupId);

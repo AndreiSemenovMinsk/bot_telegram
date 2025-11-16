@@ -25,7 +25,16 @@ databaseChangeLog:
                   name: notification
                   type: datetime
               - column:
+                  name: last_notification
+                  type: datetime
+              - column:
                   name: price_updated
+                  type: bit(1)
+              - column:
+                  name: notification_sent
+                  type: bit(1)
+              - column:
+                  name: price_strike
                   type: bit(1)
               - column:
                   name: radius

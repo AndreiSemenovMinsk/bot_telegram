@@ -1,10 +1,15 @@
 package ru.skidoz.service.command_impl.construct_shop;
 
+import static ru.skidoz.model.entity.category.LanguageEnum.RU;
+import static ru.skidoz.service.command.CommandName.ADMIN_SHOPS;
+
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import ru.skidoz.aop.repo.ButtonCacheRepository;
+import ru.skidoz.aop.repo.ButtonRowCacheRepository;
 import ru.skidoz.model.entity.ActionTypeEnum;
 import ru.skidoz.model.entity.category.LanguageEnum;
 import ru.skidoz.model.pojo.main.Action;
@@ -21,8 +26,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-import static ru.skidoz.service.command.CommandName.ADMIN_SHOPS;
-
 /**
  * @author andrey.semenov
  */
@@ -32,9 +35,9 @@ public class ConstructSetMinBillShare implements Command {
     @Autowired
     private ShopCacheRepository shopCacheRepository;
     @Autowired
-    private UserCacheRepository userCacheRepository;
+    private ButtonRowCacheRepository buttonRowRepository;
     @Autowired
-    private ActionCacheRepository actionCacheRepository;
+    private ButtonCacheRepository buttonRepository;
     @Autowired
     private LevelCacheRepository levelCacheRepository;
     @Autowired
@@ -81,6 +84,17 @@ public class ConstructSetMinBillShare implements Command {
 
         shop.setName(inputText);
         shopCacheRepository.save(shop);
+
+
+        final Level shopLevel = levelCacheRepository.findFirstByUser_ChatIdAndCallName(
+                users.getChatId(),
+                ADMIN_SHOPS.name());
+        ButtonRow shopRow = new ButtonRow(shopLevel);
+        buttonRowRepository.save(shopRow);
+        Button shopButton = new Button(shopRow, Map.of(RU, shop.getName()), "@" + ADMIN_SHOPS.name() + "*" + shop.getId());
+        buttonRepository.save(shopButton);
+        levelCacheRepository.save(shopLevel);
+
 
         return new LevelResponse(Collections.singletonList(new LevelChat(e -> {
             e.setChatId(users.getChatId());

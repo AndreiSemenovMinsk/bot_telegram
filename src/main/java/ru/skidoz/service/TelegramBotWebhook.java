@@ -254,6 +254,13 @@ public class TelegramBotWebhook {
         newConnectLevel.setUserId(user.getId());
         levelCacheRepository.save(newConnectLevel);
 
+
+//        initialLevel.cloneLevel(initialLevel.level_MY_SHOPS, user, false, false);
+//        initialLevel.cloneLevel(initialLevel.level_BASKET, user, false, false);
+//        initialLevel.cloneLevel(initialLevel.level_BASKET_ARCHIVE, user, false, false);
+//        initialLevel.cloneLevel(initialLevel.level_BOOKMARKS, user, false, false);
+//        initialLevel.cloneLevel(initialLevel.level_CASHBACKS, user, false, false);
+
         return user;
     }
 

@@ -1,5 +1,6 @@
 package ru.skidoz.service.command_impl.construct_shop;
 
+import static ru.skidoz.model.entity.category.LanguageEnum.RU;
 import static ru.skidoz.service.command.CommandName.ADMIN_SHOPS;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -8,6 +9,8 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import lombok.Data;
 import ru.skidoz.aop.repo.ActionCacheRepository;
+import ru.skidoz.aop.repo.ButtonCacheRepository;
+import ru.skidoz.aop.repo.ButtonRowCacheRepository;
 import ru.skidoz.aop.repo.LevelCacheRepository;
 import ru.skidoz.aop.repo.ShopCacheRepository;
 import ru.skidoz.aop.repo.UserCacheRepository;
@@ -15,12 +18,16 @@ import ru.skidoz.model.entity.ActionTypeEnum;
 import ru.skidoz.model.entity.category.LanguageEnum;
 import ru.skidoz.model.pojo.main.Action;
 import ru.skidoz.model.pojo.side.Shop;
+import ru.skidoz.model.pojo.telegram.Button;
+import ru.skidoz.model.pojo.telegram.ButtonRow;
 import ru.skidoz.model.pojo.telegram.Level;
 import ru.skidoz.model.pojo.telegram.LevelChat;
 import ru.skidoz.model.pojo.telegram.LevelDTOWrapper;
 import ru.skidoz.model.pojo.telegram.LevelResponse;
 import ru.skidoz.model.pojo.telegram.Message;
 import ru.skidoz.model.pojo.telegram.User;
+import ru.skidoz.repository.telegram.ButtonRepository;
+import ru.skidoz.repository.telegram.ButtonRowRepository;
 import ru.skidoz.service.command.Command;
 import ru.skidoz.service.initializers.InitialLevel;
 
@@ -175,16 +182,17 @@ public class Construct implements Command {
         actionCacheRepository.save(defaultBasicAction);
 
 
+        final Level shopLevel = levelCacheRepository.findFirstByUser_ChatIdAndCallName(
+                users.getChatId(),
+                ADMIN_SHOPS.name());
+        if (shopLevel == null) {
+            Level adminShopLevel = initialLevel.cloneLevel(initialLevel.level_ADMIN_SHOPS, users);
 
-        if (levelCacheRepository.findFirstByUser_ChatIdAndCallName(users.getChatId(), ADMIN_SHOPS.name()) == null) {
-            Level adminShopLevel = initialLevel.cloneLevel(initialLevel.level_ADMIN_SHOPS, users);//levelRepository.findFirstByUserAndCallName(Users, initialLevel.level_BASKET.getCallName()).clone(users);
-
-            System.out.println("adminShopLevel*" + adminShopLevel);
+            System.out.println("adminShopLevel*-" + adminShopLevel);
 
             adminShopLevel.setUserId(users.getId());
             levelCacheRepository.save(adminShopLevel);
         }
-
 
         System.out.println("defaultBasicAction+++++++ " + defaultBasicAction);
 

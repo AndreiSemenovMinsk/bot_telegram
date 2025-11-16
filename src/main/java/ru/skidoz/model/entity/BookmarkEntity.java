@@ -16,6 +16,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
+@Table(name = "bookmark")
 public class BookmarkEntity extends AbstractEntity  implements Serializable {
 
     @NotNull

@@ -52,7 +52,7 @@ public class AdminShop implements Command {
 
         if (update.getCallbackQuery() != null && update.getCallbackQuery().getData().startsWith("@")) {
 
-            String shopId = update.getCallbackQuery().getData().substring(1);
+            String shopId = update.getCallbackQuery().getData().substring(1 + ADMIN_SHOPS.name().length());
             //Shop shop = shopRepository.findById(Structures.parseLong(shopId));
             users.setCurrentAdminShop(Structures.parseInt(shopId));
 

@@ -16,12 +16,14 @@ public interface PurchaseShopGroupRepository extends JpaRepository<PurchaseShopG
 
     List<PurchaseShopGroupEntity> findAllByUser_IdAndManual(Integer userId, Boolean manual);
 
-    @Query(value = "select * from purchase_shop_group \n" +
-            "inner join purchase on (purchase_shop_group.purchase_id=purchase.id) \n" +
-            "where purchase_shop_group.shop_id=:shopId " +
-            "and purchase_shop_group.user_id=:buyerId ",
-            nativeQuery = true)
-    List<PurchaseShopGroupEntity> findAllByBuyerAndShop(@Param("buyerId") Integer buyerId, @Param("shopId") Integer shopId);
+//    @Query(value = "select * from purchase_shop_group \n" +
+//            "inner join purchase on (purchase_shop_group.purchase_id=purchase.id) \n" +
+//            "where purchase_shop_group.shop_id=:shopId " +
+//            "and purchase_shop_group.user_id=:buyerId ",
+//            nativeQuery = true)
+//    List<PurchaseShopGroupEntity> findAllByBuyerAndShop(@Param("buyerId") Integer buyerId, @Param("shopId") Integer shopId);
+
+    List<PurchaseShopGroupEntity> findAllByUser_IdAndShop_Id(Integer buyerId, Integer shopId);
 
     PurchaseShopGroupEntity save(PurchaseShopGroupEntity purchaseShopGroup);
 }

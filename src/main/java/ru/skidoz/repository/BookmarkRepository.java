@@ -28,7 +28,5 @@ public interface BookmarkRepository extends JpaRepository<BookmarkEntity, Intege
 
     Optional<BookmarkEntity> findById(Integer id);
 
-    List<BookmarkEntity> findAllByUser(UserEntity buyer);
-
     BookmarkEntity save(BookmarkEntity bookmark);
 }

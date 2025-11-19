@@ -4,17 +4,12 @@ package ru.skidoz.service.initializers;
 import static ru.skidoz.model.entity.category.LanguageEnum.RU;
 
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import ru.skidoz.aop.repo.ButtonCacheRepository;
 import ru.skidoz.aop.repo.ButtonRowCacheRepository;
-import ru.skidoz.aop.repo.CategoryCacheRepository;
-import ru.skidoz.aop.repo.CategoryGroupCacheRepository;
-import ru.skidoz.aop.repo.CategorySuperGroupCacheRepository;
 import ru.skidoz.aop.repo.LevelCacheRepository;
 import ru.skidoz.aop.repo.MessageCacheRepository;
-import ru.skidoz.aop.repo.ShopCacheRepository;
 import ru.skidoz.aop.repo.UserCacheRepository;
 import ru.skidoz.model.pojo.category.Category;
 import ru.skidoz.model.pojo.category.CategoryGroup;
@@ -62,6 +57,7 @@ public class InitialLevel {
     public Level level_TOKEN_REQUEST;
     public Level level_ADMIN;
     public Level level_ADMIN_ADMIN;
+    public Level level_ADD_GOODS_XLS;
     public Level level_LANGUAGES;
     public Level level_LANGUAGER;
     public Level level_GEOMAP;
@@ -207,6 +203,7 @@ public class InitialLevel {
 
         level_ADMIN = levelRepository.cache(new Level());
         level_ADMIN_ADMIN = levelRepository.cache(new Level());
+        level_ADD_GOODS_XLS = levelRepository.cache(new Level());
         level_LANGUAGES = levelRepository.cache(new Level());
         level_LANGUAGER = levelRepository.cache(new Level());
         level_GEOMAP = levelRepository.cache(new Level());
@@ -469,29 +466,5 @@ public class InitialLevel {
         }
         levelRepository.cache(newLevel);
         return newLevel;
-    }
-
-    protected  void addFinalButton(Level level, Level initialLevel) {
-
-        List<ButtonRow> buttonRows = buttonRowRepository.findAllByLevel_Id(level.getId());
-
-        if (buttonRows != null && !buttonRows.isEmpty()) {
-
-            ButtonRow backRow = new ButtonRow(level);
-            buttonRowRepository.cache(backRow);
-
-            Button backButton = new Button(backRow, Map.of(RU, "В начало"), initialLevel.getIdString());
-            buttonRepository.cache(backButton);
-            backRow.add(backButton);
-            buttonRowRepository.cache(backRow);
-            //level.addRow(backRow);
-        }
-        levelRepository.cache(level);
-
-        List<Level> levels = levelRepository.findAllByParentLevelId(level.getId());
-
-        for (Level childLevel : levels) {
-            addFinalButton(childLevel, initialLevel);
-        }
     }
 }

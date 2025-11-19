@@ -1058,6 +1058,8 @@ public class CacheAspect {
 
         //DTOParamFieldIndex.get(repoIndex).add(paramFieldIndex);
 
+        System.out.println(method.getReturnType());
+
 
         if (method.getReturnType().isAssignableFrom(List.class)) {
             collectionType.get(repoIndex).add(1);
@@ -1291,20 +1293,26 @@ public class CacheAspect {
 
         if (resultCache == null) {
 
-//            System.out.println(methodOrder + "------ " + mapRepos.get(repoIndex).get(methodOrder));
+            //System.out.println(methodOrder + "------ " + mapRepos.get(repoIndex).get(methodOrder));
 
 
             int type = collectionType.get(repoIndex).get(methodOrder);
             Method method = jpaFindMethods.get(repoIndex).get(methodOrder);
 
-//            System.out.println("jpaFindMethods.get("+repoIndex+") " + jpaFindMethods.get(repoIndex));
-
-//            System.out.println("repoIndex*** " + repoIndex + " methodOrder " + methodOrder + " " + method);
-
-//            System.out.println(" key " + key + " " + dtoNames.get(repoIndex) + " " + methodName + " ---* " + methodOrder + " type " + type);
 
             if (type == 0) {
                 if (method != null) {
+
+
+                    System.out.println("jpaFindMethods.get("+repoIndex+") " + jpaFindMethods.get(repoIndex));
+                    System.out.println("repoIndex*** " + repoIndex + " methodOrder " + methodOrder + " " + method);
+                    System.out.println(" key " + key + " " + dtoNames.get(repoIndex) + " " + methodName + " ---* " + methodOrder + " type " + type);
+
+                    System.out.println(jpaRepositories.get(repoIndex));
+                    System.out.println(Arrays.toString(args));
+
+
+
                     AbstractEntity entity =
                             (AbstractEntity) method.invoke(jpaRepositories.get(repoIndex), args);
 

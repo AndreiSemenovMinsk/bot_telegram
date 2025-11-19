@@ -180,13 +180,6 @@ public class SkidozonaStartLevelInitializer {
             buttonRepository.cache(button5_0_1);
 //            row5_0.add(button5_0_1);
             initialLevel.level_CONSTRUCT_ADD.addRow(row5_0);
-
-
-            System.out.println("PRE addFinalButton");
-
-                initialLevel.addFinalButton(initialLevel.level_ADMIN, initialLevel.level_ADMIN);
-
-                System.out.println("POST addFinalButton");
     }
 
 }

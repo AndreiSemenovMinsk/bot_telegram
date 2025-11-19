@@ -23,6 +23,7 @@ import org.apache.poi.ss.usermodel.Picture;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.*;
 import org.springframework.stereotype.Component;
+
 import ru.skidoz.aop.repo.CategoryCacheRepository;
 import ru.skidoz.aop.repo.CategoryFilterProductCacheRepository;
 import ru.skidoz.aop.repo.CategoryGroupCacheRepository;
@@ -31,14 +32,11 @@ import ru.skidoz.aop.repo.FilterOptionCacheRepository;
 import ru.skidoz.aop.repo.FilterPointCacheRepository;
 import ru.skidoz.aop.repo.ProductCacheRepository;
 import ru.skidoz.aop.repo.ShopCacheRepository;
-import ru.skidoz.mapper.search.FilterPointMapper;
-import ru.skidoz.mapper.side.ShopMapper;
+import ru.skidoz.aop.repo.UserCacheRepository;
 import ru.skidoz.model.pojo.search.menu.CategoryFilterProduct;
 import ru.skidoz.model.pojo.search.menu.FilterOption;
 import ru.skidoz.model.pojo.search.menu.FilterPoint;
 import ru.skidoz.model.pojo.side.Shop;
-import ru.skidoz.model.pojo.telegram.User;
-import ru.skidoz.service.ScheduleService;
 import ru.skidoz.model.entity.category.LanguageEnum;
 import ru.skidoz.model.pojo.category.Category;
 import ru.skidoz.model.pojo.category.CategoryGroup;
@@ -64,7 +62,7 @@ public class Exceler {
 
     private final ShopCacheRepository shopCacheRepository;
 
-    private final ScheduleService scheduleService;
+    private final UserCacheRepository userCacheRepository;
 
     private final ProductCacheRepository productRepository;
 
@@ -74,20 +72,18 @@ public class Exceler {
 
     private final CategorySuperGroupCacheRepository categorySuperGroupRepository;
 
-    private final FilterPointMapper filterPointMapper;
-
-    private final ShopMapper shopMapper;
-
     private final SearchService searchService;
 
     public Map<String, Map<String, Set<String>>> categoryOptionsMapMap = new HashMap<>();
 
-    public void processExcel(InputStream excel, User users) throws IOException {
+    public void processExcel(InputStream excel, Integer userId) throws IOException {
 
         System.out.println("processExcel()***************" + excel);
-        System.out.println("users*****" + users);
+        System.out.println("userId*****" + userId);
 
         byte[] excelBA = IOUtils.toByteArray(excel);
+
+        final var user = userCacheRepository.findById(userId);
 
         XSSFWorkbook workbook = null;
         try {
@@ -110,12 +106,12 @@ public class Exceler {
 
                     XSSFSheet sheet = workbook.getSheet(sheetName);
 
-                    Shop shop = shopCacheRepository.findByNameAndAdminUser_Id(sheet.getRow(0).getCell(0).getStringCellValue(), users.getId());
+                    Shop shop = shopCacheRepository.findByNameAndAdminUser_Id(sheet.getRow(0).getCell(0).getStringCellValue(), userId);
 
                     /*if (shop.getId() < 0) {
                         scheduleService.storeNew(shopCacheRepository, shopRepository, shopMapper);
 
-                        shop = shopCacheRepository.findByNameAndAdminUser_Id(sheet.getRow(0).getCell(0).getStringCellValue(), users.getId());
+                        shop = shopCacheRepository.findByNameAndAdminUser_Id(sheet.getRow(0).getCell(0).getStringCellValue(), userId.getId());
                     }*/
                     XSSFDrawing patriarch = sheet.createDrawingPatriarch();
                     List<XSSFShape> shapes = patriarch.getShapes();
@@ -138,14 +134,14 @@ public class Exceler {
                                 Product product = null;
                                 if (sheet.getRow(i).getCell(7) != null) {
 
-                                    product = productRepository.findAllByShop_IdAndArticle(shop.getId(), sheet.getRow(i).getCell(7).toString());
+                                    product = productRepository.findByShop_IdAndArticle(shop.getId(), sheet.getRow(i).getCell(7).toString());
                                 }
                                 if (product == null) {
 
                                     if (sheet.getRow(i).getCell(8) != null) {
-                                        product = productRepository.findAllByShop_IdAndAlias(shop.getId(), sheet.getRow(i).getCell(8).toString());
+                                        product = productRepository.findByShop_IdAndAlias(shop.getId(), sheet.getRow(i).getCell(8).toString());
                                     } else if (sheet.getRow(i).getCell(9) != null) {
-                                        product = productRepository.findAllByShop_IdAndAlias(shop.getId(), sheet.getRow(i).getCell(9).toString());
+                                        product = productRepository.findByShop_IdAndAlias(shop.getId(), sheet.getRow(i).getCell(9).toString());
                                     }
                                 }
                                 if (product == null) {
@@ -223,7 +219,7 @@ public class Exceler {
 
                                 product.setShop(shop);
                                 product.setActive(true);
-                                product.setChatId(users.getChatId());
+                                product.setChatId(user.getChatId());
 //                            productRepository.save(product); 4.12.22
                                 productList.add(product);
                                 categoryList.add(category);

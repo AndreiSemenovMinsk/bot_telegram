@@ -19,6 +19,7 @@ import static ru.skidoz.service.command.CommandName.ADD_GOODS_END;
 import static ru.skidoz.service.command.CommandName.ADD_GOODS_NAME;
 import static ru.skidoz.service.command.CommandName.ADD_GOODS_PHOTO;
 import static ru.skidoz.service.command.CommandName.ADD_GOODS_PRICE;
+import static ru.skidoz.service.command.CommandName.ADD_GOODS_XLS;
 import static ru.skidoz.service.command.CommandName.ADD_PARTNER;
 import static ru.skidoz.service.command.CommandName.ADD_SHOP_TO_SHOP_GROUP;
 import static ru.skidoz.service.command.CommandName.ADD_TAXI_BOT;
@@ -85,7 +86,6 @@ import ru.skidoz.model.entity.ActionTypeEnum;
 import ru.skidoz.model.pojo.telegram.Button;
 import ru.skidoz.model.pojo.telegram.ButtonRow;
 import ru.skidoz.model.pojo.telegram.Message;
-import ru.skidoz.model.pojo.telegram.User;
 import ru.skidoz.service.MenuCreator;
 import ru.skidoz.util.MenuTypeEnum;
 
@@ -161,6 +161,15 @@ public class AdminLevelInitializer {
 //                row0_3_admin0.add(button0_3_1_shop0);
 
 
+
+
+
+
+                initialLevel.level_ADD_GOODS_XLS.updateLevel(Users, ADD_GOODS_XLS.name(), initialLevel.level_ADMIN_ADMIN, false);
+                levelRepository.cache(initialLevel.level_ADD_GOODS_XLS);
+                Message mess = new Message(initialLevel.level_ADD_GOODS_XLS, Map.of(RU, "Документ Excel будет обработан в течение часа"));
+                messageRepository.cache(mess);
+                initialLevel.level_ADD_GOODS_XLS.addMessage(mess);
 
                 //////////КАРТА
                 initialLevel.level_GEOMAP.updateLevel(Users, GEOMAP.name(), initialLevel.level_ADMIN_ADMIN, false);
@@ -963,12 +972,6 @@ public class AdminLevelInitializer {
                 Message message51_1 = new Message(initialLevel.level_APPROVE_NEW_GRUPP, Map.of(RU, "Введите лимит выплаты кэшбека группы"));
                 messageRepository.cache(message51_1);
                 initialLevel.level_APPROVE_NEW_GRUPP.addMessage(message51_1);
-
-                System.out.println("PRE addFinalButton");
-
-                initialLevel.addFinalButton(initialLevel.level_INITIALIZE, initialLevel.level_INITIALIZE);
-
-                System.out.println("POST addFinalButton");
 
             } catch (IOException e) {
                 e.printStackTrace();

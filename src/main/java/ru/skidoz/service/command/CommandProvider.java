@@ -18,6 +18,7 @@ import ru.skidoz.service.command_impl.GoodsList;
 import ru.skidoz.service.command_impl.Languager;
 import ru.skidoz.service.command_impl.communication.manual.cashback.P2BWriteOffCashbackApprove;
 import ru.skidoz.service.command_impl.construct_shop.Admin;
+import ru.skidoz.service.command_impl.construct_shop.AdminAdmin;
 import ru.skidoz.service.command_impl.search_partner.Partners;
 import ru.skidoz.service.command_impl.action.AddActionSource;
 import ru.skidoz.service.command_impl.action.basic.*;
@@ -108,6 +109,8 @@ public class CommandProvider {
     private Actions actions;
     @Autowired
     private AdminShop adminShop;
+    @Autowired
+    private AdminAdmin adminAdmin;
     @Autowired
     private Admin admin;
     @Autowired
@@ -221,6 +224,7 @@ public class CommandProvider {
 
     private final Map<String, Command> commands = new HashMap<>();
 
+
     @PostConstruct
     private void putCommands(){
 
@@ -256,6 +260,7 @@ public class CommandProvider {
         commands.put(CommandName.NON_RESPONSE.name(), nonResponse);
         commands.put(CommandName.ADMIN.name(), admin);
         commands.put(CommandName.ADMIN_SHOPS.name(), adminShop);
+        commands.put(CommandName.ADMIN_ADMIN.name(), adminAdmin);
         commands.put(CommandName.CONSTRUCT_MIN_BILL_SHARE.name(), constructSetMinBillShare);
 
         commands.put(CommandName.CONSTRUCT.name(), construct);

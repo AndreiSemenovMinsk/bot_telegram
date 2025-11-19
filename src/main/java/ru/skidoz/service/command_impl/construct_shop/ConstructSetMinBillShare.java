@@ -1,6 +1,7 @@
 package ru.skidoz.service.command_impl.construct_shop;
 
 import static ru.skidoz.model.entity.category.LanguageEnum.RU;
+import static ru.skidoz.service.command.CommandName.ADMIN_ADMIN;
 import static ru.skidoz.service.command.CommandName.ADMIN_SHOPS;
 
 import java.io.IOException;
@@ -86,12 +87,16 @@ public class ConstructSetMinBillShare implements Command {
         shopCacheRepository.save(shop);
 
 
+
+
+
+
         final Level shopLevel = levelCacheRepository.findFirstByUser_ChatIdAndCallName(
                 users.getChatId(),
                 ADMIN_SHOPS.name());
         ButtonRow shopRow = new ButtonRow(shopLevel);
         buttonRowRepository.save(shopRow);
-        Button shopButton = new Button(shopRow, Map.of(RU, shop.getName()), "@" + ADMIN_SHOPS.name() + "*" + shop.getId());
+        Button shopButton = new Button(shopRow, Map.of(RU, shop.getName()), "@" + ADMIN_ADMIN.name() + "*" + shop.getId());
         buttonRepository.save(shopButton);
         levelCacheRepository.save(shopLevel);
 

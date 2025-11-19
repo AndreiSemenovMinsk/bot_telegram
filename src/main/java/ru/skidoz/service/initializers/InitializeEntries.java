@@ -55,6 +55,10 @@ public class InitializeEntries {
     @Autowired
     private LevelCacheRepository levelRepository;
     @Autowired
+    private ButtonRowCacheRepository buttonRowRepository;
+    @Autowired
+    private ButtonCacheRepository buttonRepository;
+    @Autowired
     private InitialLevel initialLevel;
 
     
@@ -134,9 +138,41 @@ public class InitializeEntries {
                 System.out.println("ozon----------" + ozon);
                 ozon.getSellerSet().add(Users.getId());
                 shopRepository.save(ozon);
+
+
+                System.out.println("PRE addFinalButton");
+
+                addFinalButton(initialLevel.level_INITIALIZE, initialLevel.level_INITIALIZE);
+
+                System.out.println("POST addFinalButton");
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
+        }
+    }
+
+
+    private  void addFinalButton(Level level, Level initialLevel) {
+
+        List<ButtonRow> buttonRows = buttonRowRepository.findAllByLevel_Id(level.getId());
+
+        if (buttonRows != null && !buttonRows.isEmpty()) {
+
+            ButtonRow backRow = new ButtonRow(level);
+            buttonRowRepository.cache(backRow);
+
+            Button backButton = new Button(backRow, Map.of(RU, "В начало*"), initialLevel.getIdString());
+            buttonRepository.cache(backButton);
+//            backRow.add(backButton);
+            buttonRowRepository.cache(backRow);
+            //level.addRow(backRow);
+        }
+        levelRepository.cache(level);
+
+        List<Level> levels = levelRepository.findAllByParentLevelId(level.getId());
+
+        for (Level childLevel : levels) {
+            addFinalButton(childLevel, initialLevel);
         }
     }
 

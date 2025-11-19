@@ -2,6 +2,7 @@ package ru.skidoz.service.batch;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 import ru.skidoz.model.pojo.telegram.User;
@@ -20,23 +21,23 @@ import ru.skidoz.util.Exceler;
 public class ProductExcelsTasklet implements Tasklet {
 
     @Autowired
-    ScheduleService scheduleService;
-    @Autowired
     private Exceler exceler;
-    @Autowired
-    private TelegramBotWebhook telegramBot;
+
+    public Map<Integer, byte[]> excels = new HashMap<>();
 
     @Override
     public void execute() {
 
         System.out.println("+++++++++++++++++++++++++++++++++++++++++++ProductExcelsTasklet+++++++++++++++++++++++++++++++++++");
 
-        Map<User, byte[]> excels = telegramBot.excels;
-        for (Map.Entry<User, byte[]> excel : excels.entrySet()) {
+        for (Map.Entry<Integer, byte[]> excel : excels.entrySet()) {
+
             System.out.println("excel byte[]***" + excel.getValue().length);
             try {
 
-                exceler.processExcel(new ByteArrayInputStream(excel.getValue()), excel.getKey());
+                final int userId = excel.getKey();
+
+                exceler.processExcel(new ByteArrayInputStream(excel.getValue()), userId);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

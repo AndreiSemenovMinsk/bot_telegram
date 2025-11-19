@@ -2,6 +2,7 @@ package ru.skidoz.service;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
@@ -21,6 +22,7 @@ import ru.skidoz.model.pojo.side.Basket;
 import ru.skidoz.model.pojo.side.Bookmark;
 import ru.skidoz.model.pojo.side.Cashback;
 import ru.skidoz.model.pojo.side.Shop;
+import ru.skidoz.model.pojo.telegram.FileResponse;
 import ru.skidoz.model.pojo.telegram.Level;
 import ru.skidoz.model.pojo.telegram.LevelChat;
 import ru.skidoz.model.pojo.telegram.LevelDTOWrapper;
@@ -30,8 +32,10 @@ import ru.skidoz.service.command.Command;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.telegram.telegrambots.meta.api.objects.Document;
 import org.telegram.telegrambots.meta.api.objects.Location;
 import org.telegram.telegrambots.meta.api.objects.Update;
+
 import ru.skidoz.service.command.CommandProvider;
 import ru.skidoz.service.command_impl.starter.BasketLinkStarter;
 import ru.skidoz.service.command_impl.starter.BookmarkLinkStarter;
@@ -41,7 +45,6 @@ import ru.skidoz.service.command_impl.starter.P2PNewBuyerLinkStarter;
 import ru.skidoz.service.command_impl.starter.P2BLinkStarter;
 import ru.skidoz.service.command_impl.starter.B2BLinkStarter;
 import ru.skidoz.service.initializers.InitialLevel;
-import ru.skidoz.util.XMLGettingService;
 
 import static ru.skidoz.util.Structures.parseInt;
 
@@ -76,8 +79,6 @@ public class TelegramProcessor {
     @Autowired
     private ScheduleBuyerCacheRepository scheduleBuyerCacheRepository;
     @Autowired
-    private XMLGettingService xmlGettingService;
-    @Autowired
     private InitialLevel initialLevel;
     @Autowired
     private P2PExistBuyerLinkStarter p2PExistBuyerLinkStarter;
@@ -94,11 +95,15 @@ public class TelegramProcessor {
     @Autowired
     private BasketLinkStarter basketLinkStarter;
 
+    @Autowired
+    public Sender sender;
+
 
     public ConcurrentMap<String, String> mergeUsers = new ConcurrentHashMap<>();
 
 
-    private List<LevelChat> startProcessor(User user, long chatId, Update update, boolean newUser) throws CloneNotSupportedException {
+    private List<LevelChat> startProcessor(User user, long chatId, Update update, boolean newUser)
+            throws CloneNotSupportedException {
 
         String inputText = update.getMessage().getText();
         String bearingCommand = inputText.substring("/start=".length(), "/start=".length() + 2);
@@ -140,7 +145,11 @@ public class TelegramProcessor {
                     levelChatDTOList.addAll(p2BLinkStarter.getLevel(null, user, null, shopPartner));
                 } else {
                     // если есть магазины
-                    levelChatDTOList.addAll(b2BLinkStarter.getLevel(chatId, user, null, shopPartner));
+                    levelChatDTOList.addAll(b2BLinkStarter.getLevel(
+                            chatId,
+                            user,
+                            null,
+                            shopPartner));
                 }
             } else {
 
@@ -157,27 +166,46 @@ public class TelegramProcessor {
                         Basket basket = basketCacheRepository.findById(Integer.valueOf(bearingId));
                         if (basket != null) {
                             friend = userCacheRepository.findById(basket.getUser());
-                            levelChatDTOList2 = basketLinkStarter.getLevel(chatId, bearingId, user, friend);
+                            levelChatDTOList2 = basketLinkStarter.getLevel(
+                                    chatId,
+                                    bearingId,
+                                    user,
+                                    friend);
                         }
                     } else if (bearingCommand.equals("BM")) {//человек шлет человеку из закладок
-                        Bookmark bookmark = bookmarkCacheRepository.findById(Integer.valueOf(bearingId));
+                        Bookmark bookmark = bookmarkCacheRepository.findById(Integer.valueOf(
+                                bearingId));
                         if (bookmark != null) {
                             friend = userCacheRepository.findById(bookmark.getUser());
-                            levelChatDTOList2 = bookmarkLinkStarter.getLevel(chatId, bearingId, user, friend);
+                            levelChatDTOList2 = bookmarkLinkStarter.getLevel(
+                                    chatId,
+                                    bearingId,
+                                    user,
+                                    friend);
                         }
                     } else if (bearingCommand.equals("CB")) {//человек шлет человеку из кэшбеков
-                        Cashback cashback = cashbackCacheRepository.findById(Integer.valueOf(bearingId));
+                        Cashback cashback = cashbackCacheRepository.findById(Integer.valueOf(
+                                bearingId));
                         if (cashback != null) {
                             friend = userCacheRepository.findById(cashback.getUser());
-                            levelChatDTOList2 = cashbackLinkStarter.getLevel(chatId, bearingId, user, friend);
+                            levelChatDTOList2 = cashbackLinkStarter.getLevel(
+                                    chatId,
+                                    bearingId,
+                                    user,
+                                    friend);
                         }
                     } else if (bearingCommand.equals("PI")) {
-                        System.out.println("bearingCommand +++++++++++++++++++++++++++++++++++++++++ PI***" + Long.valueOf(bearingId));
+                        System.out.println(
+                                "bearingCommand +++++++++++++++++++++++++++++++++++++++++ PI***"
+                                        + Long.valueOf(bearingId));
                         friend = userCacheRepository.findBySessionId(bearingId);
 
                         if (friend != null
                                 && !newUser) {
-                            levelChatDTOList2 = p2PExistBuyerLinkStarter.getLevel(chatId, user, friend);
+                            levelChatDTOList2 = p2PExistBuyerLinkStarter.getLevel(
+                                    chatId,
+                                    user,
+                                    friend);
                         }
                     }
                     System.out.println("friend+++++++++++++++++" + friend);
@@ -189,8 +217,13 @@ public class TelegramProcessor {
                     if (!friend.isShopOwner()) {
                         levelChatDTOList2 = p2BLinkStarter.getLevel(null, user, friend, null);
                     } else {
-                        List<Shop> shopsFriend = shopCacheRepository.findAllBySellerIdAndActiveIsTrue(friend.getId());
-                        levelChatDTOList2 = b2BLinkStarter.getLevel(chatId, user, null, shopsFriend.get(0));
+                        List<Shop> shopsFriend = shopCacheRepository.findAllBySellerIdAndActiveIsTrue(
+                                friend.getId());
+                        levelChatDTOList2 = b2BLinkStarter.getLevel(
+                                chatId,
+                                user,
+                                null,
+                                shopsFriend.get(0));
                     }
                 }
 
@@ -206,8 +239,6 @@ public class TelegramProcessor {
     }
 
     private void mergeUser(User targetUsersDTO, User duplicateUsersDTO) {
-
-
 //        Users targetUsers = new Users(targetUsersDTO.getId());
 
 //        authorizeUser(String.valueOf(targetUsersDTO.getSessionId()), String.valueOf(targetUsersDTO.getChatId()));
@@ -255,11 +286,25 @@ public class TelegramProcessor {
     }
 
 
-    LevelResponse plainLevelChoicer(Integer currentLevelId, Update update, User users, long chatId, boolean newUser, String key) throws Exception {
+    LevelResponse plainLevelChoicer(
+            Integer currentLevelId,
+            Update update,
+            User users,
+            long chatId,
+            boolean newUser,
+            String key) throws Exception {
 
         Level newLevel = null;
         final List<LevelChat> levelChats;
         if (update.hasMessage()) {
+
+            if (update.getMessage().hasDocument()) {
+
+                final Level levelDTOWrapper = processDocument(
+                        update.getMessage().getDocument(), users, key);
+
+                return getLevelResponse(chatId, levelDTOWrapper, key, users);
+            }
 
             String inputText = update.getMessage().getText();
             Location location = update.getMessage().getLocation();
@@ -287,9 +332,12 @@ public class TelegramProcessor {
                 System.out.println("inputText*" + inputText + " @@@ " + currentLevelId);
 
 
-                newLevel = levelCacheRepository.findBySourceIsMessageAndParentLevelId(true, currentLevelId);
+                newLevel = levelCacheRepository.findBySourceIsMessageAndParentLevelId(
+                        true,
+                        currentLevelId);
 
-                System.out.println("newLevel   findBySourceIsMessageAndParentLevelId***" + newLevel);
+                System.out.println("newLevel   findBySourceIsMessageAndParentLevelId***"
+                        + newLevel);
 
 
 //                System.out.println("all child levels " + levelCacheRepository.findAllByParentLevelId(currentLevelId));
@@ -325,22 +373,40 @@ public class TelegramProcessor {
 
             String commandName;
 
-            if (callback.startsWith("@")) {
 
+
+            if (callback.startsWith("@")) {
 
                 System.out.println("callback*****" + callback + "---" + currentLevelId);
 
-                newLevel = levelCacheRepository.findById(currentLevelId);
+                final String[] splitCallback = callback.substring(1).split("\\*");
+                if (splitCallback.length > 1) {
 
-                System.out.println("newLevel   findBySourceIsMessageAndParentLevelId***" + newLevel + " *** " + currentLevelId);
+                    System.out.println("375**********" + Arrays.toString(splitCallback));
 
-                final String[] split = newLevel.getCallName().split("\\*");
-                if (split.length > 1) {
-                    commandName = split[0];
+                    commandName = splitCallback[0];
+
                 } else {
-                    throw new RuntimeException("Название уровня некорректно " + newLevel.getCallName());
+
+                    newLevel = levelCacheRepository.findById(currentLevelId);
+
+                    System.out.println("newLevel   findBySourceIsMessageAndParentLevelId***"
+                            + newLevel
+                            + " *** "
+                            + currentLevelId);
+
+                    final String[] splitLevelCallName = newLevel.getCallName().split("\\*");
+                    if (splitLevelCallName.length > 1) {
+                        commandName = splitLevelCallName[0];
+                    } else {
+                        throw new RuntimeException("Название уровня некорректно "
+                                + newLevel.getCallName());
+                    }
                 }
             } else {
+
+                System.out.println(parseInt(callback.substring(0, 19)));
+
                 newLevel = levelCacheRepository.findById(parseInt(callback.substring(0, 19)));
                 commandName = newLevel.getCallName();
             }
@@ -352,7 +418,6 @@ public class TelegramProcessor {
             System.out.println(newLevel != null);
             System.out.println("commandExists+++" + commandProvider.commandExists(commandName));
             // работает на новый level
-            System.out.println("newLevel.getIsBotLevel()+++" + newLevel.isBotLevel());
 
             if (commandProvider.commandExists(commandName)) {
                 Command command = commandProvider.getCommand(commandName);
@@ -384,9 +449,10 @@ public class TelegramProcessor {
     }
 
 
-
-    private LevelResponse getLevelResponse(long chatId, Level newLevel, String key, User user) throws Exception {
-        LevelDTOWrapper levelDTOWrapper = initialLevel.convertToLevel(newLevel,
+    private LevelResponse getLevelResponse(long chatId, Level newLevel, String key, User user)
+            throws Exception {
+        LevelDTOWrapper levelDTOWrapper = initialLevel.convertToLevel(
+                newLevel,
                 true,
                 true);
 
@@ -400,4 +466,33 @@ public class TelegramProcessor {
     }
 
 
+
+
+    private Level processDocument(Document document, User users, String key) {
+
+        final Integer shopId = users.getCurrentAdminShop();
+
+        if (shopId != null) {
+
+            LevelDTOWrapper downloadReportLevel = initialLevel.convertToLevel(initialLevel.level_ADD_GOODS_XLS,
+                    true,
+                    true);
+
+            FileResponse fileResponse = FileResponse.builder()
+                    .levelChat(new LevelChat(e -> {
+                        e.setChatId(users.getChatId());
+                        e.setUser(users);
+                        e.setLevel(downloadReportLevel);
+                    }))
+                    .document(document)
+                    .userId(users.getId())
+                    .key(key)
+                    .build();
+
+            sender.addFileAsync(fileResponse);
+
+            return initialLevel.level_ADMIN_ADMIN;
+        }
+        return null;
+    }
 }

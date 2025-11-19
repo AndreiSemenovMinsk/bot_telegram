@@ -13,9 +13,9 @@ public interface ProductCacheRepository extends JpaRepositoryTest<Product, Integ
 
     List<Product> findAllByShop_Id(Integer shopId);
 
-    Product findAllByShop_IdAndArticle(Integer  shopId, String nameArticle);
+    Product findByShop_IdAndArticle(Integer  shopId, String nameArticle);
 
-    Product findAllByShop_IdAndAlias(Integer  shopId, String alias);
+    Product findByShop_IdAndAlias(Integer  shopId, String alias);
 
     List<Product> findAllByCategory_IdAndActive(Integer  categoryId, Boolean active);
 }

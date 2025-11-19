@@ -364,13 +364,6 @@ public class ShopLevelInitializer {
                 messageRepository.cache(message22_11_1);
                 initialLevel.level_P2B_RESP.addMessage(message22_11_1);
 
-
-                System.out.println("PRE addFinalButton");
-
-                initialLevel.addFinalButton(initialLevel.level_INITIALIZE, initialLevel.level_INITIALIZE);
-
-                System.out.println("POST addFinalButton");
-
             } catch (Exception e) {
                 e.printStackTrace();
             }

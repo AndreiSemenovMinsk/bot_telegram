@@ -18,7 +18,7 @@ public interface ProductRepository extends JpaRepository<ProductEntity, Integer>
 
     List<ProductEntity> findAllByShop_Id(Integer shopId);
 
-    List<ProductEntity> findAllByShop_IdAndAlias(Integer  shopId, String alias);
+    ProductEntity findByShop_IdAndAlias(Integer  shopId, String alias);
 
 //    List<Prd> findAllByNameInAndActiveIsTrue(List<String> names);
 //
@@ -32,7 +32,7 @@ public interface ProductRepository extends JpaRepository<ProductEntity, Integer>
 
 //    Prd findAllByShopAndName(Shop shop, String name);
 
-    ProductEntity findAllByShop_IdAndArticle(Integer shopId, String nameArticle);
+    ProductEntity findByShop_IdAndArticle(Integer shopId, String nameArticle);
 
     ProductEntity save(ProductEntity prd);
 }

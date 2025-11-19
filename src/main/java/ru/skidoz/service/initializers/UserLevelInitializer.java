@@ -94,9 +94,7 @@ public class UserLevelInitializer {
                 Button button0_0_1 = new Button(row0_0, Map.of(RU, "Закладки"), initialLevel.level_BOOKMARKS.getIdString());
                 buttonRepository.cache(button0_0_1);
 //                row0_0.add(button0_0_1);
-                System.out.println("D+++" + row0_0);
                 buttonRowRepository.cache(row0_0);
-                System.out.println("E+++" + row0_0);
                 ButtonRow row0_1 = new ButtonRow(initialLevel.level_INITIALIZE);
                 buttonRowRepository.cache(row0_1);
                 initialLevel.level_INITIALIZE.addRow(row0_1);
@@ -393,12 +391,6 @@ public class UserLevelInitializer {
                 Message message21_1_1 = new Message(initialLevel.level_P2P_RESP, Map.of(RU, "Пользователь Y уже есть в системе"));
                 messageRepository.cache(message21_1_1);
                 initialLevel.level_P2P_RESP.addMessage(message21_1_1);
-
-                System.out.println("PRE addFinalButton");
-
-                initialLevel.addFinalButton(initialLevel.level_INITIALIZE, initialLevel.level_INITIALIZE);
-
-                System.out.println("POST addFinalButton");
 
             } catch (IOException | WriterException e) {
                 e.printStackTrace();

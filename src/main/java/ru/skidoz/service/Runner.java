@@ -9,20 +9,25 @@ import ru.skidoz.model.pojo.telegram.ButtonRow;
 import ru.skidoz.model.pojo.telegram.LevelChat;
 import ru.skidoz.model.pojo.telegram.LevelDTOWrapper;
 import ru.skidoz.model.pojo.telegram.Message;
+import ru.skidoz.model.pojo.telegram.User;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramWebhookBot;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
+import org.telegram.telegrambots.meta.api.methods.GetFile;
 import org.telegram.telegrambots.meta.api.methods.send.SendLocation;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
+import org.telegram.telegrambots.meta.api.objects.Document;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
@@ -202,4 +207,43 @@ public class Runner extends TelegramWebhookBot {
 
         return messagePhoto2;
     }
+
+
+    public byte[] processDocument(Document inputDocument, String secretHash) {
+
+        this.key = secretHash;
+
+        String doc_id = inputDocument.getFileId();
+        String doc_name = inputDocument.getFileName();
+        String doc_mine = inputDocument.getMimeType();
+        long doc_size = inputDocument.getFileSize();
+        //String getID = String.valueByCode(update.getMessage().getFrom().getId());
+
+        Document document = new Document();
+        document.setMimeType(doc_mine);
+        document.setFileName(doc_name);
+        document.setFileSize(doc_size);
+        document.setFileId(doc_id);
+
+        GetFile getFile = new GetFile();
+        getFile.setFileId(document.getFileId());
+        try {
+            org.telegram.telegrambots.meta.api.objects.File file = execute(getFile);
+
+
+            return IOUtils.toByteArray(downloadFileAsStream(file));
+
+
+
+//                telegramProcessor.processExcel(downloadFileAsStream(file), users);
+            //File excel = downloadFile(file);
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
 }

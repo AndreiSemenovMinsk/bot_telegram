@@ -73,8 +73,9 @@ public class FilterPoint extends AbstractDTO {
     @Override
     public String toString() {
         return "FilterPointDTO{" +
-                ", id='" + super.getId() + '\'' +
-                "nameEN='" + nameEN + '\'' +
+                " id='" + super.getId() + '\'' +
+                ", categoryId=" + categoryId +
+                ", nameEN='" + nameEN + '\'' +
                 ", nameRU='" + nameRU + '\'' +
                 ", nameDE='" + nameDE + '\'' +
                 ", unitNameEN='" + unitNameEN + '\'' +

@@ -615,13 +615,13 @@ public class CacheAspect {
 
                         final int index = dtoNames.indexOf(simpleName);
 
-//                        System.out.println(dtoNames.get(repoIndex) +" 570 simpleName " + simpleName + " typeName " + typeName + " index " + index);
+                        System.out.println(dtoNames.get(repoIndex) +" 618 simpleName " + simpleName + " typeName " + typeName + " index " + index);
 
                         if (index > -1) {
                             order.add(index);
                             fieldNames.add(declaredFields[declaredFieldInd].getName());
 
-//                            System.out.println("575 " + dtoNames.get(repoIndex) + " " + dtoNames.get(index) + " " + declaredFields[declaredFieldInd].getName());
+                            System.out.println("625 " + dtoNames.get(repoIndex) + " " + dtoNames.get(index) + " " + declaredFields[declaredFieldInd].getName());
 
                             listDtos[repoIndex][index] = declaredFields[declaredFieldInd].getName();
                         }
@@ -896,15 +896,6 @@ public class CacheAspect {
         Integer[] paramFieldIndex = new Integer[findMethodSplitArr.length];
         List<Integer> paramFieldIndexDependantFree = new ArrayList<>();
 
-
-        System.out.println("@jpaFindMethods " + dtoNames.get(repoIndex)
-                + " findMethodName " + findMethodName + " " + jpaFindMethods.get(repoIndex).size() + " jpaMethod**-" + jpaMethod
-                + " findMethodSplitArr " + Arrays.asList(findMethodSplitArr));
-
-        if (jpaMethod == null) {
-            System.out.println("**-*-*-*-*-*-*-*-*-**- !!!!!!!!!!!!!");
-        }
-
         jpaFindMethods.get(repoIndex).add(jpaMethod);
 
 
@@ -915,6 +906,9 @@ public class CacheAspect {
 
             String paramSplitName = firstLower(findMethodSplitArr[splitInd]);
             // я ищу в этом классе
+
+            System.out.println("paramSplitName--------" + paramSplitName + " dtoFieldsMap.get("+repoIndex+") " + dtoFieldsMap.get(repoIndex));
+
             paramFieldIndex[splitInd] = dtoFieldsMap.get(repoIndex).get(paramSplitName);
 
 
@@ -923,9 +917,12 @@ public class CacheAspect {
 
                     String s = paramSplitName.substring(0, paramSplitName.length() - 3);
 
-//                    System.out.println(903 + "@@@ ** " + s);
-
                     var paramFieldInd = dtoFieldsMap.get(repoIndex).get(s);
+
+
+                    System.out.println(926 + "---@@@ ** " + s);
+
+
                     if (paramFieldInd == null) {
 
                         paramFieldInd = dtoFieldsMap.get(repoIndex).get(s + "Id");
@@ -958,7 +955,7 @@ public class CacheAspect {
                 }
             }
 
-            System.out.println(dtoNames.get(repoIndex) + " -*-*-----* "+ findMethodName + " param " + paramSplitName + "  " + paramFieldIndex[splitInd]);
+//            System.out.println(dtoNames.get(repoIndex) + " -*-*-----* "+ findMethodName + " param " + paramSplitName + "  " + paramFieldIndex[splitInd]);
 
             if (paramFieldIndex[splitInd] == null) {
                 dependsOnParentField = true;
@@ -1018,7 +1015,7 @@ public class CacheAspect {
             }
         }
 
-        System.out.println("1001 parameters.get("+repoIndex+").add("+Arrays.toString(fieldsLower)+"); --- " + dtoNames.get(repoIndex));
+//        System.out.println("1001 parameters.get("+repoIndex+").add("+Arrays.toString(fieldsLower)+"); --- " + dtoNames.get(repoIndex));
         parameters.get(repoIndex).add(fieldsLower);
 
 
@@ -1304,12 +1301,12 @@ public class CacheAspect {
                 if (method != null) {
 
 
-                    System.out.println("jpaFindMethods.get("+repoIndex+") " + jpaFindMethods.get(repoIndex));
-                    System.out.println("repoIndex*** " + repoIndex + " methodOrder " + methodOrder + " " + method);
-                    System.out.println(" key " + key + " " + dtoNames.get(repoIndex) + " " + methodName + " ---* " + methodOrder + " type " + type);
+//                    System.out.println("jpaFindMethods.get("+repoIndex+") " + jpaFindMethods.get(repoIndex));
+//                    System.out.println("repoIndex*** " + repoIndex + " methodOrder " + methodOrder + " " + method);
+//                    System.out.println(" key " + key + " " + dtoNames.get(repoIndex) + " " + methodName + " ---* " + methodOrder + " type " + type);
 
-                    System.out.println(jpaRepositories.get(repoIndex));
-                    System.out.println(Arrays.toString(args));
+//                    System.out.println(jpaRepositories.get(repoIndex));
+//                    System.out.println(Arrays.toString(args));
 
 
 
@@ -1987,7 +1984,7 @@ public class CacheAspect {
             for (int childDTOInd = 0; childDTOInd < dtoFieldNames.size(); childDTOInd++) {
                 for (int childFieldInd = 0; childFieldInd < dtoFieldNames.get(childDTOInd).length; childFieldInd++) {
 
-                    var childFieldName = cleanId(dtoFieldNames.get(childDTOInd)[childFieldInd]);
+                    var childFieldName = dtoFieldNames.get(childDTOInd)[childFieldInd];//cleanId(dtoFieldNames.get(childDTOInd)[childFieldInd]);
 
                     String[] parts = StringUtils.splitByCharacterTypeCamelCase(childFieldName);
                     String part = firstLower(parts[parts.length - 1]);
@@ -2075,13 +2072,13 @@ public class CacheAspect {
         }
     }
 
-    private String cleanId(String childFieldName) {
-        if (childFieldName.endsWith("_Id")) {
-            return childFieldName.substring(0, childFieldName.length() - 3);
-        } else if (childFieldName.endsWith("Id")) {
-            return childFieldName.substring(0, childFieldName.length() - 2);
+    private String cleanId(String fieldName) {
+        if (fieldName.endsWith("_Id")) {
+            return fieldName.substring(0, fieldName.length() - 3);
+        } else if (fieldName.endsWith("Id")) {
+            return fieldName.substring(0, fieldName.length() - 2);
         }
-        return childFieldName;
+        return fieldName;
     }
 
     private <T> List<T> setList(List<T> list, int pos, T t) {

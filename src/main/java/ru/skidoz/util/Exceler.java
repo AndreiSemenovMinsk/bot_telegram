@@ -275,8 +275,12 @@ public class Exceler {
 
                                         String optionValue = sheet.getRow(i).getCell(j + 1).toString();
 
+                                        System.out.println("category+++" + category.getId() + "UnitNameRU***--" + filterPointName);
+
                                         FilterPoint filterPoint = filterPointRepository
                                                 .findByCategoryAndUnitNameRU(category.getId(),/* language,*/ filterPointName);
+
+                                        System.out.println(" filterPoint--" + filterPoint);
 
                                         if (filterPoint != null) {
 

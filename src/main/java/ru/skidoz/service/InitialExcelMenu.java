@@ -179,7 +179,7 @@ public class InitialExcelMenu {
                                 for (int j = columnCategory + 2, point_col_index = 0;
                                      j < columns
                                              && sheet.getRow(i).getCell(j) != null
-                                             && !sheet.getRow(i).getCell(j).toString().equals("");
+                                             && !sheet.getRow(i).getCell(j).toString().isEmpty();
                                      j++) {
 
                                     if (sheet.getRow(i).getCell(j).toString().equals("&")) {
@@ -267,6 +267,8 @@ public class InitialExcelMenu {
                                             Integer max = (int) (Double.parseDouble(sheet.getRow(i).getCell(j + 5).toString()));
                                             filterPoint.setMaxValue(max);
                                         }
+
+                                        System.out.println("274 .save " + filterPoint);
 
                                         filterPointCacheRepository.save(filterPoint);
                                     }

@@ -313,7 +313,7 @@ public class ScheduleService {
             D d = dtos.get(i);
             d.setId(newId);
 
-            System.out.println("319 dto " + d);
+//            System.out.println("319 dto " + d);
 
             cache.save(d);
         }

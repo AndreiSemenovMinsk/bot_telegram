@@ -127,10 +127,14 @@ public class CacheSearchTasklet implements Tasklet {
     private void setPriceProductSet() {
 
         List<Product> products = productRepository.findAll();
+
+
+        System.out.println("setPriceProductSet*-*-*-*-*-*-*-*products.size() " + products.size());
+
         products.forEach(product -> {
 
-            System.out.println("126++ " + product.getPriceHash() + " --- " + product.getId());
-            System.out.println("127++ " + productPrice);
+//            System.out.println("126++ " + product.getPriceHash() + " --- " + product.getId());
+//            System.out.println("127++ " + productPrice);
 
                     productPrice.put(product.getPriceHash(), product.getId());
                 });
@@ -227,8 +231,8 @@ public class CacheSearchTasklet implements Tasklet {
                                         .get(filterPoint.getId())
                                         .put(categoryFilterProduct.getHashCode(), categoryFilterProduct.getProduct());
                             } else {
-                                System.out.println(filterPoint.getId() + "@@@@@@@@@" + product.getId());
-                                System.out.println(filterPoint.getNameRU() + "----------" + product.getNameRU());
+                                System.out.println("filterPoint " + filterPoint.getId() + "@@@@@@@@@ product" + product.getId());
+                                System.out.println(filterPoint.getNameRU() + "*-*-*" + filterPoint.getUnitNameRU() + "----------" + product.getNameRU());
                             }
 
                         });

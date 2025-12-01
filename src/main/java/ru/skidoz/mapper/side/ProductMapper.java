@@ -19,12 +19,14 @@ import ru.skidoz.model.pojo.side.Product;
 public abstract class ProductMapper extends EntityMapper<Product, ProductEntity> {
 
     @Override
+    @Mapping(source = "shop.id", target = "shop")
     @Mapping(source = "category.id", target = "category")
     @Mapping(source = "categoryGroup.id", target = "categoryGroup")
     @Mapping(source = "categorySuperGroup.id", target = "categorySuperGroup")
     public abstract Product toDto(ProductEntity product);
 
     @Override
+    @Mapping(source = "shop", target = "shop.id")
     @Mapping(source = "category", target = "category.id")//, qualifiedByName = "idCat")
     @Mapping(source = "categoryGroup", target = "categoryGroup.id")//, qualifiedByName = "idCatG")
     @Mapping(source = "categorySuperGroup", target = "categorySuperGroup.id")//, qualifiedByName = "idCatSG")

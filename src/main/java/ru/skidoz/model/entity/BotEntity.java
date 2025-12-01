@@ -17,6 +17,7 @@ import jakarta.validation.constraints.NotNull;
 @Data
 @Entity
 @AllArgsConstructor
+@Table(name = "bot")
 public class BotEntity extends AbstractEntity  implements Serializable {
 
     private String name = "Default Taxi Bot";

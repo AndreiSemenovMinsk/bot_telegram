@@ -1,5 +1,7 @@
 package ru.skidoz.service.command_impl.shop_bot;
 
+import static ru.skidoz.util.Structures.parseInt;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -7,6 +9,7 @@ import ru.skidoz.model.pojo.telegram.*;
 import ru.skidoz.aop.repo.*;
 import ru.skidoz.service.initializers.InitialLevel;
 import ru.skidoz.service.command.Command;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -15,14 +18,14 @@ import org.telegram.telegrambots.meta.api.objects.Update;
  * @author andrey.semenov
  */
 @Component
-public class AddTaxiBot implements Command {
+public class AddBot implements Command {
 
     @Autowired
     private LevelCacheRepository levelCacheRepository;
     @Autowired
     private UserCacheRepository userCacheRepository;
     @Autowired
-    private ShopCacheRepository shopCacheRepository;
+    private BotTypeCacheRepository botTypeCacheRepository;
     @Autowired
     private BotCacheRepository botCacheRepository;
     @Autowired
@@ -43,12 +46,15 @@ public class AddTaxiBot implements Command {
         levelRepository.save(cloneEditBotLevel);*/
 
         int parentLevelId = cloneEditBotLevel.getParentLevelId();
+
+        System.out.println("updateLevelNames+++++++" + parentLevelId);
+
         //Level parentLevel = levelRepository.findById();
         //initialLevel.retrieveButtonRows(level);
-        List<ButtonRow> buttonRowList = buttonRowCacheRepository.findAllByLevel_Id(parentLevelId);
+        //List<ButtonRow> buttonRowList = buttonRowCacheRepository.findAllByLevel_Id(parentLevelId);
         String oldCallName = cloneEditBotLevel.getCallName();
         String newCallName = cloneEditBotLevel.getIdString();
-        for (ButtonRow buttonRow : buttonRowList) {
+        for (ButtonRow buttonRow : cloneEditBotLevel.getButtonRows()) {
             for (Button button : buttonRow.getButtonList()) {
                 if (button.getCallback().equals(oldCallName)) {
                     button.setCallback(newCallName);
@@ -68,66 +74,68 @@ public class AddTaxiBot implements Command {
     }
 
     @Override
-    public LevelResponse runCommand(Update update, Level level, User users) throws CloneNotSupportedException {
+    public LevelResponse runCommand(Update update, Level level, User users)
+            throws CloneNotSupportedException {
 
         System.out.println();
-        System.out.println("-----------------------------AddTaxiBot-----------------------------");
+        System.out.println("-----------------------------AddBot-----------------------------");
         System.out.println();
         System.out.println();
 
         LevelDTOWrapper resultLevel;
-//        Shop shopInitiator = shopCacheRepository.findById(users.getCurrentAdminShop());//shopRepository.getByChatId(chatId);
         Integer shopInitiator = users.getCurrentAdminShop();
 
-                Level taxiBotLevel = initialLevel.level_ADD_TAXI_BOT;
-        Level cloneBot = initialLevel.cloneLevel(taxiBotLevel, users);
-        //Level cloneEditBot = taxiBotLevel.clone(users);
-        levelCacheRepository.save(cloneBot);
-        //levelRepository.save(cloneEditBot);
-        /*users.addLevel(cloneBot);
-        users.addLevel(cloneEditBot);
-        userRepository.save(users);*/
-        Bot bot = botCacheRepository.findByShopId(shopInitiator);
-        if (bot == null) {
+        final BotType botType = botTypeCacheRepository.findByInitialLevelStringId(level.getIdString());
 
-            System.out.println();
+        final Level initialBotLevel = levelCacheRepository.findById(parseInt(botType.getInitialLevelStringId()));
 
-            bot = new Bot(b -> {
+        Level cloneBotLevel = initialLevel.cloneLevel(initialBotLevel, users);
+
+        levelCacheRepository.save(cloneBotLevel);
+
+//        Bot bot = botCacheRepository.findByShopId(shopInitiator);
+
+        System.out.println();
+
+        Bot bot = new Bot(b -> {
+                b.setBotType(botType.getId());
                 b.setShop(shopInitiator);
-                b.setInitialLevel(cloneBot.getId());
-            });
-            //shopInitiator.addBot(bot);
-            botCacheRepository.save(bot);
-        }
+                b.setInitialLevel(cloneBotLevel.getId());
+        });
+        botCacheRepository.save(bot);
+
 
         System.out.println("116++++++setCurrentChangingBot" + bot.getId());
 
-        users.setCurrentChangingBot(bot.getId());
-        userCacheRepository.save(users);
+//        userCacheRepository.save(users);
 
-        System.out.println("users.getCurrentChangingBot()-----------------------------------------"+ users.getCurrentChangingBot());
+        System.out.println("users.getCurrentChangingBot()-----------------------------------------");
 
         Long chatId = users.getChatId();
-        cloneBot.setBot(bot.getId());
-        cloneBot.setChatId(chatId);
+        cloneBotLevel.setBot(bot.getId());
+        cloneBotLevel.setChatId(chatId);
 
-        List<Level> levels = levelCacheRepository.findAllByParentLevelId(cloneBot.getId());
-        for (Level childLevel : levels) {
-            updateLevelNames(childLevel, bot, chatId);
-        }
+        updateLevelNames(cloneBotLevel, bot, chatId);
+
+//        List<Level> levels = levelCacheRepository.findAllByParentLevelId(cloneBotLevel.getId());
+//        for (Level childLevel : levels) {
+//            updateLevelNames(childLevel, bot, chatId);
+//        }
         //adder.addShopBot(chatId, bot, shopInitiator);
 
-        levelCacheRepository.save(cloneBot);
+        levelCacheRepository.save(cloneBotLevel);
 
-        //cloneBot;
-        resultLevel = initialLevel.convertToLevel(cloneBot,
+        //cloneBotLevel;
+        resultLevel = initialLevel.convertToLevel(
+                cloneBotLevel,
                 true,
                 true);
 
-        return new LevelResponse(Collections.singletonList(new LevelChat(e -> {
-            e.setChatId(users.getChatId());
-            e.setUser(users);
-            e.setLevel(resultLevel);
-        })), null, null);
+        return new LevelResponse(
+                Collections.singletonList(new LevelChat(e -> {
+                    e.setChatId(users.getChatId());
+                    e.setUser(users);
+                    e.setLevel(resultLevel);
+                })), null, null);
     }
 }

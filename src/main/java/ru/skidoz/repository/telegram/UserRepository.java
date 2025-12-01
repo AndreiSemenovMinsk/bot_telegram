@@ -1,9 +1,12 @@
 package ru.skidoz.repository.telegram;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
 import ru.skidoz.model.entity.telegram.UserEntity;
+import ru.skidoz.model.pojo.telegram.User;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -36,6 +39,8 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
     @Query(value = "select users.* from recommendation rmdn INNER JOIN users where rmdn.shop_id is null and rmdn.buyer_id=:buyer_id", nativeQuery = true)
     UserEntity findFirstByShopNullAndBuyer(@Param("buyer_id") Integer buyerId);
 
-    @Query(value = "SELECT * FROM users INNER JOIN users_shop_set on (users.id=users_shop_set.admin_user_id) WHERE shop_id = :buyer", nativeQuery = true)
-    Set<UserEntity> findAllByShopId(@Param("buyer") Integer shopId);
+//    @Query(value = "SELECT * FROM users INNER JOIN users_shop_set on (users.id=users_shop_set.admin_user_id) WHERE shop_id = :buyer", nativeQuery = true)
+//    Set<UserEntity> findAllBySellerShop(@Param("buyer") Integer shopId);
+
+    List<UserEntity> findAllBySellerShop_Id(Integer shopId);
 }

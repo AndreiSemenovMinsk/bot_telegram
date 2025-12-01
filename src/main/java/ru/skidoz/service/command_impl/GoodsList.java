@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
+import ru.skidoz.aop.repo.ShopCacheRepository;
 import ru.skidoz.model.pojo.side.Product;
 import ru.skidoz.model.pojo.telegram.*;
 import ru.skidoz.aop.repo.ProductCacheRepository;
@@ -22,6 +23,8 @@ public class GoodsList implements Command {
 
     @Autowired
     private ProductCacheRepository productCacheRepository;
+    @Autowired
+    private ShopCacheRepository shopCacheRepository;
     @Autowired
     private InitialLevel initialLevel;
 
@@ -42,6 +45,7 @@ public class GoodsList implements Command {
         System.out.println();
         System.out.println("users.getCurrentAdminShop()*******" + users.getCurrentAdminShop());
         System.out.println(!productList.isEmpty());
+        System.out.println(shopCacheRepository.findById(users.getCurrentAdminShop()));
 
         if (!productList.isEmpty()) {
 

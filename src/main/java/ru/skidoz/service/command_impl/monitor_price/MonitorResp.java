@@ -73,7 +73,7 @@ public class MonitorResp implements Command {
                 Product product = new Product();
                 product.setAlias(rm.getUrl());
                 product.setChatId(users.getChatId());
-                product.setShop(new Shop(rm.getShop()));
+                product.setShop(rm.getShop());
                 product.setActive(true);
                 product.setCategory(bigCategory.getId());
                 product.setCategoryGroup(bigCategoryGroup.getId());
@@ -84,7 +84,7 @@ public class MonitorResp implements Command {
                 Bookmark newBookmark = new Bookmark(e -> {
                     e.setRadius(50);
                     e.setProduct(product.getId());
-                    e.setShop(product.getShop().getId());
+                    e.setShop(product.getShop());
                     e.setUser(users.getId());
                     e.setViberNotify(false);
                 });

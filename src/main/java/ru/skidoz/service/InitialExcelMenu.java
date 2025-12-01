@@ -268,7 +268,7 @@ public class InitialExcelMenu {
                                             filterPoint.setMaxValue(max);
                                         }
 
-                                        System.out.println("274 .save " + filterPoint);
+//                                        System.out.println("274 .save " + filterPoint);
 
                                         filterPointCacheRepository.save(filterPoint);
                                     }

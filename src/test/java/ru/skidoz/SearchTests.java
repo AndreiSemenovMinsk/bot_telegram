@@ -50,14 +50,13 @@ public class SearchTests extends AbstractIntegrationTest {
 
     @Test
     void shopUserTest() {
-
         var shop = new Shop();
         shopRepository.save(shop);
 
         var product = new Product();
         product.setActive(true);
         product.setNameRU("qwerty");
-        product.setShop(shop);
+        product.setShop(shop.getId());
         product.setPrice(120);
         productCacheRepository.save(product);
 
@@ -71,8 +70,6 @@ public class SearchTests extends AbstractIntegrationTest {
         List<Integer> valuesPointList = searchService.getProducts(search);
         assertEquals(product.getId(), valuesPointList.get(0));
     }
-
-
 
     @Test
     void shopUserTest2() {
@@ -90,7 +87,5 @@ public class SearchTests extends AbstractIntegrationTest {
 
         List<Bookmark> bookmarkDTOS = bookmarkCacheRepository.findAllByUserId(user.getId());
         assertEquals(bookmark.getId(), bookmarkDTOS.get(0).getId());
-
     }
-
 }

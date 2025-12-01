@@ -76,15 +76,15 @@ public class P2BWriteOffCouponBasket implements Command {
         Long shopChatId = users.getChatId();
 
         try {
-            Shop shopInitiator = shopCacheRepository.findBySellerChatId(shopChatId);
+            Shop shopInitiator = shopCacheRepository.findById(userCacheRepository.findByChatId(shopChatId).getSellerShop());
             User buyer = userCacheRepository.findByChatId(shopInitiator.getCurrentConversationShopUserChatId());
 
             resultLevel = initialLevel.convertToLevel(initialLevel.level_P2B_WRITEOFF_COUPON_SELECT_ACTION,
                     false,
                     false);
 
-            List<Action> actionCouponList = actionCacheRepository.findAllByShopAndTypeAndActiveIsTrue(shopInitiator.getId(), ActionTypeEnum.COUPON);
-            Action actionCoupon = actionCacheRepository.findFirstByShopAndTypeAndActiveIsTrue(shopInitiator.getId(), ActionTypeEnum.COUPON_DEFAULT);
+            List<Action> actionCouponList = actionCacheRepository.findAllByShopAndTypeAndActive(shopInitiator.getId(), ActionTypeEnum.COUPON, true);
+            Action actionCoupon = actionCacheRepository.findFirstByShopAndTypeAndActive(shopInitiator.getId(), ActionTypeEnum.COUPON_DEFAULT, true);
             actionCouponList.add(actionCoupon);
             List<Basket> basketList = basketCacheRepository.findAllByUserIdAndShopIdAndTemp(buyer.getId(), shopInitiator.getId(), true);
 

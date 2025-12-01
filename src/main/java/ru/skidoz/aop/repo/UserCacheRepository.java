@@ -1,7 +1,6 @@
 package ru.skidoz.aop.repo;
 
 import java.util.List;
-import java.util.Set;
 
 import ru.skidoz.model.pojo.telegram.User;
 import org.springframework.stereotype.Service;
@@ -28,7 +27,7 @@ public interface UserCacheRepository extends JpaRepositoryTest<User, Integer> {
 
     User findFirstByShopNullAndBuyer_Id(Integer buyerId);
 
-    List<User> findAllByShopId(Integer shopId);
+    List<User> findAllBySellerShop(Integer shopId);
 
     List<User> findAllByName(String name);
 }

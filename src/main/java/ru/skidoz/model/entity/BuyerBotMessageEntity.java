@@ -13,6 +13,7 @@ import jakarta.validation.constraints.NotNull;
 @Data
 @Entity
 @AllArgsConstructor
+@Table(name = "buyer_bot_message")
 public class BuyerBotMessageEntity extends AbstractEntity  implements Serializable {
 
     @NotNull

@@ -39,17 +39,13 @@ public class AbstractDTO extends DTO {
         if (this == o) return true;
         if (!(o instanceof AbstractDTO)) return false;
         //if (!super.equals(o)) return false;
-        if (super.getId() != null && ((AbstractDTO) o).getId() != null) return super.getId().equals(((AbstractDTO) o).getId());
-        return this.hashCode() == o.hashCode();
+        return super.getId() == ((AbstractDTO) o).getId();
     }
 
     @Override
     public int hashCode() {
-        if (super.getId() == null) {
-            return super.hashCode();
-        } else {
-            return super.getId();
-        }
+        return super.getId();
+
         //Objects.hash(super.hashCode(), id);
     }
 }

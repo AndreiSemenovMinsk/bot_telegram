@@ -65,7 +65,7 @@ public class P2BWriteOffCouponApprove implements Command {
         Long buyerChatId = users.getChatId();
 
         Long shopChatId = users.getCurrentConversationShop();
-        Shop shopInitiator = shopCacheRepository.findBySellerChatId(shopChatId);
+        Shop shopInitiator = shopCacheRepository.findById(userCacheRepository.findByChatId(shopChatId).getSellerShop());
         try {
             String code = update.getCallbackQuery().getData().substring(19);
 
@@ -85,7 +85,7 @@ public class P2BWriteOffCouponApprove implements Command {
             });
             purchaseCacheRepository.save(purchase);
 
-            Action actionDefault = actionCacheRepository.findFirstByShopAndTypeAndActiveIsTrue(shopInitiator.getId(), ActionTypeEnum.COUPON_DEFAULT);
+            Action actionDefault = actionCacheRepository.findFirstByShopAndTypeAndActive(shopInitiator.getId(), ActionTypeEnum.COUPON_DEFAULT, true);
 
             Cashback cashback = new Cashback(e -> {
                 e.setAction(actionDefault.getId());

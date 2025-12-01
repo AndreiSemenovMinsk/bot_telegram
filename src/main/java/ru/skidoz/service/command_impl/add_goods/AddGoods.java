@@ -72,7 +72,7 @@ public class AddGoods implements Command {
 
             product.setChatId(users.getChatId());
 //            category.addProduct(product);
-            product.setShop(shopInitiator);
+            product.setShop(shopInitiator.getId());
             product.setActive(false);
 
             Integer/*CategoryGroupDTO*/ categoryGroupId = category.getCategoryGroupId();

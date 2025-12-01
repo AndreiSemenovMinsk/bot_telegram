@@ -26,7 +26,7 @@ public class ShopSearchTasklet implements Tasklet {
     @Override
     public void execute() {
 
-        System.out.println("----------------------------------CacheSearchTasklet start--------------------------------------");
+        System.out.println("----------------------------------ShopSearchTasklet start--------------------------------------");
 
 
         shopNames = shopRepository.findAll().stream().map(Shop::getName).toList();
@@ -34,7 +34,7 @@ public class ShopSearchTasklet implements Tasklet {
         ShopSearchHandler.pairs = shopNames;
         ShopSearchHandler.wordPhraseList = TextParser.init(ShopSearchHandler.pairs, ShopSearchHandler.parts);
 
-        System.out.println("----------------------------------CacheSearchTasklet finish--------------------------------------");
+        System.out.println("----------------------------------ShopSearchTasklet finish--------------------------------------");
     }
 
 

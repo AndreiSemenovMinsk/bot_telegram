@@ -57,7 +57,7 @@ public class AddBasket implements Command {
                 e.setUser(users.getId());
 //            e.addBasketProduct(product, 1);
                 e.setNote("no note");
-                e.setShopId(product.getShop().getId());
+                e.setShopId(product.getShop());
                 e.setTemp(true);
             });
 

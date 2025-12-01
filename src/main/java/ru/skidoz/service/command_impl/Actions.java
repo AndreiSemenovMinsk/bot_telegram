@@ -35,7 +35,7 @@ public class Actions implements Command {
     public LevelResponse runCommand(Update update, Level level, User users) throws IOException, WriterException {
 
         Shop shop = shopCacheRepository.findById(users.getCurrentAdminShop());
-        List<Action> actionList = actionCacheRepository.findAllByShopAndActiveIsTrue(shop.getId());
+        List<Action> actionList = actionCacheRepository.findAllByShopAndActive(shop.getId(), true);
 
         System.out.println();
         System.out.println("**************Actions**************");

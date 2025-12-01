@@ -4,8 +4,6 @@ import java.util.List;
 
 import ru.skidoz.model.pojo.side.Shop;
 import org.springframework.stereotype.Service;
-import ru.skidoz.service.search.ShopSearchHandler;
-import ru.skidoz.util.TextParser;
 
 /**
  * @author andrey.semenov
@@ -21,15 +19,15 @@ public interface ShopCacheRepository extends JpaRepositoryTest<Shop, Integer> {
 
     Shop findByChatId(Long userChatId);
 
-    Shop findBySellerChatId(Long userChatId);
+//    Shop findBySellerChatId(Long userChatId);
 
-    Shop findByNameAndAdminUser_Id(String name, Integer userId);
+    Shop findByNameAndAdminUser(String name, Integer userId);
 
-    List<Shop> findAllByAdminUser_Id(Integer userId);
+    List<Shop> findAllByAdminUser(Integer userId);
 
     Shop findByName(String name);
 
-    List<Shop> findAllBySellerIdAndActiveIsTrue(Integer userId);
+//    List<Shop> findAllBySellerIdAndActive(Integer userId, boolean active);
 
     void storeFromRepo(Shop shop);
 

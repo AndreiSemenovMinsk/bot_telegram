@@ -81,13 +81,14 @@ public class User extends AbstractDTO {
     private Integer currentRunnerShop;
     private Integer firstRunnerShop;
 
+    private Integer sellerShop;
 
     private Long chatId;
     private Integer currentLevelBeforeConfigId;
 
     private Integer/*LevelDTO*/ currentLevelBeforeInterruption;
 
-    private Integer/*BotDTO*/ currentChangingBot;
+//    private Integer/*BotDTO*/ currentChangingBot;
 
     private Integer/*ButtonDTO*/ currentChangingButton;
 
@@ -100,8 +101,6 @@ public class User extends AbstractDTO {
     private List<BuyerBot> buyerBotList = new ArrayList<>();
 
     private List<Shop> shopList = new ArrayList<>();
-
-    private Shop sellerShop;
 
     private List<Purchase> purchaseList = new ArrayList<>();
 
@@ -186,7 +185,6 @@ public class User extends AbstractDTO {
                 ", currentAdminShop=" + currentAdminShop +
                 ", currentConstructShop=" + currentConstructShop +
                 ", currentConversationShop=" + currentConversationShop +
-                ", currentChangingBot=" + currentChangingBot +
                 ", currentChangingButton=" + currentChangingButton +
                 ", currentChangingMessage=" + currentChangingMessage +
                 ", chatId=" + chatId +

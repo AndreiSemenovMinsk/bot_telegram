@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.Objects;
 
 import ru.skidoz.aop.repo.ShopCacheRepository;
+import ru.skidoz.aop.repo.UserCacheRepository;
 import ru.skidoz.model.pojo.telegram.Level;
 import ru.skidoz.model.pojo.telegram.LevelChat;
 import ru.skidoz.model.pojo.telegram.LevelResponse;
@@ -27,6 +28,8 @@ public class Initialize implements Command {
     private InitialLevel initialLevel;
     @Autowired
     private ShopCacheRepository shopCacheRepository;
+    @Autowired
+    private UserCacheRepository userCacheRepository;
 
     @Override
     public LevelResponse runCommand(Update update, Level level, User users) {
@@ -39,7 +42,7 @@ public class Initialize implements Command {
 
         if (Objects.equals(users.getCurrentRunnerShop(), SHOP.getId())) {
 
-            if (shopCacheRepository.findBySellerChatId(users.getChatId()) != null){
+            if (shopCacheRepository.findById(userCacheRepository.findByChatId(users.getChatId()).getSellerShop()) != null){
                 return new LevelResponse(
                         Collections.singletonList(new LevelChat(e -> {
                             e.setChatId(users.getChatId());

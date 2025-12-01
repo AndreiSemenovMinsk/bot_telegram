@@ -81,10 +81,10 @@ public class Optimizator {
             basketRepository.save(basket);
         });
 
-        Action actionDefault = actionRepository.findFirstByShopAndTypeAndActiveIsTrue(
-                shopId, ActionTypeEnum.BASIC_DEFAULT);
-        List<Action>  actionBasicList = actionRepository.findAllByShopAndTypeAndActiveIsTrue(
-                shopId, ActionTypeEnum.BASIC);
+        Action actionDefault = actionRepository.findFirstByShopAndTypeAndActive(
+                shopId, ActionTypeEnum.BASIC_DEFAULT, true);
+        List<Action>  actionBasicList = actionRepository.findAllByShopAndTypeAndActive(
+                shopId, ActionTypeEnum.BASIC, true);
 
         List<Action>  allActions = new ArrayList<>(actionBasicList);
         allActions.add(actionDefault);

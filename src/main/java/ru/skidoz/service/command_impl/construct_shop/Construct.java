@@ -125,7 +125,7 @@ public class Construct implements Command {
         Shop shop = new Shop();
         shop.setSecretHash(inputText);
         shop.setAdminUser(users.getId());
-        shop.setSellerSet(List.of(users.getId()));
+//        shop.setSellerSet(List.of(users.getId()));
         shop.setChatId(users.getChatId());
         shop.setCurrentConversationShopUserChatId(users.getChatId());
         shop.setActive(false);
@@ -135,6 +135,7 @@ public class Construct implements Command {
         users.setCurrentAdminShop(shop.getId());
         users.setShopOwner(true);
         users.setRole("USER");
+        users.setSellerShop(shop.getId());
 
         if (users.getSessionId() == null) {
             users.setSessionId(Long.toString((long) (Math.random() * 1000000000000L)));

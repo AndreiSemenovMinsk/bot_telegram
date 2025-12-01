@@ -15,6 +15,7 @@ import lombok.Data;
 //@EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
+@Table(name = "cashback_write_off")
 public class CashbackWriteOffEntity extends AbstractEntity  implements Serializable {
 
     private Integer sum;

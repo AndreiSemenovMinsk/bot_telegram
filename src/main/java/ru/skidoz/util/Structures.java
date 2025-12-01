@@ -4,11 +4,17 @@ package ru.skidoz.util;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * @author andrey.semenov
  */
 public class Structures {
 
+
+    public static String getIdString(Integer id) {
+        return StringUtils.leftPad("" + id, 19, "0");
+    }
 
     public static String stringBeautifier(Object text) {
 

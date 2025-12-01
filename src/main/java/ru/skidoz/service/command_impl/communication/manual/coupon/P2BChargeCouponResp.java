@@ -66,13 +66,13 @@ public class P2BChargeCouponResp implements Command {
             int proposedNumber = Integer.parseInt(inputText);
             if (proposedNumber > 0) {
 
-                Shop shopInitiator = shopCacheRepository.findBySellerChatId(shopChatId);
+                Shop shopInitiator = shopCacheRepository.findById(userCacheRepository.findByChatId(shopChatId).getSellerShop());
                 User buyer = userCacheRepository.findByChatId(shopInitiator.getCurrentConversationShopUserChatId());
 
                 System.out.println(shopInitiator);
 
 //                Action action = actionRepository.findById(shopInitiator.getCurrentChargeAction());
-//                Action action = actionRepository.findFirstByShopAndTypeAndActiveIsTrue(shopInitiator, ActionTypeEnum.COUPON_DEFAULT);
+//                Action action = actionRepository.findFirstByShopAndTypeAndActive(shopInitiator, ActionTypeEnum.COUPON_DEFAULT);
                 buyerChatId = buyer.getChatId();
 
                 Purchase purchase = new Purchase(e -> {

@@ -48,7 +48,7 @@ public class Sellers implements Command {
         System.out.println("shopInitiator+++" + shopInitiator);
 
 
-        List<User> sellers = userCacheRepository.findAllByShopId(shopInitiator.getId());
+        List<User> sellers = userCacheRepository.findAllBySellerShop(shopInitiator.getId());
 
         List<Long> sellerChatIds = new ArrayList<>();
         for (User seller : sellers){

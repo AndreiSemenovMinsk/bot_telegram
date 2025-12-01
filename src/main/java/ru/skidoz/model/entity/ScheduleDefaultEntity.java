@@ -11,6 +11,7 @@ import lombok.Data;
 //@EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
+@Table(name = "schedule_default")
 public class ScheduleDefaultEntity extends AbstractEntity  implements Serializable {
 
     @NotNull

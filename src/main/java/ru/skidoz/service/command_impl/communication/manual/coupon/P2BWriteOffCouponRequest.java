@@ -59,7 +59,7 @@ public class P2BWriteOffCouponRequest implements Command {
         try {
             String code = update.getCallbackQuery().getData().substring(19);
 
-            Shop shopInitiator = shopCacheRepository.findBySellerChatId(shopChatId);
+            Shop shopInitiator = shopCacheRepository.findById(userRepository.findByChatId(shopChatId).getSellerShop());
 
             System.out.println("code***" + code);
 

@@ -139,9 +139,9 @@ e.printStackTrace();
 
                 if (proposedSum.intValue() > 0) {
 
-                    Shop shopInitiator = shopCacheRepository.findBySellerChatId(shopChatId);
+                    Shop shopInitiator = shopCacheRepository.findById(userCacheRepository.findByChatId(shopChatId).getSellerShop());
 
-                    Action action = actionCacheRepository.findFirstByShopAndTypeAndActiveIsTrue(shopInitiator.getId(), ActionTypeEnum.BASIC_MANUAL);
+                    Action action = actionCacheRepository.findFirstByShopAndTypeAndActive(shopInitiator.getId(), ActionTypeEnum.BASIC_MANUAL, true);
 
                     User buyer = userCacheRepository.findByChatId(shopInitiator.getCurrentConversationShopUserChatId());
                     buyerChatId = buyer.getChatId();

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import ru.skidoz.aop.repo.UserCacheRepository;
 import ru.skidoz.model.entity.category.LanguageEnum;
 import ru.skidoz.model.pojo.side.Shop;
 import ru.skidoz.model.pojo.telegram.*;
@@ -26,6 +27,8 @@ public class SendShopMessage implements Command {
     @Autowired
     private ShopCacheRepository shopCacheRepository;
     @Autowired
+    private UserCacheRepository userCacheRepository;
+    @Autowired
     private InitialLevel initialLevel;
     @Autowired
     private TelegramElementsUtil telegramElementsUtil;
@@ -34,7 +37,7 @@ public class SendShopMessage implements Command {
     public LevelResponse runCommand(Update update, Level shopLevel, User users) throws IOException, WriterException, UnirestException {
 
         Long shopChatId = users.getChatId();
-        Shop shop = shopCacheRepository.findBySellerChatId(shopChatId);
+        Shop shop = shopCacheRepository.findById(userCacheRepository.findByChatId(shopChatId).getSellerShop());
 
         System.out.println();
         System.out.println("++++++++++++++++++++++++++++++++++SendShopMessage+++++++++++++++++++++++++++++++++++++++++");

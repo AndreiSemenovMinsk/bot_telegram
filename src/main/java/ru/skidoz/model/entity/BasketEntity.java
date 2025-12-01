@@ -17,6 +17,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
+@Table(name = "basket")
 public class BasketEntity extends AbstractEntity implements Serializable {
 
     @NotNull

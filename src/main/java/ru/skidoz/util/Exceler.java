@@ -106,12 +106,12 @@ public class Exceler {
 
                     XSSFSheet sheet = workbook.getSheet(sheetName);
 
-                    Shop shop = shopCacheRepository.findByNameAndAdminUser_Id(sheet.getRow(0).getCell(0).getStringCellValue(), userId);
+                    Shop shop = shopCacheRepository.findByNameAndAdminUser(sheet.getRow(0).getCell(0).getStringCellValue(), userId);
 
                     /*if (shop.getId() < 0) {
                         scheduleService.storeNew(shopCacheRepository, shopRepository, shopMapper);
 
-                        shop = shopCacheRepository.findByNameAndAdminUser_Id(sheet.getRow(0).getCell(0).getStringCellValue(), userId.getId());
+                        shop = shopCacheRepository.findByNameAndAdminUser(sheet.getRow(0).getCell(0).getStringCellValue(), userId.getId());
                     }*/
                     XSSFDrawing patriarch = sheet.createDrawingPatriarch();
                     List<XSSFShape> shapes = patriarch.getShapes();
@@ -127,57 +127,85 @@ public class Exceler {
                     List<Category>  categoryList = new ArrayList<>();
 
                     if (rows > 1) {
-                        for (int i = 1; i < rows; i++) {
-                            if (sheet.getRow(i).getCell(1) != null
-                                    && !"".equals(sheet.getRow(i).getCell(1).getStringCellValue())) {
+                        for (int rowI = 1; rowI < rows; rowI++) {
 
+                            final XSSFCell cell_1 = sheet.getRow(rowI).getCell(1);
+
+                            if (cell_1 != null
+                                    && !"".equals(cell_1.getStringCellValue())) {
+
+
+                                final XSSFCell cellArticle = sheet.getRow(rowI).getCell(7);
+                                final XSSFCell cellAlias8 = sheet.getRow(rowI).getCell(8);
+                                final XSSFCell cellAlias9 = sheet.getRow(rowI).getCell(9);
                                 Product product = null;
-                                if (sheet.getRow(i).getCell(7) != null) {
+                                if (cellArticle != null) {
 
-                                    product = productRepository.findByShop_IdAndArticle(shop.getId(), sheet.getRow(i).getCell(7).toString());
+                                    System.out.println("findByShopAndArticle("+shop.getId()+", "+cellArticle.toString()+")");
+
+                                    product = productRepository.findByShopAndArticle(shop.getId(), cellArticle.toString());
                                 }
+
+                                System.out.println("Article product-----" + product);
+
                                 if (product == null) {
 
-                                    if (sheet.getRow(i).getCell(8) != null) {
-                                        product = productRepository.findByShop_IdAndAlias(shop.getId(), sheet.getRow(i).getCell(8).toString());
-                                    } else if (sheet.getRow(i).getCell(9) != null) {
-                                        product = productRepository.findByShop_IdAndAlias(shop.getId(), sheet.getRow(i).getCell(9).toString());
+                                    if (cellAlias8 != null) {
+
+
+                                        System.out.println("8 findByShopAndAlias("+shop.getId()+", "+cellAlias8.toString()+")");
+
+                                        product = productRepository.findByShopAndAlias(shop.getId(), cellAlias8.toString());
+
+                                    } else if (cellAlias9 != null) {
+
+                                        System.out.println("9 findByShopAndAlias("+shop.getId()+", "+cellAlias9.toString()+")");
+
+                                        product = productRepository.findByShopAndAlias(shop.getId(), cellAlias9.toString());
                                     }
                                 }
+
+                                System.out.println("Alias product-----" + product);
+
                                 if (product == null) {
                                     product = new Product ();
                                 }
-                                if (sheet.getRow(i).getCell(7) != null) {
-                                    product.setArticle(sheet.getRow(i).getCell(7).toString());
+                                if (cellArticle != null) {
+                                    product.setArticle(cellArticle.toString());
                                 }
 
-                                if (sheet.getRow(i).getCell(8) != null) {
-                                    product.setAlias(sheet.getRow(i).getCell(8).toString());
-                                } else if (sheet.getRow(i).getCell(9) != null) {
-                                    product.setAlias(sheet.getRow(i).getCell(9).toString());
+                                if (cellAlias8 != null) {
+                                    product.setAlias(cellAlias8.toString());
+                                } else if (cellAlias9 != null) {
+                                    product.setAlias(cellAlias9.toString());
                                 }
 
-                                CategorySuperGroup categorySuperGroup = categorySuperGroupRepository.findByAlias(sheet.getRow(i).getCell(2).getStringCellValue());
+                                CategorySuperGroup categorySuperGroup = categorySuperGroupRepository.findByAlias(sheet.getRow(rowI).getCell(2).getStringCellValue());
 
                                 CategoryGroup categoryGroup = categoryGroupRepository
-                                        .findByAliasAndCategorySuperGroup(sheet.getRow(i).getCell(4).getStringCellValue(), categorySuperGroup.getId());
+                                        .findByAliasAndCategorySuperGroup(sheet.getRow(rowI).getCell(4).getStringCellValue(), categorySuperGroup.getId());
 
                                 Category category = categoryRepository
-                                        .findByAliasAndCategoryGroup(sheet.getRow(i).getCell(6).getStringCellValue(), categoryGroup.getId());
-
+                                        .findByAliasAndCategoryGroup(sheet.getRow(rowI).getCell(6).getStringCellValue(), categoryGroup.getId());
 
                                 product.setCategorySuperGroup(categorySuperGroup.getId());
                                 product.setCategoryGroup(categoryGroup.getId());
                                 product.setCategory(category.getId());
+
+                                System.out.println("categorySuperGroup " + categorySuperGroup.getNameRU()
+                                        + " categoryGroup " + categoryGroup.getNameRU()
+                                        + " category " + category.getNameRU()
+                                + " product.getId " + product.getId()
+                                + " " + product.getNameRU());
 //
 //                        product.addCategorySuperGroup(categorySuperGroup);
 //                        product.addCategoryGroup(categoryGroup);
 //                        product.addCategory(category);
 //
-//                        if (!sheet.getCell(4, i).getContents().equals("")) {
-//                            CatSG categorySuperGroup2 = categorySuperGroupRepository.findByAlias(sheet.getCell(4, i).getContents());
-//                            CatG categoryGroup2 = categoryGroupRepository.findByAliasAndCategorySuperGroup(sheet.getCell(5, i).getContents(), categorySuperGroup2);
-//                            Cat category2 = categoryRepository.findByAliasAndCategoryGroup(sheet.getCell(6, i).getContents(), categoryGroup2);
+//                        if (!sheet.getCell(4, rowI).getContents().equals("")) {
+//                            CatSG categorySuperGroup2 = categorySuperGroupRepository.findByAlias(sheet.getCell(4, rowI).getContents());
+//                            CatG categoryGroup2 = categoryGroupRepository.findByAliasAndCategorySuperGroup(sheet.getCell(5, rowI).getContents(), categorySuperGroup2);
+//                            Cat category2 = categoryRepository.findByAliasAndCategoryGroup(sheet.getCell(6, rowI).getContents(), categoryGroup2);
 //
 //                            System.out.println("2categorySuperGroup" + categorySuperGroup2.getId() + categorySuperGroup2.getName());
 //                            System.out.println("2categoryGroup" + categoryGroup2.getId() + categoryGroup2.getName());
@@ -189,35 +217,38 @@ public class Exceler {
 //                        }
 //
 
-                                if (sheet.getRow(i).getCell(8) != null) {
-                                    product.setAlias(sheet.getRow(i).getCell(8).getStringCellValue());
+                                if (cellAlias8 != null) {
+                                    product.setAlias(cellAlias8.getStringCellValue());
                                 } else {
-                                    product.addName(sheet.getRow(i).getCell(9).getStringCellValue(), language);
+                                    product.addName(cellAlias9.getStringCellValue(), language);
                                 }
-                                product.addName(sheet.getRow(i).getCell(9).getStringCellValue(), language);
-                                product.setShortText(sheet.getRow(i).getCell(10).getStringCellValue());
-                                product.setBigText(sheet.getRow(i).getCell(11).getStringCellValue());
-                                product.setPrice((int) (sheet.getRow(i).getCell(12).getNumericCellValue() * 100));
-                                product.setDiscount((int) (sheet.getRow(i).getCell(13).getNumericCellValue() * 100));
-                                product.setProductService(sheet.getRow(i).getCell(14).getBooleanCellValue());
+
+                                System.out.println("product name+++" + cellAlias9.getStringCellValue());
+
+                                product.addName(cellAlias9.getStringCellValue(), language);
+                                product.setShortText(sheet.getRow(rowI).getCell(10).getStringCellValue());
+                                product.setBigText(sheet.getRow(rowI).getCell(11).getStringCellValue());
+                                product.setPrice((int) (sheet.getRow(rowI).getCell(12).getNumericCellValue() * 100));
+                                product.setDiscount((int) (sheet.getRow(rowI).getCell(13).getNumericCellValue() * 100));
+                                product.setProductService(sheet.getRow(rowI).getCell(14).getBooleanCellValue());
 
 
-                                if (sheet.getRow(i).getCell(15) != null) {
-                                    product.setDuration(((Double) sheet.getRow(i).getCell(15).getNumericCellValue()).longValue() / 4);
+                                if (sheet.getRow(rowI).getCell(15) != null) {
+                                    product.setDuration(((Double) sheet.getRow(rowI).getCell(15).getNumericCellValue()).longValue() / 4);
                                 }
 
                                 int pic = 0;
                                 for (Picture picture : imageByLocations) {
 
                                     ClientAnchor anchor = picture.getClientAnchor();
-                                    if (anchor.getCol1() == 16 && anchor.getRow1() == i) {
+                                    if (anchor.getCol1() == 16 && anchor.getRow1() == rowI) {
                                         product.setImage(imageByLocations.get(pic).getPictureData().getData());
                                         break;
                                     }
                                     pic++;
                                 }
 
-                                product.setShop(shop);
+                                product.setShop(shop.getId());
                                 product.setActive(true);
                                 product.setChatId(user.getChatId());
 //                            productRepository.save(product); 4.12.22
@@ -228,6 +259,7 @@ public class Exceler {
 
                         productList.forEach(product -> {
                             productRepository.save(product);
+                            System.out.println("Product save *****************" + product);
                         });
 
                         //shop.setExcel(excelBA);
@@ -241,11 +273,13 @@ public class Exceler {
                         shopCacheRepository.save(shop);
 
                         int prdI = 0;
-                        for (int i = 1; i < rows; i++) {
+                        for (int rowI = 1; rowI < rows; rowI++) {
 
-                            int columns = sheet.getRow(i).getPhysicalNumberOfCells();
-                            if (sheet.getRow(i).getCell(1) != null
-                                    && !"".equals(sheet.getRow(i).getCell(1).getStringCellValue())) {
+                            final XSSFCell cell_1 = sheet.getRow(rowI).getCell(1);
+
+                            int columns = sheet.getRow(rowI).getPhysicalNumberOfCells();
+                            if (cell_1 != null
+                                    && !"".equals(cell_1.getStringCellValue())) {
 
                                 Product product = productList.get(prdI);
                                 Category category = categoryList.get(prdI);
@@ -260,12 +294,12 @@ public class Exceler {
 
                                 int finalProductId = product.getId();
                                 int j = 17;
-                                XSSFCell cell = sheet.getRow(i).getCell(j);
+                                XSSFCell cell = sheet.getRow(rowI).getCell(j);
 
                                 for (; j < columns - 1
                                         && cell != null
                                         && cell.getCellType().equals(CellType.FORMULA);
-                                     j += 2, cell = sheet.getRow(i).getCell(j)) {
+                                     j += 2, cell = sheet.getRow(rowI).getCell(j)) {
 
                                     cell.setCellType(CellType.STRING);
 
@@ -273,9 +307,9 @@ public class Exceler {
 
                                     if (!"0".equals(filterPointName)) {
 
-                                        String optionValue = sheet.getRow(i).getCell(j + 1).toString();
+                                        String optionValue = sheet.getRow(rowI).getCell(j + 1).toString();
 
-                                        System.out.println("category+++" + category.getId() + "UnitNameRU***--" + filterPointName);
+                                        System.out.println("category+++ " + category.getId() + " UnitNameRU***" + filterPointName);
 
                                         FilterPoint filterPoint = filterPointRepository
                                                 .findByCategoryAndUnitNameRU(category.getId(),/* language,*/ filterPointName);
@@ -288,6 +322,8 @@ public class Exceler {
 
                                                 FilterOption filterOption = filterOptionRepository.findByFilterPointAndName(filterPoint.getId(), optionValue);
 
+                                                System.out.println("filterOption*" + filterOption + "*filterPoint.getId()*" + filterPoint.getId() + "*optionValue*" + optionValue);
+
                                                 if (filterOption != null) {
 
                                                     CategoryFilterProduct categoryFilterProduct = categoryFilterProductRepository.findByFilterPoint_IdAndProduct_Id(filterPoint.getId(), finalProductId);
@@ -296,7 +332,7 @@ public class Exceler {
                                                         categoryFilterProduct = new CategoryFilterProduct(e -> {
                                                             e.setFilterPoint(filterPoint);
                                                             e.setProduct(finalProductId);
-                                                            e.setValue(filterOption.getId().intValue());
+                                                            e.setValue(filterOption.getId());
                                                         });
                                                     }
 
@@ -327,6 +363,13 @@ public class Exceler {
                                                         e.setRawValue(value);
                                                     });
                                                 }
+
+
+                                                System.out.println("categoryFilterProduct*" + categoryFilterProduct
+                                                        + "*filterPoint.getId()*" + filterPoint.getId()
+                                                        + "*finalProductId*" + finalProductId
+                                                        + "*value*" + value);
+
 
                                                 categoryFilterProductRepository.save(categoryFilterProduct);
                                             }

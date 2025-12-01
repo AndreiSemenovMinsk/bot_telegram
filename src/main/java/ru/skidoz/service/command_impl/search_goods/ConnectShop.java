@@ -230,7 +230,7 @@ public class ConnectShop implements Command {
             }
         }
 
-        Action actionDefault = actionCacheRepository.findFirstByShopAndTypeAndActiveIsTrue(shopGetter.getId(), ActionTypeEnum.BASIC_DEFAULT);
+        Action actionDefault = actionCacheRepository.findFirstByShopAndTypeAndActive(shopGetter.getId(), ActionTypeEnum.BASIC_DEFAULT, true);
 
         System.out.println("manualSum+" + manualSum);
 
@@ -383,7 +383,7 @@ public class ConnectShop implements Command {
             System.out.println("4 proposedSum BASIC_MANUAL**********" + sum);
 
 
-            Action actionPartnerBasicDefault = actionCacheRepository.findFirstByShopAndTypeAndActiveIsTrue(partnerShop.getId(), ActionTypeEnum.BASIC_DEFAULT);
+            Action actionPartnerBasicDefault = actionCacheRepository.findFirstByShopAndTypeAndActive(partnerShop.getId(), ActionTypeEnum.BASIC_DEFAULT);
 //            List<Cashback> cashbackPartnerList = cashbackRepository.findAllByUserAndAction(friend, actionPartnerBasicDefault);
 //            BigDecimal sum = cashbackPartnerList.stream().map(cashback -> cashback.getPurchase().getSum()).reduce(BigDecimal.ZERO, BigDecimal::add);
             BigDecimal totalSum = calculator.purchaseSumByUserAndShopAndAction_Type(friend.getId(), partnerShop.getId(), ActionTypeEnum.BASIC_DEFAULT);
@@ -528,7 +528,7 @@ public class ConnectShop implements Command {
 
                     System.out.println("7 proposedSum BASIC_MANUAL**********" + sum);
 
-                    Action actionPartnerBasicDefault = actionCacheRepository.findFirstByShopAndTypeAndActiveIsTrue(shop.getId(), ActionTypeEnum.BASIC_DEFAULT);
+                    Action actionPartnerBasicDefault = actionCacheRepository.findFirstByShopAndTypeAndActive(shop.getId(), ActionTypeEnum.BASIC_DEFAULT);
 
                     BigDecimal totalSum = calculator.purchaseSumByUserAndShopAndAction_Type(friend.getId(), shop.getId(), ActionTypeEnum.BASIC_DEFAULT);
 

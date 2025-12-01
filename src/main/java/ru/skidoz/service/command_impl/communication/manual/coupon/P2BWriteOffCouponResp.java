@@ -67,7 +67,7 @@ public class P2BWriteOffCouponResp implements Command {
         try {
             int proposedNumber = Integer.parseInt(inputText);
             if (proposedNumber > 0) {
-                Shop shopInitiator = shopCacheRepository.findBySellerChatId(shopChatId);
+                Shop shopInitiator = shopCacheRepository.findById(userCacheRepository.findByChatId(shopChatId).getSellerShop());
                 User buyer = userCacheRepository.findByChatId(shopInitiator.getCurrentConversationShopUserChatId());
 //                ActionDTO action = actionRepository.findById(shopInitiator.getCurrentChargeAction());
                 buyerChatId = buyer.getChatId();

@@ -1,5 +1,8 @@
 package ru.skidoz;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static ru.skidoz.model.entity.category.LanguageEnum.RU;
 import static ru.skidoz.service.command.CommandName.ADMIN;
 import static ru.skidoz.service.command.CommandName.ADMIN_SHOPS;
@@ -57,13 +60,18 @@ public class CacheTests extends AbstractIntegrationTest {
         System.out.println(shopUser);
 
         shopUserCacheRepository.save(shopUser);
+        
+        var result = shopUserCacheRepository.findByUserAndShop(
+                user.getId(),
+                shop.getId());
 
-        System.out.println(shopUserCacheRepository.findByUserAndShop(user.getId(), shop.getId()));
+        assertNotNull(result);
+        assertEquals(shop.getId(), result.getShop());
+        assertEquals(user.getId(), result.getUser());
     }
 
     @Test
     void userTest() {
-
         var user = new User(123L, "name");
         userRepository.save(user);
 
@@ -72,27 +80,16 @@ public class CacheTests extends AbstractIntegrationTest {
         level.setCallName( ADMIN_SHOPS.name());
         levelCacheRepository.save(level);
 
-        System.out.println(levelCacheRepository.findFirstByUser_ChatIdAndCallName(user.getChatId(), ADMIN_SHOPS.name()));
-    }
-
-    @Test
-    void adminTest() {
-
-        var user = new User(123L, "name");
-        userRepository.save(user);
-
-        var level = new Level();
-        level.setUserId(user.getId());
-        level.setCallName(ADMIN_SHOPS.name());
-        levelCacheRepository.save(level);
-
-        System.out.println(levelCacheRepository.findFirstByUser_ChatIdAndCallName(
+        var result = levelCacheRepository.findFirstByUser_ChatIdAndCallName(
                 user.getChatId(),
-                ADMIN.name()));
+                ADMIN_SHOPS.name());
+
+        assertNotNull(result);
+        assertEquals(ADMIN_SHOPS.name(), result.getCallName());
+        assertEquals(user.getId(), result.getUserId());
+
+        assertNull(levelCacheRepository.findFirstByUser_ChatIdAndCallName(user.getChatId(), ADMIN.name()));
     }
-
-
-
 
     @Test
     void categoryFilterPointTest() {
@@ -111,7 +108,8 @@ public class CacheTests extends AbstractIntegrationTest {
         FilterPoint foundFilterPoint = filterPointRepository
                 .findByCategoryAndUnitNameRU(category.getId(), "filterPointName");
 
-        System.out.println(foundFilterPoint);
+        assertEquals(category.getId(), foundFilterPoint.getCategoryId());
+        assertEquals("filterPointName", foundFilterPoint.getUnitNameRU());
     }
 
 }

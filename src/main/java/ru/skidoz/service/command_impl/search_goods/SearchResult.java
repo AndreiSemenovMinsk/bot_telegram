@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import ru.skidoz.aop.repo.ProductCacheRepository;
+import ru.skidoz.aop.repo.ShopCacheRepository;
 import ru.skidoz.model.entity.category.LanguageEnum;
 import ru.skidoz.model.pojo.telegram.*;
 import ru.skidoz.aop.repo.BotCacheRepository;
@@ -17,8 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-import static ru.skidoz.model.pojo.telegram.Level.getIdString;
 import static ru.skidoz.service.command.CommandName.SEARCH_RESULT;
+import static ru.skidoz.util.Structures.getIdString;
 
 /**
  * @author andrey.semenov
@@ -32,6 +33,8 @@ public class SearchResult implements Command {
     private ProductCacheRepository productRepository;
     @Autowired
     private UserCacheRepository userCacheRepository;
+    @Autowired
+    private ShopCacheRepository shopCacheRepository;
     @Autowired
     private InitialLevel initialLevel;
 
@@ -63,7 +66,9 @@ public class SearchResult implements Command {
 
                 System.out.println("users.getLanguage()***" + users.getLanguage());
 
-                String description = product.getName(users.getLanguage()) + " " + product.getPrice() + "р. от " + product.getShop().getName();
+                var shop = shopCacheRepository.findById(product.getShop());
+
+                String description = product.getName(users.getLanguage()) + " " + product.getPrice() + "р. от " + shop.getName();
 
                 System.out.println("code*****" + code);
                 System.out.println("product***" + product);
@@ -86,11 +91,11 @@ public class SearchResult implements Command {
                 resultLevel.addRow(row2);
 
                 ButtonRow shopRow = new ButtonRow();
-                Button shopButton = new Button(shopRow, Map.of(LanguageEnum.RU, "Связаться с " + product.getShop().getName()), initialLevel.level_CONNECT_SHOP.getIdString() + product.getShop().getId());
+                Button shopButton = new Button(shopRow, Map.of(LanguageEnum.RU, "Связаться с " + shop.getName()), initialLevel.level_CONNECT_SHOP.getIdString() + product.getShop());
                 shopRow.add(shopButton);
                 resultLevel.addRow(shopRow);
 
-                Bot bot = botCacheRepository.findByShopId(product.getShop().getId());
+                Bot bot = botCacheRepository.findByShopId(product.getShop());
                 if (bot != null) {
                     ButtonRow row3 = new ButtonRow();
                     Button button3 = new Button(row3, Map.of(LanguageEnum.RU, "Перейти к боту магазина " + product.getName(users.getLanguage())), getIdString(bot.getInitialLevel()));

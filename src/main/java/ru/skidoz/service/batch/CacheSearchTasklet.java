@@ -187,20 +187,16 @@ public class CacheSearchTasklet implements Tasklet {
                     List<Product> productDTOs = productCacheRepository.findAllByCategory_IdAndActive(category.getId(), true);
 
                     // где это используется
-                    category.setProductSet(new ArrayList<>(productDTOs));
+//                    category.setProductSet(new ArrayList<>(productDTOs));
 
 //                    System.out.println("category.getId()--------- " + category.getId());
-
 //                    filterPointRepository.findAllByCategory_Id(category.getId()).forEach(e -> System.out.println("filterPoint***" + e.getId()));
-
-//                    System.out.println(category + " *-*-*-*-*-* " + category.getId() + " " + productDTOs.size());
+//                    System.out.println(category.getNameRU() + "* category*-*-*-*-*-* " + category.getId() + " " + productDTOs.size());
 
                     List<FilterPoint>  filterPointDTOS = filterPointRepository.findAllByCategory_Id(category.getId());
                                                                                 //getParentCategoryId
-
                     // где это используется
                     category.setFilterPointList(filterPointDTOS);
-
 
                     Set<Integer> categoryProductIds = new HashSet<>(productDTOs.size());
 
@@ -231,7 +227,7 @@ public class CacheSearchTasklet implements Tasklet {
                                         .get(filterPoint.getId())
                                         .put(categoryFilterProduct.getHashCode(), categoryFilterProduct.getProduct());
                             } else {
-                                System.out.println("filterPoint " + filterPoint.getId() + "@@@@@@@@@ product" + product.getId());
+                                System.out.println("filterPoint *" + filterPoint.getId() + "* @@@@@@@@@ product " + product.getId());
                                 System.out.println(filterPoint.getNameRU() + "*-*-*" + filterPoint.getUnitNameRU() + "----------" + product.getNameRU());
                             }
 

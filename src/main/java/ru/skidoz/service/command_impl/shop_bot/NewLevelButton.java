@@ -29,7 +29,7 @@ public class NewLevelButton implements Command {
     @Autowired
     private LevelCacheRepository levelCacheRepository;
     @Autowired
-    private ShopBots shopBots;
+    private EditBot editBot;
     @Autowired
     private InitialLevel initialLevel;
 
@@ -55,7 +55,7 @@ public class NewLevelButton implements Command {
         newLevel.setParentLevelId(users.getCurrentLevelBeforeConfigId());
         newLevel.setCallName(changingLevel.getCallName() + (int) (Math.random()*1000));
         newLevel.setBotLevel(true);
-        Bot bot = botCacheRepository.findById(users.getCurrentChangingBot());
+        Bot bot = botCacheRepository.findByShopId(users.getCurrentAdminShop());
         newLevel.setBot(bot.getId());
         newLevel.setChatId(chatId);
         levelCacheRepository.save(newLevel);
@@ -84,7 +84,7 @@ public class NewLevelButton implements Command {
         return new LevelResponse(Collections.singletonList(new LevelChat(e -> {
             e.setChatId(chatId);
             e.setUser(users);
-            e.setLevel(shopBots.showEditInterface(resultLevel, users.getLanguage()));
+            e.setLevel(editBot.showEditInterface(resultLevel, users.getLanguage()));
         })), null, null);
     }
 }

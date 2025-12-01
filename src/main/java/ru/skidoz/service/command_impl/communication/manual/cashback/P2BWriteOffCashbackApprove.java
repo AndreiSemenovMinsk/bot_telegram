@@ -42,6 +42,8 @@ public class P2BWriteOffCashbackApprove implements Command {
     @Autowired
     private ShopCacheRepository shopCacheRepository;
     @Autowired
+    private UserCacheRepository userCacheRepository;
+    @Autowired
     private PartnerGroupCacheRepository partnerGroupCacheRepository;
     @Autowired
     private ShopGroupCacheRepository shopGroupCacheRepository;
@@ -85,7 +87,7 @@ public class P2BWriteOffCashbackApprove implements Command {
 
             List<Cashback> cashbackBasicDefaultList = new ArrayList<>();//cashbackRepository.findAllByUserAndShopAndAction_Type(friend, shopGetter, ActionTypeEnum.BASIC_DEFAULT);
             List<Cashback> cashbackManualList = new ArrayList<>();//cashbackRepository.findAllByUserAndShopAndAction_Type(friend, shopGetter, ActionTypeEnum.BASIC_MANUAL);
-            Shop shopInitial = shopCacheRepository.findBySellerChatId(shopChatId);
+            Shop shopInitial = shopCacheRepository.findById(userCacheRepository.findByChatId(shopChatId).getSellerShop());
 
 
             List<Cashback> cashbackList = cashbackCacheRepository.findAllByUser_IdAndShop_Id(users.getId(), shopInitial.getId());
@@ -140,7 +142,7 @@ public class P2BWriteOffCashbackApprove implements Command {
 
                 System.out.println("sumBasicDefault********" + sumBasicDefault);
 
-                Action actionDefault = actionCacheRepository.findFirstByShopAndTypeAndActiveIsTrue(shopInitial.getId(), ActionTypeEnum.BASIC_DEFAULT);
+                Action actionDefault = actionCacheRepository.findFirstByShopAndTypeAndActive(shopInitial.getId(), ActionTypeEnum.BASIC_DEFAULT, true);
                 int rateDefault = getRate(
                         sumBasicDefault,
                         actionDefault.getLevelSumList(),

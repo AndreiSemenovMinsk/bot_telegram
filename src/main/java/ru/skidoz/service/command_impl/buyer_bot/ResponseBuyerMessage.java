@@ -32,7 +32,7 @@ public class ResponseBuyerMessage implements Command {
     public LevelResponse runCommand(Update update, Level shopLevel, User users) throws IOException, WriterException {
 
         Long shopChatId = users.getChatId();
-        Shop shop = shopCacheRepository.findBySellerChatId(shopChatId);
+        Shop shop = shopCacheRepository.findById(userCacheRepository.findByChatId(shopChatId).getSellerShop());
 
         System.out.println();
         System.out.println("++++++++++++++++++++++++++++++++++ResponseBuyerMessage+++++++++++++++++++++++++++++++++++++++++");

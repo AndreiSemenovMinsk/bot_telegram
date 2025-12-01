@@ -23,10 +23,9 @@ public class EditMessage implements Command {
     @Autowired
     private LevelCacheRepository levelCacheRepository;
     @Autowired
-    private ShopBots shopBots;
+    private EditBot editBot;
     @Autowired
     private InitialLevel initialLevel;
-
 
 
     @Override
@@ -54,7 +53,8 @@ public class EditMessage implements Command {
         message.setText(language, inputText);
         messageCacheRepository.save(message);
 
-        LevelDTOWrapper resultLevel = shopBots.showEditInterface(initialLevel.convertToLevel(levelCacheRepository.findById(users.getCurrentLevelBeforeConfigId()),
+        LevelDTOWrapper resultLevel = editBot.showEditInterface(
+                initialLevel.convertToLevel(levelCacheRepository.findById(users.getCurrentLevelBeforeConfigId()),
                 true,
                 true),
                 language);

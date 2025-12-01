@@ -35,6 +35,7 @@ import static ru.skidoz.service.command.CommandName.COUPON_NUMBER;
 import static ru.skidoz.service.command.CommandName.COUPON_RATE_WITHDRAW;
 import static ru.skidoz.service.command.CommandName.DISCARD_NEW_GRUPP;
 import static ru.skidoz.service.command.CommandName.DISCARD_NEW_PARTNER;
+import static ru.skidoz.service.command.CommandName.EDIT_BOT;
 import static ru.skidoz.service.command.CommandName.EDIT_BUTTON_NAME;
 import static ru.skidoz.service.command.CommandName.EDIT_MESSAGE;
 import static ru.skidoz.service.command.CommandName.GEOMAP;
@@ -115,7 +116,7 @@ public class AdminLevelInitializer {
     @Autowired
     private InitialLevel initialLevel;
 
-    private static final String MANAGEMENT_FILE = "Book.xlsx";
+    private static final String PHOTO_FILE = "config/photo.jpg";
 
     public void initLevels() {
 
@@ -636,9 +637,37 @@ public class AdminLevelInitializer {
                 initialLevel.level_SHOP_BOTS.updateLevel(Users, SHOP_BOTS.name(), initialLevel.level_ADMIN_ADMIN, false);
 
                 levelRepository.cache(initialLevel.level_SHOP_BOTS);
-                Message message52_12 = new Message(initialLevel.level_SHOP_BOTS, Map.of(RU, "Мои боты: "));
+                Message message52_12 = new Message(initialLevel.level_SHOP_BOTS, Map.of(RU, "Бот: "));
                 messageRepository.cache(message52_12);
                 initialLevel.level_SHOP_BOTS.addMessage(message52_12);
+
+                ButtonRow row0_11_0 = new ButtonRow(initialLevel.level_SHOP_BOTS);
+                buttonRowRepository.cache(row0_11_0);
+                Button button0_11_0 = new Button(row0_11_0, Map.of(RU, "Редактировать"), initialLevel.level_EDIT_BOT.getIdString());
+                buttonRepository.cache(button0_11_0);
+
+                ButtonRow row0_11_1 = new ButtonRow(initialLevel.level_SHOP_BOTS);
+                buttonRowRepository.cache(row0_11_1);
+                Button button0_11_1 = new Button(row0_11_1, Map.of(RU, "Просмотр бота"), initialLevel.level_LOOK_BOT.getIdString());
+                buttonRepository.cache(button0_11_1);
+
+                ButtonRow row0_11_2 = new ButtonRow(initialLevel.level_SHOP_BOTS);
+                buttonRowRepository.cache(row0_11_2);
+                Button button0_11_2 = new Button(row0_11_2, Map.of(RU, "Выбрать другой шаблон бота"), initialLevel.level_ADD_BOT.getIdString());
+                buttonRepository.cache(button0_11_2);
+
+
+                initialLevel.level_EDIT_BOT.updateLevel(Users, EDIT_BOT.name(), initialLevel.level_SHOP_BOTS, false);
+
+                levelRepository.cache(initialLevel.level_EDIT_BOT);
+
+
+
+                initialLevel.level_LOOK_BOT.updateLevel(Users, EDIT_BOT.name(), initialLevel.level_SHOP_BOTS, false);
+
+                levelRepository.cache(initialLevel.level_LOOK_BOT);
+
+
 
 
                 //ЗДЕСЬ ВЫХОДИТ СПИСОК БОТОВ
@@ -743,7 +772,7 @@ public class AdminLevelInitializer {
                 initialLevel.level_ADD_BOT.addRow(row16_0);
                 Button button16_0_0 = new Button(row16_0, Map.of(RU, "Такси бот"), initialLevel.level_ADD_TAXI_BOT.getIdString());
                 buttonRepository.cache(button16_0_0);
-                row16_0.add(button16_0_0);
+//                row16_0.add(button16_0_0);
 
 //                Button button16_0_01 = new Button(row16_0, "Выбрать шаблон и перейти к редактированию", initialLevel.level_ADD_TAXI_BOT.getIdString());
 //                buttonRepository.cache(button16_0_01);
@@ -771,20 +800,11 @@ public class AdminLevelInitializer {
                 messageRepository.cache(message17_1);
                 initialLevel.level_ADD_TAXI_BOT.addMessage(message17_1);
                 Message message17_2 = new Message(initialLevel.level_ADD_TAXI_BOT, 1, null,
-                        IOUtils.toByteArray(getClass().getClassLoader().getResourceAsStream(MANAGEMENT_FILE)),
+                        IOUtils.toByteArray(getClass().getClassLoader().getResourceAsStream(PHOTO_FILE)),
                         "как отправить геолокацию");
                 messageRepository.cache(message17_2);
                 initialLevel.level_ADD_TAXI_BOT.addMessage(message17_2);
-//                        ButtonRow row17_0 = new ArrayList<>();
-//                        Button button17_0_0 = new Button(level17, "Такси бот", TAXI_BOT.name());
-//                        buttonRepository.cache(button17_0_0);
-//                        row17_0.add(button17_0_0);
-//                        level17.addRow(row17_0);
-//                        ButtonRow row17_1 = new ArrayList<>();
-//                        Button button17_1_0 = new Button(level17, "Вернуться к выбору шаблона", ADD_BOT.name());
-//                        buttonRepository.cache(button17_1_0);
-//                        row17_1.add(button17_1_0);
-//                        level17.addRow(row17_1);
+
 
                 initialLevel.level_TAXI_LOCATION.updateLevel(Users, TAXI_LOCATION.name(), initialLevel.level_ADD_TAXI_BOT, true, false, true);
 

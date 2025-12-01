@@ -20,11 +20,15 @@ public class Bot extends AbstractDTO implements Serializable {
     @NotNull
     private Integer shop;
 
+    private Integer botType;
+
     private List<BuyerBot> buyerBotList = new ArrayList<>();
 
 //    private List<User> currentChangingBotUsersList = new ArrayList<>();
 
     private Integer initialLevel;
+
+    private boolean isEdited = false;
 
     //private List<Level> levelList;
 
@@ -41,7 +45,7 @@ public class Bot extends AbstractDTO implements Serializable {
     public String toString() {
         return "Bot{" +
                 "id=" + getId() +
-                //", buyerBotList=" + buyerBotList +
+                ", isEdited=" + isEdited +
                 ", initialLevel=" + initialLevel +
                 //", levelList=" + levelList +
                 '}';

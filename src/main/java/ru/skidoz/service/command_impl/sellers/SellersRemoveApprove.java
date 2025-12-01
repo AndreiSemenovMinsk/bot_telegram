@@ -48,8 +48,10 @@ public class SellersRemoveApprove implements Command {
         Shop shopInitiator = shopCacheRepository.findByChatId(chatId);
         User usersCurrentConversation = userCacheRepository.findByChatId(Structures.parseLong(code));
 
-        shopInitiator.getSellerSet().remove(usersCurrentConversation);
-        shopCacheRepository.save(shopInitiator);
+        usersCurrentConversation.setSellerShop(null);
+        userCacheRepository.save(usersCurrentConversation);
+//        shopInitiator.getSellerSet().remove(usersCurrentConversation);
+//        shopCacheRepository.save(shopInitiator);
 
         return new LevelResponse(Collections.singletonList(new LevelChat(e -> {
             e.setChatId(chatId);

@@ -50,8 +50,11 @@ public class SellersAddApprove implements Command {
         Long/*UsersDTO*/ usersCurrentConversation = Structures.parseLong(code);//userCacheRepository.findByChatId(Structures.parseLong(code));
 
 
-        shopInitiator.getSellerSet().add(userCacheRepository.findByChatId(usersCurrentConversation).getId());
-        shopCacheRepository.save(shopInitiator);
+        User newSeller = userCacheRepository.findByChatId(usersCurrentConversation);
+        newSeller.setSellerShop(shopInitiator.getId());
+        userCacheRepository.save(newSeller);
+//        shopInitiator.getSellerSet().add(userCacheRepository.findByChatId(usersCurrentConversation).getId());
+//        shopCacheRepository.save(shopInitiator);
 
         return new LevelResponse(Collections.singletonList(new LevelChat(e -> {
             e.setChatId(chatId);

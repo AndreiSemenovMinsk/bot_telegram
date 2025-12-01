@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
 
+import jakarta.persistence.Table;
 import ru.skidoz.model.entity.telegram.UserEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
@@ -16,6 +17,7 @@ import lombok.Data;
 //@EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
+@Table(name = "buyer_bot")
 public class BuyerBotEntity extends AbstractEntity  implements Serializable {
 
     @NotNull

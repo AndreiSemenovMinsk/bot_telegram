@@ -13,6 +13,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
+@Table(name = "schedule_buyer")
 public class ScheduleBuyerEntity extends AbstractEntity  implements Serializable {
 
     @NotNull

@@ -32,20 +32,20 @@ public interface ShopRepository extends JpaRepository<ShopEntity, Integer> {
     ShopEntity findBySecretHash(String secretHash);
 
     //используется для myShopsAll-> Adder.addShop
-    //List<Shop> findAllBySellerIdAndActiveIsTrue(Integer buyerId);
+    //List<Shop> findAllBySellerIdAndActive(Integer buyerId);
     @Query(value = "SELECT distinct shp FROM ShopEntity shp JOIN shp.sellerSet sellers WHERE sellers.id = :userId AND shp.active = true")
-    List<ShopEntity> findAllBySellerIdAndActiveIsTrue(@Param("userId") Integer userId);
+    List<ShopEntity> findAllBySellerIdAndActive(@Param("userId") Integer userId);
 
 //    List<Shop> findAllByAdminUserAndActiveIsTrue(User user);
 
-    List<ShopEntity> findAllByActiveIsTrue();
+    List<ShopEntity> findAllByActive(boolean active);
 
     @Modifying
     @Query(value = "UPDATE shop SET id_shop=temp_id_shop WHERE secretHash = :secretHash",
             nativeQuery = true)
     void validateShop(@Param("secretHash") String secretHash);
 
-    List<ShopEntity> findAllByNameLikeAndActiveIsTrue(String nameLike);
+    List<ShopEntity> findAllByNameLikeAndActive(String nameLike, boolean active);
 
     ShopEntity findByNameAndAdminUser_Id(String name, Integer userId);
 

@@ -56,7 +56,7 @@ public class AddBookmark implements Command {
             Bookmark newBookmark = new Bookmark(e -> {
                 e.setRadius(50);
                 e.setProduct(product.getId());
-                e.setShop(product.getShop().getId());
+                e.setShop(product.getShop());
                 e.setUser(users.getId());
                 e.setViberNotify(false);
             });

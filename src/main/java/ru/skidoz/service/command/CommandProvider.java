@@ -78,11 +78,15 @@ public class CommandProvider {
     @Autowired
     private ShopBots shopBots;
     @Autowired
+    private EditBot editBot;
+    @Autowired
+    private LookBot lookBot;
+    @Autowired
     private ResponseBuyerMessage responseBuyerMessage;
     @Autowired
     private AddButton addButton;
-    /*@Autowired
-    private AddTaxiBot addTaxiBot;*/
+    @Autowired
+    private AddBot addBot;
     @Autowired
     private Connect connect;
     @Autowired
@@ -235,6 +239,8 @@ public class CommandProvider {
         commands.put(CommandName.CASHBACKS.name(), cashbacks);
         commands.put(CommandName.MY_SHOPS.name(), myShops);
         commands.put(CommandName.SHOP_BOTS.name(), shopBots);
+        commands.put(CommandName.EDIT_BOT.name(), editBot);
+        commands.put(CommandName.LOOK_BOT.name(), lookBot);
         commands.put(CommandName.RESPONSE_BUYER_MESSAGE.name(), responseBuyerMessage);
         commands.put(CommandName.CONNECT.name(), connect);
 
@@ -245,7 +251,7 @@ public class CommandProvider {
         commands.put(CommandName.CONNECT_SHOP.name(), connectShop);
 
         commands.put(CommandName.ADD_BUTTON.name(), addButton);
-        //commands.put(CommandName.ADD_TAXI_BOT, addTaxiBot);
+        commands.put(CommandName.ADD_BOT.name(), addBot);
 
         commands.put(CommandName.EDIT_BUTTON_NAME.name(), editButtonName);
         commands.put(CommandName.EDIT_MESSAGE.name(), editMessage);

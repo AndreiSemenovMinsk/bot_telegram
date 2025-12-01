@@ -17,4 +17,5 @@ public interface FilterPointCacheRepository extends JpaRepositoryTest<FilterPoin
 
     List<FilterPoint> findAllByCategory_Id(Integer  categoryId);
 
+    List<FilterPoint> findAll();
 }

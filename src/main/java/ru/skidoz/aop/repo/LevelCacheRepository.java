@@ -18,9 +18,9 @@ public interface LevelCacheRepository extends JpaRepositoryTest<Level, Integer> 
 
     Level findByParentLevelIdAndCallName(Integer parentLevelId, String callName);
 
-    Level getChildLevel(Integer parentLevelId, String callName);
+    Level findByParentLevelAndCallName(Integer parentLevelId, String callName);
 
-    Level getChildLevel(Integer parentLevelId, Integer levelId);
+//    Level findByParentLevelAndCallName(Integer parentLevelId, Integer levelId);
 
     List<Level> findAllByParentLevelId(Integer parentLevelId);
 }

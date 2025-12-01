@@ -99,7 +99,6 @@ public class UserEntity extends AbstractEntity {
     private String role;
 
     private Integer refreshCounter;
-    private Integer currentConversationShopId;
 
     @OneToMany(mappedBy="buyer")
     private List<RecommendationEntity> givenRecommendationList = new ArrayList<>();

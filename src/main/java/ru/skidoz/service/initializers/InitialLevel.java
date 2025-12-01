@@ -4,6 +4,7 @@ package ru.skidoz.service.initializers;
 import static ru.skidoz.model.entity.category.LanguageEnum.RU;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import ru.skidoz.aop.repo.ButtonCacheRepository;
@@ -21,6 +22,7 @@ import ru.skidoz.model.pojo.telegram.Level;
 import ru.skidoz.model.pojo.telegram.LevelDTOWrapper;
 import ru.skidoz.model.pojo.telegram.Message;
 import ru.skidoz.model.pojo.telegram.User;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -66,6 +68,8 @@ public class InitialLevel {
     public Level level_MONITOR_RESP;
     public Level level_GOODS_LIST;
     public Level level_SHOP_BOTS;
+    public Level level_EDIT_BOT;
+    public Level level_LOOK_BOT;
     public Level level_PARTNERS;
     public Level level_ADD_SHOP_TO_SHOP_GROUP;
     public Level level_VOTE_ADD_SHOP_GROUP;
@@ -193,7 +197,7 @@ public class InitialLevel {
     public Level level_NEW_LEVEL_END_BUTTON;
     public Level level_NEW_LEVEL_INPUT_BUTTON;
     public Level level_NEW_LEVEL_BUTTON;
-    
+
     public void initLevels() {
 
         level_INITIALIZE222 = levelRepository.cache(new Level());
@@ -212,6 +216,8 @@ public class InitialLevel {
         level_MONITOR_RESP = levelRepository.cache(new Level());
         level_GOODS_LIST = levelRepository.cache(new Level());
         level_SHOP_BOTS = levelRepository.cache(new Level());
+        level_EDIT_BOT = levelRepository.cache(new Level());
+        level_LOOK_BOT = levelRepository.cache(new Level());
         level_PARTNERS = levelRepository.cache(new Level());
         level_ADD_SHOP_TO_SHOP_GROUP = levelRepository.cache(new Level());
         level_VOTE_ADD_SHOP_GROUP = levelRepository.cache(new Level());
@@ -369,7 +375,10 @@ public class InitialLevel {
         //level.setButtonRows(buttonRowList);
     }
 
-    public LevelDTOWrapper convertToLevel(Level level, boolean retrieveMessages, boolean retrieveButtonRows) {
+    public LevelDTOWrapper convertToLevel(
+            Level level,
+            boolean retrieveMessages,
+            boolean retrieveButtonRows) {
         return new LevelDTOWrapper(e -> {
             e.setLevel(level);
             if (retrieveMessages) {
@@ -381,7 +390,10 @@ public class InitialLevel {
         });
     }
 
-    public LevelDTOWrapper convertToLevel(Integer levelId, boolean retrieveMessages, boolean retrieveButtonRows) {
+    public LevelDTOWrapper convertToLevel(
+            Integer levelId,
+            boolean retrieveMessages,
+            boolean retrieveButtonRows) {
 
         Level level = levelRepository.findById(levelId);
         return new LevelDTOWrapper(e -> {
@@ -401,21 +413,27 @@ public class InitialLevel {
     }
 
 
+
     public Level cloneLevel(Level oldLevel, User users, boolean copyButtons, boolean copyMessages) {
 
+        return cloneLevel(oldLevel, oldLevel.getId(), users, copyButtons, copyMessages);
+    }
+
+
+    private Level cloneLevel(Level oldLevel, Integer setNewParentLevelId, User users, boolean copyButtons, boolean copyMessages) {
         Level newLevel = new Level();
         newLevel.setUserId(users.getId());
         newLevel.setCallName(oldLevel.getCallName());
         newLevel.setSourceIsMessage(oldLevel.isSourceIsMessage());
-        newLevel.setParentLevelId(oldLevel.getParentLevelId());
+        newLevel.setParentLevelId(setNewParentLevelId);
         newLevel.setBotLevel(oldLevel.isBotLevel());
         newLevel.setTerminateBotLevel(oldLevel.isTerminateBotLevel());
         newLevel.setChatId(users.getChatId());
 
-        levelRepository.cache(newLevel);
+        levelRepository.save(newLevel);
 
         if (copyMessages) {
-            newLevel.setMessages(retrieveMessages(oldLevel).parallelStream().map(oldMessage -> {
+            newLevel.setMessages(retrieveMessages(oldLevel).stream().map(oldMessage -> {
                 Message newMessage = new Message(
                         newLevel,
                         oldMessage.getLevelID(),
@@ -427,44 +445,61 @@ public class InitialLevel {
                         oldMessage.getLongitude(),
                         oldMessage.getLatitude());
 
+                System.out.println("newMessage-----" + newMessage);
+
                 messageRepository.cache(newMessage);
                 return newMessage;
             }).collect(Collectors.toList()));
         }
-        //newLevel.childLevels = new ArrayList<>(childLevels);
+        //newLevel.childLevelsOld = new ArrayList<>(childLevelsOld);
         System.out.println("copyButtons***" + copyButtons);
 
         if (copyButtons) {
-            newLevel.setButtonRows(retrieveButtonRows(oldLevel).parallelStream().map(oldButtonRow -> {
+            newLevel.setButtonRows(retrieveButtonRows(oldLevel)
+                    .stream()
+                    .map(oldButtonRow -> {
 
-                ButtonRow newButtonRow = new ButtonRow(newLevel);
-                buttonRowRepository.cache(newButtonRow);
+                        ButtonRow newButtonRow = new ButtonRow(newLevel);
+                        buttonRowRepository.cache(newButtonRow);
 
-                System.out.println("oldButtonRow**" + oldButtonRow.getId() + "   at level " + newLevel);
-
-//                List<Button> buttonList =
                         oldButtonRow.getButtonList().forEach(oldButton -> {
-                    try {
-//                        System.out.println("oldButton**" + oldButton.getId() + "+++++callback-" + oldButton.getCallback());
+                            try {
+                                Button newButton = oldButton.clone(newButtonRow);
 
-                        Button newButton = oldButton.clone(newButtonRow);
+                                System.out.println("newButton-----" + newButton);
 
-//                        System.out.println("newButton**" + oldButton.getId() + "+++++callback-" + oldButton.getCallback());
-//
-                        buttonRepository.cache(newButton);
-                        //return newButton;
-                    } catch (CloneNotSupportedException e) {
-                        e.printStackTrace();
-                    }
-                    //return oldButton;
-                });
+                                buttonRepository.cache(newButton);
+                            } catch (CloneNotSupportedException e) {
+                                e.printStackTrace();
+                            }
+                        });
 
-                        //.collect(Collectors.toList());
-
-                return newButtonRow;
-            }).collect(Collectors.toList()));
+                        return newButtonRow;
+                    })
+                    .collect(Collectors.toList()));
         }
-        levelRepository.cache(newLevel);
+        levelRepository.save(newLevel);
+
+        List<Level> childLevelsOld = levelRepository.findAllByParentLevelId(oldLevel.getId());
+
+        System.out.println("oldLevel.getId()**" + oldLevel.getId() + " childLevelsOld+++" + childLevelsOld.size());
+
+        for (Level childLevelOld : childLevelsOld) {
+
+            System.out.println("childLevelOld***" + childLevelOld);
+
+            int newLevelId = newLevel.getId();
+
+            System.out.println(childLevelOld.getId() + "***" + newLevelId);
+
+            // проверка для первого уровня
+            if (childLevelOld.getId() != newLevelId) {
+                cloneLevel(childLevelOld, newLevelId, users, copyButtons, copyMessages);
+            }
+        }
+
+        levelRepository.save(newLevel);
+
         return newLevel;
     }
 }

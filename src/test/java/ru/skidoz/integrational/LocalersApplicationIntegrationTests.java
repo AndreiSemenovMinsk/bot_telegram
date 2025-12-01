@@ -1,5 +1,8 @@
 package ru.skidoz.integrational;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import ru.skidoz.aop.CacheAspect;
 import ru.skidoz.aop.repo.ActionCacheRepository;
 import ru.skidoz.aop.repo.CashbackCacheRepository;
@@ -59,15 +62,15 @@ class LocalersApplicationIntegrationTests extends AbstractIntegrationTest {
         actionId = action.getId();
 
         long start = System.currentTimeMillis();
-        for (int i = 0; i < 100; i++) {
-            var p1 = new User();
-            p1.setName("N" + i);
-            p1.setChatId((long) i);
-            userRepository.save(p1);
+        for (int i = 0; i < 1; i++) {
+            var user = new User();
+            user.setName("N" + i);
+            user.setChatId((long) i);
+            userRepository.save(user);
 
-            for (int j = 0; j < 10; j++) {
+            for (int j = 0; j < 1; j++) {
                 var c1 = new Cashback();
-                c1.setUser(p1.getId());
+                c1.setUser(user.getId());
                 c1.setRadius(100);
                 c1.setShop(shopId);
                 c1.setAction(action.getId());
@@ -79,28 +82,36 @@ class LocalersApplicationIntegrationTests extends AbstractIntegrationTest {
 
     @Test
     void small() {
-        final User user = userRepository.findByChatId(1L);
-        System.out.println("@@@" + user);
+        final User user = userRepository.findByChatId(0L);
+        assertNotNull(user);
+        assertEquals(0L, user.getChatId());
 
         var cb1 = cashbackRepository.findAllByUserId(user.getId());
-        System.out.println(cb1);
+        assertNotNull(cb1);
+        assertEquals(1, cb1.size());
+        assertEquals(user.getId(), cb1.get(0).getUser());
 
-        System.out.println("BASIC-*-*-*-*-*-*-0 " +
-                cashbackRepository
-                        .findAllByShopAndUserAndAction_Type(shopId, user.getId(), ActionTypeEnum.BASIC));
+        var basicActionCashback = cashbackRepository
+                        .findAllByShopAndUserAndAction_Type(shopId, user.getId(), ActionTypeEnum.BASIC);
+
+        assertNotNull(basicActionCashback);
+        assertEquals(1, basicActionCashback.size());
+        assertEquals(shopId, basicActionCashback.get(0).getShop());
+        assertEquals(user.getId(), basicActionCashback.get(0).getUser());
+        assertEquals(actionId, basicActionCashback.get(0).getAction());
 
         final Action action = actionRepository.findById(actionId);
-        System.out.println("@@@" + action);
         action.setType(ActionTypeEnum.COUPON);
         actionRepository.save(action);
 
-        System.out.println("BASIC-*-*-*-*-*-*-1 " +
-                cashbackRepository
-                        .findAllByShopAndUserAndAction_Type(shopId, user.getId(), ActionTypeEnum.BASIC));
+        var couponActionCashback = cashbackRepository
+                .findAllByShopAndUserAndAction_Type(shopId, user.getId(), ActionTypeEnum.COUPON);
 
-        System.out.println("COUPON-*-*-*-*-*-*-0 " +
-                cashbackRepository
-                        .findAllByShopAndUserAndAction_Type(shopId, user.getId(), ActionTypeEnum.COUPON));
+        assertNotNull(couponActionCashback);
+        assertEquals(1, couponActionCashback.size());
+        assertEquals(shopId, couponActionCashback.get(0).getShop());
+        assertEquals(user.getId(), couponActionCashback.get(0).getUser());
+        assertEquals(action.getId(), couponActionCashback.get(0).getAction());
     }
 
     @Test

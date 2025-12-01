@@ -1,5 +1,6 @@
 package ru.skidoz.repository;
 
+import java.util.List;
 import java.util.Set;
 
 import ru.skidoz.model.entity.NameWordEntity;
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Repository;
 public interface NameWordProductRepository extends JpaRepository<NameWordProductEntity, Integer> {
 
 
-    Set<NameWordProductEntity> findByNameWord(NameWordEntity nameWord);
+    List<NameWordProductEntity> findByNameWord_Id(Integer nameWordId);
 
     NameWordProductEntity save(NameWordProductEntity nameWordProduct);
 }

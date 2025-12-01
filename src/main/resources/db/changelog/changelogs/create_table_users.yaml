@@ -102,33 +102,33 @@ databaseChangeLog:
                   name: viber_last
                   type: varchar(255)
               - column:
-                  name: current_changing_bot_id
+                  name: current_changing_bot
                   type: int(11)
 #                  constraints:
 #                    nullable: true
 #                    foreignKeyName: fk_current_changing_bot_id
 #                    references: bot(id)
               - column:
-                  name: current_changing_button_id
+                  name: current_changing_button
                   type: int(11)
 #                  constraints:
 #                    nullable: true
 #                    foreignKeyName: fk_current_changing_button_id
 #                    references: button(id)
               - column:
-                  name: current_changing_message_id
+                  name: current_changing_message
                   type: int(11)
 #                  constraints:
 #                    nullable: true
 #                    foreignKeyName: fk_current_changing_message_id
 #                    references: message(id)
               - column:
-                  name: current_level_before_interruption_id
+                  name: current_level_before_interruption
                   type: int(11)
-                  constraints:
-                    nullable: true
-                    foreignKeyName: fk_current_level_before_interruption_id
-                    references: level(id)
+#                  constraints:
+#                    nullable: true
+#                    foreignKeyName: fk_current_level_before_interruption_id
+#                    references: level(id)
               - column:
                   name: seller_shop_id
                   type: int(11)
@@ -136,6 +136,10 @@ databaseChangeLog:
                     nullable: true
                     foreignKeyName: fk_seller_shop_id
                     references: users(id)
+
+              - column:
+                  name: refresh_counter
+                  type: int(11)
             tableName: users
         - createIndex:
             #            clustered:  true

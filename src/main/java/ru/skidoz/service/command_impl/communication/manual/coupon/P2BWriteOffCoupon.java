@@ -57,14 +57,17 @@ public class P2BWriteOffCoupon implements Command {
         Long shopChatId = users.getChatId();
 
         try {
-            Shop shopInitiator = shopCacheRepository.findBySellerChatId(shopChatId);
+            Shop shopInitiator = shopCacheRepository.findById(userRepository.findByChatId(shopChatId).getSellerShop());
 
             resultLevel = initialLevel.convertToLevel(initialLevel.level_P2B_WRITEOFF_COUPON_SELECT_ACTION,
                     false,
                     false);
 
-            List<Action> actionCouponList = actionRepository.findAllByShopAndTypeAndActiveIsTrue(shopInitiator.getId(), ActionTypeEnum.COUPON);
-            Action actionCouponDefault = actionRepository.findFirstByShopAndTypeAndActiveIsTrue(shopInitiator.getId(), ActionTypeEnum.COUPON_DEFAULT);
+            List<Action> actionCouponList = actionRepository
+                    .findAllByShopAndTypeAndActive(shopInitiator.getId(), ActionTypeEnum.COUPON, true);
+
+            Action actionCouponDefault = actionRepository
+                    .findFirstByShopAndTypeAndActive(shopInitiator.getId(), ActionTypeEnum.COUPON_DEFAULT, true);
             actionCouponList.add(actionCouponDefault);
 
             for (Action action : actionCouponList) {

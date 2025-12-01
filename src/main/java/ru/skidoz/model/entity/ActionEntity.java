@@ -13,6 +13,7 @@ import lombok.Data;
 //@EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
+@Table(name = "action")
 public class ActionEntity extends AbstractEntity implements Serializable {
 
     @NotNull

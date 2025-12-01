@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+import ru.skidoz.aop.repo.BotTypeCacheRepository;
 import ru.skidoz.aop.repo.CashbackCacheRepository;
 import ru.skidoz.aop.repo.LevelCacheRepository;
 import ru.skidoz.aop.repo.ScheduleBuyerCacheRepository;
@@ -22,6 +23,7 @@ import ru.skidoz.model.pojo.side.Basket;
 import ru.skidoz.model.pojo.side.Bookmark;
 import ru.skidoz.model.pojo.side.Cashback;
 import ru.skidoz.model.pojo.side.Shop;
+import ru.skidoz.model.pojo.telegram.BotType;
 import ru.skidoz.model.pojo.telegram.FileResponse;
 import ru.skidoz.model.pojo.telegram.Level;
 import ru.skidoz.model.pojo.telegram.LevelChat;
@@ -36,6 +38,7 @@ import org.telegram.telegrambots.meta.api.objects.Document;
 import org.telegram.telegrambots.meta.api.objects.Location;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
+import ru.skidoz.service.command.CommandName;
 import ru.skidoz.service.command.CommandProvider;
 import ru.skidoz.service.command_impl.starter.BasketLinkStarter;
 import ru.skidoz.service.command_impl.starter.BookmarkLinkStarter;
@@ -100,6 +103,7 @@ public class TelegramProcessor {
 
 
     public ConcurrentMap<String, String> mergeUsers = new ConcurrentHashMap<>();
+    @Autowired private BotTypeCacheRepository botTypeCacheRepository;
 
 
     private List<LevelChat> startProcessor(User user, long chatId, Update update, boolean newUser)
@@ -217,13 +221,13 @@ public class TelegramProcessor {
                     if (!friend.isShopOwner()) {
                         levelChatDTOList2 = p2BLinkStarter.getLevel(null, user, friend, null);
                     } else {
-                        List<Shop> shopsFriend = shopCacheRepository.findAllBySellerIdAndActiveIsTrue(
-                                friend.getId());
+                        Shop shopsFriend = shopCacheRepository.findById(userCacheRepository.findById(friend.getId()).getSellerShop());
+
                         levelChatDTOList2 = b2BLinkStarter.getLevel(
                                 chatId,
                                 user,
                                 null,
-                                shopsFriend.get(0));
+                                shopsFriend);
                     }
                 }
 
@@ -297,7 +301,6 @@ public class TelegramProcessor {
         Level newLevel = null;
         final List<LevelChat> levelChats;
         if (update.hasMessage()) {
-
             if (update.getMessage().hasDocument()) {
 
                 final Level levelDTOWrapper = processDocument(
@@ -320,26 +323,19 @@ public class TelegramProcessor {
                     return command.runCommand(update, newLevel, users);
                 }
             }
-
-
             //TODO - make refactoring, may not be null, but empty...
             if (inputText != null || update.getMessage().hasPhoto()) {
 
                 if (currentLevelId == 0) {
                     return null;
                 }
-
                 System.out.println("inputText*" + inputText + " @@@ " + currentLevelId);
-
-
                 newLevel = levelCacheRepository.findBySourceIsMessageAndParentLevelId(
                         true,
                         currentLevelId);
 
                 System.out.println("newLevel   findBySourceIsMessageAndParentLevelId***"
                         + newLevel);
-
-
 //                System.out.println("all child levels " + levelCacheRepository.findAllByParentLevelId(currentLevelId));
 
                 if (newLevel == null) {
@@ -348,18 +344,42 @@ public class TelegramProcessor {
                     System.out.println("currentLevel++++++++++++++++" + currentLevel);
 
                     String levelCallName = currentLevel.getCallName();
-                    Command command = commandProvider.getCommand(levelCallName);
 
-                    return command.runCommand(update, newLevel, users);
+                    System.out.println("currentLevel.isBotLevel()***" + currentLevel.isBotLevel());
+
+                    if (currentLevel.isBotLevel()) {
+                        Integer botId = currentLevel.getBot();
+
+                        System.out.println("newLevel.getBot().getId()***" + botId);
+                        System.out.println("levelCallName   ***" + levelCallName);
+
+                        Command command = commandProvider.getCommand(levelCallName);
+                        return command.runCommand(update, currentLevel, users);
+                    } else {
+
+                        Command command = commandProvider.getCommand(levelCallName);
+                        return command.runCommand(update, newLevel, users);
+                    }
                 }
 
                 String levelCallName = newLevel.getCallName();
 
                 System.out.println("newLevel.getIsBotLevel()***" + newLevel.isBotLevel());
 
-                if (commandProvider.commandExists(levelCallName)) {
+                if (newLevel.isBotLevel()) {
+
+                    Integer botId = newLevel.getBot();
+
+                    System.out.println("newLevel.getBot().getId() ***" + botId);
+                    System.out.println("levelCallName             ***" + levelCallName);
+
+
                     Command command = commandProvider.getCommand(levelCallName);
                     return command.runCommand(update, newLevel, users);
+
+                } else if (commandProvider.commandExists(levelCallName)) {
+                        Command command = commandProvider.getCommand(levelCallName);
+                        return command.runCommand(update, newLevel, users);
                 }
 
                 throw new RuntimeException("Не смогли обработать сообщение");
@@ -370,27 +390,23 @@ public class TelegramProcessor {
             String callback = update.getCallbackQuery().getData();
 
             System.out.println("callback*****" + callback);
-
             String commandName;
-
-
 
             if (callback.startsWith("@")) {
 
-                System.out.println("callback*****" + callback + "---" + currentLevelId);
+                System.out.println("callback*****" + callback + "***" + currentLevelId);
 
-                final String[] splitCallback = callback.substring(1).split("\\*");
+                final String[] splitCallback = callback.split("\\*");
                 if (splitCallback.length > 1) {
 
                     System.out.println("375**********" + Arrays.toString(splitCallback));
 
-                    commandName = splitCallback[0];
+                    commandName = splitCallback[0].substring(1);
 
                 } else {
-
                     newLevel = levelCacheRepository.findById(currentLevelId);
 
-                    System.out.println("newLevel   findBySourceIsMessageAndParentLevelId***"
+                    System.out.println("currentLevelId   findById***"
                             + newLevel
                             + " *** "
                             + currentLevelId);
@@ -404,7 +420,6 @@ public class TelegramProcessor {
                     }
                 }
             } else {
-
                 System.out.println(parseInt(callback.substring(0, 19)));
 
                 newLevel = levelCacheRepository.findById(parseInt(callback.substring(0, 19)));
@@ -413,16 +428,53 @@ public class TelegramProcessor {
 
             if (newLevel != null) {
                 System.out.println("*****newLevel.getCallName() " + newLevel.getCallName());
+
+                System.out.println("newLevel.isBotLevel()---" + newLevel.isBotLevel());
             }
 
-            System.out.println(newLevel != null);
+            System.out.println("commandName*** " + commandName);
             System.out.println("commandExists+++" + commandProvider.commandExists(commandName));
+
             // работает на новый level
 
             if (commandProvider.commandExists(commandName)) {
                 Command command = commandProvider.getCommand(commandName);
                 return command.runCommand(update, newLevel, users);
+            } else if (newLevel != null && newLevel.isBotLevel()) {
+
+                System.out.println("newLevel.getBot()      ***" + newLevel.getBot());
+                System.out.println("newLevel.getIdString() ***" + newLevel.getIdString());
+
+
+                final BotType botType = botTypeCacheRepository.findByInitialLevelStringId(
+                        newLevel.getIdString());
+
+                System.out.println("botType-----" + botType);
+
+                if (botType != null) {
+                    commandName = CommandName.ADD_BOT.name();
+                } else {
+                    commandName = CommandName.EDIT_BOT.name();//CommandName.NON_INITIAL_LEVEL_BOT.name();
+                }
+
+                System.out.println("plain level choiser commandName " + commandName);
+
+                Command command = commandProvider.getCommand(commandName);
+                return command.runCommand(update, newLevel, users);
+
             } else {
+
+                final Level currentLevel = levelCacheRepository.findById(currentLevelId);
+                if (currentLevel.isBotLevel()) {
+
+                    commandName = CommandName.EDIT_BOT.name();//NON_INITIAL_LEVEL_BOT
+
+                    System.out.println("plain level choiser commandName " + commandName);
+
+                    Command command = commandProvider.getCommand(commandName);
+                    return command.runCommand(update, currentLevel, users);
+
+                }
 
                 return getLevelResponse(chatId, newLevel, key, users);
             }

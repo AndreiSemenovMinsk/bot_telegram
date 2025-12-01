@@ -22,7 +22,7 @@ public class DTO {
         mark = id;
     }
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 

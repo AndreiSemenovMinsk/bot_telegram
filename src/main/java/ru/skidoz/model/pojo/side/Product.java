@@ -43,7 +43,7 @@ public class Product extends AbstractDTO {
     private Integer discount;
     private boolean productService;
     private Long duration;
-    private Shop shop;
+    private Integer shop;
     private String type;
     @JsonIgnore
     private Long chatId;
@@ -94,6 +94,7 @@ public class Product extends AbstractDTO {
     public String toString() {
         return "ProductDTO{" +
                 "id=" + getId() +
+                ", alias='" + alias + '\'' +
                 ", nameRU='" + nameRU + '\'' +
                 ", time=" + getTime() +
                 ", shortText='" + shortText + '\'' +

@@ -14,7 +14,6 @@ import ru.skidoz.aop.repo.*;
 import ru.skidoz.service.initializers.InitialLevel;
 import ru.skidoz.service.command.Command;
 import ru.skidoz.service.command_impl.shop_bot.ShopBots;
-import ru.skidoz.util.Structures;
 import com.google.zxing.WriterException;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -24,6 +23,8 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import ru.skidoz.util.TelegramElementsUtil;
 
 import static ru.skidoz.service.command.CommandName.MY_SHOPS;
+import static ru.skidoz.util.Structures.getIdString;
+import static ru.skidoz.util.Structures.parseInt;
 
 /**
  * @author andrey.semenov
@@ -36,6 +37,8 @@ public class MyShops implements Command {
     private LevelCacheRepository levelRepository;
     @Autowired
     private BotCacheRepository botCacheRepository;
+    @Autowired
+    private BotTypeCacheRepository botTypeRepository;
     @Autowired
     private TelegramElementsUtil telegramElementsUtil;
     @Autowired
@@ -121,6 +124,8 @@ public class MyShops implements Command {
         } else*/
         System.out.println(MY_SHOPS.name() + "*MY_SHOPS.name()*" + buyerLevel.getCallName());
 
+        BotType botType = null;
+
 
         if (update.getCallbackQuery() != null) {
 
@@ -138,13 +143,12 @@ public class MyShops implements Command {
                 resultLevelDTOWrapper = initialLevel.convertToLevel(resultLevel,
                         true,
                         true);
-            } else if (callback.equals(initialLevel.level_ADD_TAXI_BOT.getIdString())
-            || callback.equals(initialLevel.level_ADD_TAXI_BOT.getIdString())) {//callback.startsWith("@")
+            } else if ((botType = botTypeRepository.findByInitialLevelStringId(callback)) != null) {//callback.startsWith("@")
 
                 resultLevelDTOWrapper = null;
 
                 System.out.println();
-                System.out.println("-----------------------------INTO AddTaxiBot-----------------------------");
+                System.out.println("-----------------------------INTO AddBot-----------------------------@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
                 System.out.println();
                 System.out.println();
 
@@ -152,7 +156,7 @@ public class MyShops implements Command {
 
                 Shop shopInitiator = shopCacheRepository.findById(users.getCurrentAdminShop());//shopRepository.getByChatId(chatId);
 
-                Level taxiBotLevel = levelRepository.findById(Structures.parseInt(callback/*.substring(1)*/));
+                Level taxiBotLevel = levelRepository.findById(parseInt(callback/*.substring(1)*/));
 
                 System.out.println("taxiBotLevel-----------------------     " + taxiBotLevel);
 
@@ -161,7 +165,8 @@ public class MyShops implements Command {
 
                 System.out.println("bot+++" + bot);
 
-                if (bot == null || (botLevel = levelRepository.findFirstByUser_ChatIdAndCallName(users.getChatId(), taxiBotLevel.getCallName())) == null) {
+                if (bot == null
+                        || (botLevel = levelRepository.findFirstByUser_ChatIdAndCallName(users.getChatId(), taxiBotLevel.getCallName())) == null) {
 
                     System.out.println(167);
 
@@ -178,7 +183,7 @@ public class MyShops implements Command {
 
                     System.out.println("183++++++setCurrentChangingBot" + bot.getId());
 
-                    users.setCurrentChangingBot(bot.getId());
+//                    users.setCurrentChangingBot(bot.getId());
                     userCacheRepository.save(users);
 
                     cloneBot.setBot(bot.getId());
@@ -246,7 +251,7 @@ public class MyShops implements Command {
                     System.out.println("bot.getInitialLevel()******         " + bot.getInitialLevel());
 
                     ButtonRow row = new ButtonRow();
-                    Button button = new Button(row, Map.of(LanguageEnum.RU, "Выбрать шаблон"), "@" + Level.getIdString(bot.getInitialLevel()));
+                    Button button = new Button(row, Map.of(LanguageEnum.RU, "Выбрать шаблон"), "@" + getIdString(bot.getInitialLevel()));
                     row.add(button);
                     resultLevelDTOWrapper.addRow(row);
                 } else {

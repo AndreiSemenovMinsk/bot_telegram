@@ -9,8 +9,6 @@ import org.springframework.stereotype.Service;
 @Service
 public interface BotCacheRepository extends JpaRepositoryTest<Bot, Integer> {
 
-//    public Bot findById(Integer  botId);
-
     public Bot findByShopId(Integer  shopId);
 
     public void delete(Integer  botId);

@@ -234,8 +234,8 @@ public class TelegramBotWebhook {
 
         Message qr = new Message(
                 newConnectLevel, 0,
-                Map.of(RU, "https://t.me/Skido_Bot?start=" + "PI" + user.getId().toString()),
-                IOUtils.toByteArray(qrInputStream(user.getId().toString())),
+                Map.of(RU, "https://t.me/Skido_Bot?start=" + "PI" + user.getId()),
+                IOUtils.toByteArray(qrInputStream(String.valueOf(user.getId()))),
                 "Покажите QR партнеру");//newConnectLevel.getMessages().get(0);
         messageCacheRepository.save(qr);
         Message link = new Message(

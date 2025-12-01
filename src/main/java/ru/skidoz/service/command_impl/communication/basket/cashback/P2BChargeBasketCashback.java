@@ -69,7 +69,7 @@ public class P2BChargeBasketCashback implements Command {
         Long buyerChatId = null;
 
         try {
-            Shop shopInitiator = shopCacheRepository.findBySellerChatId(shopChatId);
+            Shop shopInitiator = shopCacheRepository.findById(userCacheRepository.findByChatId(shopChatId).getSellerShop());
 
             System.out.println();
             System.out.println();

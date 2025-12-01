@@ -89,7 +89,7 @@ public class P2BApproveBasketCashback implements Command {
         System.out.println(level.getCallName().equals(P2B_APPROVE_BASKET_CASHBACK.name()));
 
         try {
-            Shop shopInitiator = shopCacheRepository.findBySellerChatId(shopChatId);
+            Shop shopInitiator = shopCacheRepository.findById(userCacheRepository.findByChatId(shopChatId).getSellerShop());
             User usersCurrentConversation = userCacheRepository.findByChatId(shopInitiator.getCurrentConversationShopUserChatId());
 
             List<Action> suitableActions = new ArrayList<>();

@@ -50,15 +50,11 @@ public interface CashbackRepository extends JpaRepository<CashbackEntity, Intege
 
     List<CashbackEntity> findAllByUser_IdAndAction_Id(Integer buyerId, Integer actionId);
 
-    List<CashbackEntity> findAllByUserAndShopAndAction_Type(UserEntity buyer, ShopEntity shop, ActionTypeEnum actionTypeEnum);
-
     List<CashbackEntity> findAllByUserAndShopAndAction_TypeIn(UserEntity buyer, ShopEntity shop, List<ActionTypeEnum> types);
 
     CashbackEntity findByIdAndUserId(Integer id, Integer buyerId);
 
     Optional<CashbackEntity> findById(Integer id);
-
-    List<CashbackEntity> findAllByUser(UserEntity buyer);
 
     List<CashbackEntity> findAllByPurchase_Id(Integer purchaseId);
 

@@ -73,11 +73,6 @@ public class AdminAdmin implements Command {
 
             System.out.println("botId++++" + bot);
 
-            if (bot != null && bot.getId() != null) {
-                users.setCurrentChangingBot(bot.getId());
-//            users.setCurrentChangingBot(Structures.parseLong(shopId));//botRepository.findByShopId(Structures.parseLong(shopId))
-            }
-
             resultLevel = initialLevel.convertToLevel(initialLevel.level_ADMIN_ADMIN,
                     true,
                     true);

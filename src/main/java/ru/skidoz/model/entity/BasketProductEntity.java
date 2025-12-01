@@ -10,6 +10,7 @@ import lombok.Data;
 
 @Data
 @Entity
+@Table(name = "basket_product")
 public class BasketProductEntity extends AbstractEntity implements Serializable {
 
     @NotNull

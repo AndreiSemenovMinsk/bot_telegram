@@ -72,11 +72,11 @@ public class P2BProposeCashbackResp implements Command {
         try {
             Integer proposedSum = Integer.parseInt(inputText);
             if (proposedSum > 0) {
-                Shop shopInitiator = shopCacheRepository.findBySellerChatId(shopChatId);
+                Shop shopInitiator = shopCacheRepository.findById(userCacheRepository.findByChatId(shopChatId).getSellerShop());
 //                Shop shopInitiatorEntity = new Shop(shopInitiator.getId());
                 User buyer = userCacheRepository.findByChatId(shopInitiator.getCurrentConversationShopUserChatId());
 //                Users buyerEntity = new Users(buyer.getId());
-                Action action = actionCacheRepository.findFirstByShopAndTypeAndActiveIsTrue(shopInitiator.getId(), ActionTypeEnum.BASIC_MANUAL);
+                Action action = actionCacheRepository.findFirstByShopAndTypeAndActive(shopInitiator.getId(), ActionTypeEnum.BASIC_MANUAL, true);
                 buyerChatId = buyer.getChatId();
 
                 User friend = userCacheRepository.findFirstByShop_IdAndBuyer_Id(shopInitiator.getId(), buyer.getId());

@@ -7,6 +7,8 @@ import ru.skidoz.model.pojo.AbstractDTO;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
+import ru.skidoz.util.Structures;
+
 import org.apache.commons.lang3.StringUtils;
 
 
@@ -136,12 +138,9 @@ public class Level extends AbstractDTO implements Cloneable {
     }
 
     public String getIdString(){
-        return getIdString(getId());
+        return Structures.getIdString(getId());
     }
 
-    public static String getIdString(Integer id) {
-        return StringUtils.leftPad("" + id, 19, "0");
-    }
 
     @Override
     public String toString() {

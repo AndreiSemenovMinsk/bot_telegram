@@ -5,29 +5,27 @@ import static ru.skidoz.model.entity.category.LanguageEnum.RU;
 import static ru.skidoz.service.initializers.InitialLevel.SHOP;
 import static ru.skidoz.service.initializers.InitialLevel.Users;
 
+import ru.skidoz.aop.repo.BotTypeCacheRepository;
 import ru.skidoz.aop.repo.ButtonCacheRepository;
 import ru.skidoz.aop.repo.ButtonRowCacheRepository;
 import ru.skidoz.aop.repo.CategoryCacheRepository;
 import ru.skidoz.aop.repo.CategoryGroupCacheRepository;
 import ru.skidoz.aop.repo.CategorySuperGroupCacheRepository;
 import ru.skidoz.aop.repo.LevelCacheRepository;
-import ru.skidoz.aop.repo.MessageCacheRepository;
 import ru.skidoz.aop.repo.ShopCacheRepository;
 import ru.skidoz.aop.repo.UserCacheRepository;
 import ru.skidoz.model.pojo.category.Category;
 import ru.skidoz.model.pojo.category.CategoryGroup;
 import ru.skidoz.model.pojo.category.CategorySuperGroup;
 import ru.skidoz.model.pojo.side.Shop;
+import ru.skidoz.model.pojo.telegram.BotType;
 import ru.skidoz.model.pojo.telegram.Button;
 import ru.skidoz.model.pojo.telegram.ButtonRow;
 import ru.skidoz.model.pojo.telegram.Level;
-import ru.skidoz.model.pojo.telegram.LevelDTOWrapper;
-import ru.skidoz.model.pojo.telegram.Message;
-import ru.skidoz.model.pojo.telegram.User;
+import ru.skidoz.repository.telegram.UserRepository;
 
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -53,15 +51,20 @@ public class InitializeEntries {
     @Autowired
     private ShopCacheRepository shopRepository;
     @Autowired
+    private UserCacheRepository userCacheRepository;
+    @Autowired
     private LevelCacheRepository levelRepository;
     @Autowired
     private ButtonRowCacheRepository buttonRowRepository;
     @Autowired
     private ButtonCacheRepository buttonRepository;
     @Autowired
+    private BotTypeCacheRepository botTypeRepository;
+    @Autowired
     private InitialLevel initialLevel;
+    @Autowired private UserRepository userRepository;
 
-    
+
     public void initLevels() {
 
         try {
@@ -88,7 +91,10 @@ public class InitializeEntries {
 
                 System.out.println("SHOP----------" + SHOP);
 
-                SHOP.getSellerSet().add(Users.getId());
+                Users.setSellerShop(SHOP.getId());
+                userCacheRepository.save(Users);
+
+//                SHOP.getSellerSet().add(Users.getId());
 
                 shopRepository.save(SHOP);
 
@@ -118,7 +124,7 @@ public class InitializeEntries {
                 lamoda.setChatId(1L);
                 shopRepository.save(lamoda);
                 System.out.println("lamoda----------" + lamoda);
-                lamoda.getSellerSet().add(Users.getId());
+//                lamoda.getSellerSet().add(Users.getId());
                 shopRepository.save(lamoda);
 
                 Shop wildberries = new Shop();
@@ -127,7 +133,7 @@ public class InitializeEntries {
                 wildberries.setChatId(1L);
                 shopRepository.save(wildberries);
                 System.out.println("wildberries----------" + wildberries);
-                wildberries.getSellerSet().add(Users.getId());
+//                wildberries.getSellerSet().add(Users.getId());
                 shopRepository.save(wildberries);
 
                 Shop ozon = new Shop();
@@ -136,9 +142,15 @@ public class InitializeEntries {
                 ozon.setChatId(1L);
                 shopRepository.save(ozon);
                 System.out.println("ozon----------" + ozon);
-                ozon.getSellerSet().add(Users.getId());
+//                ozon.getSellerSet().add(Users.getId());
                 shopRepository.save(ozon);
 
+
+
+                BotType botType = new BotType();
+                botType.setName("TAXI BOT");
+                botType.setInitialLevelStringId(initialLevel.level_ADD_TAXI_BOT.getIdString());
+                botTypeRepository.save(botType);
 
                 System.out.println("PRE addFinalButton");
 

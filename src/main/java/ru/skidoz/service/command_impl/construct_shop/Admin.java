@@ -1,15 +1,12 @@
 package ru.skidoz.service.command_impl.construct_shop;
 
 import static ru.skidoz.service.command.CommandName.ADMIN;
-import static ru.skidoz.service.command.CommandName.ADMIN_SHOPS;
 
 import com.google.zxing.WriterException;
-import ru.skidoz.aop.repo.BotCacheRepository;
 import ru.skidoz.aop.repo.LevelCacheRepository;
 import ru.skidoz.aop.repo.ShopCacheRepository;
 import ru.skidoz.model.entity.category.LanguageEnum;
 import ru.skidoz.model.pojo.side.Shop;
-import ru.skidoz.model.pojo.telegram.Bot;
 import ru.skidoz.model.pojo.telegram.Level;
 import ru.skidoz.model.pojo.telegram.LevelChat;
 import ru.skidoz.model.pojo.telegram.LevelDTOWrapper;
@@ -17,7 +14,6 @@ import ru.skidoz.model.pojo.telegram.LevelResponse;
 import ru.skidoz.model.pojo.telegram.User;
 import ru.skidoz.service.command.Command;
 import ru.skidoz.service.initializers.InitialLevel;
-import ru.skidoz.util.Structures;
 import ru.skidoz.util.TelegramElementsUtil;
 
 import java.io.IOException;
@@ -73,7 +69,7 @@ public class Admin implements Command {
                 true,
                 true);
 
-        final Collection<Shop> allByAdminUserId = shopCacheRepository.findAllByAdminUser_Id(user.getId());
+        final Collection<Shop> allByAdminUserId = shopCacheRepository.findAllByAdminUser(user.getId());
         if (allByAdminUserId == null || allByAdminUserId.isEmpty()) {
 
             System.out.println("-----------------No shops found");

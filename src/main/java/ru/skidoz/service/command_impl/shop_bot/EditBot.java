@@ -94,7 +94,7 @@ public class EditBot implements Command {
                     Button editButton = new Button(
                             editRowForButton,
                             Map.of(LanguageEnum.RU, "Изм. " + button.getName(language)),
-                            "@" + UPDATE_BUTTON.name() + "*" + button.getCallback());
+                            "@" + UPDATE_BUTTON.name() + "*" + button.getId());//button.getCallback()
                     editRowForButton.add(editButton);
                     buttonRows.add(editRowForButton);
 
@@ -102,7 +102,7 @@ public class EditBot implements Command {
                     Button deleteButton = new Button(
                             editRowForButton2,
                             Map.of(LanguageEnum.RU, "Удал. " + button.getName(language)),
-                            "@" + DELETE_BUTTON.name() + "*" + button.getCallback());
+                            "@" + DELETE_BUTTON.name() + "*" + button.getId());//button.getCallback()
                     editRowForButton2.add(deleteButton);
                     buttonRows.add(editRowForButton2);
 
@@ -140,7 +140,7 @@ public class EditBot implements Command {
         Button newLevelButton = new Button(
                 rowForNewLevelButtons1,
                 Map.of(LanguageEnum.RU, "Добавить новое сообщение"),
-                "@" + NEW_LEVEL_BUTTON.name() + "*" + cloneEditBotLevel.getLevel().getIdString());
+                "@" + NEW_LEVEL_BUTTON.name() + "*" + cloneEditBotLevel.getLevel().getId());
         rowForNewLevelButtons1.add(newLevelButton);
 
         ButtonRow rowForNewLevelButtons2 = new ButtonRow();
@@ -148,7 +148,7 @@ public class EditBot implements Command {
         Button newLevelInputButton = new Button(
                 rowForNewLevelButtons2,
                 Map.of(LanguageEnum.RU, "+сообщ. с вводом клиента"),
-                "@" + NEW_LEVEL_INPUT_BUTTON.name() + "*" + cloneEditBotLevel.getLevel().getIdString());
+                "@" + NEW_LEVEL_INPUT_BUTTON.name() + "*" + cloneEditBotLevel.getLevel().getId());
         rowForNewLevelButtons2.add(newLevelInputButton);
 
         ButtonRow rowForNewLevelButtons3 = new ButtonRow();
@@ -156,7 +156,7 @@ public class EditBot implements Command {
         Button endMessageButton = new Button(
                 rowForNewLevelButtons3,
                 Map.of(LanguageEnum.RU, "+сообщ. и подтв. заявки клиентом"),
-                "@" + NEW_LEVEL_END_BUTTON.name() + "*" + cloneEditBotLevel.getLevel().getIdString());
+                "@" + NEW_LEVEL_END_BUTTON.name() + "*" + cloneEditBotLevel.getLevel().getId());
         rowForNewLevelButtons3.add(endMessageButton);
 
 
@@ -183,7 +183,7 @@ public class EditBot implements Command {
         Button deleteButton = new Button(
                 rowForNewLevelButtons4,
                 Map.of(LanguageEnum.RU, "Удалить уровень"),
-                "@" + DELETE_LEVEL.name() + "*" + cloneEditBotLevel.getLevel().getIdString());
+                "@" + DELETE_LEVEL.name() + "*" + cloneEditBotLevel.getLevel().getId());//.getIdString()
         rowForNewLevelButtons4.add(deleteButton);
 
         return cloneEditBotLevel;
